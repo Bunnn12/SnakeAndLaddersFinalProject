@@ -10,6 +10,10 @@ namespace SnakeAndLaddersFinalProject
     {
         public void prueba()
         {
+            public void prueba1()
+        {
+
+        }
 
         }
     }
