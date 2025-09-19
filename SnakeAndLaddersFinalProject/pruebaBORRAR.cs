@@ -8,5 +8,9 @@ namespace SnakeAndLaddersFinalProject
 {
     internal class pruebaBORRAR
     {
+        public void prueba()
+        {
+
+        }
     }
 }
