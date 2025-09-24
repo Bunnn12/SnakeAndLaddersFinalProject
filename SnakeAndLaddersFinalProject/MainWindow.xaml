@@ -7,6 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Button x:Name="btnSettings" Content="Button" HorizontalAlignment="Left" Margin="27,29,0,0" VerticalAlignment="Top" Height="26" Width="86"/>
+        <Button x:Name="btnBack" Content="Button" HorizontalAlignment="Left" Margin="675,27,0,0" VerticalAlignment="Top" Height="20" Width="81"/>
+        <Button x:Name="btnAddFriends" Content="Button" HorizontalAlignment="Center" Margin="0,323,0,0" VerticalAlignment="Top" Height="33" Width="216"/>
+        <Label x:Name="lblFriendsListTitle" Content="Label" HorizontalAlignment="Center" Margin="0,29,0,0" VerticalAlignment="Top" Height="26" Width="292"/>
+        <Label x:Name="lblFindFriends" Content="Label" HorizontalAlignment="Left" Margin="167,108,0,0" VerticalAlignment="Top" Height="27" Width="181"/>
+        <TextBox x:Name="txtFindFriends" HorizontalAlignment="Left" Margin="167,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="285" Height="30"/>
+
     </Grid>
 </Window>

@@ -7,6 +7,20 @@
         mc:Ignorable="d"
         Title="SignUpWindow" Height="450" Width="800">
     <Grid>
-        
+        <Button x:Name="btnSettings" Content="Button" HorizontalAlignment="Left" Margin="26,31,0,0" VerticalAlignment="Top" Height="24" Width="79"/>
+        <Label x:Name="lblTitleSignUp" Content="Label" HorizontalAlignment="Left" Margin="210,30,0,0" VerticalAlignment="Top" Height="24" Width="432"/>
+        <Label x:Name="lblUsername" Content="Label" HorizontalAlignment="Left" Margin="120,194,0,0" VerticalAlignment="Top" Height="26" Width="170"/>
+        <Label x:Name="lblPassword" Content="Label" HorizontalAlignment="Left" Margin="527,193,0,0" VerticalAlignment="Top" Height="29" Width="170"/>
+        <Label x:Name="lblNameOfUser" Content="Label" HorizontalAlignment="Left" Margin="120,88,0,0" VerticalAlignment="Top" Height="31" Width="180"/>
+        <Label x:Name="lblLastName" Content="Label" HorizontalAlignment="Left" Margin="527,88,0,0" VerticalAlignment="Top" Height="26" Width="170"/>
+        <Label x:Name="lblEmail" Content="Label" HorizontalAlignment="Left" Margin="120,308,0,0" VerticalAlignment="Top" Height="27" Width="170"/>
+        <TextBox x:Name="txtNameOfUser" HorizontalAlignment="Left" Margin="120,117,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" Height="29"/>
+        <TextBox x:Name="txtLastname" HorizontalAlignment="Left" Margin="527,114,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170" Height="29"/>
+        <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Margin="120,222,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" Height="31"/>
+        <TextBox x:Name="txtEmail" HorizontalAlignment="Left" Margin="120,340,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="280" Height="32"/>
+        <PasswordBox x:Name="pwdPassword" HorizontalAlignment="Left" Margin="527,222,0,0" VerticalAlignment="Top" Width="170" Height="31"/>
+        <Button x:Name="btnSignUp" Content="Button" HorizontalAlignment="Left" Margin="542,343,0,0" VerticalAlignment="Top" Height="26" Width="140"/>
+        <Button x:Name="btnBack" Content="Button" HorizontalAlignment="Left" Margin="674,31,0,0" VerticalAlignment="Top" Height="24" Width="91"/>
+
     </Grid>
 </Window>

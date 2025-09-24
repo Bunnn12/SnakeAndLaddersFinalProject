@@ -7,6 +7,20 @@
         mc:Ignorable="d"
         Title="MatchListWindow" Height="450" Width="800">
     <Grid>
-        
+        <Button x:Name="btnSettings" Content="Button" HorizontalAlignment="Left" Margin="28,31,0,0" VerticalAlignment="Top" Height="24" Width="95"/>
+        <Button x:Name="btnBack" Content="Button" HorizontalAlignment="Left" Margin="670,31,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.455,0.323" Height="22" Width="92"/>
+        <Label x:Name="lblMatchListTittle" Content="Label" HorizontalAlignment="Center" Margin="0,31,0,0" VerticalAlignment="Top" Height="37" Width="324"/>
+        <Label x:Name="lblFindMatch" Content="Label" HorizontalAlignment="Left" Margin="153,125,0,0" VerticalAlignment="Top" Height="31" Width="247"/>
+        <TextBox x:Name="txtFindMatch" HorizontalAlignment="Left" Margin="156,161,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="321" Height="31"/>
+        <Grid Margin="156,217,212,64">
+            <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}"/>
+        </Grid>
+        <Button x:Name="btnProfile" Content="Button" HorizontalAlignment="Left" Margin="670,390,0,0" VerticalAlignment="Top" Height="21" Width="92"/>
+        <Button x:Name="btnSkins" Content="Button" HorizontalAlignment="Left" Margin="540,387,0,0" VerticalAlignment="Top" Height="25" Width="102" RenderTransformOrigin="0.794,0.715"/>
+        <Button x:Name="btnMainWindow" Content="Button" HorizontalAlignment="Left" Margin="400,387,0,0" VerticalAlignment="Top" Height="23" Width="105"/>
+        <Button x:Name="btnShop" Content="Button" HorizontalAlignment="Left" Margin="276,387,0,0" VerticalAlignment="Top" Height="24" Width="96"/>
+        <Button x:Name="btnInventory" Content="Button" HorizontalAlignment="Left" Margin="153,386,0,0" VerticalAlignment="Top" Height="26" Width="95"/>
+        <Button x:Name="btnFriends" Content="Button" HorizontalAlignment="Left" Margin="28,387,0,0" VerticalAlignment="Top" Height="26" Width="94"/>
+
     </Grid>
 </Window>
