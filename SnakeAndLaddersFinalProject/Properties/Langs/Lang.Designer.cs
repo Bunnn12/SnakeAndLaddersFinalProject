@@ -169,6 +169,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Settings.
+        /// </summary>
+        internal static string btnSettingsText {
+            get {
+                return ResourceManager.GetString("btnSettingsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Sign up.
         /// </summary>
         internal static string btnSignUpText {

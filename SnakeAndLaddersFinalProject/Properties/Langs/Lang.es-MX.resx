@@ -153,6 +153,9 @@
   <data name="btnOtherReasonText" xml:space="preserve">
     <value>Otro...</value>
   </data>
+  <data name="btnSettingsText" xml:space="preserve">
+    <value />
+  </data>
   <data name="btnSignUpText" xml:space="preserve">
     <value>Registrarse</value>
   </data>
