@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using SnakeAndLaddersFinalProject.Globalization;
 
 namespace SnakeAndLaddersFinalProject
 {
@@ -13,5 +14,10 @@ namespace SnakeAndLaddersFinalProject
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            LocalizationManager.Current.ApplyCulture();
+        }
     }
 }

@@ -142,7 +142,7 @@
     <value>Uso de hacks</value>
   </data>
   <data name="btnFriendsText" xml:space="preserve">
-    <value />
+    <value>Amigos</value>
   </data>
   <data name="btnHarassmentText" xml:space="preserve">
     <value>Acoso</value>
@@ -155,6 +155,9 @@
   </data>
   <data name="btnJoinMatchText" xml:space="preserve">
     <value>Unirse a partida</value>
+  </data>
+  <data name="btnMainWindowText" xml:space="preserve">
+    <value>Ventana Principal</value>
   </data>
   <data name="btnOtherReasonText" xml:space="preserve">
     <value>Otro...</value>
@@ -210,7 +213,7 @@
   <data name="listOfGamesTittle" xml:space="preserve">
     <value>Lista de partidas</value>
   </data>
-  <data name="pwdPasswordTex" xml:space="preserve">
+  <data name="pwdPasswordText" xml:space="preserve">
     <value>Contraseña</value>
   </data>
   <data name="reportUserTittle" xml:space="preserve">

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using SnakeAndLaddersFinalProject.Globalization;
 
 namespace SnakeAndLaddersFinalProject
 {
@@ -22,6 +23,7 @@ namespace SnakeAndLaddersFinalProject
         public SignUpWindow()
         {
             InitializeComponent();
+            DataContext = LocalizationManager.Current;
         }
     }
 }

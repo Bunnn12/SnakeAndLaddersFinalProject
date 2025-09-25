@@ -133,7 +133,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Amigos.
+        ///   Busca una cadena traducida similar a Friends.
         /// </summary>
         internal static string btnFriendsText {
             get {
@@ -174,6 +174,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         internal static string btnJoinMatchText {
             get {
                 return ResourceManager.GetString("btnJoinMatchText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Main window.
+        /// </summary>
+        internal static string btnMainWindowText {
+            get {
+                return ResourceManager.GetString("btnMainWindowText", resourceCulture);
             }
         }
         
@@ -342,9 +351,9 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Password.
         /// </summary>
-        internal static string pwdPasswordTex {
+        internal static string pwdPasswordText {
             get {
-                return ResourceManager.GetString("pwdPasswordTex", resourceCulture);
+                return ResourceManager.GetString("pwdPasswordText", resourceCulture);
             }
         }
         

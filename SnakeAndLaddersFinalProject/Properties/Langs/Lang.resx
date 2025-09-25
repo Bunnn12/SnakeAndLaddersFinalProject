@@ -142,7 +142,7 @@
     <value>Exploiting</value>
   </data>
   <data name="btnFriendsText" xml:space="preserve">
-    <value>Amigos</value>
+    <value>Friends</value>
   </data>
   <data name="btnHarassmentText" xml:space="preserve">
     <value>Harassment</value>
@@ -155,6 +155,9 @@
   </data>
   <data name="btnJoinMatchText" xml:space="preserve">
     <value>Join match</value>
+  </data>
+  <data name="btnMainWindowText" xml:space="preserve">
+    <value>Main window</value>
   </data>
   <data name="btnOtherReasonText" xml:space="preserve">
     <value>Other...</value>
@@ -210,7 +213,7 @@
   <data name="listOfGamesTittle" xml:space="preserve">
     <value>List of games</value>
   </data>
-  <data name="pwdPasswordTex" xml:space="preserve">
+  <data name="pwdPasswordText" xml:space="preserve">
     <value>Password</value>
   </data>
   <data name="reportUserTittle" xml:space="preserve">

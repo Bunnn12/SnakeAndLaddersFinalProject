@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="ReportsWindow" Height="450" Width="800">
     <Grid>
-        
+        <Label x:Name="lblReportUser" Content="Label" HorizontalAlignment="Center" Margin="0,35,0,0" VerticalAlignment="Top" Height="36" Width="357"/>
+        <Button Content="Button" HorizontalAlignment="Center" Margin="0,121,0,0" VerticalAlignment="Top" Height="34" Width="412"/>
+
     </Grid>
 </Window>

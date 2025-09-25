@@ -7,6 +7,26 @@
         mc:Ignorable="d"
         Title="SkinsWindow" Height="450" Width="800">
     <Grid>
-        
+        <Label x:Name="lblSkinsTitle" Content="Label" HorizontalAlignment="Center" Margin="0,27,0,0" VerticalAlignment="Top" Height="34" Width="272"/>
+        <Button x:Name="btnSettings" Content="Button" HorizontalAlignment="Left" Margin="50,27,0,0" VerticalAlignment="Top" Height="34" Width="124"/>
+        <Button x:Name="btnBack" Content="Button" HorizontalAlignment="Left" Margin="609,29,0,0" VerticalAlignment="Top" Height="32" Width="138"/>
+        <Button x:Name="btnFriends" Content="Button" HorizontalAlignment="Left" Margin="50,382,0,0" VerticalAlignment="Top" Height="32" Width="97"/>
+        <Button x:Name="btnInventory" Content="Button" HorizontalAlignment="Left" Margin="161,383,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="31" Width="103">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.035"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
+        <Button x:Name="btnShop" Content="Button" HorizontalAlignment="Left" Margin="285,382,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.303,-0.276" Height="32" Width="102"/>
+        <Button x:Name="btnMainWindow" Content="Button" HorizontalAlignment="Left" Margin="411,382,0,0" VerticalAlignment="Top" Height="32" Width="101"/>
+        <Button x:Name="btnSkins" Content="Button" HorizontalAlignment="Left" Margin="541,382,0,0" VerticalAlignment="Top" Height="32" Width="99"/>
+        <Button x:Name="btnProfile" Content="Button" HorizontalAlignment="Left" Margin="657,382,0,0" VerticalAlignment="Top" Height="31" Width="90"/>
+        <TextBlock x:Name="tbCharacterDescription" HorizontalAlignment="Left" Margin="522,94,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="110" Width="156"/>
+        <Label x:Name="lblSkinRarity" Content="Label" HorizontalAlignment="Left" Margin="522,217,0,0" VerticalAlignment="Top" Width="156"/>
+
     </Grid>
 </Window>

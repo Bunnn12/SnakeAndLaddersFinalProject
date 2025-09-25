@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -64,6 +65,7 @@
     <Compile Include="FriendsListWindow.xaml.cs">
       <DependentUpon>FriendsListWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Globalization\LocalizationManager.cs" />
     <Compile Include="MatchListWindow.xaml.cs">
       <DependentUpon>MatchListWindow.xaml</DependentUpon>
     </Compile>
