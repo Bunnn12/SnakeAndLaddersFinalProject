@@ -51,7 +51,7 @@ namespace SnakeAndLaddersFinalProject {
         
         #line 11 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        internal System.Windows.Controls.Button btnBack;
+        internal System.Windows.Controls.Button btnCreateMatch;
         
         #line default
         #line hidden
@@ -59,7 +59,7 @@ namespace SnakeAndLaddersFinalProject {
         
         #line 12 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        internal System.Windows.Controls.Button btnAddFriends;
+        internal System.Windows.Controls.Button btnJoinMatch;
         
         #line default
         #line hidden
@@ -67,7 +67,7 @@ namespace SnakeAndLaddersFinalProject {
         
         #line 13 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        internal System.Windows.Controls.Label lblFriendsListTitle;
+        internal System.Windows.Controls.Label lblCoins;
         
         #line default
         #line hidden
@@ -75,7 +75,7 @@ namespace SnakeAndLaddersFinalProject {
         
         #line 14 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        internal System.Windows.Controls.Label lblFindFriends;
+        internal System.Windows.Controls.Button btnFriends;
         
         #line default
         #line hidden
@@ -83,7 +83,39 @@ namespace SnakeAndLaddersFinalProject {
         
         #line 15 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        internal System.Windows.Controls.TextBox txtFindFriends;
+        internal System.Windows.Controls.Button btnInventory;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 16 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.Button btnShop;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 17 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.Button btnMainWIndow;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 18 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.Button btnSkins;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 19 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.Button btnProfile;
         
         #line default
         #line hidden
@@ -122,19 +154,31 @@ namespace SnakeAndLaddersFinalProject {
             this.btnSettings = ((System.Windows.Controls.Button)(target));
             return;
             case 2:
-            this.btnBack = ((System.Windows.Controls.Button)(target));
+            this.btnCreateMatch = ((System.Windows.Controls.Button)(target));
             return;
             case 3:
-            this.btnAddFriends = ((System.Windows.Controls.Button)(target));
+            this.btnJoinMatch = ((System.Windows.Controls.Button)(target));
             return;
             case 4:
-            this.lblFriendsListTitle = ((System.Windows.Controls.Label)(target));
+            this.lblCoins = ((System.Windows.Controls.Label)(target));
             return;
             case 5:
-            this.lblFindFriends = ((System.Windows.Controls.Label)(target));
+            this.btnFriends = ((System.Windows.Controls.Button)(target));
             return;
             case 6:
-            this.txtFindFriends = ((System.Windows.Controls.TextBox)(target));
+            this.btnInventory = ((System.Windows.Controls.Button)(target));
+            return;
+            case 7:
+            this.btnShop = ((System.Windows.Controls.Button)(target));
+            return;
+            case 8:
+            this.btnMainWIndow = ((System.Windows.Controls.Button)(target));
+            return;
+            case 9:
+            this.btnSkins = ((System.Windows.Controls.Button)(target));
+            return;
+            case 10:
+            this.btnProfile = ((System.Windows.Controls.Button)(target));
             return;
             }
             this._contentLoaded = true;
