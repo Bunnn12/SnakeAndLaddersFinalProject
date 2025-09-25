@@ -133,6 +133,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Amigos.
+        /// </summary>
+        internal static string btnFriendsText {
+            get {
+                return ResourceManager.GetString("btnFriendsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Harassment.
         /// </summary>
         internal static string btnHarassmentText {
@@ -147,6 +156,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         internal static string btnInappropiateLangText {
             get {
                 return ResourceManager.GetString("btnInappropiateLangText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Inventory.
+        /// </summary>
+        internal static string btnInventoryText {
+            get {
+                return ResourceManager.GetString("btnInventoryText", resourceCulture);
             }
         }
         
@@ -169,6 +187,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Profile.
+        /// </summary>
+        internal static string btnProfileText {
+            get {
+                return ResourceManager.GetString("btnProfileText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Settings.
         /// </summary>
         internal static string btnSettingsText {
@@ -178,11 +205,29 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Shop.
+        /// </summary>
+        internal static string btnShopText {
+            get {
+                return ResourceManager.GetString("btnShopText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Sign up.
         /// </summary>
         internal static string btnSignUpText {
             get {
                 return ResourceManager.GetString("btnSignUpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Skins.
+        /// </summary>
+        internal static string btnSkinsText {
+            get {
+                return ResourceManager.GetString("btnSkinsText", resourceCulture);
             }
         }
         

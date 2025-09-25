@@ -141,11 +141,17 @@
   <data name="btnExploitingText" xml:space="preserve">
     <value>Exploiting</value>
   </data>
+  <data name="btnFriendsText" xml:space="preserve">
+    <value>Amigos</value>
+  </data>
   <data name="btnHarassmentText" xml:space="preserve">
     <value>Harassment</value>
   </data>
   <data name="btnInappropiateLangText" xml:space="preserve">
     <value>Inappropriate language</value>
+  </data>
+  <data name="btnInventoryText" xml:space="preserve">
+    <value>Inventory</value>
   </data>
   <data name="btnJoinMatchText" xml:space="preserve">
     <value>Join match</value>
@@ -153,11 +159,20 @@
   <data name="btnOtherReasonText" xml:space="preserve">
     <value>Other...</value>
   </data>
+  <data name="btnProfileText" xml:space="preserve">
+    <value>Profile</value>
+  </data>
   <data name="btnSettingsText" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="btnShopText" xml:space="preserve">
+    <value>Shop</value>
+  </data>
   <data name="btnSignUpText" xml:space="preserve">
     <value>Sign up</value>
+  </data>
+  <data name="btnSkinsText" xml:space="preserve">
+    <value>Skins</value>
   </data>
   <data name="btnToxicBehaviorText" xml:space="preserve">
     <value>Toxic behavior</value>
