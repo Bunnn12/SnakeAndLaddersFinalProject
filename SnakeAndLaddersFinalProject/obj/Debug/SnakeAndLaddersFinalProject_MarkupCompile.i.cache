@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\irene\Source\Repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\App.xaml
-121668842963
+13201067486
 
-19-485501393
+201476613436
 14-207034072
-AddFriendsWindow.xaml;BasicWindow.xaml;ChatWindow.xaml;FriendsListWindow.xaml;MainWindow.xaml;MatchListWindow.xaml;Pages\LobbyPage.xaml;Pages\LoginPage.xaml;Pages\StorePage.xaml;ReportsWindow.xaml;SignUpWindow.xaml;SkinsWindow.xaml;
+AddFriendsWindow.xaml;BasicWindow.xaml;ChatWindow.xaml;FriendsListWindow.xaml;MainWindow.xaml;MatchListWindow.xaml;Pages\InventoryPage.xaml;Pages\LobbyPage.xaml;Pages\LoginPage.xaml;Pages\StorePage.xaml;ReportsWindow.xaml;SignUpWindow.xaml;SkinsWindow.xaml;
 
-False
+True
 

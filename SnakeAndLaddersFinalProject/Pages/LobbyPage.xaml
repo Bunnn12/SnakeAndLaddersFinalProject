@@ -14,7 +14,9 @@
         <Button Content="{x:Static language:Lang.btnStartMatchText}" HorizontalAlignment="Left" Margin="218,225,0,0" VerticalAlignment="Top" Width="86"/>
         <Button Content="{x:Static language:Lang.btnExitMatchText}" HorizontalAlignment="Left" Margin="476,225,0,0" VerticalAlignment="Top" Width="90"/>
         <Button Content="{x:Static language:Lang.chatTittle}" HorizontalAlignment="Left" Margin="526,312,0,0" VerticalAlignment="Top"/>
-        <Button Content="{x:Static language:Lang.btnSettingsText}" HorizontalAlignment="Left" Margin="89,55,0,0" VerticalAlignment="Top"/>
+        <Button HorizontalAlignment="Left" Margin="89,55,0,0" VerticalAlignment="Top">
+            <Label Content="Label"/>
+        </Button>
 
 
     </Grid>
