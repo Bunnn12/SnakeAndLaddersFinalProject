@@ -12,7 +12,7 @@ namespace SnakeAndLaddersFinalProject.Globalization
         public static LocalizationManager Current { get; } = new LocalizationManager();
 
         public static readonly string DEFAULT_CULTURE_CODE =
-            ConfigurationManager.AppSettings["DefaultCulture"] ?? "en-US";
+            ConfigurationManager.AppSettings["DefaultCulture"] ?? "es-MX";
 
         public event PropertyChangedEventHandler PropertyChanged;
         private LocalizationManager() { }
@@ -40,6 +40,17 @@ namespace SnakeAndLaddersFinalProject.Globalization
             Thread.CurrentThread.CurrentUICulture = culture;
 
             CurrentCulture = culture;
+        }
+
+        public void SetCulture(string code)
+        {
+            var ci = new CultureInfo(code);
+            Lang.Culture = ci;                       // recursos .resx
+            Thread.CurrentThread.CurrentUICulture = ci; // textos
+            Thread.CurrentThread.CurrentCulture = ci; // formatos 12/34,00
+
+            OnPropertyChanged(nameof(CurrentCulture));
+            OnPropertyChanged("Item[]");              // refresca bindings indexer
         }
 
         // Indexer que consulta Lang.resx
