@@ -322,6 +322,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Match List.
+        /// </summary>
+        internal static string lblMatchListTitle {
+            get {
+                return ResourceManager.GetString("lblMatchListTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Create new account.
         /// </summary>
         internal static string lblRegisterTitle {

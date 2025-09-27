@@ -204,6 +204,9 @@
   <data name="lblFindMatchText" xml:space="preserve">
     <value>Find match</value>
   </data>
+  <data name="lblMatchListTitle" xml:space="preserve">
+    <value>Match List</value>
+  </data>
   <data name="lblRegisterTitle" xml:space="preserve">
     <value>Create new account</value>
   </data>
