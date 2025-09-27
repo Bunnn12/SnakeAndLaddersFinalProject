@@ -4,14 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SnakeAndLaddersFinalProject"
+        xmlns:loc="clr-namespace:SnakeAndLaddersFinalProject.Globalization"
         mc:Ignorable="d"
         Title="ChatWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="btnBack" Content="Button" HorizontalAlignment="Left" Margin="642,39,0,0" VerticalAlignment="Top" Height="31" Width="114"/>
-        <Label x:Name="lblChatTitle" Content="Label" HorizontalAlignment="Center" Margin="0,42,0,0" VerticalAlignment="Top" Height="32" Width="320"/>
+        <Button x:Name="btnBack" Content="{Binding [btnBackText],           Source={x:Static loc:LocalizationManager.Current}}" HorizontalAlignment="Left" Margin="642,39,0,0" VerticalAlignment="Top" Height="31" Width="114"/>
+        <Label x:Name="lblChatTitle" Content="{Binding [chatTittle],                       Source={x:Static loc:LocalizationManager.Current}}" HorizontalAlignment="Center" Margin="0,42,0,0" VerticalAlignment="Top" Height="32" Width="320"/>
         <TextBox HorizontalAlignment="Left" Margin="134,388,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="608" Height="36"/>
-        <Label x:Name="lblTypeMessagge" Content="Label" HorizontalAlignment="Left" Margin="134,357,0,0" VerticalAlignment="Top" Width="409"/>
-        <Button x:Name="btnStickers" Content="Button" HorizontalAlignment="Left" Margin="21,394,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.585,0.786" Height="24" Width="94"/>
+        <Label x:Name="lblTypeMessagge" Content="{Binding [txtChatMessageText],   Source={x:Static loc:LocalizationManager.Current}}" HorizontalAlignment="Left" Margin="134,357,0,0" VerticalAlignment="Top" Width="409"/>
+        <Button x:Name="btnStickers" Content="{Binding [lblStickersText],   Source={x:Static loc:LocalizationManager.Current}}" HorizontalAlignment="Left" Margin="21,394,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.585,0.786" Height="24" Width="94"/>
 
     </Grid>
 </Window>

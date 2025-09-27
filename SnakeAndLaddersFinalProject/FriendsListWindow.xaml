@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SnakeAndLaddersFinalProject"
+        xmlns:loc="clr-namespace:SnakeAndLaddersFinalProject.Globalization"
         mc:Ignorable="d"
         Title="FriendsListWindow" Height="450" Width="800">
     <Grid>
-        <Label x:Name="lblFriendsListTitle" Content="Label" HorizontalAlignment="Left" Margin="257,28,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="27" Width="271">
+        <Label x:Name="lblFriendsListTitle" Content="{Binding [lblFriendsListTitle],          Source={x:Static loc:LocalizationManager.Current}}" HorizontalAlignment="Left" Margin="257,28,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="27" Width="271">
             <Label.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -17,19 +18,19 @@
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
-        <Label x:Name="lblFindFriends" Content="Label" HorizontalAlignment="Left" Margin="199,103,0,0" VerticalAlignment="Top" Height="25" Width="253"/>
-        <Button x:Name="btnSettings" Content="Button" HorizontalAlignment="Left" Margin="25,26,0,0" VerticalAlignment="Top" Height="26" Width="97"/>
-        <Button x:Name="btnBack" Content="Button" HorizontalAlignment="Left" Margin="672,26,0,0" VerticalAlignment="Top" Height="26" Width="101"/>
+        <Label x:Name="lblFindFriends" Content="{Binding [lblFindFriensText],           Source={x:Static loc:LocalizationManager.Current}}" HorizontalAlignment="Left" Margin="199,103,0,0" VerticalAlignment="Top" Height="25" Width="253"/>
+        <Button x:Name="btnSettings" Content="{Binding [btnSettingsText],          Source={x:Static loc:LocalizationManager.Current}}" HorizontalAlignment="Left" Margin="25,26,0,0" VerticalAlignment="Top" Height="26" Width="97"/>
+        <Button x:Name="btnBack" Content="{Binding [btnBackText],          Source={x:Static loc:LocalizationManager.Current}}" HorizontalAlignment="Left" Margin="672,26,0,0" VerticalAlignment="Top" Height="26" Width="101"/>
         <TextBox x:Name="txtFindFriends" HorizontalAlignment="Left" Margin="199,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="351" Height="31"/>
         <Grid Margin="199,179,199,86">
             <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,-10,0,10"/>
         </Grid>
-        <Button x:Name="btnProfile" Content="Button" HorizontalAlignment="Left" Margin="689,384,0,0" VerticalAlignment="Top" Height="24" Width="84"/>
-        <Button x:Name="btnSkins" Content="Button" HorizontalAlignment="Left" Margin="568,384,0,0" VerticalAlignment="Top" Height="24" Width="87"/>
-        <Button x:Name="btnMainWindow" Content="Button" HorizontalAlignment="Left" Margin="443,384,0,0" VerticalAlignment="Top" Height="24" Width="89"/>
-        <Button x:Name="btnShop" Content="Button" HorizontalAlignment="Left" Margin="308,384,0,0" VerticalAlignment="Top" Height="24" Width="92"/>
-        <Button x:Name="btnInventory" Content="Button" HorizontalAlignment="Left" Margin="165,384,0,0" VerticalAlignment="Top" Height="24" Width="104"/>
-        <Button x:Name="btnFriends" Content="Button" HorizontalAlignment="Left" Margin="25,384,0,0" VerticalAlignment="Top" Height="24" Width="101"/>
+        <Button x:Name="btnProfile" Content="{Binding [btnProfileText],          Source={x:Static loc:LocalizationManager.Current}}" HorizontalAlignment="Left" Margin="689,384,0,0" VerticalAlignment="Top" Height="24" Width="84"/>
+        <Button x:Name="btnSkins" Content="{Binding [btnSkinsText],          Source={x:Static loc:LocalizationManager.Current}}" HorizontalAlignment="Left" Margin="568,384,0,0" VerticalAlignment="Top" Height="24" Width="87"/>
+        <Button x:Name="btnMainWindow" Content="{Binding [btnMainWindowText],          Source={x:Static loc:LocalizationManager.Current}}" HorizontalAlignment="Left" Margin="443,384,0,0" VerticalAlignment="Top" Height="24" Width="89"/>
+        <Button x:Name="btnShop" Content="{Binding [btnShopText],          Source={x:Static loc:LocalizationManager.Current}}" HorizontalAlignment="Left" Margin="308,384,0,0" VerticalAlignment="Top" Height="24" Width="92"/>
+        <Button x:Name="btnInventory" Content="{Binding [btnInventoryText],          Source={x:Static loc:LocalizationManager.Current}}" HorizontalAlignment="Left" Margin="165,384,0,0" VerticalAlignment="Top" Height="24" Width="104"/>
+        <Button x:Name="btnFriends" Content="{Binding [btnFriendsText],          Source={x:Static loc:LocalizationManager.Current}}" HorizontalAlignment="Left" Margin="25,384,0,0" VerticalAlignment="Top" Height="24" Width="101"/>
 
     </Grid>
 </Window>

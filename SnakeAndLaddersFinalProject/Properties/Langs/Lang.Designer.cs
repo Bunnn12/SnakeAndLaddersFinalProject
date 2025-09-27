@@ -322,6 +322,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Friends List.
+        /// </summary>
+        internal static string lblFriendsListTitle {
+            get {
+                return ResourceManager.GetString("lblFriendsListTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Match List.
         /// </summary>
         internal static string lblMatchListTitle {

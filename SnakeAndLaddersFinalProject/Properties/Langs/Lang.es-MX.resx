@@ -204,6 +204,9 @@
   <data name="lblFindMatchText" xml:space="preserve">
     <value>Buscar partida</value>
   </data>
+  <data name="lblFriendsListTitle" xml:space="preserve">
+    <value>Lista de amigos</value>
+  </data>
   <data name="lblMatchListTitle" xml:space="preserve">
     <value>Lista de partidas</value>
   </data>
