@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\reino\OneDrive\Desktop\Tecnologias Construccion\repoProyecto\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\obj\Debug\
+C:\Users\irene\Source\Repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\obj\Debug\
 SnakeAndLaddersFinalProject
 none
 false
 DEBUG;TRACE
-C:\Users\reino\OneDrive\Desktop\Tecnologias Construccion\repoProyecto\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\App.xaml
-8437877588
+C:\Users\irene\Source\Repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\App.xaml
+102118974500
 
-151134423474
+17447067650
 14-207034072
-AddFriendsWindow.xaml;ChatWindow.xaml;FriendsListWindow.xaml;MainWindow.xaml;MatchListWindow.xaml;ReportsWindow.xaml;SignUpWindow.xaml;SkinsWindow.xaml;
+AddFriendsWindow.xaml;BasicWindow.xaml;ChatWindow.xaml;FriendsListWindow.xaml;MainWindow.xaml;MatchListWindow.xaml;Pages\LoginPage.xaml;ReportsWindow.xaml;SignUpWindow.xaml;SkinsWindow.xaml;
 
 True
 
