@@ -1,0 +1,23 @@
+﻿<Page x:Class="SnakeAndLaddersFinalProject.Pages.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
+      Title="SettingsPage">
+
+    <Grid>
+        <Label Content="{x:Static language:Lang.btnSettingsText}" HorizontalAlignment="Center" Margin="0,52,0,0" VerticalAlignment="Top"/>
+        <Label Content="{x:Static language:Lang.lblSound}" HorizontalAlignment="Left" Margin="203,119,0,0" VerticalAlignment="Top"/>
+        <Label Content="{x:Static language:Lang.lblMusic}" HorizontalAlignment="Left" Margin="203,199,0,0" VerticalAlignment="Top"/>
+        <Label Content="{x:Static language:Lang.lblLanguage}" HorizontalAlignment="Left" Margin="203,266,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="400,270,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged"/>
+        <Slider HorizontalAlignment="Left" Margin="400,207,0,0" VerticalAlignment="Top" Width="120"/>
+        <Slider HorizontalAlignment="Left" Margin="400,127,0,0" VerticalAlignment="Top" Width="120"/>
+
+
+    </Grid>
+</Page>

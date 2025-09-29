@@ -16,8 +16,11 @@ namespace SnakeAndLaddersFinalProject
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            
+
             base.OnStartup(e);
-            LocalizationManager.Current.ApplyCulture();
+            LocalizationManager.Current.SetCulture(
+                ConfigurationManager.AppSettings["DefaultCulture"] ?? "es-MX");
         }
     }
 }

@@ -22,7 +22,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Lang {
+    public class Lang {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         ///   Devuelve la instancia de ResourceManager almacenada en caché utilizada por esta clase.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SnakeAndLaddersFinalProject.Properties.Langs.Lang", typeof(Lang).Assembly);
@@ -51,7 +51,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         ///   búsquedas de recursos mediante esta clase de recurso fuertemente tipado.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Continue.
         /// </summary>
-        internal static string bntContinueText {
+        public static string bntContinueText {
             get {
                 return ResourceManager.GetString("bntContinueText", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Invite friend.
         /// </summary>
-        internal static string bntInviteFriendText {
+        public static string bntInviteFriendText {
             get {
                 return ResourceManager.GetString("bntInviteFriendText", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Accept.
         /// </summary>
-        internal static string btnAcceptText {
+        public static string btnAcceptText {
             get {
                 return ResourceManager.GetString("btnAcceptText", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Add friend.
         /// </summary>
-        internal static string btnAddFriendText {
+        public static string btnAddFriendText {
             get {
                 return ResourceManager.GetString("btnAddFriendText", resourceCulture);
             }
@@ -99,16 +99,25 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Back.
         /// </summary>
-        internal static string btnBackText {
+        public static string btnBackText {
             get {
                 return ResourceManager.GetString("btnBackText", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a buy.
+        /// </summary>
+        public static string btnBuy {
+            get {
+                return ResourceManager.GetString("btnBuy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Cancel.
         /// </summary>
-        internal static string btnCancelText {
+        public static string btnCancelText {
             get {
                 return ResourceManager.GetString("btnCancelText", resourceCulture);
             }
@@ -117,25 +126,43 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Create Match.
         /// </summary>
-        internal static string btnCreateMatchText {
+        public static string btnCreateMatchText {
             get {
                 return ResourceManager.GetString("btnCreateMatchText", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a leave match.
+        /// </summary>
+        public static string btnExitMatchText {
+            get {
+                return ResourceManager.GetString("btnExitMatchText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Exploiting.
         /// </summary>
-        internal static string btnExploitingText {
+        public static string btnExploitingText {
             get {
                 return ResourceManager.GetString("btnExploitingText", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a i forgot my password.
+        /// </summary>
+        public static string btnForgottenPasswordText {
+            get {
+                return ResourceManager.GetString("btnForgottenPasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Friends.
         /// </summary>
-        internal static string btnFriendsText {
+        public static string btnFriendsText {
             get {
                 return ResourceManager.GetString("btnFriendsText", resourceCulture);
             }
@@ -144,7 +171,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Harassment.
         /// </summary>
-        internal static string btnHarassmentText {
+        public static string btnHarassmentText {
             get {
                 return ResourceManager.GetString("btnHarassmentText", resourceCulture);
             }
@@ -153,7 +180,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Inappropriate language.
         /// </summary>
-        internal static string btnInappropiateLangText {
+        public static string btnInappropiateLangText {
             get {
                 return ResourceManager.GetString("btnInappropiateLangText", resourceCulture);
             }
@@ -162,7 +189,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Inventory.
         /// </summary>
-        internal static string btnInventoryText {
+        public static string btnInventoryText {
             get {
                 return ResourceManager.GetString("btnInventoryText", resourceCulture);
             }
@@ -171,16 +198,25 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Join match.
         /// </summary>
-        internal static string btnJoinMatchText {
+        public static string btnJoinMatchText {
             get {
                 return ResourceManager.GetString("btnJoinMatchText", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Log in.
+        /// </summary>
+        public static string btnLoginText {
+            get {
+                return ResourceManager.GetString("btnLoginText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Main window.
         /// </summary>
-        internal static string btnMainWindowText {
+        public static string btnMainWindowText {
             get {
                 return ResourceManager.GetString("btnMainWindowText", resourceCulture);
             }
@@ -189,16 +225,25 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Other....
         /// </summary>
-        internal static string btnOtherReasonText {
+        public static string btnOtherReasonText {
             get {
                 return ResourceManager.GetString("btnOtherReasonText", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a play as guest.
+        /// </summary>
+        public static string btnPlayAsGuestText {
+            get {
+                return ResourceManager.GetString("btnPlayAsGuestText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Profile.
         /// </summary>
-        internal static string btnProfileText {
+        public static string btnProfileText {
             get {
                 return ResourceManager.GetString("btnProfileText", resourceCulture);
             }
@@ -207,7 +252,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Settings.
         /// </summary>
-        internal static string btnSettingsText {
+        public static string btnSettingsText {
             get {
                 return ResourceManager.GetString("btnSettingsText", resourceCulture);
             }
@@ -216,7 +261,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Shop.
         /// </summary>
-        internal static string btnShopText {
+        public static string btnShopText {
             get {
                 return ResourceManager.GetString("btnShopText", resourceCulture);
             }
@@ -225,7 +270,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Sign up.
         /// </summary>
-        internal static string btnSignUpText {
+        public static string btnSignUpText {
             get {
                 return ResourceManager.GetString("btnSignUpText", resourceCulture);
             }
@@ -234,16 +279,25 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Skins.
         /// </summary>
-        internal static string btnSkinsText {
+        public static string btnSkinsText {
             get {
                 return ResourceManager.GetString("btnSkinsText", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a start match.
+        /// </summary>
+        public static string btnStartMatchText {
+            get {
+                return ResourceManager.GetString("btnStartMatchText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Toxic behavior.
         /// </summary>
-        internal static string btnToxicBehaviorText {
+        public static string btnToxicBehaviorText {
             get {
                 return ResourceManager.GetString("btnToxicBehaviorText", resourceCulture);
             }
@@ -252,7 +306,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Unfriend.
         /// </summary>
-        internal static string btnUnfriendText {
+        public static string btnUnfriendText {
             get {
                 return ResourceManager.GetString("btnUnfriendText", resourceCulture);
             }
@@ -261,7 +315,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a This character cries when she has an exam.
         /// </summary>
-        internal static string character1DescriptionText {
+        public static string character1DescriptionText {
             get {
                 return ResourceManager.GetString("character1DescriptionText", resourceCulture);
             }
@@ -270,7 +324,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Chat.
         /// </summary>
-        internal static string chatTittle {
+        public static string chatTittle {
             get {
                 return ResourceManager.GetString("chatTittle", resourceCulture);
             }
@@ -279,7 +333,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Add friends.
         /// </summary>
-        internal static string lblAddFriends {
+        public static string lblAddFriends {
             get {
                 return ResourceManager.GetString("lblAddFriends", resourceCulture);
             }
@@ -288,16 +342,25 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Character description.
         /// </summary>
-        internal static string lblcharacterDescriptionText {
+        public static string lblcharacterDescriptionText {
             get {
                 return ResourceManager.GetString("lblcharacterDescriptionText", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a coins.
+        /// </summary>
+        public static string lblCoinsQuantity {
+            get {
+                return ResourceManager.GetString("lblCoinsQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Coins.
         /// </summary>
-        internal static string lblCoinsText {
+        public static string lblCoinsText {
             get {
                 return ResourceManager.GetString("lblCoinsText", resourceCulture);
             }
@@ -306,7 +369,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Find friends.
         /// </summary>
-        internal static string lblFindFriensText {
+        public static string lblFindFriensText {
             get {
                 return ResourceManager.GetString("lblFindFriensText", resourceCulture);
             }
@@ -315,7 +378,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Find match.
         /// </summary>
-        internal static string lblFindMatchText {
+        public static string lblFindMatchText {
             get {
                 return ResourceManager.GetString("lblFindMatchText", resourceCulture);
             }
@@ -324,43 +387,115 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Friends List.
         /// </summary>
-        internal static string lblFriendsListTitle {
+        public static string lblFriendsListTitle {
             get {
                 return ResourceManager.GetString("lblFriendsListTitle", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a inventory.
+        /// </summary>
+        public static string lblInventory {
+            get {
+                return ResourceManager.GetString("lblInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a items.
+        /// </summary>
+        public static string lblItems {
+            get {
+                return ResourceManager.GetString("lblItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a language.
+        /// </summary>
+        public static string lblLanguage {
+            get {
+                return ResourceManager.GetString("lblLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Lobby.
+        /// </summary>
+        public static string lblLobby {
+            get {
+                return ResourceManager.GetString("lblLobby", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Match List.
         /// </summary>
-        internal static string lblMatchListTitle {
+        public static string lblMatchListTitle {
             get {
                 return ResourceManager.GetString("lblMatchListTitle", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a music.
+        /// </summary>
+        public static string lblMusic {
+            get {
+                return ResourceManager.GetString("lblMusic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Create new account.
         /// </summary>
-        internal static string lblRegisterTitle {
+        public static string lblRegisterTitle {
             get {
                 return ResourceManager.GetString("lblRegisterTitle", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Sound.
+        /// </summary>
+        public static string lblSound {
+            get {
+                return ResourceManager.GetString("lblSound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Stickers.
         /// </summary>
-        internal static string lblStickersText {
+        public static string lblStickersText {
             get {
                 return ResourceManager.GetString("lblStickersText", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Store.
+        /// </summary>
+        public static string lblStore {
+            get {
+                return ResourceManager.GetString("lblStore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Welcome to the game.
+        /// </summary>
+        public static string lblWelcomeText {
+            get {
+                return ResourceManager.GetString("lblWelcomeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a List of games.
         /// </summary>
-        internal static string listOfGamesTittle {
+        public static string listOfGamesTittle {
             get {
                 return ResourceManager.GetString("listOfGamesTittle", resourceCulture);
             }
@@ -369,7 +504,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Password.
         /// </summary>
-        internal static string pwdPasswordText {
+        public static string pwdPasswordText {
             get {
                 return ResourceManager.GetString("pwdPasswordText", resourceCulture);
             }
@@ -378,7 +513,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Report user.
         /// </summary>
-        internal static string reportUserTittle {
+        public static string reportUserTittle {
             get {
                 return ResourceManager.GetString("reportUserTittle", resourceCulture);
             }
@@ -387,7 +522,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Friends list.
         /// </summary>
-        internal static string tvFriendsListText {
+        public static string tvFriendsListText {
             get {
                 return ResourceManager.GetString("tvFriendsListText", resourceCulture);
             }
@@ -396,7 +531,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Type a message....
         /// </summary>
-        internal static string txtChatMessageText {
+        public static string txtChatMessageText {
             get {
                 return ResourceManager.GetString("txtChatMessageText", resourceCulture);
             }
@@ -405,7 +540,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Lastname.
         /// </summary>
-        internal static string txtLastNameOfUserText {
+        public static string txtLastNameOfUserText {
             get {
                 return ResourceManager.GetString("txtLastNameOfUserText", resourceCulture);
             }
@@ -414,7 +549,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Name.
         /// </summary>
-        internal static string txtNameOfUserText {
+        public static string txtNameOfUserText {
             get {
                 return ResourceManager.GetString("txtNameOfUserText", resourceCulture);
             }
@@ -423,7 +558,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Email.
         /// </summary>
-        internal static string txtRegEmailText {
+        public static string txtRegEmailText {
             get {
                 return ResourceManager.GetString("txtRegEmailText", resourceCulture);
             }
@@ -432,7 +567,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         /// <summary>
         ///   Busca una cadena traducida similar a Username.
         /// </summary>
-        internal static string txtUsernameText {
+        public static string txtUsernameText {
             get {
                 return ResourceManager.GetString("txtUsernameText", resourceCulture);
             }

@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="bntContinueText" xml:space="preserve">
-    <value>Continue</value>
-  </data>
   <data name="bntInviteFriendText" xml:space="preserve">
     <value>Invite friend</value>
   </data>
@@ -242,5 +239,53 @@
   </data>
   <data name="txtUsernameText" xml:space="preserve">
     <value>Username</value>
+  </data>
+  <data name="bntContinueText" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="btnLoginText" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="lblWelcomeText" xml:space="preserve">
+    <value>Welcome to the game</value>
+  </data>
+  <data name="btnForgottenPasswordText" xml:space="preserve">
+    <value>i forgot my password</value>
+  </data>
+  <data name="btnPlayAsGuestText" xml:space="preserve">
+    <value>play as guest</value>
+  </data>
+  <data name="lblLobby" xml:space="preserve">
+    <value>Lobby</value>
+  </data>
+  <data name="btnStartMatchText" xml:space="preserve">
+    <value>start match</value>
+  </data>
+  <data name="btnExitMatchText" xml:space="preserve">
+    <value>leave match</value>
+  </data>
+  <data name="lblLanguage" xml:space="preserve">
+    <value>language</value>
+  </data>
+  <data name="lblSound" xml:space="preserve">
+    <value>Sound</value>
+  </data>
+  <data name="lblMusic" xml:space="preserve">
+    <value>music</value>
+  </data>
+  <data name="lblStore" xml:space="preserve">
+    <value>Store</value>
+  </data>
+  <data name="btnBuy" xml:space="preserve">
+    <value>buy</value>
+  </data>
+  <data name="lblCoinsQuantity" xml:space="preserve">
+    <value>coins</value>
+  </data>
+  <data name="lblInventory" xml:space="preserve">
+    <value>inventory</value>
+  </data>
+  <data name="lblItems" xml:space="preserve">
+    <value>items</value>
   </data>
 </root>
