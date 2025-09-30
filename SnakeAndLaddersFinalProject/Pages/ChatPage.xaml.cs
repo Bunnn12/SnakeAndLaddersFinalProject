@@ -10,23 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SnakeAndLaddersFinalProject
+namespace SnakeAndLaddersFinalProject.Pages
 {
     /// <summary>
-    /// Lógica de interacción para AddFriendsWindow.xaml
+    /// Lógica de interacción para ChatPage.xaml
     /// </summary>
-    public partial class AddFriendsWindow : Window
+    public partial class ChatPage : Page
     {
-        public AddFriendsWindow()
+        public ChatPage()
         {
             InitializeComponent();
-        }
-
-        private void dgFriendsSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

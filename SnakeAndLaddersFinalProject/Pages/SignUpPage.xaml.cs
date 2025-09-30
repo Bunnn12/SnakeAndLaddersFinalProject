@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SnakeAndLaddersFinalProject
+namespace SnakeAndLaddersFinalProject.Pages
 {
     /// <summary>
-    /// Lógica de interacción para FriendsListWindow.xaml
+    /// Lógica de interacción para SignUpPage.xaml
     /// </summary>
-    public partial class FriendsListWindow : Window
+    public partial class SignUpPage : Page
     {
-        public FriendsListWindow()
+        public SignUpPage()
         {
             InitializeComponent();
         }

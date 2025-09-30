@@ -10,20 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using SnakeAndLaddersFinalProject.Globalization;
 
-namespace SnakeAndLaddersFinalProject
+namespace SnakeAndLaddersFinalProject.Pages
 {
     /// <summary>
-    /// Lógica de interacción para SignUpWindow.xaml
+    /// Lógica de interacción para SkinsPage.xaml
     /// </summary>
-    public partial class SignUpWindow : Window
+    public partial class SkinsPage : Page
     {
-        public SignUpWindow()
+        public SkinsPage()
         {
             InitializeComponent();
-            DataContext = LocalizationManager.Current;
         }
     }
 }

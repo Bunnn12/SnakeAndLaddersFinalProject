@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SnakeAndLaddersFinalProject
+namespace SnakeAndLaddersFinalProject.Pages
 {
     /// <summary>
-    /// Lógica de interacción para ChatWindow.xaml
+    /// Lógica de interacción para MainPage.xaml
     /// </summary>
-    public partial class ChatWindow : Window
+    public partial class MainPage : Page
     {
-        public ChatWindow()
+        public MainPage()
         {
             InitializeComponent();
         }
