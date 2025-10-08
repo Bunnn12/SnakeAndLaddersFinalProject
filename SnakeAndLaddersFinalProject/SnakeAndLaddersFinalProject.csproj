@@ -56,22 +56,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddFriendsWindow.xaml.cs">
-      <DependentUpon>AddFriendsWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="BasicWindow.xaml.cs">
       <DependentUpon>BasicWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ChatWindow.xaml.cs">
-      <DependentUpon>ChatWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FriendsListWindow.xaml.cs">
-      <DependentUpon>FriendsListWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Globalization\LocalizationManager.cs" />
-    <Compile Include="MatchListWindow.xaml.cs">
-      <DependentUpon>MatchListWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\InventoryPage.xaml.cs">
       <DependentUpon>InventoryPage.xaml</DependentUpon>
     </Compile>
@@ -90,44 +78,17 @@
     <Compile Include="ReportsWindow.xaml.cs">
       <DependentUpon>ReportsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SignUpWindow.xaml.cs">
-      <DependentUpon>SignUpWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="SkinsWindow.xaml.cs">
       <DependentUpon>SkinsWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="AddFriendsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="BasicWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ChatWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="FriendsListWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="MatchListWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\InventoryPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -149,10 +110,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ReportsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SignUpWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
