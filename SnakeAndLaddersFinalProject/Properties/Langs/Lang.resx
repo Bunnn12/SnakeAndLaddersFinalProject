@@ -288,4 +288,7 @@
   <data name="lblItems" xml:space="preserve">
     <value>items</value>
   </data>
+  <data name="btnRankingText" xml:space="preserve">
+    <value>Ranking</value>
+  </data>
 </root>
