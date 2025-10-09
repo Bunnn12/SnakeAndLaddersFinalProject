@@ -4,11 +4,31 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
+      xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="FriendsListPage">
 
     <Grid>
-        
+        <Button x:Name="btnSettings" Content="Button" HorizontalAlignment="Left" Margin="636,33,0,0" VerticalAlignment="Top" Height="30" Width="121"/>
+        <Button x:Name="btnBack" Content="Button" HorizontalAlignment="Left" Margin="39,33,0,0" VerticalAlignment="Top" Height="30" Width="127"/>
+        <Button x:Name="btnFriends" Content="Button" HorizontalAlignment="Left" Margin="39,370,0,0" VerticalAlignment="Top" Height="30" Width="115"/>
+        <Button x:Name="btnShop" Content="Button" HorizontalAlignment="Center" Margin="0,370,0,0" VerticalAlignment="Top" Height="30" Width="106"/>
+        <Button x:Name="btnInventory" Content="Button" HorizontalAlignment="Left" Margin="197,370,0,0" VerticalAlignment="Top" Height="30" Width="107"/>
+        <Button x:Name="btnSkins" Content="Button" HorizontalAlignment="Left" Margin="503,370,0,0" VerticalAlignment="Top" Height="30" Width="105"/>
+        <Button x:Name="btnProfile" Content="Button" HorizontalAlignment="Left" Margin="654,370,0,0" VerticalAlignment="Top" Height="30" Width="103"/>
+        <Label x:Name="lblFriendsList" Content="Label" HorizontalAlignment="Left" Margin="250,35,0,0" VerticalAlignment="Top" Height="45" Width="288"/>
+        <Grid Margin="210,144,210,185">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="333*"/>
+                <ColumnDefinition Width="32*"/>
+                <ColumnDefinition Width="14*"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid x:Name="tvFriensList" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,5,0,5" Grid.ColumnSpan="3"/>
+        </Grid>
+        <Button x:Name="btnAddFriends" Content="Button" HorizontalAlignment="Center" Margin="0,273,0,0" VerticalAlignment="Top" Height="39" Width="250"/>
+        <Button x:Name="btnUnfriend" Content="Button" HorizontalAlignment="Left" Margin="39,158,0,0" VerticalAlignment="Top" Height="39" Width="110"/>
+        <Button x:Name="btnInviteFriend" Content="Button" HorizontalAlignment="Left" Margin="39,217,0,0" VerticalAlignment="Top" Height="32" Width="110"/>
+
     </Grid>
 </Page>

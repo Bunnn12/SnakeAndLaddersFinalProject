@@ -9,6 +9,17 @@
       Title="MainPage">
 
     <Grid>
-        
+        <Button x:Name="btnCreateMatch" Content="Button" HorizontalAlignment="Center" Margin="0,138,0,0" VerticalAlignment="Top" Height="42" Width="246"/>
+        <Button x:Name="btnJoinMatch" Content="Button" HorizontalAlignment="Center" Margin="0,229,0,0" VerticalAlignment="Top" Height="39" Width="246"/>
+        <Button x:Name="btnSettings" Content="Button" HorizontalAlignment="Left" Margin="636,33,0,0" VerticalAlignment="Top" Height="30" Width="121"/>
+        <Button x:Name="btnBack" Content="Button" HorizontalAlignment="Left" Margin="39,33,0,0" VerticalAlignment="Top" Height="30" Width="127"/>
+        <Label x:Name="lblCoins" Content="Label" HorizontalAlignment="Left" Margin="197,35,0,0" VerticalAlignment="Top" Height="33" Width="135"/>
+        <Button x:Name="btnFriends" Content="Button" HorizontalAlignment="Left" Margin="39,370,0,0" VerticalAlignment="Top" Height="30" Width="115"/>
+        <Button x:Name="btnShop" Content="Button" HorizontalAlignment="Center" Margin="0,370,0,0" VerticalAlignment="Top" Height="30" Width="106"/>
+        <Button x:Name="btnInventory" Content="Button" HorizontalAlignment="Left" Margin="197,370,0,0" VerticalAlignment="Top" Height="30" Width="107"/>
+        <Button x:Name="btnSkins" Content="Button" HorizontalAlignment="Left" Margin="503,370,0,0" VerticalAlignment="Top" Height="30" Width="105"/>
+        <Button x:Name="btnProfile" Content="Button" HorizontalAlignment="Left" Margin="654,370,0,0" VerticalAlignment="Top" Height="30" Width="103"/>
+        <Button x:Name="btnRanking" Content="Button" HorizontalAlignment="Left" Margin="67,159,0,0" VerticalAlignment="Top" Height="58" Width="99"/>
+
     </Grid>
 </Page>

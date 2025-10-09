@@ -9,6 +9,10 @@
       Title="ChatPage">
 
     <Grid>
-        
+        <Label x:Name="lblChatTitle" Content="Label" HorizontalAlignment="Center" Margin="0,52,0,0" VerticalAlignment="Top" Height="36" Width="273"/>
+        <Button x:Name="btnStickers" Content="Button" HorizontalAlignment="Left" Margin="42,356,0,0" VerticalAlignment="Top" Height="26" Width="90"/>
+        <TextBox x:Name="txtChatMessage" HorizontalAlignment="Left" Margin="165,356,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="533" Height="26"/>
+        <Label x:Name="lblChatMessage" Content="Label" HorizontalAlignment="Left" Margin="165,327,0,0" VerticalAlignment="Top" Height="24" Width="533"/>
+
     </Grid>
 </Page>
