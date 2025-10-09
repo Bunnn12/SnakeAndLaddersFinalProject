@@ -55,8 +55,10 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 if (res.Success)
                 {
-                    MessageBox.Show($"Registro correcto: {res.DisplayName}", "Registro",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show($"Registro correcto: {res.DisplayName}", "Registro", MessageBoxButton.OK, MessageBoxImage.Information);
+                    NavigationService?.Navigate(new MainPage());
+                    client.Close();
+                    return;
                 }
                 else
                 {

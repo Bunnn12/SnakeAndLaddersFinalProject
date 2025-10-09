@@ -28,7 +28,7 @@ namespace SnakeAndLaddersFinalProject
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Pages.SignUpPage());
+            MainFrame.Navigate(new Pages.LoginPage());
         }
     }
 }
