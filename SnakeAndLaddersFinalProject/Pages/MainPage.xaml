@@ -3,16 +3,18 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
       xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
       mc:Ignorable="d"
-      d:DesignWidth="1280" d:DesignHeight="720"
       Title="MainPage"
-      SnapsToDevicePixels="True" UseLayoutRounding="True"
-      TextOptions.TextRenderingMode="Aliased">
+      d:DesignWidth="1280" d:DesignHeight="720"
+      SnapsToDevicePixels="True"
+      UseLayoutRounding="True"
+      TextOptions.TextRenderingMode="Aliased"
+      Background="Transparent">
 
-    <!-- ===== PALETA (todo en BRUSH) ===== -->
     <Page.Resources>
-        <!-- Brushes base -->
+        <!-- Colores -->
         <SolidColorBrush x:Key="BrushCafe900" Color="#23130C"/>
         <SolidColorBrush x:Key="BrushCafe700" Color="#3B2417"/>
         <SolidColorBrush x:Key="BrushCafe500" Color="#5A3A26"/>
@@ -22,112 +24,35 @@
         <SolidColorBrush x:Key="BrushVerde"   Color="#2E7D32"/>
         <SolidColorBrush x:Key="BrushBlancoSuave" Color="#FFF8F0"/>
 
-        <!-- Fondo café en degradado (usa hex en GradientStop porque aquí sí se requiere Color) -->
+        <!-- (opcional) Gradiente de fondo general -->
         <LinearGradientBrush x:Key="BgCafe" StartPoint="0,0" EndPoint="0,1">
             <GradientStop Color="#23130C" Offset="0"/>
             <GradientStop Color="#3B2417" Offset="0.55"/>
             <GradientStop Color="#5A3A26" Offset="1"/>
         </LinearGradientBrush>
 
-        <!-- Botón principal del menú -->
-        <Style x:Key="BtnMenu" TargetType="Button">
-            <Setter Property="FontFamily" Value="Consolas"/>
-            <Setter Property="FontSize" Value="28"/>
-            <Setter Property="Foreground" Value="{StaticResource BrushBlancoSuave}"/>
-            <Setter Property="Background" Value="#1A000000"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BrushNaranja}"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="Padding" Value="18,12"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="28"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+        <!-- ImageBrush para botones -->
+        <ImageBrush x:Key="IB.BtnMain"
+                    ImageSource="/Assets/Images/BotonImg.png"
+                    Stretch="Fill" AlignmentX="Center" AlignmentY="Center"
+                    RenderOptions.BitmapScalingMode="NearestNeighbor"
+                    ViewboxUnits="RelativeToBoundingBox"
+                    Viewbox="0.083,0.083,0.834,0.834"/>
+        <ImageBrush x:Key="IB.BtnFlat"
+                    ImageSource="/Assets/Images/BotonImg.png"
+                    Stretch="Fill" AlignmentX="Center" AlignmentY="Center"
+                    RenderOptions.BitmapScalingMode="NearestNeighbor"
+                    ViewboxUnits="RelativeToBoundingBox"
+                    Viewbox="0.083,0.083,0.834,0.834"/>
 
-                            <!-- Indicador -->
-                            <Polygon x:Name="Pointer"
-                                     Points="6,12 22,6 6,0"
-                                     Fill="{StaticResource BrushAmarillo}"
-                                     Stroke="{StaticResource BrushNaranja}"
-                                     StrokeThickness="1.5"
-                                     Opacity="0"
-                                     VerticalAlignment="Center" Margin="4,0,2,0"/>
+        <!-- Sombra sin desplazamiento -->
+        <DropShadowEffect x:Key="ShadowSoft" BlurRadius="8" ShadowDepth="0"
+                          Direction="270" Opacity="0.35" Color="#000000"/>
 
-                            <!-- Fondo -->
-                            <Border Grid.ColumnSpan="2" CornerRadius="4"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"/>
-
-                            <!-- Contenido -->
-                            <ContentPresenter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Pointer" Property="Opacity" Value="1"/>
-                                <Setter Property="BorderBrush" Value="{StaticResource BrushAmarillo}"/>
-                                <Setter Property="Foreground" Value="{StaticResource BrushAmarillo}"/>
-                            </Trigger>
-                            <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter TargetName="Pointer" Property="Opacity" Value="1"/>
-                                <Setter Property="BorderBrush" Value="{StaticResource BrushVerde}"/>
-                                <Setter Property="Foreground" Value="{StaticResource BrushVerde}"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#33000000"/>
-                                <Setter Property="BorderBrush" Value="{StaticResource BrushNaranja}"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="0.6"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Botón plano para cabecera/inferior -->
-        <Style x:Key="BtnFlat" TargetType="Button">
-            <Setter Property="FontFamily" Value="Consolas"/>
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Foreground" Value="{StaticResource BrushBlancoSuave}"/>
-            <Setter Property="Background" Value="#16000000"/>
-            <Setter Property="BorderBrush" Value="#40FFFFFF"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="10,6"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="BorderBrush" Value="{StaticResource BrushAmarillo}"/>
-                                <Setter Property="Foreground" Value="{StaticResource BrushAmarillo}"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="BorderBrush" Value="{StaticResource BrushNaranja}"/>
-                                <Setter Property="Foreground" Value="{StaticResource BrushNaranja}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Label con borde redondeado (via Template) -->
+        <!-- Label HUD -->
         <Style x:Key="LblHud" TargetType="Label">
             <Setter Property="Foreground" Value="{StaticResource BrushBlancoSuave}"/>
-            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontFamily" Value="{StaticResource Font.M04}"/>
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="Background" Value="#20000000"/>
             <Setter Property="Padding" Value="10,4"/>
@@ -144,8 +69,139 @@
                                 CornerRadius="4"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              />
+
                         </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== Botón de menú: fondo imagen, SIN contorno, flecha por fuera ===== -->
+        <Style x:Key="BtnMenu" TargetType="Button">
+            <Setter Property="FontFamily" Value="{StaticResource Font.M04}"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Foreground" Value="{StaticResource BrushBlancoSuave}"/>
+            <Setter Property="Background" Value="{StaticResource IB.BtnMain}"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="90"/>
+            <Setter Property="Padding" Value="16,14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <!-- NO recortar: la flecha se sale a la izquierda -->
+                        <Grid SnapsToDevicePixels="True" ClipToBounds="False">
+                            <!-- Sombra pegada -->
+                            <Border CornerRadius="18" Margin="0" Background="Transparent"
+                                    Effect="{StaticResource ShadowSoft}"/>
+
+                            <!-- Fondo con imagen -->
+                            <Border x:Name="Bg" CornerRadius="18" Margin="0"
+                                    Background="{TemplateBinding Background}"/>
+
+                            <!-- Contenido (desplazado un poco a la izquierda) -->
+                            <ContentPresenter x:Name="ContentSite"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              RecognizesAccessKey="True"
+                                              TextElement.Foreground="{TemplateBinding Foreground}">
+                                <ContentPresenter.RenderTransform>
+                                    <TranslateTransform X="-8"/>
+                                    <!-- mover texto -->
+                                </ContentPresenter.RenderTransform>
+                            </ContentPresenter>
+
+                            <!-- Flecha afuera -->
+                            <Polygon x:Name="Pointer"
+                                     Points="0,12 16,6 0,0"
+                                     Fill="{StaticResource BrushAmarillo}"
+                                     Stroke="{StaticResource BrushAmarillo}"
+                                     StrokeThickness="1.2"
+                                     Opacity="0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center"
+                                     Margin="-22,0,0,0"
+                                     Panel.ZIndex="2"/>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Pointer" Property="Opacity" Value="1"/>
+                                <Setter Property="Foreground" Value="{StaticResource BrushAmarillo}"/>
+                                <Setter TargetName="ContentSite" Property="TextElement.Foreground"
+                                        Value="{StaticResource BrushAmarillo}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Pointer" Property="Opacity" Value="1"/>
+                                <Setter Property="Foreground" Value="{StaticResource BrushVerde}"/>
+                                <Setter TargetName="ContentSite" Property="TextElement.Foreground"
+                                        Value="{StaticResource BrushVerde}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bg" Property="Opacity" Value="0.9"/>
+                                <Setter Property="Foreground" Value="{StaticResource BrushNaranja}"/>
+                                <Setter TargetName="ContentSite" Property="TextElement.Foreground"
+                                        Value="{StaticResource BrushNaranja}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== Botón plano: fondo imagen, SIN contorno ===== -->
+        <Style x:Key="BtnFlat" TargetType="Button">
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="{StaticResource BrushBlancoSuave}"/>
+            <Setter Property="Background" Value="{StaticResource IB.BtnFlat}"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <!-- Sombra pegada -->
+                            <Border CornerRadius="12" Margin="0" Background="Transparent"
+                                    Effect="{StaticResource ShadowSoft}"/>
+                            <!-- Fondo con imagen -->
+                            <Border x:Name="Bg" CornerRadius="12" Margin="0"
+                                    Background="{TemplateBinding Background}">
+                                <ContentPresenter x:Name="ContentSite"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  TextElement.Foreground="{TemplateBinding Foreground}"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource BrushAmarillo}"/>
+                                <Setter TargetName="ContentSite" Property="TextElement.Foreground"
+                                        Value="{StaticResource BrushAmarillo}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource BrushVerde}"/>
+                                <Setter TargetName="ContentSite" Property="TextElement.Foreground"
+                                        Value="{StaticResource BrushVerde}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bg" Property="Opacity" Value="0.9"/>
+                                <Setter Property="Foreground" Value="{StaticResource BrushNaranja}"/>
+                                <Setter TargetName="ContentSite" Property="TextElement.Foreground"
+                                        Value="{StaticResource BrushNaranja}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -153,7 +209,7 @@
     </Page.Resources>
 
     <!-- ===== LAYOUT ===== -->
-    <Grid Background="{StaticResource BgCafe}">
+    <Grid Background="Transparent">
         <Grid Margin="24">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -169,56 +225,60 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="btnBack" Grid.Column="0" Style="{StaticResource BtnFlat}" Width="140" Height="34"
-                        Content="BACK"/>
+                <Button x:Name="btnBack" Grid.Column="0" Style="{StaticResource BtnFlat}" Width="140"
+                        Content="BACK" Margin="0,0,0,-46"/>
 
                 <Label x:Name="lblCoins" Grid.Column="1" Style="{StaticResource LblHud}"
                        Content="{x:Static language:Lang.lblCoinsText}" />
 
-                <Button x:Name="btnSettings" Grid.Column="2" Style="{StaticResource BtnFlat}" Width="160" Height="34"
-                        Content="{x:Static language:Lang.btnSettingsText}"/>
+                <Button x:Name="btnSettings" Grid.Column="2" Style="{StaticResource BtnFlat}" Width="160"
+                        Content="{x:Static language:Lang.btnSettingsText}" Margin="0,0,0,-67"/>
             </Grid>
 
             <!-- Centro -->
-            <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="360">
+            <StackPanel Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"
+                        Width="621" Margin="105,38,0,0" Height="256">
                 <Button x:Name="btnCreateMatch"
                         Style="{StaticResource BtnMenu}"
-                        Height="56" Margin="0,0,0,16"
-                        Content="{x:Static language:Lang.btnCreateMatchText}"/>
+                        Height="155" Margin="-20"
+                        Content="{x:Static language:Lang.btnCreateMatchText}"
+                        Click="btnCreateMatch_Click" Width="529"/>
                 <Button x:Name="btnJoinMatch"
                         Style="{StaticResource BtnMenu}"
-                        Height="56"
-                        Content="{x:Static language:Lang.btnJoinMatchText}"/>
+                        Height="161" Margin="-20"
+                        Content="{x:Static language:Lang.btnJoinMatchText}" Width="600" HorizontalAlignment="Right"/>
             </StackPanel>
 
             <!-- Inferior -->
             <Grid Grid.Row="2" Margin="0,20,0,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <Button x:Name="btnFriends"   Grid.Column="0" Style="{StaticResource BtnFlat}"
-                        Content="{x:Static language:Lang.lblFriendsListTitle}" Height="34" />
+            Content="{x:Static language:Lang.lblFriendsListTitle}" Margin="8,-24,8,0"/>
                 <Button x:Name="btnShop"      Grid.Column="1" Style="{StaticResource BtnFlat}"
-                        Content="{x:Static language:Lang.btnShopText}" Height="34" />
+            Content="{x:Static language:Lang.btnShopText}" Margin="8,-24,8,0"/>
                 <Button x:Name="btnInventory" Grid.Column="2" Style="{StaticResource BtnFlat}"
-                        Content="{x:Static language:Lang.btnInventoryText}" Height="34" />
+            Content="{x:Static language:Lang.btnInventoryText}" Margin="8,-24,8,0"/>
                 <Button x:Name="btnSkins"     Grid.Column="3" Style="{StaticResource BtnFlat}"
-                        Content="{x:Static language:Lang.btnSkinsText}" Height="34" />
+            Content="{x:Static language:Lang.btnSkinsText}"
+            Height="58" Margin="8,-24,8,0" VerticalAlignment="Top"/>
                 <Button x:Name="btnProfile"   Grid.Column="4" Style="{StaticResource BtnFlat}"
-                        Content="{x:Static language:Lang.btnProfileText}" Height="34" />
+            Content="{x:Static language:Lang.btnProfileText}" Margin="8,-24,8,0"/>
             </Grid>
+
         </Grid>
 
         <!-- Ranking lateral -->
         <Button x:Name="btnRanking"
                 Style="{StaticResource BtnFlat}"
                 Content="RANKING"
-                Width="140" Height="40"
+                Width="71" Height="105"
                 HorizontalAlignment="Left" VerticalAlignment="Center"
                 Margin="32,0,0,0"/>
     </Grid>
