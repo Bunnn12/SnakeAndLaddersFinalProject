@@ -1,0 +1,91 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="SnakeAndLaddersFinalProject.Pages.StartPage"
+      Title="Inicio"
+      Focusable="True">
+    <Grid>
+        <!-- Video de fondo -->
+        <!-- Video de fondo -->
+        <MediaElement x:Name="VideoIntro"
+                      LoadedBehavior="Manual"
+                      UnloadedBehavior="Manual"
+                      Stretch="UniformToFill"
+                      IsMuted="True" />
+
+
+        <!-- Video de fondo -->
+        <Canvas ClipToBounds="False">
+            <Image Source="/Assets/Images/StartImg.png"
+           RenderOptions.BitmapScalingMode="NearestNeighbor"
+           RenderTransformOrigin="0.808,0.55"
+           Canvas.Left="292" Canvas.Top="151"
+           Width="136" Height="146"
+           HorizontalAlignment="Left" VerticalAlignment="Top"
+           Opacity="1">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-11.307"/>
+                        <TranslateTransform X="40.697" Y="-7.784"/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+
+                <!-- Parpadeo: 1 -> 0 -> 1 en pasos -->
+                <Image.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                     From="1" To="0.25"
+                     Duration="0:0:0.6"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Image.Triggers>
+            </Image>
+        </Canvas>
+
+
+
+        <!-- Contenedor de controles -->
+        <Grid VerticalAlignment="Bottom" Margin="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"/>
+        </Grid>
+
+        <Image Margin="57,-62,57,207" Source="/Assets/Images/SnakesAndLaddersTittleText.png" Stretch="Fill"/>
+        <Button x:Name="BtnStart"
+        Content="             "
+        HorizontalAlignment="Left"
+        Style="{StaticResource Btn.PixelFlat}"
+        VerticalAlignment="Top"
+        Margin="317,147,0,0"
+        Width="164"
+        Height="138"
+        Click="BtnStart_Click"
+        Background="{x:Null}"
+        BorderBrush="{x:Null}">
+
+            
+        </Button>
+
+        <Rectangle x:Name="BlackTransition"
+           Fill="Black"
+           Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Page}}"
+           Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Page}}"
+           Opacity="0"
+           Panel.ZIndex="100"
+           IsHitTestVisible="False"/>
+
+
+
+    </Grid>
+    
+    
+</Page>

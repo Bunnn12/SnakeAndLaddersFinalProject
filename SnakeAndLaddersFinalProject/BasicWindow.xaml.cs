@@ -14,11 +14,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 
+
 namespace SnakeAndLaddersFinalProject
 {
-    /// <summary>
-    /// Lógica de interacción para BasicWindow.xaml
-    /// </summary>
+   
     public partial class BasicWindow : Window
     {
         public BasicWindow()
@@ -28,7 +27,13 @@ namespace SnakeAndLaddersFinalProject
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Pages.SettingsPage());
+            var page = new SnakeAndLaddersFinalProject.Pages.StartPage();
+
+            MainFrame.Navigate(page);
+
+            
+
+          
         }
     }
 }
