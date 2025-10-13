@@ -4,6 +4,9 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
+	  xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
+      xmlns:res="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
+      xmlns:glob="clr-namespace:SnakeAndLaddersFinalProject.Globalization"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AddFriendsPage">
@@ -14,15 +17,15 @@
 			<DataGrid x:Name="tvAddFriends" d:ItemsSource="{d:SampleData ItemCount=5}"/>
 		</Grid>
 		<TextBox x:Name="txtFindFriend" HorizontalAlignment="Left" Margin="225,122,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="353" Height="33"/>
-		<Label x:Name="lblFindFriends" Content="Label" HorizontalAlignment="Left" Margin="225,89,0,0" VerticalAlignment="Top" Height="28" Width="353"/>
-		<Button x:Name="btnFriendRequests" Content="Button" HorizontalAlignment="Left" Margin="636,197,0,0" VerticalAlignment="Top" Height="30" Width="107"/>
-		<Button x:Name="btnSettings" Content="Button" HorizontalAlignment="Left" Margin="636,33,0,0" VerticalAlignment="Top" Height="30" Width="121"/>
-		<Button x:Name="btnBack" Content="Button" HorizontalAlignment="Left" Margin="39,33,0,0" VerticalAlignment="Top" Height="30" Width="127"/>
-		<Button x:Name="btnFriends" Content="Button" HorizontalAlignment="Left" Margin="39,370,0,0" VerticalAlignment="Top" Height="30" Width="115"/>
-		<Button x:Name="btnShop" Content="Button" HorizontalAlignment="Center" Margin="0,370,0,0" VerticalAlignment="Top" Height="30" Width="106"/>
-		<Button x:Name="btnInventory" Content="Button" HorizontalAlignment="Left" Margin="197,370,0,0" VerticalAlignment="Top" Height="30" Width="107"/>
-		<Button x:Name="btnSkins" Content="Button" HorizontalAlignment="Left" Margin="503,370,0,0" VerticalAlignment="Top" Height="30" Width="105"/>
-		<Button x:Name="btnProfile" Content="Button" HorizontalAlignment="Left" Margin="654,370,0,0" VerticalAlignment="Top" Height="30" Width="103"/>
+		<Label x:Name="lblFindFriends" Content="{x:Static language:Lang.lblFindFriensText}" HorizontalAlignment="Left" Margin="225,89,0,0" VerticalAlignment="Top" Height="28" Width="353"/>
+		<Button x:Name="btnFriendRequests" Content="" HorizontalAlignment="Left" Margin="636,197,0,0" VerticalAlignment="Top" Height="30" Width="107"/>
+		<Button x:Name="btnSettings" Content="{x:Static language:Lang.btnSettingsText}" HorizontalAlignment="Left" Margin="636,33,0,0" VerticalAlignment="Top" Height="30" Width="121"/>
+		<Button x:Name="btnBack" Content="{x:Static language:Lang.btnBackText}" HorizontalAlignment="Left" Margin="39,33,0,0" VerticalAlignment="Top" Height="30" Width="127"/>
+		<Button x:Name="btnFriends" Content="{x:Static language:Lang.btnFriendsText}" HorizontalAlignment="Left" Margin="39,370,0,0" VerticalAlignment="Top" Height="30" Width="115"/>
+		<Button x:Name="btnShop" Content="{x:Static language:Lang.btnShopText}" HorizontalAlignment="Center" Margin="0,370,0,0" VerticalAlignment="Top" Height="30" Width="106"/>
+		<Button x:Name="btnInventory" Content="{x:Static language:Lang.btnInventoryText}" HorizontalAlignment="Left" Margin="197,370,0,0" VerticalAlignment="Top" Height="30" Width="107"/>
+		<Button x:Name="btnSkins" Content="{x:Static language:Lang.btnSkinsText}" HorizontalAlignment="Left" Margin="503,370,0,0" VerticalAlignment="Top" Height="30" Width="105"/>
+		<Button x:Name="btnProfile" Content="{x:Static language:Lang.btnProfileText}" HorizontalAlignment="Left" Margin="654,370,0,0" VerticalAlignment="Top" Height="30" Width="103"/>
 
 	</Grid>
 </Page>

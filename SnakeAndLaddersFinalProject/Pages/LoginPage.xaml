@@ -16,16 +16,16 @@
             <ColumnDefinition Width="57*"/>
             <ColumnDefinition Width="23*"/>
         </Grid.ColumnDefinitions>
-        <Button Content="{x:Static language:Lang.btnLoginText}" HorizontalAlignment="Left" Margin="212,307,0,0" VerticalAlignment="Top" Width="130"/>
+        <Button x:Name="btnLogin" Content="{x:Static language:Lang.btnLoginText}" HorizontalAlignment="Left" Margin="212,307,0,0" VerticalAlignment="Top" Width="130" Click="BtnLogin_Click"/>
         <Label Content="{x:Static language:Lang.lblWelcomeText}" HorizontalAlignment="Left" Margin="242,75,0,0" VerticalAlignment="Top" Width="316" FontSize="22" HorizontalContentAlignment="Center"/>
-        <TextBox HorizontalAlignment="Left" Margin="212,173,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="346" TextChanged="TextBox_TextChanged"/>
-        <PasswordBox HorizontalAlignment="Left" Margin="212,245,0,0" VerticalAlignment="Top" Width="346"/>
+        <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Margin="212,173,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="346" TextChanged="TextBox_TextChanged"/>
+        <PasswordBox x:Name="pwdPassword" HorizontalAlignment="Left" Margin="212,245,0,0" VerticalAlignment="Top" Width="346 "/>
         <Label Content="{x:Static language:Lang.txtUsernameText}" HorizontalAlignment="Left" Margin="212,133,0,0" VerticalAlignment="Top"/>
         <Label Content="{x:Static language:Lang.pwdPasswordText}" HorizontalAlignment="Left" Margin="212,214,0,0" VerticalAlignment="Top"/>
-        <Button Content="{x:Static language:Lang.btnPlayAsGuestText}" HorizontalAlignment="Left" Margin="417,307,0,0" VerticalAlignment="Top" Width="141"/>
-        <Button Content="{x:Static language:Lang.btnForgottenPasswordText}" HorizontalAlignment="Left" Margin="296,347,0,0" VerticalAlignment="Top" Width="159"/>
-        <Button Content="{x:Static language:Lang.btnSignUpText}" HorizontalAlignment="Left" Margin="296,387,0,0" VerticalAlignment="Top" Width="159"/>
-        <Button Content="{x:Static res:Lang.btnSettingsText}" HorizontalAlignment="Left" Margin="89,55,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="btnPlayAsGuest" Content="{x:Static language:Lang.btnPlayAsGuestText}" HorizontalAlignment="Left" Margin="417,307,0,0" VerticalAlignment="Top" Width="141"/>
+        <Button x:Name="btnForgottenPassword" Content="{x:Static language:Lang.btnForgottenPasswordText}" HorizontalAlignment="Left" Margin="296,347,0,0" VerticalAlignment="Top" Width="159"/>
+        <Button x:Name="btnSignUp" Content="{x:Static language:Lang.btnSignUpText}" HorizontalAlignment="Left" Margin="296,387,0,0" VerticalAlignment="Top" Width="159" Click="BtnSignUp_Click"/>
+        <Button x:Name="btnSettings" Content="{x:Static res:Lang.btnSettingsText}" HorizontalAlignment="Left" Margin="89,55,0,0" VerticalAlignment="Top"/>
 
 
     </Grid>

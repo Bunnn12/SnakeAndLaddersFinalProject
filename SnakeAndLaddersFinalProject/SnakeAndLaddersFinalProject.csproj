@@ -55,7 +55,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+<<<<<<< HEAD
     <Reference Include="System.Web.Extensions" />
+=======
+>>>>>>> 370440b8c9877ca09b332834fa1fc66793420169
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -78,6 +81,7 @@
       <DependentUpon>BasicWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Connected Services\UserService\Reference.cs">
+    <Compile Include="Connected Services\AuthService\Reference.cs">370440b8c9877ca09b332834fa1fc66793420169
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -129,7 +133,6 @@
       <DependentUpon>StorePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="pj.cs" />
-    <Compile Include="prueba.cs" />
     <Compile Include="ReportsWindow.xaml.cs">
       <DependentUpon>ReportsWindow.xaml</DependentUpon>
     </Compile>
@@ -249,6 +252,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+<<<<<<< HEAD
     <Resource Include="Assets\Fonts\PixelDefaultFont.ttf" />
     <Resource Include="Assets\Fonts\m04.TTF" />
     <Resource Include="Assets\Fonts\PixelatedDisplay.ttf" />
@@ -269,6 +273,21 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\UserService\UserService.wsdl" />
+=======
+    <None Include="Connected Services\AuthService\Auth.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AuthService\Auth1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AuthService\Auth2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AuthService\AuthService.wsdl" />
+    <None Include="Connected Services\AuthService\SnakeAndLaddersFinalProject.AuthService.AuthResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+>>>>>>> 370440b8c9877ca09b332834fa1fc66793420169
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -281,6 +300,7 @@
     <Resource Include="Pages\Captura de pantalla 2024-12-02 215634.png" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.7.2 %28x86 y x64%29</ProductName>
@@ -309,10 +329,26 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\UserService\Reference.svcmap">
+=======
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\AuthService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\AuthService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\AuthService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\AuthService\Reference.svcmap">
+>>>>>>> 370440b8c9877ca09b332834fa1fc66793420169
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
+<<<<<<< HEAD
   <ItemGroup>
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -329,5 +365,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup />
+=======
+>>>>>>> 370440b8c9877ca09b332834fa1fc66793420169
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

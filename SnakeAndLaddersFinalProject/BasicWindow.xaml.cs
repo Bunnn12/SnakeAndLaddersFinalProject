@@ -27,6 +27,7 @@ namespace SnakeAndLaddersFinalProject
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+<<<<<<< HEAD
             var page = new SnakeAndLaddersFinalProject.Pages.StartPage();
 
             MainFrame.Navigate(page);
@@ -34,6 +35,9 @@ namespace SnakeAndLaddersFinalProject
             
 
           
+=======
+            MainFrame.Navigate(new Pages.LoginPage());
+>>>>>>> 370440b8c9877ca09b332834fa1fc66793420169
         }
     }
 }
