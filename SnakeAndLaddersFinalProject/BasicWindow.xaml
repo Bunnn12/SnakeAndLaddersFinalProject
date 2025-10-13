@@ -8,6 +8,10 @@
         Title="BasicWindow" Height="450" Width="800"
         Loaded="Window_Loaded">
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Assets/Images/BackgroundMainWindow.png"
+                  Stretch="UniformToFill"/>
+        </Grid.Background>
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Background="Transparent"/>
     </Grid>
 </Window>

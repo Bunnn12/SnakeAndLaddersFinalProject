@@ -24,5 +24,15 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             InitializeComponent();
         }
+
+        private void btnCreateMatch_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnJoinMatch_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

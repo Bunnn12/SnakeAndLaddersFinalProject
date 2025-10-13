@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="08982466-7ed9-4d1c-b93e-7272d95cb3de" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="fdd82670-ec57-4d11-b37c-e0bbea619920" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,13 +19,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:8085/Auth?wsdl" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:8085/Auth" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Auth.xsd" MetadataType="Schema" ID="d23e4c94-551d-4374-ac4b-cfc2619b031e" SourceId="1" SourceUrl="http://localhost:8085/Auth?xsd=xsd0" />
-    <MetadataFile FileName="Auth1.xsd" MetadataType="Schema" ID="69a0a95e-c9c4-40f1-a32f-9583bc1cd708" SourceId="1" SourceUrl="http://localhost:8085/Auth?xsd=xsd1" />
-    <MetadataFile FileName="AuthService.wsdl" MetadataType="Wsdl" ID="00e6977d-a3b5-41dc-bcb3-ce02a6387d94" SourceId="1" SourceUrl="http://localhost:8085/Auth?wsdl" />
-    <MetadataFile FileName="Auth2.xsd" MetadataType="Schema" ID="1eba2375-2339-4961-bebc-1e0da0e158c5" SourceId="1" SourceUrl="http://localhost:8085/Auth?xsd=xsd2" />
+    <MetadataFile FileName="Auth.xsd" MetadataType="Schema" ID="3011e3c5-9279-45a9-8bbe-1fdaaf5e552c" SourceId="1" SourceUrl="http://localhost:8085/Auth?xsd=xsd0" />
+    <MetadataFile FileName="Auth1.xsd" MetadataType="Schema" ID="bb5a849d-45fb-41c3-96f5-6d968b5bef54" SourceId="1" SourceUrl="http://localhost:8085/Auth?xsd=xsd1" />
+    <MetadataFile FileName="AuthService.wsdl" MetadataType="Wsdl" ID="845b5a6c-7301-4ddd-a0fe-8d49a2a58155" SourceId="1" SourceUrl="http://localhost:8085/Auth?wsdl" />
+    <MetadataFile FileName="Auth.disco" MetadataType="Disco" ID="aafd0d60-d068-4833-9ab7-2dcdfc7f65d3" SourceId="1" SourceUrl="http://localhost:8085/Auth?disco" />
+    <MetadataFile FileName="Auth2.xsd" MetadataType="Schema" ID="b7de2aae-6e77-4c35-9041-a68e8224a79d" SourceId="1" SourceUrl="http://localhost:8085/Auth?xsd=xsd2" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

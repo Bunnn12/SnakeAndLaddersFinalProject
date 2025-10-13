@@ -1,0 +1,38 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <FontFamily x:Key="Font.PressStart2P">
+        pack://application:,,,/Assets/Fonts/#Press Start 2P
+    </FontFamily>
+
+    <!-- Fuente con estética de pantalla retro -->
+    <FontFamily x:Key="Font.PixelatedDisplay">
+        pack://application:,,,/Assets/Fonts/#Pixelated Display
+    </FontFamily>
+
+    <!-- Fuente tipo monoespaciada estilo consola -->
+    <FontFamily x:Key="Font.M04">
+        pack://application:,,,/Assets/Fonts/#M04_FATAL FURY
+    </FontFamily>
+
+    <FontFamily x:Key="Font.M04B">
+        pack://application:,,,/Assets/Fonts/#M04_FATAL FURY BLACK
+    </FontFamily>
+
+
+    <Style x:Key="Txt.Pixel" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Font.PressStart2P}"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+    </Style>
+
+    <Style x:Key="Txt.M04" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Font.M04}"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+    </Style>
+
+</ResourceDictionary>
