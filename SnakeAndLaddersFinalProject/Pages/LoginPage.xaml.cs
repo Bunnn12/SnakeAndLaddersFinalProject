@@ -62,7 +62,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 var res = await Task.Run(() => client.Login(dto));
                 if (res.Success)
                 {
-                    MessageBox.Show("Registro exitoso", "Login");
+                    MessageBox.Show("Inicio de sesión exitoso, bienvenid@", "Login");
                     NavigationService?.Navigate(new MainPage());
                 }
                 else MessageBox.Show(res.Message, "Login");

@@ -48,6 +48,18 @@
   <wsdl:message name="IAuthService_Login_OutputMessage">
     <wsdl:part name="parameters" element="tns:LoginResponse" />
   </wsdl:message>
+  <wsdl:message name="IAuthService_RequestEmailVerification_InputMessage">
+    <wsdl:part name="parameters" element="tns:RequestEmailVerification" />
+  </wsdl:message>
+  <wsdl:message name="IAuthService_RequestEmailVerification_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RequestEmailVerificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthService_ConfirmEmailVerification_InputMessage">
+    <wsdl:part name="parameters" element="tns:ConfirmEmailVerification" />
+  </wsdl:message>
+  <wsdl:message name="IAuthService_ConfirmEmailVerification_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ConfirmEmailVerificationResponse" />
+  </wsdl:message>
   <wsdl:portType name="IAuthService">
     <wsdl:operation name="Register">
       <wsdl:input wsaw:Action="http://tempuri.org/IAuthService/Register" message="tns:IAuthService_Register_InputMessage" />
@@ -56,6 +68,14 @@
     <wsdl:operation name="Login">
       <wsdl:input wsaw:Action="http://tempuri.org/IAuthService/Login" message="tns:IAuthService_Login_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IAuthService/LoginResponse" message="tns:IAuthService_Login_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RequestEmailVerification">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAuthService/RequestEmailVerification" message="tns:IAuthService_RequestEmailVerification_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAuthService/RequestEmailVerificationResponse" message="tns:IAuthService_RequestEmailVerification_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmEmailVerification">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAuthService/ConfirmEmailVerification" message="tns:IAuthService_ConfirmEmailVerification_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAuthService/ConfirmEmailVerificationResponse" message="tns:IAuthService_ConfirmEmailVerification_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IAuthService" type="tns:IAuthService">
@@ -78,6 +98,24 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="RequestEmailVerification">
+      <soap:operation soapAction="http://tempuri.org/IAuthService/RequestEmailVerification" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmEmailVerification">
+      <soap:operation soapAction="http://tempuri.org/IAuthService/ConfirmEmailVerification" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="NetTcpBinding_IAuthService" type="tns:IAuthService">
     <wsp:PolicyReference URI="#NetTcpBinding_IAuthService_policy" />
@@ -93,6 +131,24 @@
     </wsdl:operation>
     <wsdl:operation name="Login">
       <soap12:operation soapAction="http://tempuri.org/IAuthService/Login" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestEmailVerification">
+      <soap12:operation soapAction="http://tempuri.org/IAuthService/RequestEmailVerification" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmEmailVerification">
+      <soap12:operation soapAction="http://tempuri.org/IAuthService/ConfirmEmailVerification" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

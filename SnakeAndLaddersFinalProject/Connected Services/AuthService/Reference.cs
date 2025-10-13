@@ -291,6 +291,18 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/Login", ReplyAction="http://tempuri.org/IAuthService/LoginResponse")]
         System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> LoginAsync(SnakeAndLaddersFinalProject.AuthService.LoginDto request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/RequestEmailVerification", ReplyAction="http://tempuri.org/IAuthService/RequestEmailVerificationResponse")]
+        SnakeAndLaddersFinalProject.AuthService.AuthResult RequestEmailVerification(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/RequestEmailVerification", ReplyAction="http://tempuri.org/IAuthService/RequestEmailVerificationResponse")]
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> RequestEmailVerificationAsync(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/ConfirmEmailVerification", ReplyAction="http://tempuri.org/IAuthService/ConfirmEmailVerificationResponse")]
+        SnakeAndLaddersFinalProject.AuthService.AuthResult ConfirmEmailVerification(string email, string code);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/ConfirmEmailVerification", ReplyAction="http://tempuri.org/IAuthService/ConfirmEmailVerificationResponse")]
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> ConfirmEmailVerificationAsync(string email, string code);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -334,6 +346,22 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         
         public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> LoginAsync(SnakeAndLaddersFinalProject.AuthService.LoginDto request) {
             return base.Channel.LoginAsync(request);
+        }
+        
+        public SnakeAndLaddersFinalProject.AuthService.AuthResult RequestEmailVerification(string email) {
+            return base.Channel.RequestEmailVerification(email);
+        }
+        
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> RequestEmailVerificationAsync(string email) {
+            return base.Channel.RequestEmailVerificationAsync(email);
+        }
+        
+        public SnakeAndLaddersFinalProject.AuthService.AuthResult ConfirmEmailVerification(string email, string code) {
+            return base.Channel.ConfirmEmailVerification(email, code);
+        }
+        
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> ConfirmEmailVerificationAsync(string email, string code) {
+            return base.Channel.ConfirmEmailVerificationAsync(email, code);
         }
     }
 }

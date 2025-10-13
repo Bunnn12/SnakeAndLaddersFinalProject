@@ -73,6 +73,9 @@
     <Compile Include="Pages\ChatPage.xaml.cs">
       <DependentUpon>ChatPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\EmailVerificationPage.xaml.cs">
+      <DependentUpon>EmailVerificationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\FriendsListPage.xaml.cs">
       <DependentUpon>FriendsListPage.xaml</DependentUpon>
     </Compile>
@@ -128,6 +131,10 @@
     <Page Include="Pages\ChatPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\EmailVerificationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\FriendsListPage.xaml">
       <Generator>MSBuild:Compile</Generator>

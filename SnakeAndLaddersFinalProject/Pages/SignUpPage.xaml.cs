@@ -13,63 +13,65 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             InitializeComponent();
         }
-        private string[] ValidateRegistration(string user, string name, string last, string email, string pwd)
+
+        private string[] ValidateRegistration(string userName, string firstName, string lastName, string email, string password)
         {
-            var errs = new System.Collections.Generic.List<string>();
-            if (string.IsNullOrWhiteSpace(name)) errs.Add("Nombre es requerido.");
-            if (string.IsNullOrWhiteSpace(last)) errs.Add("Apellidos requeridos.");
-            if (string.IsNullOrWhiteSpace(user)) errs.Add("Usuario es requerido.");
-            if (string.IsNullOrWhiteSpace(email)) errs.Add("Correo es requerido.");
-            else if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$")) errs.Add("Correo inválido.");
-            if (string.IsNullOrWhiteSpace(pwd) || pwd.Length < 8) errs.Add("Contraseña: mínimo 8 caracteres.");
-            return errs.ToArray();
+            var errors = new System.Collections.Generic.List<string>();
+            if (string.IsNullOrWhiteSpace(firstName)) errors.Add("Nombre es requerido.");
+            if (string.IsNullOrWhiteSpace(lastName)) errors.Add("Apellidos requeridos.");
+            if (string.IsNullOrWhiteSpace(userName)) errors.Add("Usuario es requerido.");
+            if (string.IsNullOrWhiteSpace(email)) errors.Add("Correo es requerido.");
+            else if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$")) errors.Add("Correo inválido.");
+            if (string.IsNullOrWhiteSpace(password) || password.Length < 8) errors.Add("Contraseña: mínimo 8 caracteres.");
+            return errors.ToArray();
         }
 
-        // Click de "Registrar"
+        // Click: Registrar (pero SOLO pedir código y navegar)
         private async void BtnSignUp_Click(object sender, RoutedEventArgs e)
         {
-            var errs = ValidateRegistration(
+            var errors = ValidateRegistration(
                 txtUsername.Text, txtNameOfUser.Text, txtLastname.Text, txtEmail.Text, pwdPassword.Password);
 
-            if (errs.Any())
+            if (errors.Any())
             {
-                MessageBox.Show(string.Join("\n", errs), "Corrige esto", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(string.Join("\n", errors), "Corrige esto", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            // DTOs generados por el Service Reference "AuthService"
             var dto = new AuthService.RegistrationDto
             {
-                UserName = txtUsername.Text,
-                FirstName = txtNameOfUser.Text,
-                LastName = txtLastname.Text,
-                Email = txtEmail.Text,
+                UserName = txtUsername.Text.Trim(),
+                FirstName = txtNameOfUser.Text.Trim(),
+                LastName = txtLastname.Text.Trim(),
+                Email = txtEmail.Text.Trim(),
                 Password = pwdPassword.Password
             };
 
             var client = new AuthService.AuthServiceClient("BasicHttpBinding_IAuthService");
             try
             {
-                // Llamada sin bloquear la UI
-                var res = await Task.Run(() => client.Register(dto));
+                // 1) Solicitar envío de código (NO registrar aún)
+                var send = await Task.Run(() => client.RequestEmailVerification(dto.Email));
 
-                if (res.Success)
+                if (!send.Success)
                 {
-                    MessageBox.Show($"Registro correcto: {res.DisplayName}", "Registro", MessageBoxButton.OK, MessageBoxImage.Information);
-                    NavigationService?.Navigate(new MainPage());
+                    MessageBox.Show(send.Message ?? "No fue posible enviar el código de verificación.", "Verificación de correo",
+                                    MessageBoxButton.OK, MessageBoxImage.Warning);
                     client.Close();
                     return;
                 }
-                else
-                {
-                    MessageBox.Show(res.Message, "Registro", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
 
+                // (En DEBUG quizá regrese el código en Message)
+                if (!string.IsNullOrWhiteSpace(send.Message) && send.Message.Contains("DEBUG"))
+                    MessageBox.Show(send.Message, "Solo para pruebas", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // 2) Navegar a verificación LLEVANDO EL DTO COMPLETO
+                NavigationService?.Navigate(new EmailVerificationPage(dto));
                 client.Close();
             }
             catch (System.ServiceModel.EndpointNotFoundException)
             {
-                MessageBox.Show("Servidor no encontrado en http://localhost:8085/Auth.\n¿Está corriendo el host?",
+                MessageBox.Show("No se pudo solicitar el código. ¿Está corriendo el host? (http://localhost:8085/Auth)",
                                 "Conexión", MessageBoxButton.OK, MessageBoxImage.Error);
                 client.Abort();
             }
@@ -80,13 +82,10 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        // Click de "Volver"
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
-            if (NavigationService?.CanGoBack == true)
-                NavigationService.GoBack();
-            else
-                MessageBox.Show("No hay página anterior.");
+            if (NavigationService?.CanGoBack == true) NavigationService.GoBack();
+            else MessageBox.Show("No hay página anterior.");
         }
     }
 }
