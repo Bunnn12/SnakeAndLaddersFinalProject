@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -16,17 +17,16 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private string[] ValidateRegistration(string userName, string firstName, string lastName, string email, string password)
         {
-            var errors = new System.Collections.Generic.List<string>();
-            if (string.IsNullOrWhiteSpace(firstName)) errors.Add("Nombre es requerido.");
-            if (string.IsNullOrWhiteSpace(lastName)) errors.Add("Apellidos requeridos.");
-            if (string.IsNullOrWhiteSpace(userName)) errors.Add("Usuario es requerido.");
-            if (string.IsNullOrWhiteSpace(email)) errors.Add("Correo es requerido.");
-            else if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$")) errors.Add("Correo inválido.");
-            if (string.IsNullOrWhiteSpace(password) || password.Length < 8) errors.Add("Contraseña: mínimo 8 caracteres.");
+            var errors = new List<string>();
+            if (string.IsNullOrWhiteSpace(firstName)) errors.Add(T("UiFirstNameRequired"));
+            if (string.IsNullOrWhiteSpace(lastName)) errors.Add(T("UiLastNameRequired"));
+            if (string.IsNullOrWhiteSpace(userName)) errors.Add(T("UiUserNameRequired"));
+            if (string.IsNullOrWhiteSpace(email)) errors.Add(T("UiEmailRequired"));
+            else if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$")) errors.Add(T("UiEmailInvalid"));
+            if (string.IsNullOrWhiteSpace(password) || password.Length < 8) errors.Add(T("UiPasswordTooShort"));
             return errors.ToArray();
         }
 
-        // Click: Registrar (pero SOLO pedir código y navegar)
         private async void BtnSignUp_Click(object sender, RoutedEventArgs e)
         {
             var errors = ValidateRegistration(
@@ -34,7 +34,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             if (errors.Any())
             {
-                MessageBox.Show(string.Join("\n", errors), "Corrige esto", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ShowWarn(string.Join("\n", errors));
                 return;
             }
 
@@ -43,7 +43,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 UserName = txtUsername.Text.Trim(),
                 FirstName = txtNameOfUser.Text.Trim(),
                 LastName = txtLastname.Text.Trim(),
-                Email = txtEmail.Text.Trim(),
+                Email = txtEmail.Text.Trim().ToLowerInvariant(),
                 Password = pwdPassword.Password
             };
 
@@ -55,29 +55,23 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 if (!send.Success)
                 {
-                    MessageBox.Show(send.Message ?? "No fue posible enviar el código de verificación.", "Verificación de correo",
-                                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                    ShowWarn(MapAuth(send.Code, send.Meta));
                     client.Close();
                     return;
                 }
 
-                // (En DEBUG quizá regrese el código en Message)
-                if (!string.IsNullOrWhiteSpace(send.Message) && send.Message.Contains("DEBUG"))
-                    MessageBox.Show(send.Message, "Solo para pruebas", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                // 2) Navegar a verificación LLEVANDO EL DTO COMPLETO
+                ShowInfo(string.Format(T("UiVerificationSentFmt"), dto.Email));
                 NavigationService?.Navigate(new EmailVerificationPage(dto));
                 client.Close();
             }
             catch (System.ServiceModel.EndpointNotFoundException)
             {
-                MessageBox.Show("No se pudo solicitar el código. ¿Está corriendo el host? (http://localhost:8085/Auth)",
-                                "Conexión", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowError(T("UiEndpointNotFound"));
                 client.Abort();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message, "Registro", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowError($"{T("UiGenericError")} {ex.Message}");
                 client.Abort();
             }
         }
@@ -85,7 +79,39 @@ namespace SnakeAndLaddersFinalProject.Pages
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
             if (NavigationService?.CanGoBack == true) NavigationService.GoBack();
-            else MessageBox.Show("No hay página anterior.");
+            else ShowWarn(T("UiNoBackPage"));
+        }
+        private static string T(string key) =>
+            Globalization.LocalizationManager.Current[key];
+
+        private static void ShowWarn(string msg) =>
+            MessageBox.Show(msg, T("UiTitleWarning"), MessageBoxButton.OK, MessageBoxImage.Warning);
+
+        private static void ShowInfo(string msg) =>
+            MessageBox.Show(msg, T("UiTitleInfo"), MessageBoxButton.OK, MessageBoxImage.Information);
+
+        private static void ShowError(string msg) =>
+            MessageBox.Show(msg, T("UiTitleError"), MessageBoxButton.OK, MessageBoxImage.Error);
+
+        private static string MapAuth(string code, Dictionary<string, string> meta)
+        {
+            var m = meta ?? new Dictionary<string, string>();
+            switch (code)
+            {
+                case "Auth.Ok": return T("AuthOk");
+                case "Auth.EmailRequired": return T("AuthEmailRequired");
+                case "Auth.EmailAlreadyExists": return T("AuthEmailAlreadyExists");
+                case "Auth.UserNameAlreadyExists": return T("AuthUserNameAlreadyExists");
+                case "Auth.InvalidCredentials": return T("AuthInvalidCredentials");
+                case "Auth.ThrottleWait":
+                    return string.Format(T("AuthThrottleWaitFmt"),
+                                                        m.TryGetValue("seconds", out var s) ? s : "45");
+                case "Auth.CodeNotRequested": return T("AuthCodeNotRequested");
+                case "Auth.CodeExpired": return T("AuthCodeExpired");
+                case "Auth.CodeInvalid": return T("AuthCodeInvalid");
+                case "Auth.EmailSendFailed": return T("AuthEmailSendFailed");
+                default: return T("AuthServerError");
+            }
         }
     }
 }

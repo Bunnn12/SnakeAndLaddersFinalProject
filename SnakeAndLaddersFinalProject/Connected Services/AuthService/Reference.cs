@@ -132,16 +132,25 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DisplayNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string MessageField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.Dictionary<string, string> MetaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool SuccessField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int UserIdField;
+        private string TechnicalMessageField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> UserIdField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -150,6 +159,19 @@ namespace SnakeAndLaddersFinalProject.AuthService {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Code {
+            get {
+                return this.CodeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CodeField, value) != true)) {
+                    this.CodeField = value;
+                    this.RaisePropertyChanged("Code");
+                }
             }
         }
         
@@ -180,6 +202,19 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.Dictionary<string, string> Meta {
+            get {
+                return this.MetaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MetaField, value) != true)) {
+                    this.MetaField = value;
+                    this.RaisePropertyChanged("Meta");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public bool Success {
             get {
                 return this.SuccessField;
@@ -193,7 +228,20 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int UserId {
+        public string TechnicalMessage {
+            get {
+                return this.TechnicalMessageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TechnicalMessageField, value) != true)) {
+                    this.TechnicalMessageField = value;
+                    this.RaisePropertyChanged("TechnicalMessage");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> UserId {
             get {
                 return this.UserIdField;
             }

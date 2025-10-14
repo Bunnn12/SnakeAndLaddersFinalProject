@@ -34,6 +34,7 @@
       <xsd:import schemaLocation="http://localhost:8085/Auth?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:8085/Auth?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:8085/Auth?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" />
+      <xsd:import schemaLocation="http://localhost:8085/Auth?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IAuthService_Register_InputMessage">
@@ -166,7 +167,7 @@
       <wsa10:EndpointReference>
         <wsa10:Address>net.tcp://localhost:8095/Auth</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
-          <Upn>LAPTOPIRENE\irene</Upn>
+          <Upn>LAP-ASTRID\reino</Upn>
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>

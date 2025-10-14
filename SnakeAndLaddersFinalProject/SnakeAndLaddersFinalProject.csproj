@@ -273,6 +273,9 @@
     <None Include="Connected Services\AuthService\Auth2.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Connected Services\AuthService\Auth3.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\AuthService\AuthService.wsdl" />
     <None Include="Connected Services\AuthService\SnakeAndLaddersFinalProject.AuthService.AuthResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
