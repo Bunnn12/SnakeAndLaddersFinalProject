@@ -608,5 +608,14 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
                 return ResourceManager.GetString("txtUsernameText", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Resend in {0}s.
+        /// </summary>
+        public static string UiResendCodeInFmt {
+            get {
+                return ResourceManager.GetString("UiResendCodeInFmt", resourceCulture);
+            }
+        }
     }
 }
