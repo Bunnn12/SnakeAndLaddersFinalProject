@@ -292,6 +292,8 @@
     <Resource Include="Assets\Fonts\m04.TTF" />
     <Resource Include="Assets\Fonts\PixelatedDisplay.ttf" />
     <Resource Include="Assets\Fonts\m04b.TTF" />
+    <Resource Include="Assets\Fonts\MinecraftStandard.otf" />
+    <Resource Include="Assets\Fonts\MinecraftStandardBold.otf" />
     <None Include="Connected Services\AuthService\Auth.xsd">
       <SubType>Designer</SubType>
     </None>

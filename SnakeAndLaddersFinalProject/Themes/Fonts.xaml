@@ -20,7 +20,14 @@
         pack://application:,,,/Assets/Fonts/#M04_FATAL FURY BLACK
     </FontFamily>
 
+    <FontFamily x:Key="Font.MinecraftStandard">
+        pack://application:,,,/Assets/Fonts/#Minecraft Standard
+    </FontFamily>
 
+    <FontFamily x:Key="Font.MinecraftStandardBold">
+        pack://application:,,,/Assets/Fonts/#Minecraft Standard Bold
+    </FontFamily>
+    
     <Style x:Key="Txt.Pixel" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Font.PressStart2P}"/>
         <Setter Property="FontSize" Value="20"/>
