@@ -342,9 +342,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Pages\littleBackground.png" />
     <Resource Include="Assets\Images\BackgroundMainWindow.png" />
     <Resource Include="Assets\Images\BotonImg.png" />
     <Resource Include="Assets\Images\Icons\Friends.png" />
+    <Resource Include="Assets\Images\Backgrounds\littleBackground.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

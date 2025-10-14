@@ -34,5 +34,10 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
 
         }
+
+        private void btnJoinMatch_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

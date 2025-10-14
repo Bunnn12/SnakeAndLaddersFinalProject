@@ -246,7 +246,7 @@
                 <Button x:Name="btnJoinMatch"
                         Style="{StaticResource BtnMenu}"
                         Height="161" Margin="-20"
-                        Content="{x:Static language:Lang.btnJoinMatchText}" Width="600" HorizontalAlignment="Right"/>
+                        Content="{x:Static language:Lang.btnJoinMatchText}" Width="600" HorizontalAlignment="Right" Click="btnJoinMatch_Click_1"/>
             </StackPanel>
 
             <!-- Inferior -->

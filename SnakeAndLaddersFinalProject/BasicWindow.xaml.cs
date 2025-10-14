@@ -27,12 +27,12 @@ namespace SnakeAndLaddersFinalProject
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var page = new SnakeAndLaddersFinalProject.Pages.LoginPage();
+            var page = new SnakeAndLaddersFinalProject.Pages.SignUpPage();
 
             MainFrame.Navigate(page);
 
   
-            MainFrame.Navigate(new Pages.LoginPage());
+            MainFrame.Navigate(new Pages.SignUpPage());
 
         }
     }
