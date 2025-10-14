@@ -291,4 +291,13 @@
   <data name="btnRankingText" xml:space="preserve">
     <value>Ranking</value>
   </data>
+  <data name="lblEmailVerificationTitle" xml:space="preserve">
+    <value>Email verification</value>
+  </data>
+  <data name="lblVerificationMessageText" xml:space="preserve">
+    <value>Insert the verification code</value>
+  </data>
+  <data name="btnResendCodeText" xml:space="preserve">
+    <value>Resend the code</value>
+  </data>
 </root>

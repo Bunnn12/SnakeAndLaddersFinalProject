@@ -259,6 +259,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Resend the code.
+        /// </summary>
+        public static string btnResendCodeText {
+            get {
+                return ResourceManager.GetString("btnResendCodeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Settings.
         /// </summary>
         public static string btnSettingsText {
@@ -376,6 +385,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Email verification.
+        /// </summary>
+        public static string lblEmailVerificationTitle {
+            get {
+                return ResourceManager.GetString("lblEmailVerificationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Find friends.
         /// </summary>
         public static string lblFindFriensText {
@@ -489,6 +507,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string lblStore {
             get {
                 return ResourceManager.GetString("lblStore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Insert the verification code.
+        /// </summary>
+        public static string lblVerificationMessageText {
+            get {
+                return ResourceManager.GetString("lblVerificationMessageText", resourceCulture);
             }
         }
         
