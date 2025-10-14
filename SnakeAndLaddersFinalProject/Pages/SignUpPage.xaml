@@ -9,7 +9,7 @@
       SnapsToDevicePixels="True" TextOptions.TextRenderingMode="Aliased">
 
     <Page.Resources>
-        <!-- Título (usa tu fuente grande del Create Match) -->
+
         <Style x:Key="TitleLabel" TargetType="Label">
             <Setter Property="FontFamily" Value="{StaticResource Font.M04}"/>
             <Setter Property="FontSize" Value="28"/>
@@ -124,48 +124,48 @@
             <Button x:Name="btnBack" Style="{StaticResource BtnFlat}"
                     Content="{x:Static language:Lang.btnBackText}"
                     HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top"
-                    Width="166" Height="72" Click="BtnBack_Click" FontSize="24"/>
+                    Width="166" Height="72" Click="BtnBack_Click" FontSize="20"/>
 
             <Button x:Name="btnSettings" Style="{StaticResource BtnFlat}"
                     Content="{x:Static language:Lang.btnSettingsText}"
                     HorizontalAlignment="Right" Margin="0,5,0,0" VerticalAlignment="Top"
-                    Width="166" Height="69" FontSize="24"/>
+                    Width="166" Height="69" FontSize="20"/>
 
             <!-- Título -->
             <Label x:Name="lblTitleSignUp" Style="{StaticResource TitleLabel}"
                    Content="{x:Static language:Lang.btnSignUpText}"
-                   HorizontalAlignment="Center" Margin="0,24,0,0" VerticalAlignment="Top" FontSize="38"/>
+                   HorizontalAlignment="Left" Margin="268,16,0,0" VerticalAlignment="Top" FontSize="38" Foreground="#FFF2C230"/>
 
             <!-- Formulario -->
             <!-- Fila 1 -->
             <Label Style="{StaticResource FormLabel}" Content="{x:Static language:Lang.txtNameOfUserText}"
-                   HorizontalAlignment="Left" Margin="136,109,0,0" VerticalAlignment="Top" FontSize="24"/>
+                   HorizontalAlignment="Left" Margin="136,109,0,0" VerticalAlignment="Top" FontSize="20"/>
             <TextBox x:Name="txtNameOfUser" Style="{StaticResource FormTextBox}"
                      HorizontalAlignment="Left" Margin="136,147,0,0" VerticalAlignment="Top"
                      Width="180" Height="32"/>
 
             <Label Style="{StaticResource FormLabel}" Content="{x:Static language:Lang.txtLastNameOfUserText}"
-                   HorizontalAlignment="Left" Margin="459,109,0,0" VerticalAlignment="Top" FontSize="24"/>
+                   HorizontalAlignment="Left" Margin="459,109,0,0" VerticalAlignment="Top" FontSize="20"/>
             <TextBox x:Name="txtLastname" Style="{StaticResource FormTextBox}"
                      HorizontalAlignment="Left" Margin="459,147,0,0" VerticalAlignment="Top"
                      Width="170" Height="32"/>
 
             <!-- Fila 2 -->
             <Label Style="{StaticResource FormLabel}" Content="{x:Static language:Lang.txtUsernameText}"
-                   HorizontalAlignment="Left" Margin="136,192,0,0" VerticalAlignment="Top" FontSize="24"/>
+                   HorizontalAlignment="Left" Margin="136,192,0,0" VerticalAlignment="Top" FontSize="20"/>
             <TextBox x:Name="txtUsername" Style="{StaticResource FormTextBox}"
                      HorizontalAlignment="Left" Margin="136,230,0,0" VerticalAlignment="Top"
                      Width="180" Height="32"/>
 
             <Label Style="{StaticResource FormLabel}" Content="{x:Static language:Lang.pwdPasswordText}"
-                   HorizontalAlignment="Left" Margin="459,187,0,0" VerticalAlignment="Top" FontSize="24"/>
+                   HorizontalAlignment="Left" Margin="459,187,0,0" VerticalAlignment="Top" FontSize="20"/>
             <PasswordBox x:Name="pwdPassword" Style="{StaticResource FormPasswordBox}"
                          HorizontalAlignment="Left" Margin="459,230,0,0" VerticalAlignment="Top"
                          Width="170" Height="32"/>
 
             <!-- Email a lo ancho -->
             <Label Style="{StaticResource FormLabel}" Content="{x:Static language:Lang.txtRegEmailText}"
-                   HorizontalAlignment="Center" Margin="0,267,0,0" VerticalAlignment="Top" FontSize="24"/>
+                   HorizontalAlignment="Center" Margin="0,267,0,0" VerticalAlignment="Top" FontSize="20"/>
             <TextBox x:Name="txtEmail" Style="{StaticResource FormTextBox}"
                      HorizontalAlignment="Left" Margin="258,305,0,0" VerticalAlignment="Top"
                      Width="280" Height="34"/>
@@ -174,7 +174,7 @@
             <Button x:Name="btnSignUp" Style="{StaticResource BtnFlat}"
                     Content="{x:Static language:Lang.btnSignUpText}"
                     HorizontalAlignment="Center" Margin="0,344,0,0" VerticalAlignment="Top"
-                    Width="188" Height="50" Click="BtnSignUp_Click" FontSize="24"/>
+                    Width="188" Height="50" Click="BtnSignUp_Click" FontSize="20"/>
         </Grid>
     </Grid>
 </Page>

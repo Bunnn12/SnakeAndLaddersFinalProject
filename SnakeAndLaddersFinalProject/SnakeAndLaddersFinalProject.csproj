@@ -87,12 +87,24 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="DialogBasicWindow.xaml.cs">
+      <DependentUpon>DialogBasicWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Globalization\LocalizationManager.cs" />
     <Compile Include="Pages\AddFriendsPage.xaml.cs">
       <DependentUpon>AddFriendsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ChatPage.xaml.cs">
       <DependentUpon>ChatPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DialogPages\AlertDialogPage.xaml.cs">
+      <DependentUpon>AlertDialogPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DialogPages\ErrorDialogPage.xaml.cs">
+      <DependentUpon>ErrorDialogPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DialogPages\InformationDialogPage.xaml.cs">
+      <DependentUpon>InformationDialogPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\EmailVerificationPage.xaml.cs">
       <DependentUpon>EmailVerificationPage.xaml</DependentUpon>
@@ -151,6 +163,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="DialogBasicWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\AddFriendsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -158,6 +174,18 @@
     <Page Include="Pages\ChatPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DialogPages\AlertDialogPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DialogPages\ErrorDialogPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DialogPages\InformationDialogPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\EmailVerificationPage.xaml">
       <SubType>Designer</SubType>
@@ -347,6 +375,7 @@
     <Resource Include="Assets\Images\BotonImg.png" />
     <Resource Include="Assets\Images\Icons\Friends.png" />
     <Resource Include="Assets\Images\Backgrounds\littleBackground.png" />
+    <Resource Include="Assets\Images\Backgrounds\DialogBackground.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

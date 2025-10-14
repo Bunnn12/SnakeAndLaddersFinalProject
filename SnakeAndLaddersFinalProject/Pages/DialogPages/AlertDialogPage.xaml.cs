@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,29 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-
-
-namespace SnakeAndLaddersFinalProject
+namespace SnakeAndLaddersFinalProject.Pages.DialogPages
 {
-   
-    public partial class BasicWindow : Window
+    /// <summary>
+    /// Lógica de interacción para AlertDialogPage.xaml
+    /// </summary>
+    public partial class AlertDialogPage : Page
     {
-        public BasicWindow()
+        public AlertDialogPage()
         {
             InitializeComponent();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            var page = new SnakeAndLaddersFinalProject.Pages.LoginPage();
-
-            MainFrame.Navigate(page);
-
-  
-            MainFrame.Navigate(new Pages.LoginPage());
-
         }
     }
 }
