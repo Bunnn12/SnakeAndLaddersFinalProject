@@ -54,7 +54,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             var client = new AuthService.AuthServiceClient("BasicHttpBinding_IAuthService");
             try
             {
-                var res = await Task.Run(() => client.Login(dto));
+                var res = await Task.Run(() =>client.Login(dto));
                 if (res.Success)
                 {
                     ShowInfo(T("UiLoginOk"));
