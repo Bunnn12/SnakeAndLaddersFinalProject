@@ -5,8 +5,11 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
       xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
-      mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800" Title="SignUpPage"
-      SnapsToDevicePixels="True" TextOptions.TextRenderingMode="Aliased">
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SignUpPage"
+      SnapsToDevicePixels="True"
+      TextOptions.TextRenderingMode="Aliased">
 
     <Page.Resources>
 
@@ -17,16 +20,19 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
 
-        <!-- Label de formulario (misma tipografía que Inventory) -->
         <Style x:Key="FormLabel" TargetType="Label">
-            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontFamily" Value="{StaticResource Font.MinecraftStandard}"/>
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Foreground" Value="#FFF8F0"/>
+            <!-- Nitidez para pixel font -->
+            <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+            <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+            <Setter Property="UseLayoutRounding" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
         </Style>
 
-        <!-- TextBox sin borde azul; hover/focus personalizados -->
+        <!-- TextBox redondeado -->
         <Style x:Key="FormTextBox" TargetType="TextBox">
-            <!-- base -->
             <Setter Property="FontFamily" Value="Consolas"/>
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Foreground" Value="#FFF8F0"/>
@@ -37,8 +43,6 @@
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Padding" Value="10,6"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-            <!-- quita adorno azul -->
-            <!-- template para controlar colores -->
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
@@ -46,16 +50,15 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
                                 SnapsToDevicePixels="True">
                             <ScrollViewer x:Name="PART_ContentHost"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <!-- Hover -->
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Bd" Property="BorderBrush" Value="#F28C28"/>
                                 <!-- Naranja -->
                             </Trigger>
-                            <!-- Focus (sustituye el azul) -->
                             <Trigger Property="IsKeyboardFocused" Value="True">
                                 <Setter TargetName="Bd" Property="BorderBrush" Value="#FBE18C"/>
                                 <!-- Amarillo claro -->
@@ -70,7 +73,7 @@
             </Setter>
         </Style>
 
-        <!-- PasswordBox con el mismo comportamiento -->
+        <!-- PasswordBox redondeado -->
         <Style x:Key="FormPasswordBox" TargetType="PasswordBox">
             <Setter Property="FontFamily" Value="Consolas"/>
             <Setter Property="FontSize" Value="16"/>
@@ -87,6 +90,7 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
                                 SnapsToDevicePixels="True">
                             <ScrollViewer x:Name="PART_ContentHost"/>
                         </Border>
@@ -134,38 +138,39 @@
             <!-- Título -->
             <Label x:Name="lblTitleSignUp" Style="{StaticResource TitleLabel}"
                    Content="{x:Static language:Lang.btnSignUpText}"
-                   HorizontalAlignment="Left" Margin="268,16,0,0" VerticalAlignment="Top" FontSize="38" Foreground="#FFF2C230"/>
+                   HorizontalAlignment="Left" Margin="268,16,0,0" VerticalAlignment="Top"
+                   FontSize="36" Foreground="#FFF2C230"/>
 
             <!-- Formulario -->
             <!-- Fila 1 -->
             <Label Style="{StaticResource FormLabel}" Content="{x:Static language:Lang.txtNameOfUserText}"
-                   HorizontalAlignment="Left" Margin="136,109,0,0" VerticalAlignment="Top" FontSize="20"/>
+                   HorizontalAlignment="Left" Margin="136,109,0,0" VerticalAlignment="Top" FontSize="12"/>
             <TextBox x:Name="txtNameOfUser" Style="{StaticResource FormTextBox}"
                      HorizontalAlignment="Left" Margin="136,147,0,0" VerticalAlignment="Top"
                      Width="180" Height="32"/>
 
             <Label Style="{StaticResource FormLabel}" Content="{x:Static language:Lang.txtLastNameOfUserText}"
-                   HorizontalAlignment="Left" Margin="459,109,0,0" VerticalAlignment="Top" FontSize="20"/>
+                   HorizontalAlignment="Left" Margin="459,109,0,0" VerticalAlignment="Top" FontSize="12"/>
             <TextBox x:Name="txtLastname" Style="{StaticResource FormTextBox}"
                      HorizontalAlignment="Left" Margin="459,147,0,0" VerticalAlignment="Top"
                      Width="170" Height="32"/>
 
             <!-- Fila 2 -->
             <Label Style="{StaticResource FormLabel}" Content="{x:Static language:Lang.txtUsernameText}"
-                   HorizontalAlignment="Left" Margin="136,192,0,0" VerticalAlignment="Top" FontSize="20"/>
+                   HorizontalAlignment="Left" Margin="136,192,0,0" VerticalAlignment="Top" FontSize="12"/>
             <TextBox x:Name="txtUsername" Style="{StaticResource FormTextBox}"
                      HorizontalAlignment="Left" Margin="136,230,0,0" VerticalAlignment="Top"
                      Width="180" Height="32"/>
 
             <Label Style="{StaticResource FormLabel}" Content="{x:Static language:Lang.pwdPasswordText}"
-                   HorizontalAlignment="Left" Margin="459,187,0,0" VerticalAlignment="Top" FontSize="20"/>
+                   HorizontalAlignment="Left" Margin="459,187,0,0" VerticalAlignment="Top" FontSize="12"/>
             <PasswordBox x:Name="pwdPassword" Style="{StaticResource FormPasswordBox}"
                          HorizontalAlignment="Left" Margin="459,230,0,0" VerticalAlignment="Top"
                          Width="170" Height="32"/>
 
             <!-- Email a lo ancho -->
             <Label Style="{StaticResource FormLabel}" Content="{x:Static language:Lang.txtRegEmailText}"
-                   HorizontalAlignment="Center" Margin="0,267,0,0" VerticalAlignment="Top" FontSize="20"/>
+                   HorizontalAlignment="Center" Margin="0,267,0,0" VerticalAlignment="Top" FontSize="12"/>
             <TextBox x:Name="txtEmail" Style="{StaticResource FormTextBox}"
                      HorizontalAlignment="Left" Margin="258,305,0,0" VerticalAlignment="Top"
                      Width="280" Height="34"/>
