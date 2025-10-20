@@ -383,6 +383,8 @@
     <Resource Include="Assets\Images\Icons\Friends.png" />
     <Resource Include="Assets\Images\Backgrounds\littleBackground.png" />
     <Resource Include="Assets\Images\Backgrounds\DialogBackground.png" />
+    <Resource Include="Assets\Images\Backgrounds\margen dorado.png" />
+    <Resource Include="Assets\Images\Backgrounds\marcoCafe.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
