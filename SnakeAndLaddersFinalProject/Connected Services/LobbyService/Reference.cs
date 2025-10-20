@@ -260,6 +260,655 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="JoinLobbyRequest", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class JoinLobbyRequest : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CodigoPartidaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string UserNameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CodigoPartida {
+            get {
+                return this.CodigoPartidaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CodigoPartidaField, value) != true)) {
+                    this.CodigoPartidaField = value;
+                    this.RaisePropertyChanged("CodigoPartida");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserId {
+            get {
+                return this.UserIdField;
+            }
+            set {
+                if ((this.UserIdField.Equals(value) != true)) {
+                    this.UserIdField = value;
+                    this.RaisePropertyChanged("UserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string UserName {
+            get {
+                return this.UserNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UserNameField, value) != true)) {
+                    this.UserNameField = value;
+                    this.RaisePropertyChanged("UserName");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="JoinLobbyResponse", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class JoinLobbyResponse : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string FailureReasonField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private SnakeAndLaddersFinalProject.LobbyService.LobbyInfo LobbyField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool SuccessField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string FailureReason {
+            get {
+                return this.FailureReasonField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.FailureReasonField, value) != true)) {
+                    this.FailureReasonField = value;
+                    this.RaisePropertyChanged("FailureReason");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public SnakeAndLaddersFinalProject.LobbyService.LobbyInfo Lobby {
+            get {
+                return this.LobbyField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LobbyField, value) != true)) {
+                    this.LobbyField = value;
+                    this.RaisePropertyChanged("Lobby");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Success {
+            get {
+                return this.SuccessField;
+            }
+            set {
+                if ((this.SuccessField.Equals(value) != true)) {
+                    this.SuccessField = value;
+                    this.RaisePropertyChanged("Success");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="LobbyInfo", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class LobbyInfo : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CodigoPartidaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime ExpiresAtUtcField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int HostUserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string HostUserNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private byte MaxPlayersField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int PartidaIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private SnakeAndLaddersFinalProject.LobbyService.LobbyMember[] PlayersField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private SnakeAndLaddersFinalProject.LobbyService.LobbyStatus StatusField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CodigoPartida {
+            get {
+                return this.CodigoPartidaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CodigoPartidaField, value) != true)) {
+                    this.CodigoPartidaField = value;
+                    this.RaisePropertyChanged("CodigoPartida");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime ExpiresAtUtc {
+            get {
+                return this.ExpiresAtUtcField;
+            }
+            set {
+                if ((this.ExpiresAtUtcField.Equals(value) != true)) {
+                    this.ExpiresAtUtcField = value;
+                    this.RaisePropertyChanged("ExpiresAtUtc");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int HostUserId {
+            get {
+                return this.HostUserIdField;
+            }
+            set {
+                if ((this.HostUserIdField.Equals(value) != true)) {
+                    this.HostUserIdField = value;
+                    this.RaisePropertyChanged("HostUserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string HostUserName {
+            get {
+                return this.HostUserNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.HostUserNameField, value) != true)) {
+                    this.HostUserNameField = value;
+                    this.RaisePropertyChanged("HostUserName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public byte MaxPlayers {
+            get {
+                return this.MaxPlayersField;
+            }
+            set {
+                if ((this.MaxPlayersField.Equals(value) != true)) {
+                    this.MaxPlayersField = value;
+                    this.RaisePropertyChanged("MaxPlayers");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int PartidaId {
+            get {
+                return this.PartidaIdField;
+            }
+            set {
+                if ((this.PartidaIdField.Equals(value) != true)) {
+                    this.PartidaIdField = value;
+                    this.RaisePropertyChanged("PartidaId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public SnakeAndLaddersFinalProject.LobbyService.LobbyMember[] Players {
+            get {
+                return this.PlayersField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PlayersField, value) != true)) {
+                    this.PlayersField = value;
+                    this.RaisePropertyChanged("Players");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public SnakeAndLaddersFinalProject.LobbyService.LobbyStatus Status {
+            get {
+                return this.StatusField;
+            }
+            set {
+                if ((this.StatusField.Equals(value) != true)) {
+                    this.StatusField = value;
+                    this.RaisePropertyChanged("Status");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="LobbyMember", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class LobbyMember : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsHostField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime JoinedAtUtcField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string UserNameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsHost {
+            get {
+                return this.IsHostField;
+            }
+            set {
+                if ((this.IsHostField.Equals(value) != true)) {
+                    this.IsHostField = value;
+                    this.RaisePropertyChanged("IsHost");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime JoinedAtUtc {
+            get {
+                return this.JoinedAtUtcField;
+            }
+            set {
+                if ((this.JoinedAtUtcField.Equals(value) != true)) {
+                    this.JoinedAtUtcField = value;
+                    this.RaisePropertyChanged("JoinedAtUtc");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserId {
+            get {
+                return this.UserIdField;
+            }
+            set {
+                if ((this.UserIdField.Equals(value) != true)) {
+                    this.UserIdField = value;
+                    this.RaisePropertyChanged("UserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string UserName {
+            get {
+                return this.UserNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UserNameField, value) != true)) {
+                    this.UserNameField = value;
+                    this.RaisePropertyChanged("UserName");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="LobbyStatus", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    public enum LobbyStatus : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Waiting = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Starting = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        InMatch = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Closed = 3,
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="LeaveLobbyRequest", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class LeaveLobbyRequest : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int PartidaIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int PartidaId {
+            get {
+                return this.PartidaIdField;
+            }
+            set {
+                if ((this.PartidaIdField.Equals(value) != true)) {
+                    this.PartidaIdField = value;
+                    this.RaisePropertyChanged("PartidaId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserId {
+            get {
+                return this.UserIdField;
+            }
+            set {
+                if ((this.UserIdField.Equals(value) != true)) {
+                    this.UserIdField = value;
+                    this.RaisePropertyChanged("UserId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="OperationResult", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class OperationResult : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MessageField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool SuccessField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Message {
+            get {
+                return this.MessageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
+                    this.MessageField = value;
+                    this.RaisePropertyChanged("Message");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Success {
+            get {
+                return this.SuccessField;
+            }
+            set {
+                if ((this.SuccessField.Equals(value) != true)) {
+                    this.SuccessField = value;
+                    this.RaisePropertyChanged("Success");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="StartMatchRequest", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class StartMatchRequest : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int HostUserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int PartidaIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int HostUserId {
+            get {
+                return this.HostUserIdField;
+            }
+            set {
+                if ((this.HostUserIdField.Equals(value) != true)) {
+                    this.HostUserIdField = value;
+                    this.RaisePropertyChanged("HostUserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int PartidaId {
+            get {
+                return this.PartidaIdField;
+            }
+            set {
+                if ((this.PartidaIdField.Equals(value) != true)) {
+                    this.PartidaIdField = value;
+                    this.RaisePropertyChanged("PartidaId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="GetLobbyInfoRequest", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class GetLobbyInfoRequest : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int PartidaIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int PartidaId {
+            get {
+                return this.PartidaIdField;
+            }
+            set {
+                if ((this.PartidaIdField.Equals(value) != true)) {
+                    this.PartidaIdField = value;
+                    this.RaisePropertyChanged("PartidaId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="LobbyService.ILobbyService")]
     public interface ILobbyService {
@@ -270,6 +919,34 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/CreateGame", ReplyAction="http://tempuri.org/ILobbyService/CreateGameResponse")]
         System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.LobbyService.CreateGameResponse> CreateGameAsync(SnakeAndLaddersFinalProject.LobbyService.CreateGameRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/JoinLobby", ReplyAction="http://tempuri.org/ILobbyService/JoinLobbyResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(SnakeAndLaddersFinalProject.LobbyService.ServiceFault), Action="http://tempuri.org/ILobbyService/JoinLobbyServiceFaultFault", Name="ServiceFault", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Faults")]
+        SnakeAndLaddersFinalProject.LobbyService.JoinLobbyResponse JoinLobby(SnakeAndLaddersFinalProject.LobbyService.JoinLobbyRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/JoinLobby", ReplyAction="http://tempuri.org/ILobbyService/JoinLobbyResponse")]
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.LobbyService.JoinLobbyResponse> JoinLobbyAsync(SnakeAndLaddersFinalProject.LobbyService.JoinLobbyRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/LeaveLobby", ReplyAction="http://tempuri.org/ILobbyService/LeaveLobbyResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(SnakeAndLaddersFinalProject.LobbyService.ServiceFault), Action="http://tempuri.org/ILobbyService/LeaveLobbyServiceFaultFault", Name="ServiceFault", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Faults")]
+        SnakeAndLaddersFinalProject.LobbyService.OperationResult LeaveLobby(SnakeAndLaddersFinalProject.LobbyService.LeaveLobbyRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/LeaveLobby", ReplyAction="http://tempuri.org/ILobbyService/LeaveLobbyResponse")]
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.LobbyService.OperationResult> LeaveLobbyAsync(SnakeAndLaddersFinalProject.LobbyService.LeaveLobbyRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/StartMatch", ReplyAction="http://tempuri.org/ILobbyService/StartMatchResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(SnakeAndLaddersFinalProject.LobbyService.ServiceFault), Action="http://tempuri.org/ILobbyService/StartMatchServiceFaultFault", Name="ServiceFault", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Faults")]
+        SnakeAndLaddersFinalProject.LobbyService.OperationResult StartMatch(SnakeAndLaddersFinalProject.LobbyService.StartMatchRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/StartMatch", ReplyAction="http://tempuri.org/ILobbyService/StartMatchResponse")]
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.LobbyService.OperationResult> StartMatchAsync(SnakeAndLaddersFinalProject.LobbyService.StartMatchRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/GetLobbyInfo", ReplyAction="http://tempuri.org/ILobbyService/GetLobbyInfoResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(SnakeAndLaddersFinalProject.LobbyService.ServiceFault), Action="http://tempuri.org/ILobbyService/GetLobbyInfoServiceFaultFault", Name="ServiceFault", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Faults")]
+        SnakeAndLaddersFinalProject.LobbyService.LobbyInfo GetLobbyInfo(SnakeAndLaddersFinalProject.LobbyService.GetLobbyInfoRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/GetLobbyInfo", ReplyAction="http://tempuri.org/ILobbyService/GetLobbyInfoResponse")]
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.LobbyService.LobbyInfo> GetLobbyInfoAsync(SnakeAndLaddersFinalProject.LobbyService.GetLobbyInfoRequest request);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -305,6 +982,38 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         
         public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.LobbyService.CreateGameResponse> CreateGameAsync(SnakeAndLaddersFinalProject.LobbyService.CreateGameRequest request) {
             return base.Channel.CreateGameAsync(request);
+        }
+        
+        public SnakeAndLaddersFinalProject.LobbyService.JoinLobbyResponse JoinLobby(SnakeAndLaddersFinalProject.LobbyService.JoinLobbyRequest request) {
+            return base.Channel.JoinLobby(request);
+        }
+        
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.LobbyService.JoinLobbyResponse> JoinLobbyAsync(SnakeAndLaddersFinalProject.LobbyService.JoinLobbyRequest request) {
+            return base.Channel.JoinLobbyAsync(request);
+        }
+        
+        public SnakeAndLaddersFinalProject.LobbyService.OperationResult LeaveLobby(SnakeAndLaddersFinalProject.LobbyService.LeaveLobbyRequest request) {
+            return base.Channel.LeaveLobby(request);
+        }
+        
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.LobbyService.OperationResult> LeaveLobbyAsync(SnakeAndLaddersFinalProject.LobbyService.LeaveLobbyRequest request) {
+            return base.Channel.LeaveLobbyAsync(request);
+        }
+        
+        public SnakeAndLaddersFinalProject.LobbyService.OperationResult StartMatch(SnakeAndLaddersFinalProject.LobbyService.StartMatchRequest request) {
+            return base.Channel.StartMatch(request);
+        }
+        
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.LobbyService.OperationResult> StartMatchAsync(SnakeAndLaddersFinalProject.LobbyService.StartMatchRequest request) {
+            return base.Channel.StartMatchAsync(request);
+        }
+        
+        public SnakeAndLaddersFinalProject.LobbyService.LobbyInfo GetLobbyInfo(SnakeAndLaddersFinalProject.LobbyService.GetLobbyInfoRequest request) {
+            return base.Channel.GetLobbyInfo(request);
+        }
+        
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.LobbyService.LobbyInfo> GetLobbyInfoAsync(SnakeAndLaddersFinalProject.LobbyService.GetLobbyInfoRequest request) {
+            return base.Channel.GetLobbyInfoAsync(request);
         }
     }
 }

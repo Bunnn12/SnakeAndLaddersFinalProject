@@ -32,12 +32,18 @@ C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProj
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Properties\Langs\Lang.resx
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Properties\Resources.resx
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Properties\Langs\Lang.es-MX.resx
-C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\Auth.xsd
-C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\Auth1.xsd
-C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\Auth2.xsd
-C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\Auth3.xsd
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\AuthService.wsdl
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\item.xsd
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\item1.xsd
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\item2.xsd
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\item3.xsd
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\SnakeAndLaddersFinalProject.AuthService.AuthResult.datasource
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\item.xsd
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\item1.xsd
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\item2.xsd
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\item3.xsd
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\LobbyService.wsdl
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\SnakeAndLaddersFinalProject.LobbyService.CreateGameResponse.datasource
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\UserService\SnakeAndLaddersFinalProject.UserService.AccountDto.datasource
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\UserService\SnakeAndLaddersFinalProject.UserService.ProfilePhotoDto.datasource
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\UserService\User.xsd
@@ -54,7 +60,11 @@ C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProj
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\Reference.svcmap
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\configuration.svcinfo
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\configuration91.svcinfo
-C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\Auth.disco
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\item.disco
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\Reference.svcmap
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\configuration.svcinfo
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\configuration91.svcinfo
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\item.disco
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\BasicWindow.xaml
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\DialogBasicWindow.xaml
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Pages\AddFriendsPage.xaml
@@ -93,6 +103,8 @@ C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProj
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Assets\Images\Icons\Friends.png
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Assets\Images\Backgrounds\littleBackground.png
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Assets\Images\Backgrounds\DialogBackground.png
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Assets\Images\Backgrounds\margen dorado.png
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Assets\Images\Backgrounds\marcoCafe.png
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Assets\Images\StartImg.png
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Assets\Cursors\pixel link.cur
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Assets\Cursors\pixel.cur

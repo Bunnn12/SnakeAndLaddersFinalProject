@@ -46,11 +46,67 @@
   <wsdl:message name="ILobbyService_CreateGame_ServiceFaultFault_FaultMessage">
     <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Faults" name="detail" element="q1:ServiceFault" />
   </wsdl:message>
+  <wsdl:message name="ILobbyService_JoinLobby_InputMessage">
+    <wsdl:part name="parameters" element="tns:JoinLobby" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_JoinLobby_OutputMessage">
+    <wsdl:part name="parameters" element="tns:JoinLobbyResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_JoinLobby_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Faults" name="detail" element="q2:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_LeaveLobby_InputMessage">
+    <wsdl:part name="parameters" element="tns:LeaveLobby" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_LeaveLobby_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LeaveLobbyResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_LeaveLobby_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Faults" name="detail" element="q3:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_StartMatch_InputMessage">
+    <wsdl:part name="parameters" element="tns:StartMatch" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_StartMatch_OutputMessage">
+    <wsdl:part name="parameters" element="tns:StartMatchResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_StartMatch_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Faults" name="detail" element="q4:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_GetLobbyInfo_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLobbyInfo" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_GetLobbyInfo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLobbyInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_GetLobbyInfo_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Faults" name="detail" element="q5:ServiceFault" />
+  </wsdl:message>
   <wsdl:portType name="ILobbyService">
     <wsdl:operation name="CreateGame">
       <wsdl:input wsaw:Action="http://tempuri.org/ILobbyService/CreateGame" message="tns:ILobbyService_CreateGame_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ILobbyService/CreateGameResponse" message="tns:ILobbyService_CreateGame_OutputMessage" />
       <wsdl:fault wsaw:Action="http://tempuri.org/ILobbyService/CreateGameServiceFaultFault" name="ServiceFaultFault" message="tns:ILobbyService_CreateGame_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="JoinLobby">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILobbyService/JoinLobby" message="tns:ILobbyService_JoinLobby_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILobbyService/JoinLobbyResponse" message="tns:ILobbyService_JoinLobby_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ILobbyService/JoinLobbyServiceFaultFault" name="ServiceFaultFault" message="tns:ILobbyService_JoinLobby_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LeaveLobby">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILobbyService/LeaveLobby" message="tns:ILobbyService_LeaveLobby_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILobbyService/LeaveLobbyResponse" message="tns:ILobbyService_LeaveLobby_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ILobbyService/LeaveLobbyServiceFaultFault" name="ServiceFaultFault" message="tns:ILobbyService_LeaveLobby_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="StartMatch">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILobbyService/StartMatch" message="tns:ILobbyService_StartMatch_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILobbyService/StartMatchResponse" message="tns:ILobbyService_StartMatch_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ILobbyService/StartMatchServiceFaultFault" name="ServiceFaultFault" message="tns:ILobbyService_StartMatch_ServiceFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLobbyInfo">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILobbyService/GetLobbyInfo" message="tns:ILobbyService_GetLobbyInfo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILobbyService/GetLobbyInfoResponse" message="tns:ILobbyService_GetLobbyInfo_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ILobbyService/GetLobbyInfoServiceFaultFault" name="ServiceFaultFault" message="tns:ILobbyService_GetLobbyInfo_ServiceFaultFault_FaultMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_ILobbyService" type="tns:ILobbyService">
@@ -67,12 +123,108 @@
         <soap:fault use="literal" name="ServiceFaultFault" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="JoinLobby">
+      <soap:operation soapAction="http://tempuri.org/ILobbyService/JoinLobby" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault use="literal" name="ServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="LeaveLobby">
+      <soap:operation soapAction="http://tempuri.org/ILobbyService/LeaveLobby" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault use="literal" name="ServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="StartMatch">
+      <soap:operation soapAction="http://tempuri.org/ILobbyService/StartMatch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault use="literal" name="ServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetLobbyInfo">
+      <soap:operation soapAction="http://tempuri.org/ILobbyService/GetLobbyInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault use="literal" name="ServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="NetTcpBinding_ILobbyService" type="tns:ILobbyService">
     <wsp:PolicyReference URI="#NetTcpBinding_ILobbyService_policy" />
     <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
     <wsdl:operation name="CreateGame">
       <soap12:operation soapAction="http://tempuri.org/ILobbyService/CreateGame" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap12:fault use="literal" name="ServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="JoinLobby">
+      <soap12:operation soapAction="http://tempuri.org/ILobbyService/JoinLobby" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap12:fault use="literal" name="ServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="LeaveLobby">
+      <soap12:operation soapAction="http://tempuri.org/ILobbyService/LeaveLobby" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap12:fault use="literal" name="ServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="StartMatch">
+      <soap12:operation soapAction="http://tempuri.org/ILobbyService/StartMatch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap12:fault use="literal" name="ServiceFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetLobbyInfo">
+      <soap12:operation soapAction="http://tempuri.org/ILobbyService/GetLobbyInfo" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

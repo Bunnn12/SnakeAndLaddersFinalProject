@@ -100,6 +100,9 @@
       <DependentUpon>DialogBasicWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Globalization\LocalizationManager.cs" />
+    <Compile Include="Infrastructure\AsyncCommand.cs" />
+    <Compile Include="Infrastructure\RelayCommand.cs" />
+    <Compile Include="Navigation\LobbyNavigationArgs.cs" />
     <Compile Include="Pages\AddFriendsPage.xaml.cs">
       <DependentUpon>AddFriendsPage.xaml</DependentUpon>
     </Compile>
@@ -164,6 +167,8 @@
     <Compile Include="SkinsWindow.xaml.cs">
       <DependentUpon>SkinsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\LobbyViewModel.cs" />
+    <Compile Include="ViewModels\Models\LobbyMemberViewModel.cs" />
     <Page Include="BasicWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -333,6 +338,15 @@
     </None>
     <None Include="Connected Services\LobbyService\LobbyService.wsdl" />
     <None Include="Connected Services\LobbyService\SnakeAndLaddersFinalProject.LobbyService.CreateGameResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\LobbyService\SnakeAndLaddersFinalProject.LobbyService.JoinLobbyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\LobbyService\SnakeAndLaddersFinalProject.LobbyService.LobbyInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\LobbyService\SnakeAndLaddersFinalProject.LobbyService.OperationResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\UserService\SnakeAndLaddersFinalProject.UserService.AccountDto.datasource">

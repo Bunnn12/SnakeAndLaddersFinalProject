@@ -1,23 +1,72 @@
 ﻿<Page x:Class="SnakeAndLaddersFinalProject.Pages.LobbyPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
+      xmlns:vm="clr-namespace:SnakeAndLaddersFinalProject.ViewModels;assembly=SnakeAndLaddersFinalProject"
+      mc:Ignorable="d"
+      d:DesignWidth="1152" d:DesignHeight="768"
       Title="LobbyPage">
 
-    <Grid>
-        <Label Content="{x:Static language:Lang.lblLobby}" HorizontalAlignment="Left" Margin="332,76,0,0" VerticalAlignment="Top"/>
-        <Button Content="{x:Static language:Lang.btnStartMatchText}" HorizontalAlignment="Left" Margin="218,225,0,0" VerticalAlignment="Top" Width="86"/>
-        <Button Content="{x:Static language:Lang.btnExitMatchText}" HorizontalAlignment="Left" Margin="476,225,0,0" VerticalAlignment="Top" Width="90"/>
-        <Button Content="{x:Static language:Lang.chatTittle}" HorizontalAlignment="Left" Margin="526,312,0,0" VerticalAlignment="Top"/>
-        <Button HorizontalAlignment="Left" Margin="89,55,0,0" VerticalAlignment="Top">
-            <Label Content="Label"/>
-        </Button>
+    <Page.Resources>
+        <!-- Converter de WPF clásico; en 4.7 hay que instanciarlo -->
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+
+        <!-- Estilo básico de botones de acción (sustituye 'Spacing') -->
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="MinHeight" Value="36"/>
+        </Style>
+    </Page.Resources>
 
 
+
+    <Grid Margin="16">
+        <StackPanel>
+            <TextBlock Text="{x:Static language:Lang.lblLobby}"
+                       FontSize="24" FontWeight="SemiBold" />
+
+            <!-- Lista de miembros (máx. 4) -->
+            <ItemsControl ItemsSource="{Binding Members}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="10" Margin="0,6"
+                                CornerRadius="8"
+                                BorderBrush="#CCCCCC" BorderThickness="1">
+                            <DockPanel LastChildFill="True">
+                                <TextBlock Text="★" Margin="0,0,8,0" Foreground="Gold"
+                                           Visibility="{Binding IsHost, Converter={StaticResource BoolToVisibility}}"/>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding UserName}" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding JoinedAt, StringFormat='{}{0:HH:mm}'}"
+                                               Opacity="0.7" FontSize="12"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- Acciones -->
+            <StackPanel Orientation="Horizontal">
+                <Button Style="{StaticResource ActionButton}"
+                        Content="{x:Static language:Lang.btnStartMatchText}"
+                        Command="{Binding StartMatchCommand}"
+                        IsEnabled="{Binding CanStartMatch}"/>
+
+                <Button Style="{StaticResource ActionButton}"
+                        Content="{x:Static language:Lang.btnExitMatchText}"
+                        Command="{Binding LeaveLobbyCommand}"/>
+
+                <!-- Si aún no existe la clave en Lang, usa texto literal -->
+                <Button Style="{StaticResource ActionButton}"
+                        Content="Copiar enlace"
+                        Command="{Binding CopyInviteLinkCommand}"/>
+            </StackPanel>
+
+            <TextBlock Text="{Binding StatusText}" Opacity="0.85" Margin="0,8,0,0" Foreground="#FFF1EEEE"/>
+        </StackPanel>
     </Grid>
 </Page>

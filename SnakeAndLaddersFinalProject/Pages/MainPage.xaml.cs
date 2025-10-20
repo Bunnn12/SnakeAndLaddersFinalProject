@@ -1,23 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using SnakeAndLaddersFinalProject.Navigation;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
-    /// <summary>
-    /// Lógica de interacción para MainPage.xaml
-    /// </summary>
     public partial class MainPage : Page
     {
         public MainPage()
@@ -27,16 +14,41 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void btnCreateMatch_Click(object sender, RoutedEventArgs e)
         {
-
+            NavigateToLobby(new LobbyNavigationArgs { Mode = LobbyEntryMode.Create });
         }
 
         private void btnJoinMatch_Click(object sender, RoutedEventArgs e)
         {
+            return;
+        }
 
+        private void NavigateToLobby(LobbyNavigationArgs args)
+        {
+            var page = new LobbyPage(args);
+
+            if (NavigationService != null)
+            {
+                NavigationService.Navigate(page);
+                return;
+            }
+
+            var window = Application.Current.MainWindow as NavigationWindow;
+            if (window != null)
+                window.Navigate(page);
+            else
+                Application.Current.MainWindow.Content = page;
         }
 
         private void btnJoinMatch_Click_1(object sender, RoutedEventArgs e)
         {
+            var code = txtJoinCode.Text?.Trim();
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                MessageBox.Show("Escribe el código de la partida.", "Unirse", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            NavigateToLobby(new LobbyNavigationArgs { Mode = LobbyEntryMode.Join, JoinCode = code });
 
         }
     }

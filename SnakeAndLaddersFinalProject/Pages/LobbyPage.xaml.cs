@@ -1,29 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using SnakeAndLaddersFinalProject.Navigation;
+using SnakeAndLaddersFinalProject.ViewModels;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
-    /// <summary>
-    /// Lógica de interacción para LobbyPage.xaml
-    /// </summary>
     public partial class LobbyPage : Page
-
     {
-        public LobbyPage()
+        private readonly LobbyNavigationArgs _args;
+
+        // ctor por defecto, si lo necesitas en diseñador
+        public LobbyPage() : this(new LobbyNavigationArgs { Mode = LobbyEntryMode.Create }) { }
+
+        public LobbyPage(LobbyNavigationArgs args)
         {
             InitializeComponent();
+            _args = args ?? new LobbyNavigationArgs { Mode = LobbyEntryMode.Create };
+            this.DataContext = new LobbyViewModel();
+
+            Loaded += LobbyPage_Loaded;
+        }
+
+        private void LobbyPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as LobbyViewModel;
+            if (vm == null) return;
+
+            // Ejecuta automáticamente según el modo
+            if (_args.Mode == LobbyEntryMode.Create)
+            {
+                // Crea el lobby y entra como host
+                vm.CreateLobbyCommand.Execute(null);
+            }
+            else if (_args.Mode == LobbyEntryMode.Join)
+            {
+                if (!string.IsNullOrWhiteSpace(_args.JoinCode))
+                {
+                    vm.CodigoInput = _args.JoinCode.Trim();
+                    vm.JoinLobbyCommand.Execute(null);
+                }
+            }
         }
     }
 }

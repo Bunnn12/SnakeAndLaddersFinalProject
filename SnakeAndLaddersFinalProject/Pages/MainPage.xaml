@@ -247,6 +247,12 @@
                         Style="{StaticResource BtnMenu}"
                         Height="161" Margin="-20"
                         Content="{x:Static language:Lang.btnJoinMatchText}" Width="600" HorizontalAlignment="Right" Click="btnJoinMatch_Click_1"/>
+                <TextBlock Text="Código:" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#FFFBFBFB"/>
+                <TextBox x:Name="txtJoinCode" Width="180"/>
+                <Button Content="Unirse"
+          Style="{StaticResource BtnFlat}"
+          Margin="8,0,0,0"
+          Click="btnJoinMatch_Click"/>
             </StackPanel>
 
             <!-- Inferior -->
