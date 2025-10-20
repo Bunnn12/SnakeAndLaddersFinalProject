@@ -31,10 +31,10 @@
   </wsp:Policy>
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
-      <xsd:import schemaLocation="http://localhost:8085/Auth?xsd=xsd0" namespace="http://tempuri.org/" />
-      <xsd:import schemaLocation="http://localhost:8085/Auth?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://localhost:8085/Auth?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" />
-      <xsd:import schemaLocation="http://localhost:8085/Auth?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:8085/auth/?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:8085/auth/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8085/auth/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" />
+      <xsd:import schemaLocation="http://localhost:8085/auth/?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IAuthService_Register_InputMessage">
@@ -160,14 +160,14 @@
   </wsdl:binding>
   <wsdl:service name="AuthService">
     <wsdl:port name="BasicHttpBinding_IAuthService" binding="tns:BasicHttpBinding_IAuthService">
-      <soap:address location="http://localhost:8085/Auth" />
+      <soap:address location="http://localhost:8085/auth/" />
     </wsdl:port>
     <wsdl:port name="NetTcpBinding_IAuthService" binding="tns:NetTcpBinding_IAuthService">
-      <soap12:address location="net.tcp://localhost:8095/Auth" />
+      <soap12:address location="net.tcp://localhost:8095/auth/" />
       <wsa10:EndpointReference>
-        <wsa10:Address>net.tcp://localhost:8095/Auth</wsa10:Address>
+        <wsa10:Address>net.tcp://localhost:8095/auth/</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
-          <Upn>LAP-ASTRID\reino</Upn>
+          <Upn>LAPTOPIRENE\irene</Upn>
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>
