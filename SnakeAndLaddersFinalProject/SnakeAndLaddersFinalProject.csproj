@@ -86,6 +86,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Connected Services\LobbyService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\UserService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -278,20 +283,36 @@
     <Resource Include="Assets\Fonts\m04b.TTF" />
     <Resource Include="Assets\Fonts\MinecraftStandard.otf" />
     <Resource Include="Assets\Fonts\MinecraftStandardBold.otf" />
-    <None Include="Connected Services\AuthService\Auth.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\AuthService\Auth1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\AuthService\Auth2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\AuthService\Auth3.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Connected Services\AuthService\AuthService.wsdl" />
+    <None Include="Connected Services\AuthService\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AuthService\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AuthService\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AuthService\item3.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\AuthService\SnakeAndLaddersFinalProject.AuthService.AuthResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\LobbyService\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\LobbyService\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\LobbyService\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\LobbyService\item3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\LobbyService\LobbyService.wsdl" />
+    <None Include="Connected Services\LobbyService\SnakeAndLaddersFinalProject.LobbyService.CreateGameResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\UserService\SnakeAndLaddersFinalProject.UserService.AccountDto.datasource">
@@ -339,6 +360,7 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\AuthService\" />
+    <WCFMetadataStorage Include="Connected Services\LobbyService\" />
     <WCFMetadataStorage Include="Connected Services\UserService\" />
   </ItemGroup>
   <ItemGroup>
@@ -357,6 +379,20 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\AuthService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\AuthService\configuration.svcinfo" />
+    <None Include="Connected Services\AuthService\configuration91.svcinfo" />
+    <None Include="Connected Services\AuthService\item.disco" />
+    <None Include="Connected Services\LobbyService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\LobbyService\configuration.svcinfo" />
+    <None Include="Connected Services\LobbyService\configuration91.svcinfo" />
+    <None Include="Connected Services\LobbyService\item.disco" />
     <Resource Include="Pages\littleBackground.png" />
     <Resource Include="Assets\Images\BackgroundMainWindow.png" />
     <Resource Include="Assets\Images\BotonImg.png" />
@@ -371,13 +407,6 @@
     <Content Include="Assets\Videos\StartPageNightVideo.mp4">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Connected Services\AuthService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Connected Services\AuthService\configuration.svcinfo" />
-    <None Include="Connected Services\AuthService\configuration91.svcinfo" />
-    <None Include="Connected Services\AuthService\Auth.disco" />
     <Resource Include="Assets\Images\StartImg.png" />
     <Resource Include="Assets\Cursors\pixel link.cur" />
     <Resource Include="Assets\Cursors\pixel.cur" />

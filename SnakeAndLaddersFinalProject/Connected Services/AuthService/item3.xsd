@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:8085/Auth?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" />
+  <xs:import schemaLocation="http://localhost:8085/auth/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" />
   <xs:element name="Register">
     <xs:complexType>
       <xs:sequence>

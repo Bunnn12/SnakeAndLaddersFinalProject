@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="ff255e35-0210-408c-b37d-9907118b95e5" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8085/lobby/" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="LobbyService.wsdl" MetadataType="Wsdl" ID="3cf6aff1-810e-4625-a355-04b6f559c574" SourceId="1" SourceUrl="http://localhost:8085/lobby/?wsdl" />
+    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="1d859bb3-6f86-4c22-994b-0d789d3318ed" SourceId="1" SourceUrl="http://localhost:8085/lobby/?xsd=xsd0" />
+    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="7cc6d529-8cbc-43d1-a304-254540c2f32d" SourceId="1" SourceUrl="http://localhost:8085/lobby/?xsd=xsd1" />
+    <MetadataFile FileName="item2.xsd" MetadataType="Schema" ID="e1b1debb-8b24-40bf-a1ac-c3188865a90a" SourceId="1" SourceUrl="http://localhost:8085/lobby/?xsd=xsd2" />
+    <MetadataFile FileName="item3.xsd" MetadataType="Schema" ID="e7368284-1e88-4241-a7b8-51beb1b72a98" SourceId="1" SourceUrl="http://localhost:8085/lobby/?xsd=xsd3" />
+    <MetadataFile FileName="item.disco" MetadataType="Disco" ID="dc45eda5-ed38-44f1-9bf9-7e69f21914d8" SourceId="1" SourceUrl="http://localhost:8085/lobby/?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
