@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
@@ -109,6 +110,52 @@ namespace SnakeAndLaddersFinalProject.Pages
                 case "Auth.CodeInvalid": return T("AuthCodeInvalid");
                 case "Auth.EmailSendFailed": return T("AuthEmailSendFailed");
                 default: return T("AuthServerError");
+            }
+        }
+
+        private void BtnPlayAsGuest_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // 1) If this Page is inside a NavigationService, use it.
+                if (NavigationService != null)
+                {
+                    NavigationService.Navigate(new MainPage());
+                    return;
+                }
+
+                // 2) If the Window hosts a Frame named "MainFrame", use it.
+                Window currentWindow = Window.GetWindow(this);
+                var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
+                if (mainFrame != null)
+                {
+                    mainFrame.Navigate(new MainPage());
+                    return;
+                }
+
+                // 3) Fallback: open a NavigationWindow and navigate to MainPage.
+                var navWindow = new NavigationWindow { ShowsNavigationUI = true };
+                navWindow.Navigate(new MainPage());
+                navWindow.Show();
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Friendly message; no internal details.
+                MessageBox.Show(
+                    "Navigation is not available right now. Please try again.",
+                    "Navigation",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                // TODO: log ex if you have a logger configured.
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Unexpected error while navigating.",
+                    "Navigation Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                // TODO: log ex for diagnostics.
             }
         }
     }

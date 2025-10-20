@@ -190,20 +190,20 @@
          Style="{StaticResource TitleLabel}"
          Content="{x:Static language:Lang.btnLoginText}"
          Width="720"
-         Canvas.Left="70"
-         HorizontalContentAlignment="Center" HorizontalAlignment="Left" Canvas.Top="8" VerticalAlignment="Top"/>
+         Canvas.Left="34"
+         HorizontalContentAlignment="Center" HorizontalAlignment="Left" Canvas.Top="8" VerticalAlignment="Center"/>
 
         <!-- Settings (afuera) -->
         <Button x:Name="btnSettings"
           Style="{StaticResource BtnFlat}"
           Content="{x:Static language:Lang.btnSettingsText}"
           Width="166" Height="69" FontSize="20"
-          Canvas.Left="624" RenderTransformOrigin="0.999,0.626"/>
+          Canvas.Left="587" RenderTransformOrigin="0.999,0.626" Canvas.Top="-3"/>
 
         <!-- Marco (Border con imagen de fondo) -->
         <Border
           Width="720" Height="468"
-          Padding="110,84,110,96" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="34">
+          Padding="110,84,110,96" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="34" Canvas.Top="8">
             <Border.Background>
                 <ImageBrush
         ImageSource="pack://application:,,,/SnakeAndLaddersFinalProject;component/Assets/Images/Backgrounds/margen%20dorado.png"
@@ -247,7 +247,7 @@
               Content="{x:Static language:Lang.btnPlayAsGuestText}"
               Width="238" Height="54"
               TabIndex="3"
-              Canvas.Left="252" Canvas.Top="178" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+              Canvas.Left="252" Canvas.Top="178" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BtnPlayAsGuest_Click"/>
 
                 <!-- Links (solo texto) -->
                 <Button x:Name="btnForgottenPassword"

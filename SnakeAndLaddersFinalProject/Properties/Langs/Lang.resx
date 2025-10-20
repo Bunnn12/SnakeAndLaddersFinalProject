@@ -303,4 +303,7 @@
   <data name="UiResendCodeInFmt" xml:space="preserve">
     <value>Resend in {0}s</value>
   </data>
+  <data name="btnSendText" xml:space="preserve">
+    <value>Send</value>
+  </data>
 </root>

@@ -29,7 +29,7 @@
             ClipToBounds="True"
             BorderThickness="0"
             Background="{StaticResource DialogBackplateBrush}"
-            RenderOptions.BitmapScalingMode="NearestNeighbor">
+            RenderOptions.BitmapScalingMode="NearestNeighbor" Margin="0,0,132,103">
 
         <Grid Margin="16">
             <Frame x:Name="MainFrame"
