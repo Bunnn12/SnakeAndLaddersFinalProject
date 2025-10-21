@@ -7,9 +7,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
-
-// importa el namespace donde está tu DialogBasicWindow
 using SnakeAndLaddersFinalProject;
+using SnakeAndLaddersFinalProject.Authentication;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
@@ -44,23 +43,33 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private async void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
-            var id = txtUsername.Text.Trim();   // usuario O correo
-            var pwd = pwdPassword.Password;
+            var identifier = txtUsername.Text.Trim();   // usuario o correo
+            var password = pwdPassword.Password;
 
-            var errs = ValidateLogin(id, pwd);
+            var errs = ValidateLogin(identifier, password);
             if (errs.Any())
             {
                 ShowWarn(string.Join("\n", errs));
                 return;
             }
 
-            var dto = new AuthService.LoginDto { Email = id, Password = pwd }; // 'Email' = identificador
+            var dto = new AuthService.LoginDto { Email = identifier, Password = password };
             var client = new AuthService.AuthServiceClient("BasicHttpBinding_IAuthService");
+
             try
             {
+                // AuthResult (lo que expone tu servicio)
                 var res = await Task.Run(() => client.Login(dto));
+
                 if (res.Success)
                 {
+                    // Poblar sesión desde AuthResult
+                    SessionContext.Current.UserId = res.UserId ?? 0;
+                    SessionContext.Current.UserName = string.IsNullOrWhiteSpace(res.DisplayName)
+                        ? identifier
+                        : res.DisplayName;
+                    SessionContext.Current.Email = identifier.Contains("@") ? identifier : string.Empty;
+
                     ShowInfo(T("UiLoginOk"));
                     NavigationService?.Navigate(new MainPage());
                 }
@@ -68,6 +77,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 {
                     ShowWarn(MapAuth(res.Code, res.Meta));
                 }
+
                 client.Close();
             }
             catch (System.ServiceModel.EndpointNotFoundException)
@@ -97,23 +107,12 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void ShowDialog(string title, string message, DialogButtons buttons, string iconPackUri = null)
         {
-            // Owner: la ventana que contiene esta Page
             var owner = Window.GetWindow(this);
-
-            // Usa tu ventana personalizada. El texto se muestra en blanco (ya definido en el XAML de DialogBasicWindow).
-            _ = DialogBasicWindow.Show(
-                owner: owner,
-                title: title,
-                message: message,
-                buttons: buttons,
-                iconSource: iconPackUri // puede ser null
-            );
+            _ = DialogBasicWindow.Show(owner, title, message, buttons, iconPackUri);
         }
 
-        // Si tienes íconos, mapea una clave a su pack URI. Si no, devuelve null y no muestra icono.
         private static string GetIcon(string kind)
         {
-            // Ajusta rutas a tus assets si cambian
             switch (kind)
             {
                 case "warning": return "pack://application:,,,/Assets/Icons/warning.png";
@@ -135,7 +134,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 case "Auth.InvalidCredentials": return T("AuthInvalidCredentials");
                 case "Auth.ThrottleWait":
                     return string.Format(T("Auth_ThrottleWaitFmt"),
-                                         m.TryGetValue("seconds", out var s) ? s : "45");
+                        m.TryGetValue("seconds", out var s) ? s : "45");
                 case "Auth.CodeNotRequested": return T("AuthCodeNotRequested");
                 case "Auth.CodeExpired": return T("AuthCodeExpired");
                 case "Auth.CodeInvalid": return T("AuthCodeInvalid");
@@ -148,13 +147,18 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             try
             {
+                // Deja algo consistente en sesión
+                SessionContext.Current.UserId = 0;
+                SessionContext.Current.UserName = "Guest";
+                SessionContext.Current.Email = string.Empty;
+
                 if (NavigationService != null)
                 {
                     NavigationService.Navigate(new MainPage());
                     return;
                 }
 
-                Window currentWindow = Window.GetWindow(this);
+                var currentWindow = Window.GetWindow(this);
                 var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
                 if (mainFrame != null)
                 {

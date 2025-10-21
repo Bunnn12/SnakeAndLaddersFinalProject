@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using SnakeAndLaddersFinalProject.Authentication;          
 using SnakeAndLaddersFinalProject.Infrastructure;
 using SnakeAndLaddersFinalProject.ViewModels.Models;
 using SnakeAndLaddersFinalProject.LobbyService;
@@ -34,15 +35,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 if (_codigoInput == value) return;
                 _codigoInput = value;
                 OnPropertyChanged();
-                // habilita/deshabilita el botón de Join en tiempo real
                 (JoinLobbyCommand as AsyncCommand)?.RaiseCanExecuteChanged();
             }
         }
 
         public ObservableCollection<LobbyMemberViewModel> Members { get; } = new ObservableCollection<LobbyMemberViewModel>();
 
-        // ===== Datos de lobby (contrato usa int) =====
+        // ===== Datos de lobby/usuario =====
         public int CurrentUserId { get; private set; }
+        public string CurrentUserName { get; private set; }
+
         public int LobbyId { get; private set; }
         public int HostUserId { get; private set; }
         public string HostUserName { get; private set; }
@@ -65,27 +67,29 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public LobbyViewModel()
         {
-            // Identidad por instancia:
-            // 1) SNL_TEST_USER si existe (lo pones al lanzar cada .exe)
-            // 2) Si no, cae a "UserName-PID" para que cada proceso sea único
-            var nameEnv = Environment.GetEnvironmentVariable("SNL_TEST_USER");
-            var fallback = $"{Environment.UserName}-{Process.GetCurrentProcess().Id}";
-            var displayName = string.IsNullOrWhiteSpace(nameEnv) ? fallback : nameEnv.Trim();
-
-            CurrentUserId = Math.Abs(displayName.GetHashCode()); // int, estable por instancia
-            _displayName = displayName;
+            // 👇 Toma identidad desde el login (SessionContext). Fallback si entraste como invitado.
+            var sc = SessionContext.Current;
+            if (sc.IsAuthenticated)
+            {
+                CurrentUserId = sc.UserId;
+                CurrentUserName = string.IsNullOrWhiteSpace(sc.UserName) ? "Unknown" : sc.UserName.Trim();
+            }
+            else
+            {
+                // Fallback para “Invitado”: estable por proceso para pruebas locales
+                var fallbackName = $"Guest-{Environment.UserName}-{Process.GetCurrentProcess().Id}";
+                CurrentUserName = fallbackName;
+                CurrentUserId = Math.Abs(fallbackName.GetHashCode());
+            }
 
             CreateLobbyCommand = new AsyncCommand(CreateLobbyAsync);
             JoinLobbyCommand = new AsyncCommand(JoinLobbyAsync, () => !string.IsNullOrWhiteSpace(CodigoInput));
             StartMatchCommand = new AsyncCommand(StartMatchAsync, () => CanStartMatch);
             LeaveLobbyCommand = new AsyncCommand(LeaveLobbyAsync);
-            CopyInviteLinkCommand = new RelayCommand(_ => CopyInviteLink()); // <-- corregido
+            CopyInviteLinkCommand = new RelayCommand(_ => CopyInviteLink());
 
             _pollTimer.Tick += async (_, __) => await RefreshLobbyAsync();
         }
-
-        // guardamos el nombre a nivel VM
-        private readonly string _displayName;
 
         // ===== Flujo host: crear lobby =====
         private async Task CreateLobbyAsync()
@@ -107,7 +111,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     ExpiresAtUtc = res.ExpiresAtUtc;
 
                     Members.Clear();
-                    Members.Add(new LobbyMemberViewModel(CurrentUserId, _displayName, true, DateTime.Now));
+                    Members.Add(new LobbyMemberViewModel(CurrentUserId, CurrentUserName, true, DateTime.Now));
 
                     StatusText = $"Lobby creado. Código {CodigoPartida}. Expira {ExpiresAtUtc:HH:mm} UTC";
                 }
@@ -136,7 +140,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     {
                         CodigoPartida = code,
                         UserId = CurrentUserId,
-                        UserName = _displayName
+                        UserName = CurrentUserName            // 👈 manda el nombre real del login
                     });
 
                     if (!join.Success)
@@ -156,7 +160,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                     Members.SynchronizeWith(info.Players,
                         match: (vm, dto) => vm.UserId == dto.UserId,
-                        selector: dto => new LobbyMemberViewModel(dto.UserId, dto.UserName, dto.IsHost, dto.JoinedAtUtc),
+                        selector: (dto) => new LobbyMemberViewModel(dto.UserId, dto.UserName, dto.IsHost, dto.JoinedAtUtc),
                         update: (vm, dto) => vm.IsHost = dto.IsHost);
 
                     StatusText = $"Unido a {CodigoPartida}. Host: {HostUserName}. {Members.Count}/{MaxPlayers}";
@@ -200,7 +204,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                     Members.SynchronizeWith(info.Players,
                         match: (vm, dto) => vm.UserId == dto.UserId,
-                        selector: dto => new LobbyMemberViewModel(dto.UserId, dto.UserName, dto.IsHost, dto.JoinedAtUtc),
+                        selector: (dto) => new LobbyMemberViewModel(dto.UserId, dto.UserName, dto.IsHost, dto.JoinedAtUtc),
                         update: (vm, dto) => vm.IsHost = dto.IsHost);
 
                     StatusText = $"Lobby {CodigoPartida} — Host: {HostUserName} — {Members.Count}/{MaxPlayers} — {LobbyStatus}";

@@ -48,9 +48,21 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             try
             {
+                var vm = DataContext as LobbyViewModel;
+                int lobbyId = vm?.LobbyId ?? 0;
+
+                if (lobbyId <= 0)
+                {
+                    MessageBox.Show("Aún no hay un lobby activo. Crea o únete antes de abrir el chat.",
+                                    "Chat", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                var chatPage = new ChatPage(lobbyId);
+
                 if (NavigationService != null)
                 {
-                    NavigationService.Navigate(new ChatPage());
+                    NavigationService.Navigate(chatPage);
                     return;
                 }
 
@@ -58,12 +70,12 @@ namespace SnakeAndLaddersFinalProject.Pages
                 var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
                 if (mainFrame != null)
                 {
-                    mainFrame.Navigate(new ChatPage());
+                    mainFrame.Navigate(chatPage);
                     return;
                 }
 
                 var navWindow = new NavigationWindow { ShowsNavigationUI = true };
-                navWindow.Navigate(new ChatPage());
+                navWindow.Navigate(chatPage);
                 navWindow.Show();
             }
             catch (InvalidOperationException)
@@ -75,5 +87,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 Console.WriteLine("hay una ex, cambiar luego");
             }
         }
+
+
     }
 }

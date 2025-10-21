@@ -15,12 +15,17 @@ namespace SnakeAndLaddersFinalProject.ChatService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SendMessageRequest", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="SendMessageRequest2", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Services")]
     [System.SerializableAttribute()]
-    public partial class SendMessageRequest : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    public partial class SendMessageRequest2 : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AuthTokenField;
+        
+        private int LobbyIdField;
         
         private SnakeAndLaddersFinalProject.ChatService.ChatMessageDto MessageField;
         
@@ -31,6 +36,32 @@ namespace SnakeAndLaddersFinalProject.ChatService {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AuthToken {
+            get {
+                return this.AuthTokenField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AuthTokenField, value) != true)) {
+                    this.AuthTokenField = value;
+                    this.RaisePropertyChanged("AuthToken");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public int LobbyId {
+            get {
+                return this.LobbyIdField;
+            }
+            set {
+                if ((this.LobbyIdField.Equals(value) != true)) {
+                    this.LobbyIdField = value;
+                    this.RaisePropertyChanged("LobbyId");
+                }
             }
         }
         
@@ -68,6 +99,8 @@ namespace SnakeAndLaddersFinalProject.ChatService {
         
         private string SenderField;
         
+        private int SenderIdField;
+        
         private string TextField;
         
         private System.DateTime TimestampUtcField;
@@ -91,6 +124,19 @@ namespace SnakeAndLaddersFinalProject.ChatService {
                 if ((object.ReferenceEquals(this.SenderField, value) != true)) {
                     this.SenderField = value;
                     this.RaisePropertyChanged("Sender");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public int SenderId {
+            get {
+                return this.SenderIdField;
+            }
+            set {
+                if ((this.SenderIdField.Equals(value) != true)) {
+                    this.SenderIdField = value;
+                    this.RaisePropertyChanged("SenderId");
                 }
             }
         }
@@ -133,9 +179,9 @@ namespace SnakeAndLaddersFinalProject.ChatService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SendMessageResponse", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="SendMessageResponse2", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Services")]
     [System.SerializableAttribute()]
-    public partial class SendMessageResponse : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    public partial class SendMessageResponse2 : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
@@ -176,20 +222,39 @@ namespace SnakeAndLaddersFinalProject.ChatService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ChatService.IChatService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ChatService.IChatService", CallbackContract=typeof(SnakeAndLaddersFinalProject.ChatService.IChatServiceCallback))]
     public interface IChatService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SendMessage", ReplyAction="http://tempuri.org/IChatService/SendMessageResponse")]
-        SnakeAndLaddersFinalProject.ChatService.SendMessageResponse SendMessage(SnakeAndLaddersFinalProject.ChatService.SendMessageRequest request);
+        SnakeAndLaddersFinalProject.ChatService.SendMessageResponse2 SendMessage(SnakeAndLaddersFinalProject.ChatService.SendMessageRequest2 request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SendMessage", ReplyAction="http://tempuri.org/IChatService/SendMessageResponse")]
-        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.ChatService.SendMessageResponse> SendMessageAsync(SnakeAndLaddersFinalProject.ChatService.SendMessageRequest request);
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.ChatService.SendMessageResponse2> SendMessageAsync(SnakeAndLaddersFinalProject.ChatService.SendMessageRequest2 request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetRecent", ReplyAction="http://tempuri.org/IChatService/GetRecentResponse")]
-        SnakeAndLaddersFinalProject.ChatService.ChatMessageDto[] GetRecent(int take);
+        SnakeAndLaddersFinalProject.ChatService.ChatMessageDto[] GetRecent(int lobbyId, int take);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetRecent", ReplyAction="http://tempuri.org/IChatService/GetRecentResponse")]
-        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.ChatService.ChatMessageDto[]> GetRecentAsync(int take);
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.ChatService.ChatMessageDto[]> GetRecentAsync(int lobbyId, int take);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/Subscribe", ReplyAction="http://tempuri.org/IChatService/SubscribeResponse")]
+        void Subscribe(int lobbyId, int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/Subscribe", ReplyAction="http://tempuri.org/IChatService/SubscribeResponse")]
+        System.Threading.Tasks.Task SubscribeAsync(int lobbyId, int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/Unsubscribe")]
+        void Unsubscribe(int lobbyId, int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/Unsubscribe")]
+        System.Threading.Tasks.Task UnsubscribeAsync(int lobbyId, int userId);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IChatServiceCallback {
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/OnMessage")]
+        void OnMessage(int lobbyId, SnakeAndLaddersFinalProject.ChatService.ChatMessageDto message);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -198,41 +263,58 @@ namespace SnakeAndLaddersFinalProject.ChatService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ChatServiceClient : System.ServiceModel.ClientBase<SnakeAndLaddersFinalProject.ChatService.IChatService>, SnakeAndLaddersFinalProject.ChatService.IChatService {
+    public partial class ChatServiceClient : System.ServiceModel.DuplexClientBase<SnakeAndLaddersFinalProject.ChatService.IChatService>, SnakeAndLaddersFinalProject.ChatService.IChatService {
         
-        public ChatServiceClient() {
+        public ChatServiceClient(System.ServiceModel.InstanceContext callbackInstance) : 
+                base(callbackInstance) {
         }
         
-        public ChatServiceClient(string endpointConfigurationName) : 
-                base(endpointConfigurationName) {
+        public ChatServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) : 
+                base(callbackInstance, endpointConfigurationName) {
         }
         
-        public ChatServiceClient(string endpointConfigurationName, string remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public ChatServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public ChatServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public ChatServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public ChatServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(binding, remoteAddress) {
+        public ChatServiceClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, binding, remoteAddress) {
         }
         
-        public SnakeAndLaddersFinalProject.ChatService.SendMessageResponse SendMessage(SnakeAndLaddersFinalProject.ChatService.SendMessageRequest request) {
+        public SnakeAndLaddersFinalProject.ChatService.SendMessageResponse2 SendMessage(SnakeAndLaddersFinalProject.ChatService.SendMessageRequest2 request) {
             return base.Channel.SendMessage(request);
         }
         
-        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.ChatService.SendMessageResponse> SendMessageAsync(SnakeAndLaddersFinalProject.ChatService.SendMessageRequest request) {
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.ChatService.SendMessageResponse2> SendMessageAsync(SnakeAndLaddersFinalProject.ChatService.SendMessageRequest2 request) {
             return base.Channel.SendMessageAsync(request);
         }
         
-        public SnakeAndLaddersFinalProject.ChatService.ChatMessageDto[] GetRecent(int take) {
-            return base.Channel.GetRecent(take);
+        public SnakeAndLaddersFinalProject.ChatService.ChatMessageDto[] GetRecent(int lobbyId, int take) {
+            return base.Channel.GetRecent(lobbyId, take);
         }
         
-        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.ChatService.ChatMessageDto[]> GetRecentAsync(int take) {
-            return base.Channel.GetRecentAsync(take);
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.ChatService.ChatMessageDto[]> GetRecentAsync(int lobbyId, int take) {
+            return base.Channel.GetRecentAsync(lobbyId, take);
+        }
+        
+        public void Subscribe(int lobbyId, int userId) {
+            base.Channel.Subscribe(lobbyId, userId);
+        }
+        
+        public System.Threading.Tasks.Task SubscribeAsync(int lobbyId, int userId) {
+            return base.Channel.SubscribeAsync(lobbyId, userId);
+        }
+        
+        public void Unsubscribe(int lobbyId, int userId) {
+            base.Channel.Unsubscribe(lobbyId, userId);
+        }
+        
+        public System.Threading.Tasks.Task UnsubscribeAsync(int lobbyId, int userId) {
+            return base.Channel.UnsubscribeAsync(lobbyId, userId);
         }
     }
 }

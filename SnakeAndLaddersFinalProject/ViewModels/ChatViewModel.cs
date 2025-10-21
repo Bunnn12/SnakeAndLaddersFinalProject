@@ -2,9 +2,11 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
+using System.Linq;
 using System.ServiceModel;
 using System.Windows;
 using System.Windows.Input;
+using SnakeAndLaddersFinalProject.Authentication;
 using SnakeAndLaddersFinalProject.ChatService;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
@@ -13,37 +15,37 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     {
         private IChatService proxy;
         private string newMessage = string.Empty;
+        private static readonly TimeSpan DuplicateWindow = TimeSpan.FromSeconds(3);
 
+        public int LobbyId { get; }
         public ObservableCollection<ChatMessageVm> Messages { get; } = new ObservableCollection<ChatMessageVm>();
-
-        public string NewMessage
-        {
-            get => newMessage;
-            set { newMessage = value; OnPropertyChanged(nameof(NewMessage)); }
-        }
-
+        public string NewMessage { get => newMessage; set { newMessage = value; OnPropertyChanged(nameof(NewMessage)); } }
         public bool IsAutoScrollEnabled { get; set; } = true;
         public string StatusText { get; private set; } = "Ready";
         public string CurrentUserName { get; }
+        public int CurrentUserId { get; }
 
         public ICommand SendMessageCommand { get; }
         public ICommand CopyMessageCommand { get; }
         public ICommand QuoteMessageCommand { get; }
         public ICommand OpenStickersCommand { get; }
 
-        public ChatViewModel()
+        public ChatViewModel(int lobbyId)
         {
-            // nombre de usuario a usar en cabecera
-            CurrentUserName = ConfigurationManager.AppSettings["Chat:UserName"];
-            if (string.IsNullOrWhiteSpace(CurrentUserName))
-                CurrentUserName = Environment.UserName;
+            LobbyId = lobbyId;
 
-            proxy = CreateProxyFromConfig();
+            CurrentUserId = SessionContext.Current.UserId;
+            CurrentUserName = string.IsNullOrWhiteSpace(SessionContext.Current.UserName)
+                ? "Unknown"
+                : SessionContext.Current.UserName;
 
-            // Cargar últimos mensajes del server
+            proxy = CreateDuplexProxyFromConfig();
+
             try
             {
-                var recent = proxy.GetRecent(50);
+                proxy.Subscribe(LobbyId, CurrentUserId);
+
+                var recent = proxy.GetRecent(LobbyId, 50);
                 foreach (var dto in recent)
                     Messages.Add(new ChatMessageVm(dto, CurrentUserName));
             }
@@ -59,23 +61,23 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             OpenStickersCommand = new RelayCommand(_ => ShowStickers());
         }
 
-        private static IChatService CreateProxyFromConfig()
+        private IChatService CreateDuplexProxyFromConfig()
         {
             string bindingName = ConfigurationManager.AppSettings["ChatBinding"] ?? "netTcpBinding";
             string address = ConfigurationManager.AppSettings["ChatEndpointAddress"] ?? "net.tcp://localhost:8087/chat";
 
-            if (bindingName.Equals("basicHttpBinding", StringComparison.OrdinalIgnoreCase))
+            var ctx = new InstanceContext(new ChatClientCallback(this));
+
+            if (bindingName.Equals("basicHttpBinding", StringComparison.OrdinalIgnoreCase) ||
+                bindingName.Equals("wsDualHttpBinding", StringComparison.OrdinalIgnoreCase))
             {
-                var binding = new BasicHttpBinding();
+                var binding = new WSDualHttpBinding();
                 var endpoint = new EndpointAddress(address);
-                return new ChannelFactory<IChatService>(binding, endpoint).CreateChannel();
+                return new DuplexChannelFactory<IChatService>(ctx, binding, endpoint).CreateChannel();
             }
-            else
-            {
-                var binding = new NetTcpBinding();
-                var endpoint = new EndpointAddress(address);
-                return new ChannelFactory<IChatService>(binding, endpoint).CreateChannel();
-            }
+
+            var tcp = new NetTcpBinding(SecurityMode.None) { MaxReceivedMessageSize = 1_048_576 };
+            return new DuplexChannelFactory<IChatService>(ctx, tcp, new EndpointAddress(address)).CreateChannel();
         }
 
         private bool CanSend() => !string.IsNullOrWhiteSpace(NewMessage);
@@ -85,73 +87,90 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             var text = (NewMessage ?? string.Empty).Trim();
             if (text.Length == 0) return;
 
-            // 1) pinta local de inmediato (optimista)
             var localDto = new ChatMessageDto
             {
                 Sender = CurrentUserName,
+                SenderId = CurrentUserId,
                 Text = text,
                 TimestampUtc = DateTime.UtcNow
             };
-            var localVm = new ChatMessageVm(localDto, CurrentUserName);
-            Messages.Add(localVm);
 
-            // limpia input
+            // Pinta optimista
+            Messages.Add(new ChatMessageVm(localDto, CurrentUserName));
+
             NewMessage = string.Empty;
             OnPropertyChanged(nameof(NewMessage));
 
-            // 2) intenta enviar al servidor
             try
             {
-                var resp = proxy.SendMessage(new SendMessageRequest { Message = localDto });
+                var resp = proxy.SendMessage(new SendMessageRequest2
+                {
+                    LobbyId = LobbyId,
+                    Message = localDto
+                });
+
                 if (!resp.Ok)
                 {
-                    StatusText = "No se pudo enviar (resp.Ok=false).";
+                    StatusText = "Send failed (resp.Ok=false).";
                     OnPropertyChanged(nameof(StatusText));
                 }
             }
             catch (Exception ex)
             {
-                // 3) marca visualmente que no salió
-                StatusText = $"No se pudo enviar: {ex.Message}";
+                StatusText = $"Send failed: {ex.Message}";
                 OnPropertyChanged(nameof(StatusText));
-
-                // opcional: agregar sufijo al texto local
-                var idx = Messages.IndexOf(localVm);
-                if (idx >= 0)
-                {
-                    var notSent = new ChatMessageDto
-                    {
-                        Sender = localDto.Sender,
-                        Text = localDto.Text + "  (no enviado)",
-                        TimestampUtc = localDto.TimestampUtc
-                    };
-                    Messages[idx] = new ChatMessageVm(notSent, CurrentUserName);
-                }
-
-                // intenta reconstruir canal para el próximo intento
-                try { proxy = CreateProxyFromConfig(); } catch { /* swallow */ }
+                TryRecreateProxy();
             }
         }
 
-
-        private static void Copy(ChatMessageVm vm)
+        private bool IsDuplicateIncoming(ChatMessageDto dto)
         {
-            if (vm == null) return;
-            Clipboard.SetText(vm.Text ?? "");
+            if (dto == null) return false;
+
+            var lastSameSender = Messages.LastOrDefault(
+                m => string.Equals(m.Sender, dto.Sender, StringComparison.OrdinalIgnoreCase));
+
+            if (lastSameSender == null) return false;
+
+            var sameText = string.Equals((lastSameSender.Text ?? "").Trim(),
+                                         (dto.Text ?? "").Trim(),
+                                         StringComparison.Ordinal);
+            if (!sameText) return false;
+
+            var delta = (dto.TimestampUtc.ToLocalTime() - lastSameSender.SentAt);
+            if (delta < TimeSpan.Zero) delta = -delta;
+
+            return delta <= DuplicateWindow;
         }
 
-        private void Quote(ChatMessageVm vm)
+        internal void AddIncoming(ChatMessageDto dto)
         {
-            if (vm == null) return;
-            NewMessage = $"> {vm.Text}\n" + NewMessage;
-            OnPropertyChanged(nameof(NewMessage));
+            if (IsDuplicateIncoming(dto)) return;
+            Messages.Add(new ChatMessageVm(dto, CurrentUserName));
         }
 
-        private void ShowStickers()
+        private void TryRecreateProxy()
         {
-            // Por ahora un placeholder
-            MessageBox.Show("Stickers pronto ✨", "Stickers", MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                proxy = CreateDuplexProxyFromConfig();
+                proxy.Subscribe(LobbyId, CurrentUserId);
+            }
+            catch { /* ignore */ }
         }
+
+        public void Dispose()
+        {
+            try { proxy?.Unsubscribe(LobbyId, CurrentUserId); } catch { }
+            if (proxy is ICommunicationObject comm)
+            {
+                try { comm.Close(); } catch { comm.Abort(); }
+            }
+        }
+
+        private static void Copy(ChatMessageVm vm) { if (vm != null) Clipboard.SetText(vm.Text ?? ""); }
+        private void Quote(ChatMessageVm vm) { if (vm != null) { NewMessage = $"> {vm.Text}\n" + NewMessage; OnPropertyChanged(nameof(NewMessage)); } }
+        private void ShowStickers() { MessageBox.Show("Stickers pronto ✨", "Stickers", MessageBoxButton.OK, MessageBoxImage.Information); }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string name) =>

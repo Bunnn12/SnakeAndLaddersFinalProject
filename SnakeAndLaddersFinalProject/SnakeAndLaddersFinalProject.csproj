@@ -78,6 +78,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Authentication\SesionContext.cs" />
     <Compile Include="BasicWindow.xaml.cs">
       <DependentUpon>BasicWindow.xaml</DependentUpon>
     </Compile>
@@ -166,6 +167,7 @@
     <Compile Include="SkinsWindow.xaml.cs">
       <DependentUpon>SkinsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ChatClientCallback.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\LobbyViewModel.cs" />
     <Compile Include="ViewModels\Models\LobbyMemberViewModel.cs" />
@@ -312,20 +314,23 @@
     <None Include="Connected Services\AuthService\SnakeAndLaddersFinalProject.AuthService.AuthResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\ChatService\chat.xsd">
+    <None Include="Connected Services\ChatService\service.wsdl" />
+    <None Include="Connected Services\ChatService\service.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\ChatService\chat1.xsd">
+    <None Include="Connected Services\ChatService\service1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\ChatService\chat2.xsd">
+    <None Include="Connected Services\ChatService\SnakeAndLadders.Contracts.Dtos.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\ChatService\ChatService.wsdl" />
+    <None Include="Connected Services\ChatService\SnakeAndLadders.Contracts.Services.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\ChatService\SnakeAndLaddersFinalProject.ChatService.ChatMessageDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\ChatService\SnakeAndLaddersFinalProject.ChatService.SendMessageResponse.datasource">
+    <None Include="Connected Services\ChatService\SnakeAndLaddersFinalProject.ChatService.SendMessageResponse2.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\LobbyService\item.xsd">
@@ -424,7 +429,6 @@
     </None>
     <None Include="Connected Services\ChatService\configuration.svcinfo" />
     <None Include="Connected Services\ChatService\configuration91.svcinfo" />
-    <None Include="Connected Services\ChatService\chat.disco" />
     <None Include="Connected Services\AuthService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

@@ -6,7 +6,8 @@
       xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
       mc:Ignorable="d"
       d:DesignWidth="1152" d:DesignHeight="768"
-      Title="ChatPage">
+      Title="ChatPage" 
+      Unloaded="Page_Unloaded">
 
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -36,23 +37,27 @@
                 </Grid.ColumnDefinitions>
 
                 <Image Grid.Column="0"
-                       Width="24" Height="24"
-                       Source="{Binding AvatarPath}"
-                       Visibility="{Binding HasAvatar, Converter={StaticResource BooleanToVisibilityConverter}}"
-                       Margin="0,2,0,0"
-                       Stretch="UniformToFill"/>
+           Width="24" Height="24"
+           Source="{Binding AvatarPath}"
+           Visibility="{Binding HasAvatar, Converter={StaticResource BooleanToVisibilityConverter}}"
+           Margin="0,2,0,0"
+           Stretch="UniformToFill"/>
 
                 <Border Grid.Column="2"
-                        MaxWidth="560"
-                        Padding="10"
-                        CornerRadius="8">
+            MaxWidth="560"
+            Padding="10"
+            CornerRadius="10">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="Background" Value="#233543"/>
+                            <!-- Otros: café claro -->
+                            <Setter Property="Background" Value="#F4E1C1"/>
+                            <!-- café clarito -->
                             <Setter Property="Margin" Value="12,0,0,0"/>
                             <Style.Triggers>
+                                <!-- Míos: café medio -->
                                 <DataTrigger Binding="{Binding IsMine}" Value="True">
-                                    <Setter Property="Background" Value="#2A607C"/>
+                                    <Setter Property="Background" Value="#D7B899"/>
+                                    <!-- un poco más oscuro -->
                                     <Setter Property="Margin" Value="0,0,12,0"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -60,10 +65,11 @@
                     </Border.Style>
 
                     <StackPanel>
-                        <TextBlock Text="{Binding Header}" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                        <TextBlock Text="{Binding Header}" FontWeight="SemiBold" Foreground="#2B2117"/>
+                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="0,2,0,0" Foreground="#2B2117"/>
                         <TextBlock Text="{Binding SentAt, StringFormat=t}"
-                                   HorizontalAlignment="Right" Opacity="0.7" FontSize="11" Margin="0,6,0,0"/>
+                   HorizontalAlignment="Right" Opacity="0.7" FontSize="11"
+                   Margin="0,6,0,0" Foreground="#2B2117"/>
                     </StackPanel>
                 </Border>
             </Grid>
