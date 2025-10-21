@@ -1,11 +1,14 @@
-﻿C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\BasicWindow.xaml.cs
+﻿C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Authentication\SesionContext.cs
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\BasicWindow.xaml.cs
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\ChatMessageVm.cs
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Converters\NullToVisibilityConverter.cs
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\DialogBasicWindow.xaml.cs
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Globalization\LocalizationManager.cs
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Infrastructure\AsyncCommand.cs
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Infrastructure\RelayCommand.cs
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Navigation\LobbyNavigationArgs.cs
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Pages\AddFriendsPage.xaml.cs
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Pages\ChatPage.xaml.cs
-C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Pages\DialogPages\AlertDialogPage.xaml.cs
-C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Pages\DialogPages\ErrorDialogPage.xaml.cs
-C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Pages\DialogPages\InformationDialogPage.xaml.cs
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Pages\EmailVerificationPage.xaml.cs
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Pages\FriendsListPage.xaml.cs
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Pages\InventoryPage.xaml.cs
@@ -21,8 +24,13 @@ C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProj
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Pages\StartPage.xaml.cs
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Pages\StorePage.xaml.cs
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\pj.cs
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\RelayCommand.cs
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\ReportsWindow.xaml.cs
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\SkinsWindow.xaml.cs
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\ViewModels\ChatClientCallback.cs
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\ViewModels\ChatViewModel.cs
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\ViewModels\LobbyViewModel.cs
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\ViewModels\Models\LobbyMemberViewModel.cs
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\App.xaml.cs
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Properties\AssemblyInfo.cs
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Assets\Sounds\confirmation_002.wav
@@ -37,12 +45,22 @@ C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProj
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\item2.xsd
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\item3.xsd
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\SnakeAndLaddersFinalProject.AuthService.AuthResult.datasource
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\ChatService\service.wsdl
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\ChatService\service.xsd
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\ChatService\service1.xsd
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\ChatService\SnakeAndLadders.Contracts.Dtos.xsd
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\ChatService\SnakeAndLadders.Contracts.Services.xsd
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\ChatService\SnakeAndLaddersFinalProject.ChatService.ChatMessageDto.datasource
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\ChatService\SnakeAndLaddersFinalProject.ChatService.SendMessageResponse2.datasource
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\item.xsd
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\item1.xsd
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\item2.xsd
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\item3.xsd
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\LobbyService.wsdl
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\SnakeAndLaddersFinalProject.LobbyService.CreateGameResponse.datasource
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\SnakeAndLaddersFinalProject.LobbyService.JoinLobbyResponse.datasource
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\SnakeAndLaddersFinalProject.LobbyService.LobbyInfo.datasource
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\LobbyService\SnakeAndLaddersFinalProject.LobbyService.OperationResult.datasource
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\UserService\SnakeAndLaddersFinalProject.UserService.AccountDto.datasource
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\UserService\SnakeAndLaddersFinalProject.UserService.ProfilePhotoDto.datasource
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\UserService\User.xsd
@@ -56,6 +74,9 @@ C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProj
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\UserService\configuration91.svcinfo
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\UserService\configuration.svcinfo
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\UserService\Reference.svcmap
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\ChatService\Reference.svcmap
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\ChatService\configuration.svcinfo
+C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\ChatService\configuration91.svcinfo
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\Reference.svcmap
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\configuration.svcinfo
 C:\Users\irene\source\repos\SnakeAndLaddersFinalProject\SnakeAndLaddersFinalProject\Connected Services\AuthService\configuration91.svcinfo
