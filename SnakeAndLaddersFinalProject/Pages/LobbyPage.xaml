@@ -64,6 +64,7 @@
                 <Button Style="{StaticResource ActionButton}"
                         Content="Copiar enlace"
                         Command="{Binding CopyInviteLinkCommand}"/>
+                <Button Content="{x:Static language:Lang.chatTittle}" Width="92" Click="Button_Click"/>
             </StackPanel>
 
             <TextBlock Text="{Binding StatusText}" Opacity="0.85" Margin="0,8,0,0" Foreground="#FFF1EEEE"/>

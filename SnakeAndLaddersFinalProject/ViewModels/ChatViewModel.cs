@@ -5,8 +5,7 @@ using System.Configuration;
 using System.ServiceModel;
 using System.Windows;
 using System.Windows.Input;
-using SnakeAndLadders.Contracts.Dtos;       
-using SnakeAndLadders.Contracts.Services;  
+using SnakeAndLaddersFinalProject.ChatService;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
@@ -15,7 +14,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private IChatService proxy;
         private string newMessage = string.Empty;
 
-        public ObservableCollection<ChatMessageVm> Messages { get; } = new();
+        public ObservableCollection<ChatMessageVm> Messages { get; } = new ObservableCollection<ChatMessageVm>();
 
         public string NewMessage
         {
@@ -83,34 +82,57 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private void Send()
         {
+            var text = (NewMessage ?? string.Empty).Trim();
+            if (text.Length == 0) return;
+
+            // 1) pinta local de inmediato (optimista)
+            var localDto = new ChatMessageDto
+            {
+                Sender = CurrentUserName,
+                Text = text,
+                TimestampUtc = DateTime.UtcNow
+            };
+            var localVm = new ChatMessageVm(localDto, CurrentUserName);
+            Messages.Add(localVm);
+
+            // limpia input
+            NewMessage = string.Empty;
+            OnPropertyChanged(nameof(NewMessage));
+
+            // 2) intenta enviar al servidor
             try
             {
-                var dto = new ChatMessageDto
+                var resp = proxy.SendMessage(new SendMessageRequest { Message = localDto });
+                if (!resp.Ok)
                 {
-                    Sender = CurrentUserName,
-                    Text = NewMessage.Trim(),
-                    TimestampUtc = DateTime.UtcNow
-                };
-
-                var resp = proxy.SendMessage(new SendMessageRequest { Message = dto });
-                if (resp.Ok)
-                {
-                    // Reflejar localmente
-                    Messages.Add(new ChatMessageVm(dto, CurrentUserName));
-                    NewMessage = string.Empty;
-                    OnPropertyChanged(nameof(NewMessage));
+                    StatusText = "No se pudo enviar (resp.Ok=false).";
+                    OnPropertyChanged(nameof(StatusText));
                 }
             }
             catch (Exception ex)
             {
-                StatusText = $"Send failed: {ex.Message}";
+                // 3) marca visualmente que no salió
+                StatusText = $"No se pudo enviar: {ex.Message}";
                 OnPropertyChanged(nameof(StatusText));
 
-                // Intenta re-crear el canal si se cayó
-                try { proxy = CreateProxyFromConfig(); }
-                catch { /* swallow */ }
+                // opcional: agregar sufijo al texto local
+                var idx = Messages.IndexOf(localVm);
+                if (idx >= 0)
+                {
+                    var notSent = new ChatMessageDto
+                    {
+                        Sender = localDto.Sender,
+                        Text = localDto.Text + "  (no enviado)",
+                        TimestampUtc = localDto.TimestampUtc
+                    };
+                    Messages[idx] = new ChatMessageVm(notSent, CurrentUserName);
+                }
+
+                // intenta reconstruir canal para el próximo intento
+                try { proxy = CreateProxyFromConfig(); } catch { /* swallow */ }
             }
         }
+
 
         private static void Copy(ChatMessageVm vm)
         {

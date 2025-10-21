@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="f86d5c2e-a654-40fa-9118-e6c6206a9ff8" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8086/chat" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ChatService.wsdl" MetadataType="Wsdl" ID="2f8c67de-1b50-4ebb-8880-785cb30c7c66" SourceId="1" SourceUrl="http://localhost:8086/chat?wsdl" />
+    <MetadataFile FileName="chat.xsd" MetadataType="Schema" ID="feb8750e-8b6c-4a6b-88af-3dcca641ac51" SourceId="1" SourceUrl="http://localhost:8086/chat?xsd=xsd2" />
+    <MetadataFile FileName="chat.disco" MetadataType="Disco" ID="7274a364-435e-4340-bf76-43dc680b8de8" SourceId="1" SourceUrl="http://localhost:8086/chat?disco" />
+    <MetadataFile FileName="chat1.xsd" MetadataType="Schema" ID="958ec825-dd4c-4341-9401-e0a0ca6d61e5" SourceId="1" SourceUrl="http://localhost:8086/chat?xsd=xsd0" />
+    <MetadataFile FileName="chat2.xsd" MetadataType="Schema" ID="e9c2c7d4-ce00-436e-bd46-b5be71e1c847" SourceId="1" SourceUrl="http://localhost:8086/chat?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

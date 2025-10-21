@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 using SnakeAndLaddersFinalProject.Navigation;
 using SnakeAndLaddersFinalProject.ViewModels;
 
@@ -39,6 +41,38 @@ namespace SnakeAndLaddersFinalProject.Pages
                     vm.CodigoInput = _args.JoinCode.Trim();
                     vm.JoinLobbyCommand.Execute(null);
                 }
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (NavigationService != null)
+                {
+                    NavigationService.Navigate(new ChatPage());
+                    return;
+                }
+
+                Window currentWindow = Window.GetWindow(this);
+                var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
+                if (mainFrame != null)
+                {
+                    mainFrame.Navigate(new ChatPage());
+                    return;
+                }
+
+                var navWindow = new NavigationWindow { ShowsNavigationUI = true };
+                navWindow.Navigate(new ChatPage());
+                navWindow.Show();
+            }
+            catch (InvalidOperationException)
+            {
+                Console.WriteLine("hay una ex, cambiar luego a una ventana de dialogo :)");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("hay una ex, cambiar luego");
             }
         }
     }

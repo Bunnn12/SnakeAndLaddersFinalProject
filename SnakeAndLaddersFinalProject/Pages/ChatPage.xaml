@@ -5,15 +5,72 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
       mc:Ignorable="d"
-      d:DesignHeight="768" d:DesignWidth="1152"
+      d:DesignWidth="1152" d:DesignHeight="768"
       Title="ChatPage">
 
-    <!-- ✅ Recursos -->
     <Page.Resources>
-        <!-- Si ya tienes uno en App.xaml, quita esta línea -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        <!-- Contenedor de ítems: izquierda/derecha según IsMine -->
+        <Style x:Key="ChatItemContainerStyle" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0,6"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsMine}" Value="True">
+                    <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsMine}" Value="False">
+                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Burbuja -->
+        <DataTemplate x:Key="ChatBubbleTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Column="0"
+                       Width="24" Height="24"
+                       Source="{Binding AvatarPath}"
+                       Visibility="{Binding HasAvatar, Converter={StaticResource BooleanToVisibilityConverter}}"
+                       Margin="0,2,0,0"
+                       Stretch="UniformToFill"/>
+
+                <Border Grid.Column="2"
+                        MaxWidth="560"
+                        Padding="10"
+                        CornerRadius="8">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="#233543"/>
+                            <Setter Property="Margin" Value="12,0,0,0"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMine}" Value="True">
+                                    <Setter Property="Background" Value="#2A607C"/>
+                                    <Setter Property="Margin" Value="0,0,12,0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+
+                    <StackPanel>
+                        <TextBlock Text="{Binding Header}" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                        <TextBlock Text="{Binding SentAt, StringFormat=t}"
+                                   HorizontalAlignment="Right" Opacity="0.7" FontSize="11" Margin="0,6,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </DataTemplate>
     </Page.Resources>
 
+    <!-- Layout centrado y compacto -->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -22,117 +79,86 @@
             <!-- Mensajes -->
             <RowDefinition Height="Auto"/>
             <!-- Input -->
-            <RowDefinition Height="Auto"/>
-            <!-- Status bar -->
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <!-- Header -->
-        <DockPanel Grid.Row="0" Margin="16,12,16,8">
-            <Label x:Name="lblChatTitle"
-                   Content="{x:Static language:Lang.chatTittle}"
-                   FontSize="20"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Center"
-                   DockPanel.Dock="Top"/>
-        </DockPanel>
+        <Grid Grid.Column="1" Grid.RowSpan="3" Margin="16" MaxWidth="820" MinWidth="480">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- Lista de mensajes -->
-        <Border Grid.Row="1" Margin="16" BorderThickness="1">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ListView x:Name="lvMessages"
-                          ItemsSource="{Binding Messages}"
-                          VirtualizingPanel.IsVirtualizing="True"
-                          VirtualizingPanel.ScrollUnit="Pixel"
-                          ScrollViewer.CanContentScroll="True"
-                          BorderThickness="0">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,6">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="8"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+            <!-- Título -->
+            <TextBlock Grid.Row="0"
+                       x:Name="lblChatTitle"
+                       Text="{x:Static language:Lang.chatTittle}"
+                       FontSize="18" FontWeight="Bold"
+                       TextAlignment="Center" Margin="0,0,0,8"/>
 
-                                <!-- Avatar opcional -->
-                                <Image x:Name="imgAvatar"
-                                       Width="24" Height="24"
-                                       Source="{Binding AvatarPath}"
-                                       Visibility="{Binding HasAvatar, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                       Stretch="UniformToFill"
-                                       Margin="0,2,0,0"/>
+            <!-- Mensajes (scroll automático cuando sea necesario) -->
+            <Border Grid.Row="1" BorderThickness="1" Padding="8">
+                <ListBox x:Name="lvMessages"
+                         ItemsSource="{Binding Messages}"
+                         ItemContainerStyle="{StaticResource ChatItemContainerStyle}"
+                         ItemTemplate="{StaticResource ChatBubbleTemplate}"
+                         BorderThickness="0"
+                         ScrollViewer.CanContentScroll="True"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         VirtualizingPanel.IsVirtualizing="True"
+                         VirtualizingPanel.ScrollUnit="Pixel"/>
+            </Border>
 
-                                <StackPanel Grid.Column="2">
-                                    <TextBlock Text="{Binding Header}" 
-                                               FontWeight="Bold"
-                                               TextWrapping="NoWrap"/>
-                                    <TextBlock Text="{Binding Text}"
-                                               TextWrapping="Wrap"
-                                               Margin="0,2,0,0"/>
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </ScrollViewer>
-        </Border>
+            <!-- Barra de entrada -->
+            <Grid Grid.Row="2" Margin="0,8,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-        <!-- Input bar -->
-        <Grid Grid.Row="2" Margin="16,0,16,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="8"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="8"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+                <Button x:Name="btnStickers"
+                        Grid.Column="0"
+                        Content="{x:Static language:Lang.lblStickersText}"
+                        Command="{Binding OpenStickersCommand}"
+                        MinWidth="84" Padding="10,8"/>
 
-            <Button x:Name="btnStickers"
-                    Grid.Column="0"
-                    Content="{x:Static language:Lang.lblStickersText}"
-                    Command="{Binding OpenStickersCommand}"
-                    Height="32" MinWidth="90"/>
+                <TextBox x:Name="taMessage"
+                         Grid.Column="2"
+                         Text="{Binding NewMessage, UpdateSourceTrigger=PropertyChanged}"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         MaxLength="500"
+                         MinHeight="36"
+                         ToolTip="Ctrl+Enter para enviar; Shift+Enter para salto de línea.">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Modifiers="Control" Command="{Binding SendMessageCommand}"/>
+                    </TextBox.InputBindings>
+                </TextBox>
 
-            <TextBox x:Name="taMessage"
-                     Grid.Column="2"
-                     Text="{Binding NewMessage, UpdateSourceTrigger=PropertyChanged}"
-                     AcceptsReturn="True"
-                     TextWrapping="Wrap"
-                     Height="48"
-                     MaxLength="500"
-                     ToolTip="Ctrl+Enter para enviar; Enter hace salto si lo dejas presionado."
-                     >
-                <!-- ✅ Atajo en el control para evitar conflictos -->
-                <TextBox.InputBindings>
-                    <KeyBinding Key="Enter" Modifiers="Control"
-                                Command="{Binding SendMessageCommand}"/>
-                </TextBox.InputBindings>
-            </TextBox>
-
-            <Button x:Name="btnSend"
-                    Grid.Column="4"
-                    Content="{x:Static language:Lang.btnSendText}" 
-                Command="{Binding SendMessageCommand}"
-                    Height="32" MinWidth="90"/>
+                <Button x:Name="btnSend"
+                        Grid.Column="4"
+                        Content="{x:Static language:Lang.btnSendText}"
+                        Command="{Binding SendMessageCommand}"
+                        MinWidth="84" Padding="10,8">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="IsEnabled" Value="True"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding NewMessage}" Value="">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
         </Grid>
-
-        <!-- Status bar -->
-        <DockPanel Grid.Row="3" Margin="16,0,16,16">
-            <CheckBox x:Name="cbAutoScroll"
-                      Content="Auto-scroll"
-                      IsChecked="{Binding IsAutoScrollEnabled}"
-                      DockPanel.Dock="Left"/>
-            <Label x:Name="lblStatus"
-                   Content="{Binding StatusText}"
-                   HorizontalAlignment="Right"
-                   DockPanel.Dock="Right"/>
-        </DockPanel>
     </Grid>
-
-    <!-- ✅ Si aún quieres los atajos a nivel Page, ponlos AQUÍ (no dentro del Grid) -->
-    <!--
-    <Page.InputBindings>
-        <KeyBinding Key="Enter" Modifiers="None" Command="{Binding SendMessageCommand}"/>
-    </Page.InputBindings>
-    -->
 </Page>

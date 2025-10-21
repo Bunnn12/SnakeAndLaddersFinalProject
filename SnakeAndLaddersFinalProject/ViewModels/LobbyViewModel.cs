@@ -79,7 +79,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             JoinLobbyCommand = new AsyncCommand(JoinLobbyAsync, () => !string.IsNullOrWhiteSpace(CodigoInput));
             StartMatchCommand = new AsyncCommand(StartMatchAsync, () => CanStartMatch);
             LeaveLobbyCommand = new AsyncCommand(LeaveLobbyAsync);
-            CopyInviteLinkCommand = new RelayCommand(CopyInviteLink);
+            CopyInviteLinkCommand = new RelayCommand(_ => CopyInviteLink()); // <-- corregido
 
             _pollTimer.Tick += async (_, __) => await RefreshLobbyAsync();
         }
