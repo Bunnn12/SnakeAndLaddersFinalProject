@@ -27,6 +27,10 @@
     <FontFamily x:Key="Font.MinecraftStandardBold">
         pack://application:,,,/Assets/Fonts/#Minecraft Standard Bold
     </FontFamily>
+
+    <FontFamily x:Key="Font.SetiaHati-Regular">
+        pack://application:,,,/Assets/Fonts/#Setia hati regular
+    </FontFamily>
     
     <Style x:Key="Txt.Pixel" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Font.PressStart2P}"/>

@@ -167,6 +167,8 @@
     <Compile Include="SkinsWindow.xaml.cs">
       <DependentUpon>SkinsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\PageBackground.cs" />
+    <Compile Include="Utilities\WidthToBoolConverter.cs" />
     <Compile Include="ViewModels\ChatClientCallback.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\LobbyViewModel.cs" />
@@ -298,6 +300,7 @@
     <Resource Include="Assets\Fonts\m04b.TTF" />
     <Resource Include="Assets\Fonts\MinecraftStandard.otf" />
     <Resource Include="Assets\Fonts\MinecraftStandardBold.otf" />
+    <Resource Include="Assets\Fonts\SetiaHati-Regular.ttf" />
     <None Include="Connected Services\AuthService\AuthService.wsdl" />
     <None Include="Connected Services\AuthService\item.xsd">
       <SubType>Designer</SubType>
@@ -423,6 +426,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Pages\loginFrame.png" />
     <None Include="Connected Services\ChatService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -451,6 +455,11 @@
     <Resource Include="Assets\Images\Backgrounds\DialogBackground.png" />
     <Resource Include="Assets\Images\Backgrounds\margen dorado.png" />
     <Resource Include="Assets\Images\Backgrounds\marcoCafe.png" />
+    <Resource Include="Assets\Images\Logo\LogoComplete.png" />
+    <Resource Include="Assets\Images\Logo\LogoImg.png" />
+    <Resource Include="Assets\Images\Logo\LogoText.png" />
+    <Resource Include="Assets\Images\Backgrounds\LoginBackground %282%29.png" />
+    <Resource Include="Assets\Images\Backgrounds\loginFrame.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

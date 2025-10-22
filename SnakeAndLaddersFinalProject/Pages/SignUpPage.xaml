@@ -3,46 +3,68 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
       xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
+      xmlns:util="clr-namespace:SnakeAndLaddersFinalProject.Utilities"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="SignUpPage"
-      SnapsToDevicePixels="True"
-      TextOptions.TextRenderingMode="Aliased">
+      d:DesignHeight="768" d:DesignWidth="1152"
+      Title="SignUpPage" util:PageBackground.Key="Auth">
 
+    <!-- ===== Recursos: mismos estilos que Login + pestañas invertidas ===== -->
     <Page.Resources>
+        <SolidColorBrush x:Key="LoginBlue" Color="#209AD6"/>
+        <SolidColorBrush x:Key="LoginBlueDark" Color="#1A85B3"/>
+        <SolidColorBrush x:Key="ButtonPressedColor" Color="#194062"/>
+        <SolidColorBrush x:Key="ButtonHoverColor" Color="#30A9E6"/>
 
-        <Style x:Key="TitleLabel" TargetType="Label">
-            <Setter Property="FontFamily" Value="{StaticResource Font.M04}"/>
-            <Setter Property="FontSize" Value="28"/>
-            <Setter Property="Foreground" Value="#F2C230"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        </Style>
-
-        <Style x:Key="FormLabel" TargetType="Label">
-            <Setter Property="FontFamily" Value="{StaticResource Font.MinecraftStandard}"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Foreground" Value="#FFF8F0"/>
-            <!-- Nitidez para pixel font -->
-            <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
-            <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
-            <Setter Property="UseLayoutRounding" Value="True"/>
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <!-- Botón principal -->
+        <Style x:Key="LoginButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource LoginBlue}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource ButtonHoverColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource ButtonPressedColor}"/>
+                                <Setter TargetName="ButtonBorder" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <TranslateTransform Y="1"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- TextBox redondeado -->
-        <Style x:Key="FormTextBox" TargetType="TextBox">
-            <Setter Property="FontFamily" Value="Consolas"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Foreground" Value="#FFF8F0"/>
-            <Setter Property="Background" Value="#3B2417"/>
-            <!-- Café 700 -->
-            <Setter Property="BorderBrush" Value="#F2C230"/>
-            <!-- Amarillo -->
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="Padding" Value="10,6"/>
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Style x:Key="RoundedTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="#FFFBF7E0"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="Height" Value="30"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
@@ -50,19 +72,12 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4"
-                                SnapsToDevicePixels="True">
-                            <ScrollViewer x:Name="PART_ContentHost"/>
+                                CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost" Background="Transparent"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#F28C28"/>
-                                <!-- Naranja -->
-                            </Trigger>
                             <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#FBE18C"/>
-                                <!-- Amarillo claro -->
-                                <Setter TargetName="Bd" Property="BorderThickness" Value="3"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource LoginBlue}"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="Bd" Property="Opacity" Value="0.6"/>
@@ -74,15 +89,12 @@
         </Style>
 
         <!-- PasswordBox redondeado -->
-        <Style x:Key="FormPasswordBox" TargetType="PasswordBox">
-            <Setter Property="FontFamily" Value="Consolas"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Foreground" Value="#FFF8F0"/>
-            <Setter Property="Background" Value="#3B2417"/>
-            <Setter Property="BorderBrush" Value="#F2C230"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="Padding" Value="10,6"/>
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Style x:Key="RoundedPasswordBoxStyle" TargetType="PasswordBox">
+            <Setter Property="Background" Value="#FFFBF7E0"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="Height" Value="30"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="PasswordBox">
@@ -90,17 +102,12 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4"
-                                SnapsToDevicePixels="True">
-                            <ScrollViewer x:Name="PART_ContentHost"/>
+                                CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost" Background="Transparent"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#F28C28"/>
-                            </Trigger>
                             <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#FBE18C"/>
-                                <Setter TargetName="Bd" Property="BorderThickness" Value="3"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource LoginBlue}"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="Bd" Property="Opacity" Value="0.6"/>
@@ -110,76 +117,171 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- Botón tipo link -->
+        <Style x:Key="LinkButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource LoginBlue}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="4,2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <TextBlock x:Name="LinkText"
+                                       Text="{TemplateBinding Content}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="LinkText" Property="TextDecorations" Value="Underline"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Foreground" Value="#007ACC"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Toggle “Login / Sign up” -->
+        <Style x:Key="NavLinkToggleStyle" TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#666666"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}">
+                            <TextBlock x:Name="Txt"
+                                       Text="{TemplateBinding Content}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Txt" Property="Foreground" Value="Black"/>
+                                <Setter TargetName="Txt" Property="FontWeight" Value="Bold"/>
+                                <Setter TargetName="Txt" Property="TextDecorations" Value="Underline"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsChecked" Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Txt" Property="TextDecorations" Value="Underline"/>
+                                <Setter TargetName="Txt" Property="Foreground" Value="{StaticResource LoginBlue}"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Txt" Property="Foreground" Value="#333333"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NavLinkLoginStyle" TargetType="ToggleButton" BasedOn="{StaticResource NavLinkToggleStyle}"/>
+        <Style x:Key="NavLinkSignUpStyle" TargetType="ToggleButton" BasedOn="{StaticResource NavLinkToggleStyle}"/>
+
+        <!-- Estados fijos invertidos (esta página es Sign Up) -->
+        <sys:Boolean x:Key="TabChecked_Login">False</sys:Boolean>
+        <sys:Boolean x:Key="TabChecked_SignUp">True</sys:Boolean>
     </Page.Resources>
 
-    <Grid>
-        <!-- Cartel café de fondo (debajo de todo) -->
-        <Image Source="/Pages/littleBackground.png"
-               HorizontalAlignment="Center" VerticalAlignment="Top"
-               Width="840" Height="488"
+    <!-- ===== Contenedor base: mismo tamaño y fondo ===== -->
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="979" Height="450">
+        <Image Source="/Pages/loginFrame.png"
                Stretch="Fill"
-               RenderOptions.BitmapScalingMode="NearestNeighbor"
-               IsHitTestVisible="False"
-               Panel.ZIndex="0"/>
+               Panel.ZIndex="0"
+               Margin="318,29,319,37"/>
 
-        <!-- Contenido encima -->
-        <Grid Panel.ZIndex="1">
-            <!-- Botones del marco superior (usan tu BtnFlat global) -->
-            <Button x:Name="btnBack" Style="{StaticResource BtnFlat}"
-                    Content="{x:Static language:Lang.btnBackText}"
-                    HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top"
-                    Width="166" Height="72" Click="BtnBack_Click" FontSize="20"/>
+        <!-- ===== Canvas libre (sin grids/paneles de alineación) ===== -->
+        <Canvas Panel.ZIndex="1" Width="979" Height="450" Background="Transparent">
 
-            <Button x:Name="btnSettings" Style="{StaticResource BtnFlat}"
+            <!-- Settings (misma posición que en Login) -->
+            <Button x:Name="btnSettings"
                     Content="{x:Static language:Lang.btnSettingsText}"
-                    HorizontalAlignment="Right" Margin="0,5,0,0" VerticalAlignment="Top"
-                    Width="166" Height="69" FontSize="20"/>
+                    Style="{x:Null}"
+                    Width="120"
+                    Height="30"
+                    Canvas.Left="721"  Canvas.Top="40"/>
 
-            <!-- Título -->
-            <Label x:Name="lblTitleSignUp" Style="{StaticResource TitleLabel}"
-                   Content="{x:Static language:Lang.btnSignUpText}"
-                   HorizontalAlignment="Left" Margin="268,16,0,0" VerticalAlignment="Top"
-                   FontSize="36" Foreground="#FFF2C230"/>
+            <!-- Pestañas: Login (gris, hace back) y Sign Up (subrayado fijo) -->
+            <ToggleButton x:Name="btnNavLogin"
+                          Content="{x:Static language:Lang.btnLoginText}"
+                          Style="{StaticResource NavLinkToggleStyle}"
+                          IsChecked="{Binding Source={StaticResource TabChecked_Login}, Mode=OneWay}"
+                          Click="BtnBack_Click"
+                          Width="71"  Height="26"
+                          Canvas.Left="355" Canvas.Top="156" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
-            <!-- Formulario -->
-            <!-- Fila 1 -->
-            <Label Style="{StaticResource FormLabel}" Content="{x:Static language:Lang.txtNameOfUserText}"
-                   HorizontalAlignment="Left" Margin="136,109,0,0" VerticalAlignment="Top" FontSize="12"/>
-            <TextBox x:Name="txtNameOfUser" Style="{StaticResource FormTextBox}"
-                     HorizontalAlignment="Left" Margin="136,147,0,0" VerticalAlignment="Top"
-                     Width="180" Height="32"/>
+            <ToggleButton x:Name="btnNavSignUp"
+                          Content="{x:Static language:Lang.btnSignUpText}"
+                          Style="{StaticResource NavLinkToggleStyle}"
+                          IsChecked="{Binding Source={StaticResource TabChecked_SignUp}, Mode=OneWay}"
+                          Width="100" Height="27"
+                          Canvas.Left="541" Canvas.Top="156" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
-            <Label Style="{StaticResource FormLabel}" Content="{x:Static language:Lang.txtLastNameOfUserText}"
-                   HorizontalAlignment="Left" Margin="459,109,0,0" VerticalAlignment="Top" FontSize="12"/>
-            <TextBox x:Name="txtLastname" Style="{StaticResource FormTextBox}"
-                     HorizontalAlignment="Left" Margin="459,147,0,0" VerticalAlignment="Top"
-                     Width="170" Height="32"/>
+            <!-- ===== Campos: coloca a gusto moviendo Left/Top ===== -->
 
-            <!-- Fila 2 -->
-            <Label Style="{StaticResource FormLabel}" Content="{x:Static language:Lang.txtUsernameText}"
-                   HorizontalAlignment="Left" Margin="136,192,0,0" VerticalAlignment="Top" FontSize="12"/>
-            <TextBox x:Name="txtUsername" Style="{StaticResource FormTextBox}"
-                     HorizontalAlignment="Left" Margin="136,230,0,0" VerticalAlignment="Top"
-                     Width="180" Height="32"/>
+            <!-- Nombre -->
+            <Label Content="{x:Static language:Lang.txtNameOfUserText}"
+                   Canvas.Left="344" Canvas.Top="182" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Yu Gothic UI"/>
+            <TextBox x:Name="txtNameOfUser"
+                     Style="{StaticResource RoundedTextBoxStyle}"
+                     Width="127"
+                     Canvas.Left="344" Canvas.Top="208" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" Height="23"/>
 
-            <Label Style="{StaticResource FormLabel}" Content="{x:Static language:Lang.pwdPasswordText}"
-                   HorizontalAlignment="Left" Margin="459,187,0,0" VerticalAlignment="Top" FontSize="12"/>
-            <PasswordBox x:Name="pwdPassword" Style="{StaticResource FormPasswordBox}"
-                         HorizontalAlignment="Left" Margin="459,230,0,0" VerticalAlignment="Top"
-                         Width="170" Height="32"/>
+            <!-- Apellidos -->
+            <Label Content="{x:Static language:Lang.txtLastNameOfUserText}"
+                   Canvas.Left="514" Canvas.Top="182" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Yu Gothic UI"/>
+            <TextBox x:Name="txtLastname"
+                     Style="{StaticResource RoundedTextBoxStyle}"
+                     Width="127"
+                     Canvas.Left="514" Canvas.Top="208" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" Height="23"/>
 
-            <!-- Email a lo ancho -->
-            <Label Style="{StaticResource FormLabel}" Content="{x:Static language:Lang.txtRegEmailText}"
-                   HorizontalAlignment="Center" Margin="0,267,0,0" VerticalAlignment="Top" FontSize="12"/>
-            <TextBox x:Name="txtEmail" Style="{StaticResource FormTextBox}"
-                     HorizontalAlignment="Left" Margin="258,305,0,0" VerticalAlignment="Top"
-                     Width="280" Height="34"/>
+            <!-- Username -->
+            <Label Content="{x:Static language:Lang.txtUsernameText}"
+                   Canvas.Left="344" Canvas.Top="236" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Yu Gothic UI"/>
+            <TextBox x:Name="txtUsername"
+                     Style="{StaticResource RoundedTextBoxStyle}"
+                     Width="127"
+                     Canvas.Left="344" Canvas.Top="262" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" Height="26"/>
 
-            <!-- Botón principal -->
-            <Button x:Name="btnSignUp" Style="{StaticResource BtnFlat}"
+            <!-- Password -->
+            <Label Content="{x:Static language:Lang.pwdPasswordText}"
+                   Canvas.Left="514" Canvas.Top="236" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.556,-0.177" FontFamily="Yu Gothic UI"/>
+            <PasswordBox x:Name="pwdPassword"
+                         Style="{StaticResource RoundedPasswordBoxStyle}"
+                         Width="127"
+                         Canvas.Left="514" Canvas.Top="262" HorizontalAlignment="Center" VerticalAlignment="Top" Background="White" Height="26"/>
+
+            <!-- Email -->
+            <Label Content="{x:Static language:Lang.txtRegEmailText}"
+                   Canvas.Left="470" Canvas.Top="282" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <TextBox x:Name="txtEmail"
+                     Style="{StaticResource RoundedTextBoxStyle}"
+                     Width="198"
+                     Canvas.Left="390" Canvas.Top="313" HorizontalAlignment="Left" VerticalAlignment="Top" Background="White" Height="26"/>
+
+            <!-- Botón Sign Up (centrado aprox) -->
+            <Button x:Name="btnSignUp"
                     Content="{x:Static language:Lang.btnSignUpText}"
-                    HorizontalAlignment="Center" Margin="0,344,0,0" VerticalAlignment="Top"
-                    Width="188" Height="50" Click="BtnSignUp_Click" FontSize="20"/>
-        </Grid>
+                    Click="BtnSignUp_Click"
+                    Style="{StaticResource LoginButtonStyle}"
+                    Width="126" Height="23"
+                    Canvas.Left="426" Canvas.Top="354" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        </Canvas>
     </Grid>
 </Page>

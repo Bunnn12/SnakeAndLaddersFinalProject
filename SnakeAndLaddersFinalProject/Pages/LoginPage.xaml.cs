@@ -19,6 +19,12 @@ namespace SnakeAndLaddersFinalProject.Pages
             InitializeComponent();
         }
 
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Fuerza el estado “Login activo, SignUp inactivo”
+            if (btnNavLogin != null) btnNavLogin.IsChecked = true;
+            if (btnSignUp != null) btnSignUp.IsChecked = false;
+        }
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e) { }
 
         private string[] ValidateLogin(string identifier, string pwd)
@@ -38,6 +44,8 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void BtnSignUp_Click(object sender, RoutedEventArgs e)
         {
+            btnNavLogin.IsChecked = false;
+            btnSignUp.IsChecked = false; 
             NavigationService?.Navigate(new SignUpPage());
         }
 
@@ -142,6 +150,14 @@ namespace SnakeAndLaddersFinalProject.Pages
                 default: return T("AuthServerError");
             }
         }
+
+        private void BtnNavLogin_Click(object sender, RoutedEventArgs e)
+        {
+            btnNavLogin.IsChecked = true;
+            btnSignUp.IsChecked = false;
+        }
+
+
 
         private void BtnPlayAsGuest_Click(object sender, RoutedEventArgs e)
         {
