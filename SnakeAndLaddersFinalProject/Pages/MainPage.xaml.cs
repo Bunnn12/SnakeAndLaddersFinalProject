@@ -12,15 +12,11 @@ namespace SnakeAndLaddersFinalProject.Pages
             InitializeComponent();
         }
 
-        private void btnCreateMatch_Click(object sender, RoutedEventArgs e)
+        private void CreateMatch(object sender, RoutedEventArgs e)
         {
             NavigateToLobby(new LobbyNavigationArgs { Mode = LobbyEntryMode.Create });
         }
 
-        private void btnJoinMatch_Click(object sender, RoutedEventArgs e)
-        {
-            return;
-        }
 
         private void NavigateToLobby(LobbyNavigationArgs args)
         {
@@ -39,7 +35,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 Application.Current.MainWindow.Content = page;
         }
 
-        private void btnJoinMatch_Click_1(object sender, RoutedEventArgs e)
+        private void JoinMatch(object sender, RoutedEventArgs e)
         {
             var code = txtJoinCode.Text?.Trim();
             if (string.IsNullOrWhiteSpace(code))
@@ -49,6 +45,11 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
 
             NavigateToLobby(new LobbyNavigationArgs { Mode = LobbyEntryMode.Join, JoinCode = code });
+
+        }
+
+        private void btnFriends_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
+        {
 
         }
     }

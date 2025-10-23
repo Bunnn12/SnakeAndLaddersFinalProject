@@ -5,15 +5,22 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
       xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
+      xmlns:util="clr-namespace:SnakeAndLaddersFinalProject.Utilities"
       mc:Ignorable="d"
       Title="MainPage"
       d:DesignWidth="1280" d:DesignHeight="720"
       SnapsToDevicePixels="True"
       UseLayoutRounding="True"
       TextOptions.TextRenderingMode="Aliased"
-      Background="Transparent">
+      Background="Transparent"
+      util:PageBackground.Key="MainVideo">
+
+
 
     <Page.Resources>
+
+
+
         <!-- Colores -->
         <SolidColorBrush x:Key="BrushCafe900" Color="#23130C"/>
         <SolidColorBrush x:Key="BrushCafe700" Color="#3B2417"/>
@@ -69,16 +76,14 @@
                                 CornerRadius="4"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              />
-
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <!-- ===== Botón de menú: fondo imagen, SIN contorno, flecha por fuera ===== -->
+        <!-- ===== Botón de menú: fondo imagen ===== -->
         <Style x:Key="BtnMenu" TargetType="Button">
             <Setter Property="FontFamily" Value="{StaticResource Font.M04}"/>
             <Setter Property="FontSize" Value="24"/>
@@ -92,17 +97,11 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <!-- NO recortar: la flecha se sale a la izquierda -->
                         <Grid SnapsToDevicePixels="True" ClipToBounds="False">
-                            <!-- Sombra pegada -->
                             <Border CornerRadius="18" Margin="0" Background="Transparent"
                                     Effect="{StaticResource ShadowSoft}"/>
-
-                            <!-- Fondo con imagen -->
                             <Border x:Name="Bg" CornerRadius="18" Margin="0"
                                     Background="{TemplateBinding Background}"/>
-
-                            <!-- Contenido (desplazado un poco a la izquierda) -->
                             <ContentPresenter x:Name="ContentSite"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
@@ -110,11 +109,8 @@
                                               TextElement.Foreground="{TemplateBinding Foreground}">
                                 <ContentPresenter.RenderTransform>
                                     <TranslateTransform X="-8"/>
-                                    <!-- mover texto -->
                                 </ContentPresenter.RenderTransform>
                             </ContentPresenter>
-
-                            <!-- Flecha afuera -->
                             <Polygon x:Name="Pointer"
                                      Points="0,12 16,6 0,0"
                                      Fill="{StaticResource BrushAmarillo}"
@@ -126,7 +122,6 @@
                                      Margin="60,0,0,0"
                                      Panel.ZIndex="2"/>
                         </Grid>
-
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Pointer" Property="Opacity" Value="1"/>
@@ -155,7 +150,7 @@
             </Setter>
         </Style>
 
-        <!-- ===== Botón plano: fondo imagen, SIN contorno ===== -->
+        <!-- ===== Botón plano ===== -->
         <Style x:Key="BtnFlat" TargetType="Button">
             <Setter Property="FontFamily" Value="Consolas"/>
             <Setter Property="FontSize" Value="18"/>
@@ -169,10 +164,8 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Grid>
-                            <!-- Sombra pegada -->
                             <Border CornerRadius="12" Margin="0" Background="Transparent"
                                     Effect="{StaticResource ShadowSoft}"/>
-                            <!-- Fondo con imagen -->
                             <Border x:Name="Bg" CornerRadius="12" Margin="0"
                                     Background="{TemplateBinding Background}">
                                 <ContentPresenter x:Name="ContentSite"
@@ -206,10 +199,38 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- ===== Storyboard con MediaTimeline: loop infinito ===== -->
+        <Storyboard x:Key="MainPageVideoStoryboard" RepeatBehavior="Forever">
+            <!-- Usa siteoforigin si el MP4 está como Content + Copy if newer -->
+            <MediaTimeline
+                Source="pack://siteoforigin:,,,/Assets/Videos/MainPageVideo.mp4"
+                Storyboard.TargetName="VideoBg" />
+            <!-- Si usas Build Action = Resource, cambia a:
+            <MediaTimeline
+                Source="pack://application:,,,/Assets/Videos/MainPageVideo.mp4"
+                Storyboard.TargetName="VideoBg" />
+            -->
+        </Storyboard>
     </Page.Resources>
 
     <!-- ===== LAYOUT ===== -->
     <Grid Background="Transparent">
+        <!-- Video de fondo controlado por Storyboard -->
+        <MediaElement x:Name="VideoBg"
+                      IsMuted="True"
+                      Stretch="UniformToFill"
+                      IsHitTestVisible="False"
+                      Panel.ZIndex="-1"
+                      LoadedBehavior="Manual"
+                      UnloadedBehavior="Manual">
+            <MediaElement.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <BeginStoryboard Storyboard="{StaticResource MainPageVideoStoryboard}" />
+                </EventTrigger>
+            </MediaElement.Triggers>
+        </MediaElement>
+
         <Grid Margin="24">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -225,14 +246,19 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="btnBack" Grid.Column="0" Style="{StaticResource BtnFlat}" Width="140"
-                        Content="BACK" Margin="0,0,0,-46"/>
+                <Button x:Name="btnBack" Grid.Column="0"  Width="140" Margin="0,0,0,10" BorderBrush="{x:Null}">
+                    <Button.Background>
+                        <ImageBrush/>
+                    </Button.Background>
+                    <Image Height="49" Source="/Assets/Images/Icons/BackIcon.png" Stretch="Fill" Width="62"/>
+                </Button>
 
                 <Label x:Name="lblCoins" Grid.Column="1" Style="{StaticResource LblHud}"
                        Content="{x:Static language:Lang.lblCoinsText}" />
 
-                <Button x:Name="btnSettings" Grid.Column="2" Style="{StaticResource BtnFlat}" Width="160"
-                        Content="{x:Static language:Lang.btnSettingsText}" Margin="0,0,0,-67"/>
+                <Button x:Name="btnSettings" Grid.Column="2"  Width="160" Background="{x:Null}" BorderBrush="{x:Null}">
+                    <Image Height="43" Source="/Assets/Images/Icons/SettingsIcon.png" Stretch="Fill" Width="47"/>
+                </Button>
             </Grid>
 
             <!-- Centro -->
@@ -242,42 +268,88 @@
                         Style="{StaticResource BtnMenu}"
                         Height="155" Margin="-20"
                         Content="{x:Static language:Lang.btnCreateMatchText}"
-                        Click="btnCreateMatch_Click" Width="529"/>
+                        Click="CreateMatch" Width="529"/>
                 <Button x:Name="btnJoinMatch"
                         Style="{StaticResource BtnMenu}"
                         Height="161" Margin="-20"
-                        Content="{x:Static language:Lang.btnJoinMatchText}" Width="600" HorizontalAlignment="Right" Click="btnJoinMatch_Click_1"/>
-                <TextBlock Text="Código:" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#FFFBFBFB"/>
-                <TextBox x:Name="txtJoinCode" Width="180"/>
-                <Button Content="Unirse"
-          Style="{StaticResource BtnFlat}"
-          Margin="8,0,0,0"
-          Click="btnJoinMatch_Click"/>
+                        Content="{x:Static language:Lang.btnJoinMatchText}"
+                        Width="600" HorizontalAlignment="Right"
+                        Click="JoinMatch"/>
+                <TextBlock Text="Código:" Margin="0,0,8,0" Foreground="#FFFBFBFB" Height="3" RenderTransformOrigin="0.5,0.5">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="-1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+                <TextBox x:Name="txtJoinCode" Width="400" RenderTransformOrigin="82,0.5" Height="45">
+                    <TextBox.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleX="-2.337"/>
+                            <RotateTransform/>
+                            <TranslateTransform X="-0.359"/>
+                        </TransformGroup>
+                    </TextBox.RenderTransform>
+                </TextBox>
+               
             </StackPanel>
 
             <!-- Inferior -->
             <Grid Grid.Row="2" Margin="0,20,0,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="246*"/>
+                    <ColumnDefinition Width="201*"/>
+                    <ColumnDefinition Width="13*"/>
+                    <ColumnDefinition Width="0*"/>
+                    <ColumnDefinition Width="259*"/>
+                    <ColumnDefinition Width="0*"/>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="11*"/>
+                    <ColumnDefinition Width="246*"/>
+                    <ColumnDefinition Width="246*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="btnFriends"   Grid.Column="0" Style="{StaticResource BtnFlat}"
-            Content="{x:Static language:Lang.lblFriendsListTitle}" Margin="8,-24,8,0"/>
-                <Button x:Name="btnShop"      Grid.Column="1" Style="{StaticResource BtnFlat}" 
-            Content="{x:Static language:Lang.btnShopText}" Margin="8,-24,8,0"/>
-                <Button x:Name="btnInventory" Grid.Column="2" Style="{StaticResource BtnFlat}"
-            Content="{x:Static language:Lang.btnInventoryText}" Margin="8,-24,8,0"/>
-                <Button x:Name="btnSkins"     Grid.Column="3" Style="{StaticResource BtnFlat}"
-            Content="{x:Static language:Lang.btnSkinsText}"
-            Height="58" Margin="8,-24,8,0" VerticalAlignment="Top"/>
-                <Button x:Name="btnProfile"   Grid.Column="4" Style="{StaticResource BtnFlat}"
-            Content="{x:Static language:Lang.btnProfileText}" Margin="8,-24,8,0"/>
-            </Grid>
+                <Button x:Name="btnFriends"   Grid.Column="0" 
+                        Content="{x:Static language:Lang.lblFriendsListTitle}" Margin="8,-24,8,0"/>
+                <Button x:Name="btnShop"
+                    Grid.Column="1" Margin="8,-24,8,0"
+                    Style="{StaticResource BtnIcon}"
+                    ToolTip="{x:Static language:Lang.btnShopText}">
+                    <Image Width="73" Height="55"
+                    Source="/Assets/Images/Icons/StoreIcon.png"
+                    Stretch="Uniform"
+                    RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                </Button>
 
+
+                <Button x:Name="btnInventory"
+                    Grid.Column="4"
+                    Margin="57,-23,39,0"
+                    Style="{StaticResource BtnIcon}" 
+                    ToolTip="{x:Static language:Lang.btnInventoryText}">
+                    <Image Width="147" Height="55"
+                    Source="/Assets/Images/Icons/InventoryIcon.png"
+                    Stretch="Uniform"
+                    RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                </Button>
+
+                <Button x:Name="btnSkins" 
+                    Grid.Column="7" 
+                    Style="{StaticResource BtnIcon}"
+                    ToolTip="{x:Static language:Lang.btnSkinsText}" Grid.ColumnSpan="2" Margin="10,-24,0,0">
+                    <Image Width="108" Height="60"
+                    Source="/Assets/Images/Icons/SkinIcon.png"
+                    Stretch="Uniform"
+                    RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                </Button>
+
+                <Button x:Name="btnProfile"   Grid.Column="9"
+                        Content="{x:Static language:Lang.btnProfileText}" Margin="8,-24,8,0"/>
+            </Grid>
         </Grid>
 
         <!-- Ranking lateral -->

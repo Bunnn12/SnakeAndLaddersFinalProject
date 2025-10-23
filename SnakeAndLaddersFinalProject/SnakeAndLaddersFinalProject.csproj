@@ -49,6 +49,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Assets\Images\Logo\GameIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=3.2.0.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.3.2.0\lib\net462\log4net.dll</HintPath>
@@ -450,7 +453,7 @@
     <Resource Include="Pages\littleBackground.png" />
     <Resource Include="Assets\Images\BackgroundMainWindow.png" />
     <Resource Include="Assets\Images\BotonImg.png" />
-    <Resource Include="Assets\Images\Icons\Friends.png" />
+    <Resource Include="Assets\Images\Icons\FriendsIcon.png" />
     <Resource Include="Assets\Images\Backgrounds\littleBackground.png" />
     <Resource Include="Assets\Images\Backgrounds\DialogBackground.png" />
     <Resource Include="Assets\Images\Backgrounds\margen dorado.png" />
@@ -460,8 +463,18 @@
     <Resource Include="Assets\Images\Logo\LogoText.png" />
     <Resource Include="Assets\Images\Backgrounds\LoginBackground %282%29.png" />
     <Resource Include="Assets\Images\Backgrounds\loginFrame.png" />
+    <Resource Include="Assets\Images\Logo\GameIcon.ico" />
+    <Resource Include="Assets\Images\Icons\SettingsIcon.png" />
+    <Resource Include="Assets\Images\Icons\InventoryIcon.png" />
+    <Resource Include="Assets\Images\Icons\StoreIcon.png" />
+    <Resource Include="Assets\Images\Icons\BackIcon.png" />
+    <Resource Include="Assets\Images\Icons\RankingIcon.png" />
+    <Resource Include="Assets\Images\Icons\SkinIcon.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Videos\MainPageVideo.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Videos\StartPageNightVideo.mp4">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -223,8 +223,8 @@
                           Style="{StaticResource NavLinkToggleStyle}"
                           IsChecked="{Binding Source={StaticResource TabChecked_Login}, Mode=OneWay}"
                           Click="BtnBack_Click"
-                          Width="71"  Height="26"
-                          Canvas.Left="355" Canvas.Top="156" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                          Width="116"  Height="26"
+                          Canvas.Left="355" Canvas.Top="156" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
             <ToggleButton x:Name="btnNavSignUp"
                           Content="{x:Static language:Lang.btnSignUpText}"
@@ -269,7 +269,7 @@
 
             <!-- Email -->
             <Label Content="{x:Static language:Lang.txtRegEmailText}"
-                   Canvas.Left="470" Canvas.Top="282" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                   Canvas.Left="435" Canvas.Top="288" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="txtEmail"
                      Style="{StaticResource RoundedTextBoxStyle}"
                      Width="198"

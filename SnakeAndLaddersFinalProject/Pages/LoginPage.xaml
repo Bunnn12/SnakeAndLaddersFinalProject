@@ -223,7 +223,7 @@
                           HorizontalAlignment="Left"
                           VerticalAlignment="Top"
                           Margin="355,146,0,0"
-                          Width="71"
+                          Width="122"
                           FontSize="18"/>
 
             <!-- Sign up: gris fijo; el click solo muestra 'press' y vuelve -->
@@ -280,7 +280,7 @@
                     Style="{StaticResource LoginButtonStyle}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Width="138"
+                    Width="164"
                     Margin="0,300,0,0"/>
 
             <Button x:Name="btnPlayAsGuest"
@@ -290,7 +290,7 @@
                     Style="{StaticResource LoginButtonStyle}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Width="140"
+                    Width="164"
                     Margin="0,334,0,0"
                     Background="#FF194053"/>
 

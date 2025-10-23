@@ -87,4 +87,134 @@
         </Setter>
     </Style>
 
+    <!-- ===== BtnInventory.Simple: hostea el Content tal cual (tu <Image>) ===== -->
+    <Style x:Key="BtnIcon" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <!-- ToolTip base opcional -->
+        <Setter Property="ToolTipService.InitialShowDelay" Value="200"/>
+        <Setter Property="ToolTipService.ShowDuration" Value="6000"/>
+        <Setter Property="ToolTipService.Placement" Value="Top"/>
+        <Setter Property="ToolTipService.VerticalOffset" Value="-4"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid x:Name="Root" SnapsToDevicePixels="True" UseLayoutRounding="True">
+                        <!-- Efecto de escala para hover/press -->
+                        <Grid.RenderTransform>
+                            <ScaleTransform x:Name="rtScale" ScaleX="1" ScaleY="1"/>
+                        </Grid.RenderTransform>
+
+                        <!-- Sombra suave (usa tu ShadowSoft existente) -->
+                        <Border CornerRadius="10" Background="Transparent"
+                            Effect="{StaticResource ShadowSoft}"/>
+
+                        <!-- Overlay de estado -->
+                        <Border x:Name="StateOverlay" CornerRadius="10"
+                            Background="#FFFFFF" Opacity="0"/>
+
+                        <!-- Aquí NO reemplazamos el contenido: va tu <Image/> tal cual -->
+                        <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+
+                        <!-- Visual States -->
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="rtScale"
+                                                     Storyboard.TargetProperty="ScaleX"
+                                                     To="1.06" Duration="0:0:0.12">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetName="rtScale"
+                                                     Storyboard.TargetProperty="ScaleY"
+                                                     To="1.06" Duration="0:0:0.12">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetName="StateOverlay"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To="0.13" Duration="0:0:0.12"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="rtScale"
+                                                     Storyboard.TargetProperty="ScaleX"
+                                                     To="0.96" Duration="0:0:0.08">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetName="rtScale"
+                                                     Storyboard.TargetProperty="ScaleY"
+                                                     To="0.96" Duration="0:0:0.08">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetName="StateOverlay"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To="0.18" Duration="0:0:0.08"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Root"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To="0.55" Duration="0:0:0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+
+                    <!-- Focus: borde sutil -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="StateOverlay" Property="BorderBrush" 
+                                Value="{StaticResource BrushAmarillo}"/>
+                            <Setter TargetName="StateOverlay" Property="BorderThickness" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <!-- ===== Estilo de ToolTip (pixel-friendly) ===== -->
+    <Style x:Key="PixelToolTip" TargetType="ToolTip">
+        <Setter Property="Background" Value="#1C1C1C"/>
+        <Setter Property="Foreground" Value="{StaticResource BrushBlancoSuave}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BrushAmarillo}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="6,4"/>
+        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToolTip">
+                    <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="6"
+                        Effect="{StaticResource ShadowSoft}">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
 </ResourceDictionary>

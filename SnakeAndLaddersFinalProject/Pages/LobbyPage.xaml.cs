@@ -11,7 +11,7 @@ namespace SnakeAndLaddersFinalProject.Pages
     {
         private readonly LobbyNavigationArgs _args;
 
-        // ctor por defecto, si lo necesitas en diseñador
+        
         public LobbyPage() : this(new LobbyNavigationArgs { Mode = LobbyEntryMode.Create }) { }
 
         public LobbyPage(LobbyNavigationArgs args)
@@ -20,18 +20,18 @@ namespace SnakeAndLaddersFinalProject.Pages
             _args = args ?? new LobbyNavigationArgs { Mode = LobbyEntryMode.Create };
             this.DataContext = new LobbyViewModel();
 
-            Loaded += LobbyPage_Loaded;
+            Loaded += LobbyPageLoaded;
         }
 
-        private void LobbyPage_Loaded(object sender, RoutedEventArgs e)
+        private void LobbyPageLoaded(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as LobbyViewModel;
             if (vm == null) return;
 
-            // Ejecuta automáticamente según el modo
+            
             if (_args.Mode == LobbyEntryMode.Create)
             {
-                // Crea el lobby y entra como host
+                
                 vm.CreateLobbyCommand.Execute(null);
             }
             else if (_args.Mode == LobbyEntryMode.Join)
@@ -44,7 +44,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OpenChat(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -88,6 +88,9 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
 
+        }
     }
 }

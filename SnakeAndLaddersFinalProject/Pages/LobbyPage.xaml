@@ -58,13 +58,13 @@
 
                 <Button Style="{StaticResource ActionButton}"
                         Content="{x:Static language:Lang.btnExitMatchText}"
-                        Command="{Binding LeaveLobbyCommand}"/>
+                        Command="{Binding LeaveLobbyCommand}" Click="Button_Click_1"/>
 
                 <!-- Si aún no existe la clave en Lang, usa texto literal -->
                 <Button Style="{StaticResource ActionButton}"
                         Content="Copiar enlace"
                         Command="{Binding CopyInviteLinkCommand}"/>
-                <Button Content="{x:Static language:Lang.chatTittle}" Width="92" Click="Button_Click"/>
+                <Button Content="{x:Static language:Lang.chatTittle}" Width="92" Click="OpenChat"/>
             </StackPanel>
 
             <TextBlock Text="{Binding StatusText}" Opacity="0.85" Margin="0,8,0,0" Foreground="#FFF1EEEE"/>
