@@ -1,4 +1,7 @@
-﻿using System;
+﻿using log4net;
+using SnakeAndLaddersFinalProject.Authentication;
+using SnakeAndLaddersFinalProject.ChatService;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
@@ -6,13 +9,12 @@ using System.Linq;
 using System.ServiceModel;
 using System.Windows;
 using System.Windows.Input;
-using SnakeAndLaddersFinalProject.Authentication;
-using SnakeAndLaddersFinalProject.ChatService;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class ChatViewModel : INotifyPropertyChanged
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(ChatViewModel));
         private IChatService proxy;
         private string newMessage = string.Empty;
         private static readonly TimeSpan DuplicateWindow = TimeSpan.FromSeconds(3);
@@ -53,6 +55,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 StatusText = $"Chat offline: {ex.Message}";
                 OnPropertyChanged(nameof(StatusText));
+                Logger.Error("Failed to subscribe or get recent messages.", ex);
             }
 
             SendMessageCommand = new RelayCommand(_ => Send(), _ => CanSend());
@@ -95,7 +98,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 TimestampUtc = DateTime.UtcNow
             };
 
-            // Pinta optimista
+            
             Messages.Add(new ChatMessageVm(localDto, CurrentUserName));
 
             NewMessage = string.Empty;
@@ -120,6 +123,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 StatusText = $"Send failed: {ex.Message}";
                 OnPropertyChanged(nameof(StatusText));
                 TryRecreateProxy();
+                Logger.Error("Failed to send chat message.", ex);
             }
         }
 
@@ -156,15 +160,18 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 proxy = CreateDuplexProxyFromConfig();
                 proxy.Subscribe(LobbyId, CurrentUserId);
             }
-            catch { /* ignore */ }
+            catch (Exception ex) 
+            { 
+               Logger.Error("Failed to recreate chat proxy.", ex);
+            }
         }
 
         public void Dispose()
         {
-            try { proxy?.Unsubscribe(LobbyId, CurrentUserId); } catch { }
+            try { proxy?.Unsubscribe(LobbyId, CurrentUserId); } catch ( Exception ex) { Logger.Error(ex); }
             if (proxy is ICommunicationObject comm)
             {
-                try { comm.Close(); } catch { comm.Abort(); }
+                try { comm.Close(); } catch  (Exception ex) { comm.Abort(); Logger.Error(ex); }
             }
         }
 

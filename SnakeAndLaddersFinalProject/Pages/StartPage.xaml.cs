@@ -78,7 +78,10 @@ namespace SnakeAndLaddersFinalProject.Pages
                 VideoIntro.MediaEnded -= OnMediaEnded;
                 VideoIntro.MediaFailed -= OnMediaFailed;
             }
-            catch { /* no-op */}
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error during cleanup: {ex.Message}");
+            }
         }
 
         
@@ -114,7 +117,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private string ElegirRutaPorHora()
         {
-            // Día: 06:00–17:59, Noche: 18:00–05:59
+            
             bool esDia = IsDaytime();
 
             string preferido = esDia ? _dayPath : _nightPath;

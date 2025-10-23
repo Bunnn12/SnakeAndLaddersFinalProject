@@ -2,13 +2,13 @@
 {
     public enum LobbyEntryMode
     {
-        Create, // ser host (crear lobby)
-        Join    // unirse por código
+        Create, 
+        Join    
     }
 
     public sealed class LobbyNavigationArgs
     {
         public LobbyEntryMode Mode { get; set; }
-        public string JoinCode { get; set; } // solo aplica cuando Mode = Join
+        public string JoinCode { get; set; } 
     }
 }

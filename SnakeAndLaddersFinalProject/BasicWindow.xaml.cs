@@ -10,12 +10,12 @@ namespace SnakeAndLaddersFinalProject
 {
     public sealed partial class BasicWindow : Window
     {
-        // Mapas de clave lógica → ruta de imagen (reutiliza "Auth" para Login y SignUp)
+        
         private static readonly IReadOnlyDictionary<string, string> Backgrounds =
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 ["Auth"] = "/Assets/Images/Backgrounds/LoginBackground (2).png",
-                //["Lobby"] = "/Assets/Images/BackgroundLobby.png" para cuando se agregue un fondo distinto al lobby o alguna otra 
+               
             };
 
         private const string DefaultBackground = "Assets/Images/BackgroundMainWindow.png";
@@ -27,7 +27,7 @@ namespace SnakeAndLaddersFinalProject
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Página inicial: StartPage
+            
             MainFrame.Navigate(new Pages.StartPage());
         }
 
@@ -56,7 +56,7 @@ namespace SnakeAndLaddersFinalProject
         {
             try
             {
-                // Normaliza y arma pack URI: pack://application:,,,/Assets/Images/xxx.png
+                
                 var path = (resourcePath ?? string.Empty).TrimStart('/');
                 var packUri = new Uri($"pack://application:,,,/{path}", UriKind.Absolute);
 
@@ -71,7 +71,7 @@ namespace SnakeAndLaddersFinalProject
             }
             catch
             {
-                // Fallback al default
+                
                 var defPath = DefaultBackground.TrimStart('/');
                 var defUri = new Uri($"pack://application:,,,/{defPath}", UriKind.Absolute);
 

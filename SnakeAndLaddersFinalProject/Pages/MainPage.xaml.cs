@@ -50,7 +50,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void btnFriends_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
         {
-
+            return;
         }
     }
 }

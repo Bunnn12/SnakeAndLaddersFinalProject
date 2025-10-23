@@ -1,14 +1,17 @@
-﻿using System;
+﻿using log4net;
+using SnakeAndLaddersFinalProject.Navigation;
+using SnakeAndLaddersFinalProject.ViewModels;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using SnakeAndLaddersFinalProject.Navigation;
-using SnakeAndLaddersFinalProject.ViewModels;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class LobbyPage : Page
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(LobbyPage));
+
         private readonly LobbyNavigationArgs _args;
 
         
@@ -78,13 +81,17 @@ namespace SnakeAndLaddersFinalProject.Pages
                 navWindow.Navigate(chatPage);
                 navWindow.Show();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                Console.WriteLine("hay una ex, cambiar luego a una ventana de dialogo :)");
+                MessageBox.Show("No se pudo navegar a la página de chat.",
+                                "Error de navegación", MessageBoxButton.OK, MessageBoxImage.Error);
+                Logger.Error("Error al abrir la página de chat.", ex);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.WriteLine("hay una ex, cambiar luego");
+                MessageBox.Show("Ocurrió un error inesperado al intentar abrir el chat.",
+                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Logger.Error("Error inesperado al abrir la página de chat.", ex);
             }
         }
 
