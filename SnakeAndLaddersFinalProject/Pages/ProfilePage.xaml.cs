@@ -1,12 +1,15 @@
-﻿using System;
+﻿using log4net;
+using SnakeAndLaddersFinalProject.UserService; 
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using SnakeAndLaddersFinalProject.UserService; 
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class ProfilePage : Page
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(ProfilePage));
+
         private readonly string _username;
 
         private AccountDto _loaded;
@@ -43,7 +46,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             {
                 MessageBox.Show($"Error cargando perfil: {ex.Message}", "Error");
             }
-            finally { try { client.Close(); } catch { } }
+            finally { try { client.Close(); } catch (Exception ex) { Logger.Error("Ocurrio un error", ex); } }
         }
 
         private void SetEditMode(bool enabled)
@@ -62,7 +65,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void BtnCancelar_Click(object sender, RoutedEventArgs e)
         {
-            // restaurar valores originales
+            
             if (_loaded != null)
             {
                 txtFirstName.Text = _loaded.FirstName;
@@ -112,7 +115,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             {
                 MessageBox.Show($"Error guardando perfil: {ex.Message}", "Error");
             }
-            finally { try { client.Close(); } catch { } }
+            finally { try { client.Close(); } catch (Exception ex) { Logger.Error("Ocurrio un error", ex); } }
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
