@@ -14,13 +14,20 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private readonly LobbyNavigationArgs _args;
 
-        
-        public LobbyPage() : this(new LobbyNavigationArgs { Mode = LobbyEntryMode.Create }) { }
+        public LobbyPage() : this(new LobbyNavigationArgs 
+        { 
+            Mode = LobbyEntryMode.Create 
+        }) 
+        { 
+        }
 
         public LobbyPage(LobbyNavigationArgs args)
         {
             InitializeComponent();
-            _args = args ?? new LobbyNavigationArgs { Mode = LobbyEntryMode.Create };
+            _args = args ?? new LobbyNavigationArgs 
+            { 
+                Mode = LobbyEntryMode.Create 
+            };
             this.DataContext = new LobbyViewModel();
 
             Loaded += LobbyPageLoaded;
@@ -71,6 +78,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 Window currentWindow = Window.GetWindow(this);
                 var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
+
                 if (mainFrame != null)
                 {
                     mainFrame.Navigate(chatPage);
@@ -83,19 +91,23 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (InvalidOperationException ex)
             {
+
                 MessageBox.Show("No se pudo navegar a la página de chat.",
                                 "Error de navegación", MessageBoxButton.OK, MessageBoxImage.Error);
                 Logger.Error("Error al abrir la página de chat.", ex);
+
             }
             catch (Exception ex)
             {
+
                 MessageBox.Show("Ocurrió un error inesperado al intentar abrir el chat.",
                                 "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Logger.Error("Error inesperado al abrir la página de chat.", ex);
+
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void LeaveLobby(object sender, RoutedEventArgs e)
         {
 
         }

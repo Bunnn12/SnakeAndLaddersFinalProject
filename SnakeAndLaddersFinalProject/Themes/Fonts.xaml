@@ -6,12 +6,10 @@
         pack://application:,,,/Assets/Fonts/#Press Start 2P
     </FontFamily>
 
-    <!-- Fuente con estética de pantalla retro -->
     <FontFamily x:Key="Font.PixelatedDisplay">
         pack://application:,,,/Assets/Fonts/#Pixelated Display
     </FontFamily>
-
-    <!-- Fuente tipo monoespaciada estilo consola -->
+    
     <FontFamily x:Key="Font.M04">
         pack://application:,,,/Assets/Fonts/#M04_FATAL FURY
     </FontFamily>

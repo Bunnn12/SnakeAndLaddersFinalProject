@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- ===== Estilo base: Btn.PixelFlat ===== -->
+   
     <Style TargetType="Button" x:Key="Btn.PixelFlat">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
@@ -16,7 +16,7 @@
         </Setter>
     </Style>
 
-    <!-- ===== Recursos compartidos para BtnFlat (mismos tonos del lobby) ===== -->
+    
     <SolidColorBrush x:Key="BrushBlancoSuave" Color="#FFF8F0"/>
     <SolidColorBrush x:Key="BrushAmarillo"    Color="#F2C230"/>
     <SolidColorBrush x:Key="BrushVerde"       Color="#2E7D32"/>
@@ -25,7 +25,7 @@
     <DropShadowEffect x:Key="ShadowSoft" BlurRadius="8" ShadowDepth="0"
                       Direction="270" Opacity="0.35" Color="#000000"/>
 
-    <!-- Imagen base para los botones planos -->
+    
     <ImageBrush x:Key="IB.BtnFlat"
                 ImageSource="/Assets/Images/BotonImg.png"
                 Stretch="Fill"
@@ -34,9 +34,9 @@
                 ViewboxUnits="RelativeToBoundingBox"
                 Viewbox="0.083,0.083,0.834,0.834"/>
 
-    <!-- ===== BtnFlat: el que pide tu SignUpPage ===== -->
+   
     <Style x:Key="BtnFlat" TargetType="Button">
-        <!-- Fuente igual que Inventory (Consolas) -->
+       
         <Setter Property="FontFamily" Value="Consolas"/>
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="Foreground" Value="{StaticResource BrushBlancoSuave}"/>
@@ -49,10 +49,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Grid>
-                        <!-- Sombra suave -->
+                        
                         <Border CornerRadius="12" Background="Transparent"
                                 Effect="{StaticResource ShadowSoft}"/>
-                        <!-- Fondo con la imagen -->
+                        
                         <Border x:Name="Bg" CornerRadius="12"
                                 Background="{TemplateBinding Background}">
                             <ContentPresenter x:Name="ContentSite"
@@ -87,13 +87,13 @@
         </Setter>
     </Style>
 
-    <!-- ===== BtnInventory.Simple: hostea el Content tal cual (tu <Image>) ===== -->
+   
     <Style x:Key="BtnIcon" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Cursor" Value="Hand"/>
-        <!-- ToolTip base opcional -->
+      
         <Setter Property="ToolTipService.InitialShowDelay" Value="200"/>
         <Setter Property="ToolTipService.ShowDuration" Value="6000"/>
         <Setter Property="ToolTipService.Placement" Value="Top"/>
@@ -102,24 +102,24 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Grid x:Name="Root" SnapsToDevicePixels="True" UseLayoutRounding="True">
-                        <!-- Efecto de escala para hover/press -->
+                        
                         <Grid.RenderTransform>
                             <ScaleTransform x:Name="rtScale" ScaleX="1" ScaleY="1"/>
                         </Grid.RenderTransform>
 
-                        <!-- Sombra suave (usa tu ShadowSoft existente) -->
+                       
                         <Border CornerRadius="10" Background="Transparent"
                             Effect="{StaticResource ShadowSoft}"/>
 
-                        <!-- Overlay de estado -->
+                        
                         <Border x:Name="StateOverlay" CornerRadius="10"
                             Background="#FFFFFF" Opacity="0"/>
 
-                        <!-- Aquí NO reemplazamos el contenido: va tu <Image/> tal cual -->
+                        
                         <ContentPresenter HorizontalAlignment="Center"
                                       VerticalAlignment="Center"/>
 
-                        <!-- Visual States -->
+                       
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal"/>
@@ -176,7 +176,7 @@
                         </VisualStateManager.VisualStateGroups>
                     </Grid>
 
-                    <!-- Focus: borde sutil -->
+                   
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter TargetName="StateOverlay" Property="BorderBrush" 
@@ -190,7 +190,6 @@
     </Style>
 
 
-    <!-- ===== Estilo de ToolTip (pixel-friendly) ===== -->
     <Style x:Key="PixelToolTip" TargetType="ToolTip">
         <Setter Property="Background" Value="#1C1C1C"/>
         <Setter Property="Foreground" Value="{StaticResource BrushBlancoSuave}"/>
