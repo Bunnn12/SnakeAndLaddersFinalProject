@@ -14,7 +14,7 @@ namespace SnakeAndLaddersFinalProject.Pages
     public partial class StartPage : Page
     {
         private Uri videoSourceUri;
-        private bool isMuted = true;
+        private readonly bool isMuted = true;
 
    
         private string _baseDir;
@@ -51,19 +51,17 @@ namespace SnakeAndLaddersFinalProject.Pages
             VideoIntro.Opacity = 0; 
 
             
-            CargarYReproducirVideoSegunHora(initial: true);
+            PlayVidePerHour(initial: true);
 
             
             _clockTimer = new DispatcherTimer { Interval = TimeSpan.FromMinutes(5) };
-            _clockTimer.Tick += (_, __) => CargarYReproducirVideoSegunHora();
+            _clockTimer.Tick += (_, __) => PlayVidePerHour();
             _clockTimer.Start();
         }
 
         private void OnPageUnloaded(object sender, RoutedEventArgs e)
         {
             
-            var uri = new Uri("pack://application:,,,/SnakeAndLaddersFinalProject;component/Assets/Cursors/pixel.cur");
-            StreamResourceInfo res = Application.GetResourceStream(uri);
 
             BlackTransition.IsHitTestVisible = false;
 
@@ -85,9 +83,9 @@ namespace SnakeAndLaddersFinalProject.Pages
         }
 
         
-        private void CargarYReproducirVideoSegunHora(bool initial = false)
+        private void PlayVidePerHour(bool initial = false)
         {
-            string elegido = ElegirRutaPorHora();
+            string elegido = ChooseRoutePerHour();
 
             if (string.IsNullOrEmpty(elegido) || !File.Exists(elegido))
             {
@@ -112,22 +110,22 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
 
             _currentVideoPath = elegido;
-            RealizarSwapConFade(elegido, initial);
+            RealizeSwapWithFade(elegido, initial);
         }
 
-        private string ElegirRutaPorHora()
+        private string ChooseRoutePerHour()
         {
             
-            bool esDia = IsDaytime();
+            bool isDay = IsDaytime();
 
-            string preferido = esDia ? _dayPath : _nightPath;
-            if (File.Exists(preferido))
-                return preferido;
+            string preferVideo = isDay ? _dayPath : _nightPath;
+            if (File.Exists(preferVideo))
+                return preferVideo;
 
             
-            string alterno = esDia ? _nightPath : _dayPath;
-            if (File.Exists(alterno))
-                return alterno;
+            string alternVideo = isDay ? _nightPath : _dayPath;
+            if (File.Exists(alternVideo))
+                return alternVideo;
 
             
             return File.Exists(_defaultPath) ? _defaultPath : null;
@@ -148,7 +146,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             VideoIntro.Play();
         }
 
-        private void RealizarSwapConFade(string filePath, bool initial)
+        private void RealizeSwapWithFade(string filePath, bool initial)
         {
             if (!File.Exists(filePath))
             {
@@ -220,7 +218,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         }
 
         
-        private void BtnStart_Click(object sender, RoutedEventArgs e)
+        private void StartGame(object sender, RoutedEventArgs e)
         {
             PlayClickSound();
 
@@ -242,7 +240,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             BlackTransition.BeginAnimation(UIElement.OpacityProperty, fadeOut);
         }
 
-        private void PlayClickSound()
+        private static void PlayClickSound()
         {
             try
             {
