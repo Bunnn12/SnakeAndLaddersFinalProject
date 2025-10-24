@@ -33,15 +33,15 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             // No hay label; ya avisaste en SignUpPage que el código fue enviado
 
-            btnVerificateCode.Click += BtnVerificateCode_Click;
-            btnResendCode.Click += BtnResendCode_Click;
+            btnVerificateCode.Click += VerificateCode;
+            btnResendCode.Click += ResendCode;
 
             // Arranca el cooldown inicial (opcional)
             StartResendCooldown(DefaultResendCooldown);
         }
 
         // ===== Confirmar código y registrar =====
-        private async void BtnVerificateCode_Click(object sender, RoutedEventArgs e)
+        private async void VerificateCode(object sender, RoutedEventArgs e)
         {
             var code = (txtCodeSended.Text ?? string.Empty).Trim();
             if (string.IsNullOrWhiteSpace(code))
@@ -55,7 +55,6 @@ namespace SnakeAndLaddersFinalProject.Pages
             {
                 var normalizedEmail = (_pendingDto.Email ?? string.Empty).Trim().ToLowerInvariant();
 
-                // 1) Confirmar
                 var confirm = await Task.Run(() => client.ConfirmEmailVerification(normalizedEmail, code));
                 if (!confirm.Success)
                 {
@@ -64,7 +63,6 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                // 2) Registrar
                 _pendingDto.Email = normalizedEmail;
                 var register = await Task.Run(() => client.Register(_pendingDto));
                 if (!register.Success)
@@ -90,8 +88,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        // ===== Reenviar código =====
-        private async void BtnResendCode_Click(object sender, RoutedEventArgs e)
+        private async void ResendCode(object sender, RoutedEventArgs e)
         {
             var email = (_pendingDto.Email ?? string.Empty).Trim().ToLowerInvariant();
             var client = new AuthService.AuthServiceClient("BasicHttpBinding_IAuthService");
@@ -139,8 +136,6 @@ namespace SnakeAndLaddersFinalProject.Pages
                 client.Abort();
             }
         }
-
-        // ===== Cooldown helpers (compatibles con C# 7.3) =====
         private void StartResendCooldown(int seconds)
         {
             _remainingSeconds = Math.Max(1, seconds);
@@ -151,12 +146,12 @@ namespace SnakeAndLaddersFinalProject.Pages
             if (_resendTimer == null)
                 _resendTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
 
-            _resendTimer.Tick -= ResendTimer_Tick; // evitar duplicados
-            _resendTimer.Tick += ResendTimer_Tick;
+            _resendTimer.Tick -= ResendTimerTick; // evitar duplicados
+            _resendTimer.Tick += ResendTimerTick;
             _resendTimer.Start();
         }
 
-        private void ResendTimer_Tick(object sender, EventArgs e)
+        private void ResendTimerTick(object sender, EventArgs e)
         {
             _remainingSeconds--;
 

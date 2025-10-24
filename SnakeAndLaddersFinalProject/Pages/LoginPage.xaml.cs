@@ -19,13 +19,13 @@ namespace SnakeAndLaddersFinalProject.Pages
             InitializeComponent();
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private void PageLoaded(object sender, RoutedEventArgs e)
         {
             // Fuerza el estado “Login activo, SignUp inactivo”
             if (btnNavLogin != null) btnNavLogin.IsChecked = true;
             if (btnSignUp != null) btnSignUp.IsChecked = false;
         }
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e) { }
+        private void TextBoxTextChanged(object sender, TextChangedEventArgs e) { }
 
         private string[] ValidateLogin(string identifier, string pwd)
         {
@@ -37,19 +37,19 @@ namespace SnakeAndLaddersFinalProject.Pages
             return errs.ToArray();
         }
 
-        private void PwdPassword_KeyDown(object sender, KeyEventArgs e)
+        private void PwdPasswordKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter) BtnLogin_Click(btnLogin, new RoutedEventArgs());
+            if (e.Key == Key.Enter) Login(btnLogin, new RoutedEventArgs());
         }
 
-        private void BtnSignUp_Click(object sender, RoutedEventArgs e)
+        private void SignUp(object sender, RoutedEventArgs e)
         {
             btnNavLogin.IsChecked = false;
             btnSignUp.IsChecked = false; 
             NavigationService?.Navigate(new SignUpPage());
         }
 
-        private async void BtnLogin_Click(object sender, RoutedEventArgs e)
+        private async void Login(object sender, RoutedEventArgs e)
         {
             var identifier = txtUsername.Text.Trim();   // usuario o correo
             var password = pwdPassword.Password;
@@ -66,12 +66,10 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             try
             {
-                // AuthResult (lo que expone tu servicio)
                 var res = await Task.Run(() => client.Login(dto));
 
                 if (res.Success)
                 {
-                    // Poblar sesión desde AuthResult
                     SessionContext.Current.UserId = res.UserId ?? 0;
                     SessionContext.Current.UserName = string.IsNullOrWhiteSpace(res.DisplayName)
                         ? identifier
@@ -151,7 +149,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void BtnNavLogin_Click(object sender, RoutedEventArgs e)
+        private void NavLogin(object sender, RoutedEventArgs e)
         {
             btnNavLogin.IsChecked = true;
             btnSignUp.IsChecked = false;
@@ -159,7 +157,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
 
 
-        private void BtnPlayAsGuest_Click(object sender, RoutedEventArgs e)
+        private void PlayAsGuest(object sender, RoutedEventArgs e)
         {
             try
             {

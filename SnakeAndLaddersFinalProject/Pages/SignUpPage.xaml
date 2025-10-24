@@ -222,7 +222,7 @@
                           Content="{x:Static language:Lang.btnLoginText}"
                           Style="{StaticResource NavLinkToggleStyle}"
                           IsChecked="{Binding Source={StaticResource TabChecked_Login}, Mode=OneWay}"
-                          Click="BtnBack_Click"
+                          Click="Login"
                           Width="116"  Height="26"
                           Canvas.Left="355" Canvas.Top="156" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
@@ -278,7 +278,7 @@
             <!-- Botón Sign Up (centrado aprox) -->
             <Button x:Name="btnSignUp"
                     Content="{x:Static language:Lang.btnSignUpText}"
-                    Click="BtnSignUp_Click"
+                    Click="SignUp"
                     Style="{StaticResource LoginButtonStyle}"
                     Width="126" Height="23"
                     Canvas.Left="426" Canvas.Top="354" HorizontalAlignment="Left" VerticalAlignment="Center"/>

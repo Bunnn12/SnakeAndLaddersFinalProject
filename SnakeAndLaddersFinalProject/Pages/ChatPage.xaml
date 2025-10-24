@@ -7,7 +7,7 @@
       mc:Ignorable="d"
       d:DesignWidth="1152" d:DesignHeight="768"
       Title="ChatPage" 
-      Unloaded="Page_Unloaded">
+      Unloaded="PageUnloaded">
 
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>

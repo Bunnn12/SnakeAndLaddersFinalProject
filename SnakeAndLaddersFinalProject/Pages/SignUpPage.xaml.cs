@@ -27,7 +27,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             return errors.ToArray();
         }
 
-        private async void BtnSignUp_Click(object sender, RoutedEventArgs e)
+        private async void SignUp(object sender, RoutedEventArgs e)
         {
             var errors = ValidateRegistration(
                 txtUsername.Text, txtNameOfUser.Text, txtLastname.Text, txtEmail.Text, pwdPassword.Password);
@@ -50,7 +50,6 @@ namespace SnakeAndLaddersFinalProject.Pages
             var client = new AuthService.AuthServiceClient("BasicHttpBinding_IAuthService");
             try
             {
-                // 1) Solicitar envío de código (NO registrar aún)
                 var send = await Task.Run(() => client.RequestEmailVerification(dto.Email));
 
                 if (!send.Success)
@@ -76,7 +75,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        private void Login(object sender, RoutedEventArgs e)
         {
             if (NavigationService?.CanGoBack == true) NavigationService.GoBack();
             else ShowWarn(T("UiNoBackPage"));

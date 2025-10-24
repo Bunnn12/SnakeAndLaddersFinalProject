@@ -20,15 +20,15 @@ namespace SnakeAndLaddersFinalProject.Pages
             vm = new ChatViewModel(lobbyId);
             DataContext = vm;
 
-            vm.Messages.CollectionChanged += Messages_CollectionChanged;
+            vm.Messages.CollectionChanged += MessagesCollectionChanged;
         }
 
-        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        private void PageUnloaded(object sender, RoutedEventArgs e)
         {
             vm?.Dispose();
         }
 
-        private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void MessagesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (!vm.IsAutoScrollEnabled) return;
             if (lvMessages == null) return;

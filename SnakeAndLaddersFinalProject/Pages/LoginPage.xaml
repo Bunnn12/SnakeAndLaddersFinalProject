@@ -219,7 +219,7 @@
                           Content="{x:Static language:Lang.btnLoginText}"
                           Style="{StaticResource NavLinkToggleStyle}"
                           IsChecked="{Binding Source={StaticResource TabChecked_Login}, Mode=OneWay}"
-                          Click="BtnNavLogin_Click"
+                          Click="NavLogin"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Top"
                           Margin="355,146,0,0"
@@ -229,7 +229,7 @@
             <!-- Sign up: gris fijo; el click solo muestra 'press' y vuelve -->
             <ToggleButton x:Name="btnSignUp"
                           Content="{x:Static language:Lang.btnSignUpText}"
-                          Click="BtnSignUp_Click"
+                          Click="SignUp"
                           TabIndex="5"
                           Style="{StaticResource NavLinkToggleStyle}"
                           IsChecked="{Binding Source={StaticResource TabChecked_SignUp}, Mode=OneWay}"
@@ -275,7 +275,7 @@
 
             <Button x:Name="btnLogin"
                     Content="{x:Static language:Lang.btnLoginText}"
-                    Click="BtnLogin_Click"
+                    Click="Login"
                     TabIndex="2"
                     Style="{StaticResource LoginButtonStyle}"
                     HorizontalAlignment="Center"
@@ -285,7 +285,7 @@
 
             <Button x:Name="btnPlayAsGuest"
                     Content="{x:Static language:Lang.btnPlayAsGuestText}"
-                    Click="BtnPlayAsGuest_Click"
+                    Click="PlayAsGuest"
                     TabIndex="3"
                     Style="{StaticResource LoginButtonStyle}"
                     HorizontalAlignment="Center"
