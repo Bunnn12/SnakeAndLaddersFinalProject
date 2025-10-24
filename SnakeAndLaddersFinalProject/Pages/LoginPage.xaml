@@ -8,7 +8,7 @@
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1152"
-      Title="LoginPage" util:PageBackground.Key="Auth" Loaded="Page_Loaded">
+      Title="LoginPage" util:PageBackground.Key="Auth" Loaded="PageLoaded">
 
     <Page.Resources>
         <SolidColorBrush x:Key="LoginBlue" Color="#209AD6"/>
