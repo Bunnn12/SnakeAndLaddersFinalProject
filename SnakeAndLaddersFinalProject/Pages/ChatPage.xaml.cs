@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 using SnakeAndLaddersFinalProject.ViewModels;
 
@@ -61,6 +62,17 @@ namespace SnakeAndLaddersFinalProject.Pages
                 if (sub != null) return sub;
             }
             return null;
+        }
+        private void TaMessage_Loaded(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    taMessage.Focus();
+                    Keyboard.Focus(taMessage);
+                }),
+                DispatcherPriority.ContextIdle
+            );
         }
     }
 }

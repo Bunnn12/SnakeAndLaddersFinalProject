@@ -7,7 +7,7 @@
       mc:Ignorable="d"
       d:DesignWidth="1152" d:DesignHeight="768"
       Title="ChatPage" 
-      Unloaded="PageUnloaded">
+      Unloaded="PageUnloaded" >
 
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -120,7 +120,7 @@
             </Border>
 
             <!-- Barra de entrada -->
-            <Grid Grid.Row="2" Margin="0,8,0,0">
+            <Grid Grid.Row="2" Margin="0,8,0,0" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="8"/>
@@ -138,11 +138,12 @@
                 <TextBox x:Name="taMessage"
                          Grid.Column="2"
                          Text="{Binding NewMessage, UpdateSourceTrigger=PropertyChanged}"
-                         AcceptsReturn="True"
+                         AcceptsReturn="False"
                          TextWrapping="Wrap"
                          MaxLength="500"
                          MinHeight="36"
-                         ToolTip="Ctrl+Enter para enviar; Shift+Enter para salto de línea.">
+                         Loaded="TaMessage_Loaded"
+                         ToolTip="Enter para enviar; Shift+Enter para salto de línea.">
                     <TextBox.InputBindings>
                         <KeyBinding Key="Enter" Modifiers="Control" Command="{Binding SendMessageCommand}"/>
                     </TextBox.InputBindings>
@@ -152,7 +153,9 @@
                         Grid.Column="4"
                         Content="{x:Static language:Lang.btnSendText}"
                         Command="{Binding SendMessageCommand}"
-                        MinWidth="84" Padding="10,8">
+                        MinWidth="84"
+                        Padding="10,8"
+                        IsDefault="True">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="IsEnabled" Value="True"/>
