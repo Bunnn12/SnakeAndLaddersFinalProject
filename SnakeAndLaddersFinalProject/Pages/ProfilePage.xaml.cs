@@ -86,37 +86,54 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            var dto = new AccountDto
+            var request = new UpdateProfileRequestDto
             {
                 UserId = _loaded.UserId,
-                Username = _loaded.Username, // no lo cambiamos aquí
                 FirstName = txtFirstName.Text?.Trim(),
                 LastName = txtLastName.Text?.Trim(),
                 ProfileDescription = txtDescription.Text?.Trim(),
-                Coins = coins
             };
 
             var client = new UserServiceClient("NetTcpBinding_IUserService");
             try
             {
-                var ok = client.UpdateProfile(dto);
-                if (ok)
+                var updated = client.UpdateProfile(request);
+
+                if (updated == null)
                 {
-                    MessageBox.Show("Perfil actualizado.");
-                    _loaded = dto; // refresca cache local
-                    SetEditMode(false);
+                    MessageBox.Show("No se pudo actualizar el perfil.");
+                    return;
                 }
-                else
+
+                _loaded = new AccountDto
                 {
-                    MessageBox.Show("No se actualizó el perfil (verifica el usuario).");
-                }
+                    UserId = updated.UserId,
+                    Username = updated.Username,
+                    FirstName = updated.FirstName,
+                    LastName = updated.LastName,
+                    ProfileDescription = updated.ProfileDescription,
+                    Coins = updated.Coins
+                };
+
+                txtFirstName.Text = _loaded.FirstName;
+                txtLastName.Text = _loaded.LastName;
+                txtDescription.Text = _loaded.ProfileDescription;
+                txtCoins.Text = _loaded.Coins.ToString();
+
+                MessageBox.Show("Perfil actualizado.");
+                SetEditMode(false);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error guardando perfil: {ex.Message}", "Error");
             }
-            finally { try { client.Close(); } catch (Exception ex) { Logger.Error("Ocurrio un error", ex); } }
+            finally
+            {
+                try { client.Close(); }
+                catch (Exception ex) { Logger.Error("Ocurrió un error al cerrar el cliente.", ex); }
+            }
         }
+
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
