@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,234 +118,234 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="bntInviteFriendText" xml:space="preserve">
-    <value>Invite friend</value>
+    <value>邀请好友</value>
   </data>
   <data name="btnAcceptText" xml:space="preserve">
-    <value>Accept</value>
+    <value>接受</value>
   </data>
   <data name="btnAddFriendText" xml:space="preserve">
-    <value>Add friend</value>
+    <value>添加好友</value>
   </data>
   <data name="btnBackText" xml:space="preserve">
-    <value>Back</value>
+    <value>后退</value>
   </data>
   <data name="btnCancelText" xml:space="preserve">
-    <value>Cancel</value>
+    <value>取消</value>
   </data>
   <data name="btnCreateMatchText" xml:space="preserve">
-    <value>Create Match</value>
+    <value>创建匹配</value>
   </data>
   <data name="btnExploitingText" xml:space="preserve">
-    <value>Exploiting</value>
+    <value>剥削</value>
   </data>
   <data name="btnFriendsText" xml:space="preserve">
-    <value>Friends</value>
+    <value>朋友们</value>
   </data>
   <data name="btnHarassmentText" xml:space="preserve">
-    <value>Harassment</value>
+    <value>骚扰</value>
   </data>
   <data name="btnInappropiateLangText" xml:space="preserve">
-    <value>Inappropriate language</value>
+    <value>不当语言</value>
   </data>
   <data name="btnInventoryText" xml:space="preserve">
-    <value>Inventory</value>
+    <value>存货</value>
   </data>
   <data name="btnJoinMatchText" xml:space="preserve">
-    <value>Join match</value>
+    <value>加入比赛</value>
   </data>
   <data name="btnMainWindowText" xml:space="preserve">
-    <value>Main window</value>
+    <value>主窗口</value>
   </data>
   <data name="btnOtherReasonText" xml:space="preserve">
-    <value>Other...</value>
+    <value>其他...</value>
   </data>
   <data name="btnProfileText" xml:space="preserve">
-    <value>Profile</value>
+    <value>轮廓</value>
   </data>
   <data name="btnSettingsText" xml:space="preserve">
-    <value>Settings</value>
+    <value>设置</value>
   </data>
   <data name="btnShopText" xml:space="preserve">
-    <value>Shop</value>
+    <value>店铺</value>
   </data>
   <data name="btnSignUpText" xml:space="preserve">
-    <value>Sign up</value>
+    <value>报名</value>
   </data>
   <data name="btnSkinsText" xml:space="preserve">
-    <value>Skins</value>
+    <value>皮肤</value>
   </data>
   <data name="btnToxicBehaviorText" xml:space="preserve">
-    <value>Toxic behavior</value>
+    <value>有毒行为</value>
   </data>
   <data name="btnUnfriendText" xml:space="preserve">
-    <value>Unfriend</value>
+    <value>解除好友关系</value>
   </data>
   <data name="character1DescriptionText" xml:space="preserve">
-    <value>This character cries when she has an exam</value>
+    <value>这个角色考试的时候哭了</value>
   </data>
   <data name="chatTittle" xml:space="preserve">
-    <value>Chat</value>
+    <value>聊天</value>
   </data>
   <data name="lblAddFriends" xml:space="preserve">
-    <value>Add friends</value>
+    <value>添加好友</value>
   </data>
   <data name="lblcharacterDescriptionText" xml:space="preserve">
-    <value>Character description</value>
+    <value>人物描述</value>
   </data>
   <data name="lblCoinsText" xml:space="preserve">
-    <value>Coins</value>
+    <value>硬币</value>
   </data>
   <data name="lblFindFriensText" xml:space="preserve">
-    <value>Find friends</value>
+    <value>寻找朋友</value>
   </data>
   <data name="lblFindMatchText" xml:space="preserve">
-    <value>Find match</value>
+    <value>查找匹配项</value>
   </data>
   <data name="lblFriendsListTitle" xml:space="preserve">
-    <value>Friends List</value>
+    <value>好友列表</value>
   </data>
   <data name="lblMatchListTitle" xml:space="preserve">
-    <value>Match List</value>
+    <value>比赛名单</value>
   </data>
   <data name="lblRegisterTitle" xml:space="preserve">
-    <value>Create new account</value>
+    <value>创建新帐户</value>
   </data>
   <data name="lblStickersText" xml:space="preserve">
-    <value>Stickers</value>
+    <value>贴纸</value>
   </data>
   <data name="listOfGamesTittle" xml:space="preserve">
-    <value>List of games</value>
+    <value>游戏列表</value>
   </data>
   <data name="pwdPasswordText" xml:space="preserve">
-    <value>Password</value>
+    <value>密码</value>
   </data>
   <data name="reportUserTittle" xml:space="preserve">
-    <value>Report user</value>
+    <value>举报用户</value>
   </data>
   <data name="tvFriendsListText" xml:space="preserve">
-    <value>Friends list</value>
+    <value>好友列表</value>
   </data>
   <data name="txtChatMessageText" xml:space="preserve">
-    <value>Type a message...</value>
+    <value>输入消息...</value>
   </data>
   <data name="txtLastNameOfUserText" xml:space="preserve">
-    <value>Lastname</value>
+    <value>姓</value>
   </data>
   <data name="txtNameOfUserText" xml:space="preserve">
-    <value>Name</value>
+    <value>姓名</value>
   </data>
   <data name="txtRegEmailText" xml:space="preserve">
-    <value>Email</value>
+    <value>电子邮件</value>
   </data>
   <data name="txtUsernameText" xml:space="preserve">
-    <value>Username</value>
+    <value>用户名</value>
   </data>
   <data name="bntContinueText" xml:space="preserve">
-    <value>Continue</value>
+    <value>继续</value>
   </data>
   <data name="btnLoginText" xml:space="preserve">
-    <value>Log in</value>
+    <value>登录</value>
   </data>
   <data name="lblWelcomeText" xml:space="preserve">
-    <value>Welcome to the game</value>
+    <value>欢迎来到游戏</value>
   </data>
   <data name="btnForgottenPasswordText" xml:space="preserve">
-    <value>i forgot my password</value>
+    <value>我忘记了密码</value>
   </data>
   <data name="btnPlayAsGuestText" xml:space="preserve">
-    <value>play as guest</value>
+    <value>作为客人玩</value>
   </data>
   <data name="lblLobby" xml:space="preserve">
-    <value>Lobby</value>
+    <value>大堂</value>
   </data>
   <data name="btnStartMatchText" xml:space="preserve">
-    <value>start match</value>
+    <value>开始比赛</value>
   </data>
   <data name="btnExitMatchText" xml:space="preserve">
-    <value>leave match</value>
+    <value>离开比赛</value>
   </data>
   <data name="lblLanguage" xml:space="preserve">
-    <value>language</value>
+    <value>语言</value>
   </data>
   <data name="lblSound" xml:space="preserve">
-    <value>Sound</value>
+    <value>声音</value>
   </data>
   <data name="lblMusic" xml:space="preserve">
-    <value>music</value>
+    <value>音乐</value>
   </data>
   <data name="lblStore" xml:space="preserve">
-    <value>Store</value>
+    <value>店铺</value>
   </data>
   <data name="btnBuy" xml:space="preserve">
-    <value>buy</value>
+    <value>买</value>
   </data>
   <data name="lblCoinsQuantity" xml:space="preserve">
-    <value>coins</value>
+    <value>硬币</value>
   </data>
   <data name="lblInventory" xml:space="preserve">
-    <value>inventory</value>
+    <value>存货</value>
   </data>
   <data name="lblItems" xml:space="preserve">
-    <value>items</value>
+    <value>项目</value>
   </data>
   <data name="btnRankingText" xml:space="preserve">
-    <value>Ranking</value>
+    <value>排行</value>
   </data>
   <data name="lblEmailVerificationTitle" xml:space="preserve">
-    <value>Email verification</value>
+    <value>邮箱验证</value>
   </data>
   <data name="lblVerificationMessageText" xml:space="preserve">
-    <value>Insert the verification code</value>
+    <value>输入验证码</value>
   </data>
   <data name="btnResendCodeText" xml:space="preserve">
-    <value>Resend the code</value>
+    <value>重新发送代码</value>
   </data>
   <data name="UiResendCodeInFmt" xml:space="preserve">
-    <value>Resend in {0}s</value>
+    <value>{0} 秒后重新发送</value>
   </data>
   <data name="btnSendText" xml:space="preserve">
-    <value>Send</value>
+    <value>发送</value>
   </data>
   <data name="UiTitleInfo" xml:space="preserve">
-    <value>Information</value>
+    <value>信息</value>
   </data>
   <data name="UiTitleError" xml:space="preserve">
-    <value>Error</value>
+    <value>错误</value>
   </data>
   <data name="UiTitleWarning" xml:space="preserve">
-    <value>Warning</value>
+    <value>警告</value>
   </data>
   <data name="UiLoginOk" xml:space="preserve">
-    <value>Login successful. Welcome!</value>
+    <value>登录成功。欢迎！</value>
   </data>
   <data name="UiNameRequired" xml:space="preserve">
-    <value>The name is required.</value>
+    <value>名称为必填项。</value>
   </data>
   <data name="UiLastNameRequired" xml:space="preserve">
-    <value>Last name is required.</value>
+    <value>姓氏为必填项。</value>
   </data>
   <data name="UiPasswordTooShort" xml:space="preserve">
-    <value>Password: at least 8 characters.</value>
+    <value>密码：至少8个字符。</value>
   </data>
   <data name="UiEmailInvalid" xml:space="preserve">
-    <value>Invalid email.</value>
+    <value>电子邮件无效。</value>
   </data>
   <data name="UiGenericError" xml:space="preserve">
-    <value>An error occurred:</value>
+    <value>发生错误：</value>
   </data>
   <data name="UiEndpointNotFound" xml:space="preserve">
-    <value>Server not found. </value>
+    <value>未找到服务器。</value>
   </data>
   <data name="UiNoBackPage" xml:space="preserve">
-    <value>No previous page.</value>
+    <value>没有上一页。</value>
   </data>
   <data name="UiUserNameRequired" xml:space="preserve">
-    <value>Username is required</value>
+    <value>用户名是必需的</value>
   </data>
   <data name="UiEmailRequired" xml:space="preserve">
-    <value>Email is required.</value>
+    <value>需要电子邮件。</value>
   </data>
   <data name="UiPasswordRequired" xml:space="preserve">
-    <value>Password is required.</value>
+    <value>需要密码。</value>
   </data>
 </root>

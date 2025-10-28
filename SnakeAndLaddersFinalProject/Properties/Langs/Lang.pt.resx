@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,234 +118,234 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="bntInviteFriendText" xml:space="preserve">
-    <value>Invite friend</value>
+    <value>Convidar amigo</value>
   </data>
   <data name="btnAcceptText" xml:space="preserve">
-    <value>Accept</value>
+    <value>Aceitar</value>
   </data>
   <data name="btnAddFriendText" xml:space="preserve">
-    <value>Add friend</value>
+    <value>Adicionar amigo</value>
   </data>
   <data name="btnBackText" xml:space="preserve">
-    <value>Back</value>
+    <value>Voltar</value>
   </data>
   <data name="btnCancelText" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Cancelar</value>
   </data>
   <data name="btnCreateMatchText" xml:space="preserve">
-    <value>Create Match</value>
+    <value>Criar correspondência</value>
   </data>
   <data name="btnExploitingText" xml:space="preserve">
-    <value>Exploiting</value>
+    <value>Explorando</value>
   </data>
   <data name="btnFriendsText" xml:space="preserve">
-    <value>Friends</value>
+    <value>Amigos</value>
   </data>
   <data name="btnHarassmentText" xml:space="preserve">
-    <value>Harassment</value>
+    <value>Assédio</value>
   </data>
   <data name="btnInappropiateLangText" xml:space="preserve">
-    <value>Inappropriate language</value>
+    <value>Linguagem inadequada</value>
   </data>
   <data name="btnInventoryText" xml:space="preserve">
-    <value>Inventory</value>
+    <value>Inventário</value>
   </data>
   <data name="btnJoinMatchText" xml:space="preserve">
-    <value>Join match</value>
+    <value>Junte-se à partida</value>
   </data>
   <data name="btnMainWindowText" xml:space="preserve">
-    <value>Main window</value>
+    <value>Janela principal</value>
   </data>
   <data name="btnOtherReasonText" xml:space="preserve">
-    <value>Other...</value>
+    <value>Outro...</value>
   </data>
   <data name="btnProfileText" xml:space="preserve">
-    <value>Profile</value>
+    <value>Perfil</value>
   </data>
   <data name="btnSettingsText" xml:space="preserve">
-    <value>Settings</value>
+    <value>Configurações</value>
   </data>
   <data name="btnShopText" xml:space="preserve">
-    <value>Shop</value>
+    <value>Comprar</value>
   </data>
   <data name="btnSignUpText" xml:space="preserve">
-    <value>Sign up</value>
+    <value>Inscrever-se</value>
   </data>
   <data name="btnSkinsText" xml:space="preserve">
-    <value>Skins</value>
+    <value>Peles</value>
   </data>
   <data name="btnToxicBehaviorText" xml:space="preserve">
-    <value>Toxic behavior</value>
+    <value>Comportamento tóxico</value>
   </data>
   <data name="btnUnfriendText" xml:space="preserve">
-    <value>Unfriend</value>
+    <value>Cancelar amizade</value>
   </data>
   <data name="character1DescriptionText" xml:space="preserve">
-    <value>This character cries when she has an exam</value>
+    <value>Esta personagem chora quando tem uma prova</value>
   </data>
   <data name="chatTittle" xml:space="preserve">
-    <value>Chat</value>
+    <value>Bater papo</value>
   </data>
   <data name="lblAddFriends" xml:space="preserve">
-    <value>Add friends</value>
+    <value>Adicionar amigos</value>
   </data>
   <data name="lblcharacterDescriptionText" xml:space="preserve">
-    <value>Character description</value>
+    <value>Descrição do personagem</value>
   </data>
   <data name="lblCoinsText" xml:space="preserve">
-    <value>Coins</value>
+    <value>Moedas</value>
   </data>
   <data name="lblFindFriensText" xml:space="preserve">
-    <value>Find friends</value>
+    <value>Encontre amigos</value>
   </data>
   <data name="lblFindMatchText" xml:space="preserve">
-    <value>Find match</value>
+    <value>Encontrar correspondência</value>
   </data>
   <data name="lblFriendsListTitle" xml:space="preserve">
-    <value>Friends List</value>
+    <value>Lista de amigos</value>
   </data>
   <data name="lblMatchListTitle" xml:space="preserve">
-    <value>Match List</value>
+    <value>Lista de correspondências</value>
   </data>
   <data name="lblRegisterTitle" xml:space="preserve">
-    <value>Create new account</value>
+    <value>Criar nova conta</value>
   </data>
   <data name="lblStickersText" xml:space="preserve">
-    <value>Stickers</value>
+    <value>Adesivos</value>
   </data>
   <data name="listOfGamesTittle" xml:space="preserve">
-    <value>List of games</value>
+    <value>Lista de jogos</value>
   </data>
   <data name="pwdPasswordText" xml:space="preserve">
-    <value>Password</value>
+    <value>Senha</value>
   </data>
   <data name="reportUserTittle" xml:space="preserve">
-    <value>Report user</value>
+    <value>Denunciar usuário</value>
   </data>
   <data name="tvFriendsListText" xml:space="preserve">
-    <value>Friends list</value>
+    <value>Lista de amigos</value>
   </data>
   <data name="txtChatMessageText" xml:space="preserve">
-    <value>Type a message...</value>
+    <value>Digite uma mensagem...</value>
   </data>
   <data name="txtLastNameOfUserText" xml:space="preserve">
-    <value>Lastname</value>
+    <value>Sobrenome</value>
   </data>
   <data name="txtNameOfUserText" xml:space="preserve">
-    <value>Name</value>
+    <value>Nome</value>
   </data>
   <data name="txtRegEmailText" xml:space="preserve">
-    <value>Email</value>
+    <value>E-mail</value>
   </data>
   <data name="txtUsernameText" xml:space="preserve">
-    <value>Username</value>
+    <value>Nome de usuário</value>
   </data>
   <data name="bntContinueText" xml:space="preserve">
-    <value>Continue</value>
+    <value>Continuar</value>
   </data>
   <data name="btnLoginText" xml:space="preserve">
-    <value>Log in</value>
+    <value>Conecte-se</value>
   </data>
   <data name="lblWelcomeText" xml:space="preserve">
-    <value>Welcome to the game</value>
+    <value>Bem-vindo ao jogo</value>
   </data>
   <data name="btnForgottenPasswordText" xml:space="preserve">
-    <value>i forgot my password</value>
+    <value>esqueci minha senha</value>
   </data>
   <data name="btnPlayAsGuestText" xml:space="preserve">
-    <value>play as guest</value>
+    <value>jogar como convidado</value>
   </data>
   <data name="lblLobby" xml:space="preserve">
-    <value>Lobby</value>
+    <value>Salão</value>
   </data>
   <data name="btnStartMatchText" xml:space="preserve">
-    <value>start match</value>
+    <value>começar a partida</value>
   </data>
   <data name="btnExitMatchText" xml:space="preserve">
-    <value>leave match</value>
+    <value>sair da partida</value>
   </data>
   <data name="lblLanguage" xml:space="preserve">
-    <value>language</value>
+    <value>linguagem</value>
   </data>
   <data name="lblSound" xml:space="preserve">
-    <value>Sound</value>
+    <value>Som</value>
   </data>
   <data name="lblMusic" xml:space="preserve">
-    <value>music</value>
+    <value>música</value>
   </data>
   <data name="lblStore" xml:space="preserve">
-    <value>Store</value>
+    <value>Loja</value>
   </data>
   <data name="btnBuy" xml:space="preserve">
-    <value>buy</value>
+    <value>comprar</value>
   </data>
   <data name="lblCoinsQuantity" xml:space="preserve">
-    <value>coins</value>
+    <value>moedas</value>
   </data>
   <data name="lblInventory" xml:space="preserve">
-    <value>inventory</value>
+    <value>inventário</value>
   </data>
   <data name="lblItems" xml:space="preserve">
-    <value>items</value>
+    <value>Unid</value>
   </data>
   <data name="btnRankingText" xml:space="preserve">
-    <value>Ranking</value>
+    <value>Classificação</value>
   </data>
   <data name="lblEmailVerificationTitle" xml:space="preserve">
-    <value>Email verification</value>
+    <value>Verificação de e-mail</value>
   </data>
   <data name="lblVerificationMessageText" xml:space="preserve">
-    <value>Insert the verification code</value>
+    <value>Insira o código de verificação</value>
   </data>
   <data name="btnResendCodeText" xml:space="preserve">
-    <value>Resend the code</value>
+    <value>Reenviar o código</value>
   </data>
   <data name="UiResendCodeInFmt" xml:space="preserve">
-    <value>Resend in {0}s</value>
+    <value>Reenviar em {0}s</value>
   </data>
   <data name="btnSendText" xml:space="preserve">
-    <value>Send</value>
+    <value>Enviar</value>
   </data>
   <data name="UiTitleInfo" xml:space="preserve">
-    <value>Information</value>
+    <value>Informação</value>
   </data>
   <data name="UiTitleError" xml:space="preserve">
-    <value>Error</value>
+    <value>Erro</value>
   </data>
   <data name="UiTitleWarning" xml:space="preserve">
-    <value>Warning</value>
+    <value>Aviso</value>
   </data>
   <data name="UiLoginOk" xml:space="preserve">
-    <value>Login successful. Welcome!</value>
+    <value>Login bem-sucedido. Bem-vindo!</value>
   </data>
   <data name="UiNameRequired" xml:space="preserve">
-    <value>The name is required.</value>
+    <value>O nome é obrigatório.</value>
   </data>
   <data name="UiLastNameRequired" xml:space="preserve">
-    <value>Last name is required.</value>
+    <value>O sobrenome é obrigatório.</value>
   </data>
   <data name="UiPasswordTooShort" xml:space="preserve">
-    <value>Password: at least 8 characters.</value>
+    <value>Senha: pelo menos 8 caracteres.</value>
   </data>
   <data name="UiEmailInvalid" xml:space="preserve">
-    <value>Invalid email.</value>
+    <value>E-mail inválido.</value>
   </data>
   <data name="UiGenericError" xml:space="preserve">
-    <value>An error occurred:</value>
+    <value>Ocorreu um erro:</value>
   </data>
   <data name="UiEndpointNotFound" xml:space="preserve">
-    <value>Server not found. </value>
+    <value>Servidor não encontrado.</value>
   </data>
   <data name="UiNoBackPage" xml:space="preserve">
-    <value>No previous page.</value>
+    <value>Nenhuma página anterior.</value>
   </data>
   <data name="UiUserNameRequired" xml:space="preserve">
-    <value>Username is required</value>
+    <value>O nome de usuário é obrigatório</value>
   </data>
   <data name="UiEmailRequired" xml:space="preserve">
-    <value>Email is required.</value>
+    <value>O e-mail é obrigatório.</value>
   </data>
   <data name="UiPasswordRequired" xml:space="preserve">
-    <value>Password is required.</value>
+    <value>A senha é obrigatória.</value>
   </data>
 </root>
