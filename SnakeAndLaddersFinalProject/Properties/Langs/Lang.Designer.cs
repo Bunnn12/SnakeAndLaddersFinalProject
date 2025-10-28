@@ -619,11 +619,137 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Invalid email..
+        /// </summary>
+        public static string UiEmailInvalid {
+            get {
+                return ResourceManager.GetString("UiEmailInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Email is required..
+        /// </summary>
+        public static string UiEmailRequired {
+            get {
+                return ResourceManager.GetString("UiEmailRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Server not found. .
+        /// </summary>
+        public static string UiEndpointNotFound {
+            get {
+                return ResourceManager.GetString("UiEndpointNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred:.
+        /// </summary>
+        public static string UiGenericError {
+            get {
+                return ResourceManager.GetString("UiGenericError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Last name is required..
+        /// </summary>
+        public static string UiLastNameRequired {
+            get {
+                return ResourceManager.GetString("UiLastNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Login successful. Welcome!.
+        /// </summary>
+        public static string UiLoginOk {
+            get {
+                return ResourceManager.GetString("UiLoginOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The name is required..
+        /// </summary>
+        public static string UiNameRequired {
+            get {
+                return ResourceManager.GetString("UiNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No previous page..
+        /// </summary>
+        public static string UiNoBackPage {
+            get {
+                return ResourceManager.GetString("UiNoBackPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Password is required..
+        /// </summary>
+        public static string UiPasswordRequired {
+            get {
+                return ResourceManager.GetString("UiPasswordRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Password: at least 8 characters..
+        /// </summary>
+        public static string UiPasswordTooShort {
+            get {
+                return ResourceManager.GetString("UiPasswordTooShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Resend in {0}s.
         /// </summary>
         public static string UiResendCodeInFmt {
             get {
                 return ResourceManager.GetString("UiResendCodeInFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Error.
+        /// </summary>
+        public static string UiTitleError {
+            get {
+                return ResourceManager.GetString("UiTitleError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Information.
+        /// </summary>
+        public static string UiTitleInfo {
+            get {
+                return ResourceManager.GetString("UiTitleInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Warning.
+        /// </summary>
+        public static string UiTitleWarning {
+            get {
+                return ResourceManager.GetString("UiTitleWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Username is required.
+        /// </summary>
+        public static string UiUserNameRequired {
+            get {
+                return ResourceManager.GetString("UiUserNameRequired", resourceCulture);
             }
         }
     }
