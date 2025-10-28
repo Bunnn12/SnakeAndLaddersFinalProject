@@ -232,7 +232,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             fadeOut.Completed += (s, _) =>
             {
-                NavigationService?.Navigate(new ProfilePage("Bunn"));
+                NavigationService?.Navigate(new LoginPage());
             };
 
             BlackTransition.IsHitTestVisible = true;
