@@ -50,7 +50,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Assets\Images\Logo\GameIcon.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\Images\Logo\IconGame.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=3.2.0.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -471,6 +474,9 @@
     <Resource Include="Assets\Images\Icons\BackIcon.png" />
     <Resource Include="Assets\Images\Icons\RankingIcon.png" />
     <Resource Include="Assets\Images\Icons\SkinIcon.png" />
+    <Resource Include="Assets\Images\Backgrounds\ErrorWindowBackground.png" />
+    <Resource Include="Assets\Images\Backgrounds\InfoWindowBackground.png" />
+    <Resource Include="Assets\Images\Logo\IconGame.ico" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
