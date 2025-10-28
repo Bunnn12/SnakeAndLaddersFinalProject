@@ -110,7 +110,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
 
             _currentVideoPath = elegido;
-            RealizeSwapWithFade(elegido, initial);
+            RealizarSwapConFade(elegido, initial);
         }
 
         private string ChooseRoutePerHour()
@@ -146,7 +146,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             VideoIntro.Play();
         }
 
-        private void RealizeSwapWithFade(string filePath, bool initial)
+        private void RealizarSwapConFade(string filePath, bool initial)
         {
             if (!File.Exists(filePath))
             {
@@ -218,7 +218,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         }
 
         
-        private void StartGame(object sender, RoutedEventArgs e)
+        private void BtnStart_Click(object sender, RoutedEventArgs e)
         {
             PlayClickSound();
 

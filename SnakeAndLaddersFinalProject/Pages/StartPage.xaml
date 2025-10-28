@@ -68,7 +68,7 @@
         Margin="317,147,0,0"
         Width="164"
         Height="138"
-        Click="StartGame"
+        Click="BtnStart_Click"
         Background="{x:Null}"
         BorderBrush="{x:Null}">
 
