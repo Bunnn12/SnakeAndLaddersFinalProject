@@ -365,22 +365,22 @@
     <None Include="Connected Services\LobbyService\SnakeAndLaddersFinalProject.LobbyService.OperationResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\UserService\service.wsdl" />
+    <None Include="Connected Services\UserService\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\UserService\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\UserService\SnakeAndLadders.Contracts.Dtos.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\UserService\SnakeAndLaddersFinalProject.UserService.AccountDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\UserService\SnakeAndLaddersFinalProject.UserService.ProfilePhotoDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\UserService\User.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\UserService\User1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\UserService\User2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\UserService\UserService.wsdl" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -413,9 +413,6 @@
     <WCFMetadataStorage Include="Connected Services\ChatService\" />
     <WCFMetadataStorage Include="Connected Services\LobbyService\" />
     <WCFMetadataStorage Include="Connected Services\UserService\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\UserService\User.disco" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\UserService\configuration91.svcinfo" />
@@ -471,6 +468,19 @@
     <Resource Include="Assets\Images\Icons\BackIcon.png" />
     <Resource Include="Assets\Images\Icons\RankingIcon.png" />
     <Resource Include="Assets\Images\Icons\SkinIcon.png" />
+    <Resource Include="Assets\Images\Avatars\A0000.jpg" />
+    <Resource Include="Assets\Images\Avatars\A00002.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0001.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0003.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0004.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0005.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0006.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0007.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0009.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0008.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0010.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0011.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0012.jpg" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

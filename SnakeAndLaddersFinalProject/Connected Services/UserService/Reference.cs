@@ -38,6 +38,9 @@ namespace SnakeAndLaddersFinalProject.UserService {
         private string ProfileDescriptionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ProfilePhotoIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int UserIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -119,6 +122,19 @@ namespace SnakeAndLaddersFinalProject.UserService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ProfilePhotoId {
+            get {
+                return this.ProfilePhotoIdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ProfilePhotoIdField, value) != true)) {
+                    this.ProfilePhotoIdField = value;
+                    this.RaisePropertyChanged("ProfilePhotoId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public int UserId {
             get {
                 return this.UserIdField;
@@ -164,7 +180,7 @@ namespace SnakeAndLaddersFinalProject.UserService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private byte[] PhotoField;
+        private string ProfilePhotoIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int UserIdField;
@@ -180,14 +196,123 @@ namespace SnakeAndLaddersFinalProject.UserService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Photo {
+        public string ProfilePhotoId {
             get {
-                return this.PhotoField;
+                return this.ProfilePhotoIdField;
             }
             set {
-                if ((object.ReferenceEquals(this.PhotoField, value) != true)) {
-                    this.PhotoField = value;
-                    this.RaisePropertyChanged("Photo");
+                if ((object.ReferenceEquals(this.ProfilePhotoIdField, value) != true)) {
+                    this.ProfilePhotoIdField = value;
+                    this.RaisePropertyChanged("ProfilePhotoId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserId {
+            get {
+                return this.UserIdField;
+            }
+            set {
+                if ((this.UserIdField.Equals(value) != true)) {
+                    this.UserIdField = value;
+                    this.RaisePropertyChanged("UserId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UpdateProfileRequestDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class UpdateProfileRequestDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string FirstNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string LastNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ProfileDescriptionField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ProfilePhotoIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string FirstName {
+            get {
+                return this.FirstNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.FirstNameField, value) != true)) {
+                    this.FirstNameField = value;
+                    this.RaisePropertyChanged("FirstName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string LastName {
+            get {
+                return this.LastNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LastNameField, value) != true)) {
+                    this.LastNameField = value;
+                    this.RaisePropertyChanged("LastName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ProfileDescription {
+            get {
+                return this.ProfileDescriptionField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ProfileDescriptionField, value) != true)) {
+                    this.ProfileDescriptionField = value;
+                    this.RaisePropertyChanged("ProfileDescription");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ProfilePhotoId {
+            get {
+                return this.ProfilePhotoIdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ProfilePhotoIdField, value) != true)) {
+                    this.ProfilePhotoIdField = value;
+                    this.RaisePropertyChanged("ProfilePhotoId");
                 }
             }
         }
@@ -232,16 +357,10 @@ namespace SnakeAndLaddersFinalProject.UserService {
         System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.UserService.ProfilePhotoDto> GetProfilePhotoAsync(int userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/UpdateProfile", ReplyAction="http://tempuri.org/IUserService/UpdateProfileResponse")]
-        bool UpdateProfile(SnakeAndLaddersFinalProject.UserService.AccountDto profile);
+        SnakeAndLaddersFinalProject.UserService.AccountDto UpdateProfile(SnakeAndLaddersFinalProject.UserService.UpdateProfileRequestDto request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/UpdateProfile", ReplyAction="http://tempuri.org/IUserService/UpdateProfileResponse")]
-        System.Threading.Tasks.Task<bool> UpdateProfileAsync(SnakeAndLaddersFinalProject.UserService.AccountDto profile);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/UpdateProfilePhoto", ReplyAction="http://tempuri.org/IUserService/UpdateProfilePhotoResponse")]
-        bool UpdateProfilePhoto(SnakeAndLaddersFinalProject.UserService.ProfilePhotoDto photo);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/UpdateProfilePhoto", ReplyAction="http://tempuri.org/IUserService/UpdateProfilePhotoResponse")]
-        System.Threading.Tasks.Task<bool> UpdateProfilePhotoAsync(SnakeAndLaddersFinalProject.UserService.ProfilePhotoDto photo);
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.UserService.AccountDto> UpdateProfileAsync(SnakeAndLaddersFinalProject.UserService.UpdateProfileRequestDto request);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -287,20 +406,12 @@ namespace SnakeAndLaddersFinalProject.UserService {
             return base.Channel.GetProfilePhotoAsync(userId);
         }
         
-        public bool UpdateProfile(SnakeAndLaddersFinalProject.UserService.AccountDto profile) {
-            return base.Channel.UpdateProfile(profile);
+        public SnakeAndLaddersFinalProject.UserService.AccountDto UpdateProfile(SnakeAndLaddersFinalProject.UserService.UpdateProfileRequestDto request) {
+            return base.Channel.UpdateProfile(request);
         }
         
-        public System.Threading.Tasks.Task<bool> UpdateProfileAsync(SnakeAndLaddersFinalProject.UserService.AccountDto profile) {
-            return base.Channel.UpdateProfileAsync(profile);
-        }
-        
-        public bool UpdateProfilePhoto(SnakeAndLaddersFinalProject.UserService.ProfilePhotoDto photo) {
-            return base.Channel.UpdateProfilePhoto(photo);
-        }
-        
-        public System.Threading.Tasks.Task<bool> UpdateProfilePhotoAsync(SnakeAndLaddersFinalProject.UserService.ProfilePhotoDto photo) {
-            return base.Channel.UpdateProfilePhotoAsync(photo);
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.UserService.AccountDto> UpdateProfileAsync(SnakeAndLaddersFinalProject.UserService.UpdateProfileRequestDto request) {
+            return base.Channel.UpdateProfileAsync(request);
         }
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="9.1" CheckSum="FbDonIE3q/TSYL3bIa9gmxtlISePZJSRD04R+a8C2sQ=">
+<SavedWcfConfigurationInformation xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="9.1" CheckSum="+GJlAnoXchxFn5wOBGP99yfHj6jdTZafhe8ngXHFRFo=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IUserService">
       <properties>
@@ -230,10 +230,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_IUserService" contract="UserService.IUserService" bindingType="basicHttpBinding" address="http://localhost:8085/User" bindingConfiguration="BasicHttpBinding_IUserService">
+    <endpoint name="BasicHttpBinding_IUserService" contract="UserService.IUserService" bindingType="basicHttpBinding" address="http://localhost:8085/user/" bindingConfiguration="BasicHttpBinding_IUserService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:8085/User</serializedValue>
+          <serializedValue>http://localhost:8085/user/</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -315,10 +315,10 @@
         </property>
       </properties>
     </endpoint>
-    <endpoint name="NetTcpBinding_IUserService" contract="UserService.IUserService" bindingType="netTcpBinding" address="net.tcp://localhost:8095/User" bindingConfiguration="NetTcpBinding_IUserService">
+    <endpoint name="NetTcpBinding_IUserService" contract="UserService.IUserService" bindingType="netTcpBinding" address="net.tcp://localhost:8095/user/" bindingConfiguration="NetTcpBinding_IUserService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>net.tcp://localhost:8095/User</serializedValue>
+          <serializedValue>net.tcp://localhost:8095/user/</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -345,7 +345,7 @@
           <serializedValue>System.ServiceModel.Configuration.UserPrincipalNameElement</serializedValue>
         </property>
         <property path="/identity/userPrincipalName/value" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>LAPTOPIRENE\irene</serializedValue>
+          <serializedValue>LAP-ASTRID\reino</serializedValue>
         </property>
         <property path="/identity/servicePrincipalName" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.ServicePrincipalNameElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.ServicePrincipalNameElement</serializedValue>

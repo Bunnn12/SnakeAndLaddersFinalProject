@@ -19,14 +19,13 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:8085/User" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:8085/User/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="UserService.wsdl" MetadataType="Wsdl" ID="9e25364c-5263-4e16-97c4-4b833c7753a4" SourceId="1" SourceUrl="http://localhost:8085/User?wsdl" />
-    <MetadataFile FileName="User.disco" MetadataType="Disco" ID="ed5f53c8-ec48-45b7-82ea-ae9c1b47596f" SourceId="1" SourceUrl="http://localhost:8085/User?disco" />
-    <MetadataFile FileName="User.xsd" MetadataType="Schema" ID="6170a53e-e21f-4cb9-9cad-0d6af4b63724" SourceId="1" SourceUrl="http://localhost:8085/User?xsd=xsd1" />
-    <MetadataFile FileName="User1.xsd" MetadataType="Schema" ID="c4b834d1-0748-4c3c-8c5c-3f03c13ba31a" SourceId="1" SourceUrl="http://localhost:8085/User?xsd=xsd2" />
-    <MetadataFile FileName="User2.xsd" MetadataType="Schema" ID="82dfee98-a437-4060-8741-f9270ba391f5" SourceId="1" SourceUrl="http://localhost:8085/User?xsd=xsd0" />
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="775b9663-f8b5-41df-b92c-c4c215c83b48" SourceId="1" SourceUrl="http://localhost:8085/User/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="e9924c50-bbb8-482e-88fe-d72b333af9b6" SourceId="1" SourceUrl="http://localhost:8085/User/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="7e841f6c-0388-446d-b4ea-9b99ff669b05" SourceId="1" SourceUrl="http://localhost:8085/User/mex" />
+    <MetadataFile FileName="SnakeAndLadders.Contracts.Dtos.xsd" MetadataType="Schema" ID="1eeab496-8b91-4308-803c-baae60cd170f" SourceId="1" SourceUrl="http://localhost:8085/User/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
