@@ -10,11 +10,9 @@ namespace SnakeAndLaddersFinalProject.Pages
     public partial class EmailVerificationPage : Page
     {
         private readonly AuthService.RegistrationDto _pendingDto;
-
-        // Cooldown para "Reenviar código"
         private DispatcherTimer _resendTimer;
         private int _remainingSeconds;
-        private const int DefaultResendCooldown = 45; // mismo valor que el servidor
+        private const int DefaultResendCooldown = 45; 
 
         public EmailVerificationPage() : this(new AuthService.RegistrationDto
         {
@@ -31,16 +29,11 @@ namespace SnakeAndLaddersFinalProject.Pages
             InitializeComponent();
             _pendingDto = pendingDto ?? throw new ArgumentNullException(nameof(pendingDto));
 
-            // No hay label; ya avisaste en SignUpPage que el código fue enviado
-
             btnVerificateCode.Click += VerificateCode;
             btnResendCode.Click += ResendCode;
-
-            // Arranca el cooldown inicial (opcional)
             StartResendCooldown(DefaultResendCooldown);
         }
 
-        // ===== Confirmar código y registrar =====
         private async void VerificateCode(object sender, RoutedEventArgs e)
         {
             var code = (txtCodeSended.Text ?? string.Empty).Trim();
@@ -73,7 +66,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 }
 
                 ShowInfo(string.Format(T("UiAccountCreatedFmt"), register.DisplayName));
-                NavigationService?.Navigate(new MainPage());
+                NavigationService?.Navigate(new LoginPage());
                 client.Close();
             }
             catch (System.ServiceModel.EndpointNotFoundException)
@@ -146,7 +139,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             if (_resendTimer == null)
                 _resendTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
 
-            _resendTimer.Tick -= ResendTimerTick; // evitar duplicados
+            _resendTimer.Tick -= ResendTimerTick;
             _resendTimer.Tick += ResendTimerTick;
             _resendTimer.Start();
         }
@@ -172,7 +165,6 @@ namespace SnakeAndLaddersFinalProject.Pages
             btnResendCode.Content = string.Format(T("btnResendCodeText"), _remainingSeconds);
         }
 
-        // ===== Localización y mapeo de códigos =====
         private static string T(string key) =>
             Globalization.LocalizationManager.Current[key];
 

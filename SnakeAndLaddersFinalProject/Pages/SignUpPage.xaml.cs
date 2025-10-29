@@ -15,43 +15,69 @@ namespace SnakeAndLaddersFinalProject.Pages
             InitializeComponent();
         }
 
-        private string[] ValidateRegistration(string userName, string firstName, string lastName, string email, string password)
+        public sealed class RegistrationInput
+        {
+            public string Username { get; set; }
+            public string GivenName { get; set; }
+            public string FamilyName { get; set; }
+            public string EmailAddress { get; set; }
+            public string PlainPassword { get; set; }
+        }
+
+        private static RegistrationInput NormalizeParam(RegistrationInput m) => new RegistrationInput
+        {
+            Username = (m.Username ?? "").Trim(),
+            GivenName = (m.GivenName ?? "").Trim(),
+            FamilyName = (m.FamilyName ?? "").Trim(),
+            EmailAddress = (m.EmailAddress ?? "").Trim().ToLowerInvariant(),
+            PlainPassword = m.PlainPassword ?? "",
+        };
+
+        private static string[] ValidateRegistration(RegistrationInput m)
         {
             var errors = new List<string>();
-            if (string.IsNullOrWhiteSpace(firstName)) errors.Add(T("UiFirstNameRequired"));
-            if (string.IsNullOrWhiteSpace(lastName)) errors.Add(T("UiLastNameRequired"));
-            if (string.IsNullOrWhiteSpace(userName)) errors.Add(T("UiUserNameRequired"));
-            if (string.IsNullOrWhiteSpace(email)) errors.Add(T("UiEmailRequired"));
-            else if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$")) errors.Add(T("UiEmailInvalid"));
-            if (string.IsNullOrWhiteSpace(password) || password.Length < 8) errors.Add(T("UiPasswordTooShort"));
+
+            if (string.IsNullOrWhiteSpace(m.GivenName)) errors.Add(T("UiFirstNameRequired"));
+            if (string.IsNullOrWhiteSpace(m.FamilyName)) errors.Add(T("UiLastNameRequired"));
+            if (string.IsNullOrWhiteSpace(m.Username)) errors.Add(T("UiUserNameRequired"));
+
+            if (string.IsNullOrWhiteSpace(m.EmailAddress)) errors.Add(T("UiEmailRequired"));
+            else if (!Regex.IsMatch(m.EmailAddress, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                errors.Add(T("UiEmailInvalid"));
+
+            if (string.IsNullOrWhiteSpace(m.PlainPassword) || m.PlainPassword.Length < 8)
+                errors.Add(T("UiPasswordTooShort"));
+
             return errors.ToArray();
         }
 
         private async void SignUp(object sender, RoutedEventArgs e)
         {
-            var errors = ValidateRegistration(
-                txtUsername.Text, txtNameOfUser.Text, txtLastname.Text, txtEmail.Text, pwdPassword.Password);
-
-            if (errors.Any())
+            var input = NormalizeParam(new RegistrationInput
             {
-                ShowWarn(string.Join("\n", errors));
-                return;
-            }
+                Username = txtUsername.Text,
+                GivenName = txtNameOfUser.Text,
+                FamilyName = txtLastname.Text,
+                EmailAddress = txtEmail.Text,
+                PlainPassword = pwdPassword.Password,
+            });
+
+            var errors = ValidateRegistration(input);
+            if (errors.Any()) { ShowWarn(string.Join("\n", errors)); return; }
 
             var dto = new AuthService.RegistrationDto
             {
-                UserName = txtUsername.Text.Trim(),
-                FirstName = txtNameOfUser.Text.Trim(),
-                LastName = txtLastname.Text.Trim(),
-                Email = txtEmail.Text.Trim().ToLowerInvariant(),
-                Password = pwdPassword.Password
+                UserName = input.Username,
+                FirstName = input.GivenName,
+                LastName = input.FamilyName,
+                Email = input.EmailAddress,
+                Password = input.PlainPassword,
             };
 
             var client = new AuthService.AuthServiceClient("BasicHttpBinding_IAuthService");
             try
             {
                 var send = await Task.Run(() => client.RequestEmailVerification(dto.Email));
-
                 if (!send.Success)
                 {
                     ShowWarn(MapAuth(send.Code, send.Meta));
@@ -74,6 +100,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 client.Abort();
             }
         }
+
 
         private void Login(object sender, RoutedEventArgs e)
         {
