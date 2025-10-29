@@ -9,12 +9,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public string Text { get; }
         public DateTime TimestampUtc { get; }
 
-        // Extras para tu XAML
+   
         public bool IsMine { get; }
         public string Header => $"{Sender}";
         public DateTime SentAt => TimestampUtc.ToLocalTime();
 
-        // Avatares si luego los manejas
+
         public string AvatarPath { get; }
         public bool HasAvatar => !string.IsNullOrWhiteSpace(AvatarPath);
 
@@ -24,7 +24,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             Text = dto?.Text ?? "";
             TimestampUtc = dto?.TimestampUtc ?? DateTime.UtcNow;
             AvatarPath = avatarPath ?? "";
-            // Considera iguales si coincide (case-insensitive)
+
             IsMine = !string.IsNullOrWhiteSpace(currentUserName) &&
                      string.Equals(Sender, currentUserName, StringComparison.OrdinalIgnoreCase);
         }

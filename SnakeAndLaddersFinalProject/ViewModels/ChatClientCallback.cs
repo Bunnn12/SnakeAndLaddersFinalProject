@@ -6,9 +6,7 @@ using SnakeAndLaddersFinalProject.ChatService;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
-    /// <summary>
-    /// Recibe push del server y lo reenvía al hilo de UI.
-    /// </summary>
+
     [CallbackBehavior(UseSynchronizationContext = false)]
     public sealed class ChatClientCallback : IChatServiceCallback
     {

@@ -38,7 +38,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             CurrentUserId = SessionContext.Current.UserId;
             CurrentUserName = string.IsNullOrWhiteSpace(SessionContext.Current.UserName)
-                ? "Unknown"
+                ? "Guest"
                 : SessionContext.Current.UserName;
 
             proxy = CreateDuplexProxyFromConfig();

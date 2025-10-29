@@ -34,8 +34,6 @@ namespace SnakeAndLaddersFinalProject.Pages
             if (!vm.IsAutoScrollEnabled) return;
             if (lvMessages == null) return;
             if (lvMessages.Items.Count == 0) return;
-
-            // Defer del scroll para evitar "ItemsControl no es coherente..."
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 try
