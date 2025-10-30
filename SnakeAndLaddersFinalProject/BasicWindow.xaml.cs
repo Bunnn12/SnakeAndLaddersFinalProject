@@ -8,9 +8,11 @@ using SnakeAndLaddersFinalProject.Utilities;
 
 namespace SnakeAndLaddersFinalProject
 {
+    
     public sealed partial class BasicWindow : Window
     {
-        
+       
+
         private static readonly IReadOnlyDictionary<string, string> Backgrounds =
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {

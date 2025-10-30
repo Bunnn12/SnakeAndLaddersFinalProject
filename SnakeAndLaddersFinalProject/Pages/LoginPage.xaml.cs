@@ -7,8 +7,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using SnakeAndLaddersFinalProject;
 using SnakeAndLaddersFinalProject.Authentication;
+using SnakeAndLaddersFinalProject.Utilities;
+
+
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
@@ -21,7 +23,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void PageLoaded(object sender, RoutedEventArgs e)
         {
-            // Fuerza el estado “Login activo, SignUp inactivo”
+            
             if (btnNavLogin != null) btnNavLogin.IsChecked = true;
             if (btnSignUp != null) btnSignUp.IsChecked = false;
         }
@@ -51,7 +53,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private async void Login(object sender, RoutedEventArgs e)
         {
-            var identifier = txtUsername.Text.Trim();   // usuario o correo
+            var identifier = txtUsername.Text.Trim();
             var password = pwdPassword.Password;
 
             var errs = ValidateLogin(identifier, password);
@@ -64,39 +66,86 @@ namespace SnakeAndLaddersFinalProject.Pages
             var dto = new AuthService.LoginDto { Email = identifier, Password = password };
             var client = new AuthService.AuthServiceClient("BasicHttpBinding_IAuthService");
 
+            dynamic res = null;
+            var owner = Window.GetWindow(this);
+
             try
             {
-                var res = await Task.Run(() => client.Login(dto));
-
-                if (res.Success)
+               
+                owner?.Dispatcher.Invoke(() =>
                 {
-                    SessionContext.Current.UserId = res.UserId ?? 0;
-                    SessionContext.Current.UserName = string.IsNullOrWhiteSpace(res.DisplayName)
+                    var frame = owner.FindName("MainFrame") as Frame;
+                    frame?.Navigate(new SnakeAndLaddersFinalProject.Pages.LoadingPage());
+                });
+
+                
+                await Task.Delay(5000); 
+                res = await Task.Run(() => client.Login(dto));
+
+                bool success = false;
+                try { success = (bool)res?.Success; } catch { success = false; }
+
+                if (success)
+                {
+                    int userId = 0;
+                    try { userId = (int)(res?.UserId ?? 0); } catch { userId = 0; }
+                    string displayName = null;
+                    try { displayName = (string)res?.DisplayName; } catch { displayName = null; }
+
+                    SessionContext.Current.UserId = userId;
+                    SessionContext.Current.UserName = string.IsNullOrWhiteSpace(displayName)
                         ? identifier
-                        : res.DisplayName;
+                        : displayName;
                     SessionContext.Current.Email = identifier.Contains("@") ? identifier : string.Empty;
 
-                    ShowInfo(T("UiLoginOk"));
-                    NavigationService?.Navigate(new MainPage());
+                    
+                    owner?.Dispatcher.Invoke(() =>
+                    {
+                        var frame = owner.FindName("MainFrame") as Frame;
+                        frame?.Navigate(new MainPage());
+                    });
                 }
                 else
                 {
-                    ShowWarn(MapAuth(res.Code, res.Meta));
+                    
+                    owner?.Dispatcher.Invoke(() =>
+                    {
+                        var frame = owner.FindName("MainFrame") as Frame;
+                        frame?.Navigate(new LoginPage());
+                    });
+
+                    string code = null;
+                    Dictionary<string, string> meta = null;
+                    try { code = (string)res?.Code; } catch { code = null; }
+                    try { meta = res?.Meta as Dictionary<string, string>; } catch { meta = null; }
+
+                    ShowWarn(MapAuth(code, meta));
                 }
 
                 client.Close();
             }
             catch (System.ServiceModel.EndpointNotFoundException)
             {
+                owner?.Dispatcher.Invoke(() =>
+                {
+                    var frame = owner.FindName("MainFrame") as Frame;
+                    frame?.Navigate(new LoginPage());
+                });
                 ShowError(T("UiEndpointNotFound"));
                 client.Abort();
             }
             catch (Exception ex)
             {
+                owner?.Dispatcher.Invoke(() =>
+                {
+                    var frame = owner.FindName("MainFrame") as Frame;
+                    frame?.Navigate(new LoginPage());
+                });
                 ShowError($"{T("UiGenericError")} {ex.Message}");
                 client.Abort();
             }
         }
+
 
         // ===== Helpers =====
         private static string T(string key) =>

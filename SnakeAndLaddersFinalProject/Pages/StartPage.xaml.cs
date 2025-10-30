@@ -222,6 +222,8 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             PlayClickSound();
 
+            
+
             var fadeOut = new DoubleAnimation
             {
                 From = 0,
@@ -232,6 +234,8 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             fadeOut.Completed += (s, _) =>
             {
+                
+
                 NavigationService?.Navigate(new LoginPage());
             };
 

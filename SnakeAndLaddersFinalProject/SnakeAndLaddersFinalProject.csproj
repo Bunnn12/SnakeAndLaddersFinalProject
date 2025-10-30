@@ -132,6 +132,9 @@
     <Compile Include="Pages\InventoryPage.xaml.cs">
       <DependentUpon>InventoryPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\LoadingPage.xaml.cs">
+      <DependentUpon>LoadingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\LobbyPage.xaml.cs">
       <DependentUpon>LobbyPage.xaml</DependentUpon>
     </Compile>
@@ -172,6 +175,7 @@
     <Compile Include="SkinsWindow.xaml.cs">
       <DependentUpon>SkinsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\Loading.cs" />
     <Compile Include="Utilities\PageBackground.cs" />
     <Compile Include="Utilities\WidthToBoolConverter.cs" />
     <Compile Include="ViewModels\ChatClientCallback.cs" />
@@ -207,6 +211,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\InventoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\LoadingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -489,6 +497,9 @@
     <Resource Include="Assets\Images\Logo\IconGame.ico" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Videos\LoadingPageVideo.MP4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Videos\MainPageVideo.mp4">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
