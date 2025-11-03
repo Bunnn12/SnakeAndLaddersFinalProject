@@ -45,10 +45,14 @@
         <Border Margin="24"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                MaxWidth="900"
-                Background="#CCFDFDFD"      
+                MaxWidth="900"   
                 CornerRadius="16"
                 Padding="24">
+            <Border.Background>
+                <SolidColorBrush Color="#FF000000"
+                         Opacity="0.50" />
+            </Border.Background>
+            
             <Border.Effect>
                 <DropShadowEffect BlurRadius="18"
                                   ShadowDepth="0"
@@ -75,7 +79,7 @@
                                FontSize="20"
                                FontWeight="SemiBold"
                                Margin="0,6,0,6"
-                               Foreground="Black"
+                               Foreground="White"
                                HorizontalAlignment="Center"/>
 
                     <!-- Tamaño -->
@@ -85,7 +89,7 @@
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Margin="0,0,0,8"
-                                   Foreground="Black"/>
+                                   Foreground="White"/>
                         <UniformGrid Columns="3"
                                      HorizontalAlignment="Stretch"
                                      Margin="0,0,0,4">
@@ -107,11 +111,11 @@
                                         <TextBlock Text="8×8"
                                                    FontSize="18"
                                                    FontWeight="Bold"
-                                                   HorizontalAlignment="Center"/>
+                                                   HorizontalAlignment="Center" Foreground="White"/>
                                         <TextBlock Text="Pequeño"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center"/>
+                                                   HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
                                     </StackPanel>
                                 </Border>
                             </RadioButton>
@@ -133,11 +137,11 @@
                                         <TextBlock Text="10×10"
                                                    FontSize="18"
                                                    FontWeight="Bold"
-                                                   HorizontalAlignment="Center"/>
+                                                   HorizontalAlignment="Center" Foreground="White"/>
                                         <TextBlock Text="Estándar"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center"/>
+                                                   HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
                                     </StackPanel>
                                 </Border>
                             </RadioButton>
@@ -158,11 +162,11 @@
                                         <TextBlock Text="12×12"
                                                    FontSize="18"
                                                    FontWeight="Bold"
-                                                   HorizontalAlignment="Center"/>
+                                                   HorizontalAlignment="Center" Foreground="White"/>
                                         <TextBlock Text="Grande"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center"/>
+                                                   HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
                                     </StackPanel>
                                 </Border>
                             </RadioButton>
@@ -176,7 +180,7 @@
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Margin="0,0,0,8"
-                                   Foreground="Black"/>
+                                   Foreground="White"/>
                         <UniformGrid Columns="3">
                             <RadioButton x:Name="rdbDiffEasy"
                                          GroupName="Difficulty"
@@ -194,7 +198,7 @@
                                         <TextBlock Text="Fácil"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center"/>
+                                                   HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
                                     </StackPanel>
                                 </Border>
                             </RadioButton>
@@ -214,7 +218,7 @@
                                         <TextBlock Text="Medio"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center"/>
+                                                   HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
                                     </StackPanel>
                                 </Border>
                             </RadioButton>
@@ -234,7 +238,7 @@
                                         <TextBlock Text="Difícil"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center"/>
+                                                   HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
                                     </StackPanel>
                                 </Border>
                             </RadioButton>
@@ -248,7 +252,7 @@
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Margin="0,0,0,8"
-                                   Foreground="Black"/>
+                                   Foreground="White"/>
                         <UniformGrid Columns="3">
                             <CheckBox x:Name="chkSpecialDice" Margin="4">
                                 <Border Padding="12"
@@ -263,7 +267,7 @@
                                         <TextBlock Text="Dado"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center"/>
+                                                   HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
                                     </StackPanel>
                                 </Border>
                             </CheckBox>
@@ -281,7 +285,7 @@
                                         <TextBlock Text="Mensaje"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center"/>
+                                                   HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
                                     </StackPanel>
                                 </Border>
                             </CheckBox>
@@ -299,7 +303,7 @@
                                         <TextBlock Text="Trampa"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center"/>
+                                                   HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
                                     </StackPanel>
                                 </Border>
                             </CheckBox>
@@ -313,12 +317,12 @@
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Margin="0,0,0,8"
-                                   Foreground="Black"/>
+                                   Foreground="White"/>
                         <DockPanel LastChildFill="True">
                             <CheckBox x:Name="chkPrivateRoom"
                                       Content="Habilitar"
                                       Margin="0,0,8,0"
-                                      VerticalAlignment="Center"/>
+                                      VerticalAlignment="Center" Foreground="White"/>
                         </DockPanel>
 
                         <TextBlock x:Name="lblPlayers"
@@ -326,21 +330,21 @@
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Margin="0,16,0,8"
-                                   Foreground="Black"/>
+                                   Foreground="White"/>
                         <UniformGrid Columns="3">
                             <RadioButton x:Name="rdbPlayers2" GroupName="Players" IsChecked="True" Margin="4">
                                 <Border Padding="12" BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="8">
-                                    <TextBlock Text="2" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="2" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="White"/>
                                 </Border>
                             </RadioButton>
                             <RadioButton x:Name="rdbPlayers3" GroupName="Players" Margin="4">
                                 <Border Padding="12" BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="8">
-                                    <TextBlock Text="3" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="3" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="White"/>
                                 </Border>
                             </RadioButton>
                             <RadioButton x:Name="rdbPlayers4" GroupName="Players" Margin="4">
                                 <Border Padding="12" BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="8">
-                                    <TextBlock Text="4" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="4" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="White"/>
                                 </Border>
                             </RadioButton>
                         </UniformGrid>
