@@ -25,7 +25,6 @@ namespace SnakeAndLaddersFinalProject.Pages
                     Difficulty = GetSelectedDifficulty(),
                     SpecialTiles = GetSelectedSpecials(),
                     IsPrivate = chkPrivateRoom.IsChecked == true,
- 
                     Players = GetSelectedPlayers()
                 };
 

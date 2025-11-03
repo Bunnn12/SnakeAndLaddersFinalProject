@@ -6,7 +6,8 @@
         public const int LOBBY_CODE_MAX_INCLUSIVE = 999_999;
 
         public const int DEFAULT_PLAYERS = 2;
-        public const int MIN_PLAYERS_TO_START = 2; 
+        public const int MIN_PLAYERS_TO_START = 2;
+        public const int MAX_PLAYERS = 4;
 
         public const string LABEL_SIZE_7X7 = "7×7";
         public const string LABEL_SIZE_10X10 = "10×10";

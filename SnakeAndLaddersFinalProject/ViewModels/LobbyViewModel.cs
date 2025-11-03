@@ -1,11 +1,11 @@
 ﻿using log4net;
 using SnakeAndLaddersFinalProject.Authentication;
-using SnakeAndLaddersFinalProject.Infrastructure;     // AsyncCommand, RelayCommand
+using SnakeAndLaddersFinalProject.Infrastructure;    
 using SnakeAndLaddersFinalProject.LobbyService;
 using SnakeAndLaddersFinalProject.ViewModels.Models;
-             // CreateMatchOptions + enums + AppConstants
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -21,20 +21,21 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private static readonly ILog Logger = LogManager.GetLogger(typeof(LobbyViewModel));
 
         private const string LOBBY_ENDPOINT = "NetTcpBinding_ILobbyService";
-        private const int POLL_INTERVAL_SECONDS = 2; // evita número mágico en el DispatcherTimer
+        private const int POLL_INTERVAL_SECONDS = 2; 
 
         private readonly DispatcherTimer pollTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(POLL_INTERVAL_SECONDS) };
 
         private string statusText = "Lobby listo.";
         private string codigoInput = string.Empty;
 
-        // --- Ajustes que vienen de CreateMatchPage (se aplican antes de crear lobby) ---
+        
         public BoardSizeOption BoardSize { get; private set; } = BoardSizeOption.TenByTen;
         public DifficultyOption Difficulty { get; private set; } = DifficultyOption.Medium;
         public SpecialTileOptions SpecialTiles { get; private set; } = SpecialTileOptions.None;
         public bool IsPrivate { get; private set; }
         public string RoomKey { get; private set; } = string.Empty;
         public byte PlayersRequested { get; private set; } = AppConstants.MIN_PLAYERS_TO_START;
+
 
         public string StatusText
         {
@@ -67,7 +68,25 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public int HostUserId { get; private set; }
         public string HostUserName { get; private set; }
         public string CodigoPartida { get; private set; }
-        public byte MaxPlayers { get; private set; }
+        private byte maxPlayers;
+        public byte MaxPlayers
+        {
+            get { return maxPlayers; }
+            private set
+            {
+                if (maxPlayers == value)
+                {
+                    return;
+                }
+
+                maxPlayers = value;
+                OnPropertyChanged();
+                // Si tu botón "Iniciar" depende de esto:
+                (StartMatchCommand as AsyncCommand)?.RaiseCanExecuteChanged();
+                // Si muestras "X/Y" en StatusText:
+                UpdateStatus();
+            }
+        }
         public string LobbyStatus { get; private set; } = "Waiting";
         public DateTime ExpiresAtUtc { get; private set; }
 
@@ -77,10 +96,41 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public ICommand LeaveLobbyCommand { get; }
         public ICommand CopyInviteLinkCommand { get; }
 
+        private bool IsCurrentUserHost()
+        {
+            // 1) Si en la lista aparece mi usuario, confío en el flag IsHost
+            foreach (var m in Members)
+            {
+                if (!string.IsNullOrWhiteSpace(m?.UserName) &&
+                    string.Equals(m.UserName, CurrentUserName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return m.IsHost;
+                }
+
+                if (m.UserId == CurrentUserId) // por si Id sí coincide
+                {
+                    return m.IsHost;
+                }
+            }
+
+            // 2) Fallback: nombre del host que reporta el servidor
+            if (!string.IsNullOrWhiteSpace(HostUserName) &&
+                string.Equals(HostUserName, CurrentUserName, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            // 3) Último recurso: comparación por Id
+            return HostUserId == CurrentUserId;
+        }
+
+
         public bool CanStartMatch =>
             Members.Count >= AppConstants.MIN_PLAYERS_TO_START &&
-            HostUserId == CurrentUserId &&
+            Members.Count <= MaxPlayers &&
+            IsCurrentUserHost() &&
             string.Equals(LobbyStatus, "Waiting", StringComparison.OrdinalIgnoreCase);
+
 
         public LobbyViewModel()
         {
@@ -104,17 +154,18 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             CopyInviteLinkCommand = new RelayCommand(_ => CopyInviteLink());
 
             pollTimer.Tick += async (_, __) => await RefreshLobbyAsync();
+
+            Members.CollectionChanged += OnMembersChanged;
         }
 
-        // =========================================================
-        //  API: se llama desde LobbyPage antes de ejecutar Create
-        // =========================================================
+        private void OnMembersChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            UpdateStatus();
+            NotifyStartAvailabilityChanged();
+        }
         public void ApplyCreateOptions(CreateMatchOptions options)
         {
-            if (options == null)
-            {
-                return;
-            }
+            if (options == null) return;
 
             BoardSize = options.BoardSize;
             Difficulty = options.Difficulty;
@@ -123,18 +174,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             RoomKey = options.RoomKey ?? string.Empty;
 
             var players = options.Players;
-            if (players < AppConstants.MIN_PLAYERS_TO_START)
-            {
-                players = AppConstants.MIN_PLAYERS_TO_START;
-            }
-            if (players > AppConstants.MIN_PLAYERS_TO_START)
-            {
-                players = AppConstants.MIN_PLAYERS_TO_START;
-            }
+            
             PlayersRequested = (byte)players;
         }
 
-        // ========================= LÓGICA DE LOBBY =========================
         private async Task CreateLobbyAsync()
         {
             try
@@ -144,38 +187,42 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     var res = await client.CreateGameAsync(new CreateGameRequest
                     {
                         HostUserId = CurrentUserId,
-                        MaxPlayers = PlayersRequested,                  // desde ajustes
-                        Dificultad = MapDifficulty(Difficulty),         // desde ajustes
-                        TtlMinutes = AppConstants.DEFAULT_TTL_MINUTES   // sin mágicos
+                        
+                        MaxPlayers = PlayersRequested,                 
+                        Dificultad = MapDifficulty(Difficulty),
+                        TtlMinutes = AppConstants.DEFAULT_TTL_MINUTES
                     });
 
                     LobbyId = res.PartidaId;
                     CodigoPartida = res.CodigoPartida;
                     ExpiresAtUtc = res.ExpiresAtUtc;
 
+                    HostUserId = CurrentUserId;
+                    HostUserName = CurrentUserName;
+                    LobbyStatus = "Waiting";
+                    RaiseCanExecutes();
+
+                    MaxPlayers = PlayersRequested; // ← esto evita ver “/2” en la primera pintura
+
+
                     Members.Clear();
                     Members.Add(new LobbyMemberViewModel(CurrentUserId, CurrentUserName, true, DateTime.Now));
 
-                    StatusText = $"Lobby creado. Código {CodigoPartida}. Expira {ExpiresAtUtc:HH:mm} UTC";
+                    StatusText = $"Lobby creado. Código {CodigoPartida}. " +
+                                 $"Límite {MaxPlayers}. Expira {ExpiresAtUtc:HH:mm} UTC";
                 }
 
-                if (!pollTimer.IsEnabled)
-                {
-                    pollTimer.Start();
-                }
-
-                await RefreshLobbyAsync();
+                if (!pollTimer.IsEnabled) pollTimer.Start();
+                await RefreshLobbyAsync(); 
             }
             catch (Exception ex)
             {
                 StatusText = $"Error creando lobby: {ex.Message}";
                 Logger.Error("Error al crear lobby.", ex);
             }
-            finally
-            {
-                RaiseCanExecutes();
-            }
+            finally { RaiseCanExecutes(); }
         }
+
 
         private async Task JoinLobbyAsync()
         {
@@ -283,6 +330,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
+        private void NotifyStartAvailabilityChanged()
+        {
+            // Para el binding IsEnabled="{Binding CanStartMatch}"
+            OnPropertyChanged(nameof(CanStartMatch));
+
+            // Para el botón que usa Command
+            (StartMatchCommand as AsyncCommand)?.RaiseCanExecuteChanged();
+        }
+
+
         private async Task StartMatchAsync()
         {
             try
@@ -293,6 +350,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     {
                         PartidaId = LobbyId,
                         HostUserId = CurrentUserId
+                        
                     });
 
                     StatusText = result.Message ?? (result.Success ? "Iniciando..." : "No se pudo iniciar.");
@@ -351,7 +409,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private static string MapDifficulty(DifficultyOption value)
         {
-            // Ajusta al valor que espera el servicio
             switch (value)
             {
                 case DifficultyOption.Easy:
@@ -374,7 +431,22 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+        private void UpdateStatus()
+        {
+            if (LobbyId <= 0)
+            {
+                StatusText = "Sin lobby";
+                return;
+            }
+
+            StatusText = $"Lobby {CodigoPartida} — Host: {HostUserName} — {Members.Count}/{MaxPlayers} — {LobbyStatus}";
+        }
+
+
     }
+
+
 
     internal static class CollectionSyncExtensions
     {
@@ -385,7 +457,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             Func<TDto, TVm> selector,
             Action<TVm, TDto> update)
         {
-            // Remove
+            
             for (int i = target.Count - 1; i >= 0; i--)
             {
                 var vm = target[i];
@@ -404,7 +476,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
             }
 
-            // Upsert
             foreach (var dto in source)
             {
                 TVm found = default(TVm);
