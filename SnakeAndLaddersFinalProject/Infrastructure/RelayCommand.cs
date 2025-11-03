@@ -1,23 +1,34 @@
-﻿namespace SnakeAndLaddersFinalProject.Infrastructure
-{
-    using System;
-    using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 
+namespace SnakeAndLaddersFinalProject.Infrastructure
+{
     public sealed class RelayCommand : ICommand
     {
-        private readonly Action _execute;
-        private readonly Func<bool> _canExecute;
+        private readonly Action execute;
+        private readonly Func<bool> canExecute;
 
-        public RelayCommand(Action execute, Func<bool> canExecute = null)
+        public RelayCommand(Action executeAction, Func<bool> canExecuteFunc = null)
         {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute;
+            execute = executeAction ?? throw new ArgumentNullException(nameof(executeAction));
+            canExecute = canExecuteFunc;
         }
 
-        public bool CanExecute(object parameter) => _canExecute?.Invoke() ?? true;
-        public void Execute(object parameter) => _execute();
-
         public event EventHandler CanExecuteChanged;
-        public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+
+        public bool CanExecute(object parameter)
+        {
+            return canExecute == null || canExecute();
+        }
+
+        public void Execute(object parameter)
+        {
+            execute();
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

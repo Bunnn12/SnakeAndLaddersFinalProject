@@ -1,5 +1,6 @@
 ﻿using log4net;
 using SnakeAndLaddersFinalProject.Navigation;
+           // <-- necesario
 using SnakeAndLaddersFinalProject.ViewModels;
 using System;
 using System.Windows;
@@ -11,46 +12,47 @@ namespace SnakeAndLaddersFinalProject.Pages
     public partial class LobbyPage : Page
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(LobbyPage));
+        private readonly LobbyNavigationArgs args;
 
-        private readonly LobbyNavigationArgs _args;
+        public LobbyPage() : this(new LobbyNavigationArgs { Mode = LobbyEntryMode.Create }) { }
 
-        public LobbyPage() : this(new LobbyNavigationArgs 
-        { 
-            Mode = LobbyEntryMode.Create 
-        }) 
-        { 
-        }
-
-        public LobbyPage(LobbyNavigationArgs args)
+        public LobbyPage(LobbyNavigationArgs value)
         {
             InitializeComponent();
-            _args = args ?? new LobbyNavigationArgs 
-            { 
-                Mode = LobbyEntryMode.Create 
-            };
-            this.DataContext = new LobbyViewModel();
-
-            Loaded += LobbyPageLoaded;
+            args = value ?? new LobbyNavigationArgs { Mode = LobbyEntryMode.Create };
+            DataContext = new LobbyViewModel();
+            Loaded += OnLoaded;
         }
 
-        private void LobbyPageLoaded(object sender, RoutedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as LobbyViewModel;
             if (vm == null) return;
 
-            
-            if (_args.Mode == LobbyEntryMode.Create)
+            try
             {
-                
-                vm.CreateLobbyCommand.Execute(null);
-            }
-            else if (_args.Mode == LobbyEntryMode.Join)
-            {
-                if (!string.IsNullOrWhiteSpace(_args.JoinCode))
+                if (args.Mode == LobbyEntryMode.Create)
                 {
-                    vm.CodigoInput = _args.JoinCode.Trim();
-                    vm.JoinLobbyCommand.Execute(null);
+                    if (args.CreateOptions != null)
+                        vm.ApplyCreateOptions(args.CreateOptions);
+
+                    // Igual que tu versión que sí funcionaba: ejecuta directo
+                    vm.CreateLobbyCommand?.Execute(null);
                 }
+                else if (args.Mode == LobbyEntryMode.Join)
+                {
+                    if (!string.IsNullOrWhiteSpace(args.JoinCode))
+                    {
+                        vm.CodigoInput = args.JoinCode.Trim();
+                        vm.JoinLobbyCommand?.Execute(null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error inicializando LobbyPage.", ex);
+                MessageBox.Show("No fue posible inicializar el lobby.",
+                                "Lobby", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

@@ -84,6 +84,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppConstants.cs" />
     <Compile Include="Authentication\SesionContext.cs" />
     <Compile Include="BasicWindow.xaml.cs">
       <DependentUpon>BasicWindow.xaml</DependentUpon>
@@ -110,6 +111,7 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="CreateMatchOptions.cs" />
     <Compile Include="DialogBasicWindow.xaml.cs">
       <DependentUpon>DialogBasicWindow.xaml</DependentUpon>
     </Compile>
@@ -122,6 +124,9 @@
     </Compile>
     <Compile Include="Pages\ChatPage.xaml.cs">
       <DependentUpon>ChatPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CreateMatchPage.xaml.cs">
+      <DependentUpon>CreateMatchPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\EmailVerificationPage.xaml.cs">
       <DependentUpon>EmailVerificationPage.xaml</DependentUpon>
@@ -201,6 +206,10 @@
     <Page Include="Pages\ChatPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\CreateMatchPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\EmailVerificationPage.xaml">
       <SubType>Designer</SubType>

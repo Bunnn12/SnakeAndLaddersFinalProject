@@ -1,7 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using SnakeAndLaddersFinalProject.Navigation;
+using SnakeAndLaddersFinalProject.Pages;
+
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
@@ -12,11 +15,27 @@ namespace SnakeAndLaddersFinalProject.Pages
             InitializeComponent();
         }
 
+        // Ir a la pantalla de ajustes antes de crear
         private void CreateMatch(object sender, RoutedEventArgs e)
         {
-            NavigateToLobby(new LobbyNavigationArgs { Mode = LobbyEntryMode.Create });
-        }
+            var page = new CreateMatchPage();
 
+            if (NavigationService != null)
+            {
+                NavigationService.Navigate(page);
+                return;
+            }
+
+            var window = Application.Current.MainWindow as NavigationWindow;
+            if (window != null)
+            {
+                window.Navigate(page);
+            }
+            else
+            {
+                Application.Current.MainWindow.Content = page;
+            }
+        }
 
         private void NavigateToLobby(LobbyNavigationArgs args)
         {
@@ -40,12 +59,12 @@ namespace SnakeAndLaddersFinalProject.Pages
             var code = txtJoinCode.Text?.Trim();
             if (string.IsNullOrWhiteSpace(code))
             {
-                MessageBox.Show("Escribe el código de la partida.", "Unirse", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Escribe el código de la partida.", "Unirse",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
             NavigateToLobby(new LobbyNavigationArgs { Mode = LobbyEntryMode.Join, JoinCode = code });
-
         }
 
         private void btnFriends_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
