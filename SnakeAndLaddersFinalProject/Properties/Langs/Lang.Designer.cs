@@ -367,6 +367,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Board size .
+        /// </summary>
+        public static string lblBoardSizeText {
+            get {
+                return ResourceManager.GetString("lblBoardSizeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Character description.
         /// </summary>
         public static string lblcharacterDescriptionText {
@@ -390,6 +399,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string lblCoinsText {
             get {
                 return ResourceManager.GetString("lblCoinsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Difficulty.
+        /// </summary>
+        public static string lblDifficultyText {
+            get {
+                return ResourceManager.GetString("lblDifficultyText", resourceCulture);
             }
         }
         
@@ -475,11 +493,29 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Match settings.
+        /// </summary>
+        public static string lblMatchSettingsText {
+            get {
+                return ResourceManager.GetString("lblMatchSettingsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a music.
         /// </summary>
         public static string lblMusic {
             get {
                 return ResourceManager.GetString("lblMusic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Players.
+        /// </summary>
+        public static string lblPlayersText {
+            get {
+                return ResourceManager.GetString("lblPlayersText", resourceCulture);
             }
         }
         
@@ -498,6 +534,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string lblSound {
             get {
                 return ResourceManager.GetString("lblSound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Special tiles.
+        /// </summary>
+        public static string lblSpecialTilesText {
+            get {
+                return ResourceManager.GetString("lblSpecialTilesText", resourceCulture);
             }
         }
         

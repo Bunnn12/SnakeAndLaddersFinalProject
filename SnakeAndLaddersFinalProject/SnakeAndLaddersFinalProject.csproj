@@ -504,6 +504,13 @@
     <Resource Include="Assets\Images\Backgrounds\ErrorWindowBackground.png" />
     <Resource Include="Assets\Images\Backgrounds\InfoWindowBackground.png" />
     <Resource Include="Assets\Images\Logo\IconGame.ico" />
+    <Resource Include="Assets\Images\Icons\BoardImageIcon.png" />
+    <Resource Include="Assets\Images\Icons\EasyDifficultyIcon.png" />
+    <Resource Include="Assets\Images\Icons\HardDifficultyIcon.png" />
+    <Resource Include="Assets\Images\Icons\MediumDifficultyIcon.png" />
+    <Resource Include="Assets\Images\Icons\SpecialDileTileIcon.png" />
+    <Resource Include="Assets\Images\Icons\SpecialItemTileIcon.png" />
+    <Resource Include="Assets\Images\Icons\SpecialMessageTileIcon.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

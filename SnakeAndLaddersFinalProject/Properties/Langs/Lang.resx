@@ -348,4 +348,19 @@
   <data name="UiPasswordRequired" xml:space="preserve">
     <value>Password is required.</value>
   </data>
+  <data name="lblMatchSettingsText" xml:space="preserve">
+    <value>Match settings</value>
+  </data>
+  <data name="lblDifficultyText" xml:space="preserve">
+    <value>Difficulty</value>
+  </data>
+  <data name="lblBoardSizeText" xml:space="preserve">
+    <value>Board size </value>
+  </data>
+  <data name="lblPlayersText" xml:space="preserve">
+    <value>Players</value>
+  </data>
+  <data name="lblSpecialTilesText" xml:space="preserve">
+    <value>Special tiles</value>
+  </data>
 </root>
