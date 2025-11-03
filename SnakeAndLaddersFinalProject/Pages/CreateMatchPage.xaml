@@ -5,46 +5,68 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
       mc:Ignorable="d"
-      d:DesignHeight="700"
-      d:DesignWidth="420"
+      d:DesignHeight="720"
+      d:DesignWidth="1280"
       Title="CreateMatchPage"
-      Background="Transparent"
-      >
+      Background="Transparent">
 
-    <!-- Grid que ocupa toda la ventana -->
-    <Grid>
+    <!-- ===== RECURSOS ===== -->
+    <Page.Resources>
+        <!-- Mismo storyboard que usas en MainPage -->
+        <Storyboard x:Key="MainPageVideoStoryboard"
+                    RepeatBehavior="Forever">
+            <!-- Usa el mismo Source que en MainPage -->
+            <MediaTimeline
+                Source="pack://siteoforigin:,,,/Assets/Videos/MainPageVideo.mp4"
+                Storyboard.TargetName="VideoBg" />
+            <!-- Si en MainPage usas pack://application:,,,/..., cámbialo igual aquí -->
+        </Storyboard>
+    </Page.Resources>
 
-        <!-- Tarjeta centrada -->
+    <!-- ===== LAYOUT RAÍZ ===== -->
+    <Grid Background="Transparent">
+
+        <!-- VIDEO DE FONDO -->
+        <MediaElement x:Name="VideoBg"
+                      IsMuted="True"
+                      Stretch="UniformToFill"
+                      IsHitTestVisible="False"
+                      Panel.ZIndex="-1"
+                      LoadedBehavior="Manual"
+                      UnloadedBehavior="Manual">
+            <MediaElement.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <BeginStoryboard Storyboard="{StaticResource MainPageVideoStoryboard}" />
+                </EventTrigger>
+            </MediaElement.Triggers>
+        </MediaElement>
+
+        <!-- TARJETA CENTRADA -->
         <Border Margin="24"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 MaxWidth="900"
+                Background="#CCFDFDFD"      
                 CornerRadius="16"
                 Padding="24">
-
-            <Border.Background>
-                <SolidColorBrush Color="#FDFDFD"
-                         Opacity="0.5" />
-            </Border.Background>
-            
             <Border.Effect>
                 <DropShadowEffect BlurRadius="18"
                                   ShadowDepth="0"
-                                  Opacity="0.7" />
+                                  Opacity="0.55" />
             </Border.Effect>
 
-            <!-- Scroll interno por si el contenido se hace grande -->
+            <!-- IMPORTANTE: solo un hijo directo (ScrollViewer) -->
             <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-                <!-- TODO lo que ya tenías antes va aquí dentro -->
+                <!-- Tu layout original dentro del ScrollViewer -->
                 <Grid Margin="8">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <!-- Título -->
@@ -54,17 +76,16 @@
                                FontWeight="SemiBold"
                                Margin="0,6,0,6"
                                Foreground="Black"
-                               HorizontalAlignment="Center" />
+                               HorizontalAlignment="Center"/>
 
                     <!-- Tamaño -->
-                    <StackPanel Grid.Row="1"
-                                Margin="0,0,0,5">
+                    <StackPanel Grid.Row="1" Margin="0,0,0,5">
                         <TextBlock x:Name="lblBoardSize"
                                    Text="Tamaño"
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Margin="0,0,0,8"
-                                   Foreground="Black" />
+                                   Foreground="Black"/>
                         <UniformGrid Columns="3"
                                      HorizontalAlignment="Stretch"
                                      Margin="0,0,0,4">
@@ -80,17 +101,17 @@
                                         Width="93">
                                     <StackPanel HorizontalAlignment="Center">
                                         <Image Height="58"
-                                               Width="43"
                                                Source="/Assets/Images/Icons/BoardImageIcon.png"
-                                               Stretch="Fill" />
+                                               Stretch="Fill"
+                                               Width="43"/>
                                         <TextBlock Text="8×8"
                                                    FontSize="18"
                                                    FontWeight="Bold"
-                                                   HorizontalAlignment="Center" />
+                                                   HorizontalAlignment="Center"/>
                                         <TextBlock Text="Pequeño"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center" />
+                                                   HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
                             </RadioButton>
@@ -106,17 +127,17 @@
                                         Width="92">
                                     <StackPanel HorizontalAlignment="Center">
                                         <Image Height="80"
-                                               Width="59"
                                                Source="/Assets/Images/Icons/BoardImageIcon.png"
-                                               Stretch="Fill" />
+                                               Stretch="Fill"
+                                               Width="59"/>
                                         <TextBlock Text="10×10"
                                                    FontSize="18"
                                                    FontWeight="Bold"
-                                                   HorizontalAlignment="Center" />
+                                                   HorizontalAlignment="Center"/>
                                         <TextBlock Text="Estándar"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center" />
+                                                   HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
                             </RadioButton>
@@ -131,17 +152,17 @@
                                         Height="161">
                                     <StackPanel HorizontalAlignment="Center">
                                         <Image Height="97"
-                                               Width="66"
                                                Source="/Assets/Images/Icons/BoardImageIcon.png"
-                                               Stretch="Fill" />
+                                               Stretch="Fill"
+                                               Width="66"/>
                                         <TextBlock Text="12×12"
                                                    FontSize="18"
                                                    FontWeight="Bold"
-                                                   HorizontalAlignment="Center" />
+                                                   HorizontalAlignment="Center"/>
                                         <TextBlock Text="Grande"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center" />
+                                                   HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
                             </RadioButton>
@@ -149,14 +170,13 @@
                     </StackPanel>
 
                     <!-- Dificultad -->
-                    <StackPanel Grid.Row="2"
-                                Margin="0,0,0,16">
+                    <StackPanel Grid.Row="2" Margin="0,0,0,16">
                         <TextBlock x:Name="lblDifficulty"
                                    Text="Dificultad"
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Margin="0,0,0,8"
-                                   Foreground="Black" />
+                                   Foreground="Black"/>
                         <UniformGrid Columns="3">
                             <RadioButton x:Name="rdbDiffEasy"
                                          GroupName="Difficulty"
@@ -168,13 +188,13 @@
                                         CornerRadius="8">
                                     <StackPanel HorizontalAlignment="Center">
                                         <Image Height="70"
-                                               Width="70"
                                                Source="/Assets/Images/Icons/EasyDifficultyIcon.png"
-                                               Stretch="Fill" />
+                                               Stretch="Fill"
+                                               Width="70"/>
                                         <TextBlock Text="Fácil"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center" />
+                                                   HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
                             </RadioButton>
@@ -188,13 +208,13 @@
                                         CornerRadius="8">
                                     <StackPanel HorizontalAlignment="Center">
                                         <Image Height="73"
-                                               Width="70"
                                                Source="/Assets/Images/Icons/MediumDifficultyIcon.png"
-                                               Stretch="Fill" />
+                                               Stretch="Fill"
+                                               Width="70"/>
                                         <TextBlock Text="Medio"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center" />
+                                                   HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
                             </RadioButton>
@@ -208,13 +228,13 @@
                                         CornerRadius="8">
                                     <StackPanel HorizontalAlignment="Center">
                                         <Image Height="76"
-                                               Width="68"
                                                Source="/Assets/Images/Icons/HardDifficultyIcon.png"
-                                               Stretch="Fill" />
+                                               Stretch="Fill"
+                                               Width="68"/>
                                         <TextBlock Text="Difícil"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center" />
+                                                   HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
                             </RadioButton>
@@ -222,68 +242,64 @@
                     </StackPanel>
 
                     <!-- Casillas especiales -->
-                    <StackPanel Grid.Row="3"
-                                Margin="0,0,0,16">
+                    <StackPanel Grid.Row="3" Margin="0,0,0,16">
                         <TextBlock x:Name="lblSpecialTiles"
                                    Text="Casillas especiales"
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Margin="0,0,0,8"
-                                   Foreground="Black" />
+                                   Foreground="Black"/>
                         <UniformGrid Columns="3">
-                            <CheckBox x:Name="chkSpecialDice"
-                                      Margin="4">
+                            <CheckBox x:Name="chkSpecialDice" Margin="4">
                                 <Border Padding="12"
                                         BorderBrush="#DDDDDD"
                                         BorderThickness="1"
                                         CornerRadius="8">
                                     <StackPanel HorizontalAlignment="Center">
                                         <Image Height="57"
-                                               Width="54"
                                                Source="/Assets/Images/Icons/SpecialDileTileIcon.png"
-                                               Stretch="Fill" />
+                                               Stretch="Fill"
+                                               Width="54"/>
                                         <TextBlock Text="Dado"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center" />
+                                                   HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
                             </CheckBox>
 
-                            <CheckBox x:Name="chkSpecialMessage"
-                                      Margin="4">
+                            <CheckBox x:Name="chkSpecialMessage" Margin="4">
                                 <Border Padding="12"
                                         BorderBrush="#DDDDDD"
                                         BorderThickness="1"
                                         CornerRadius="8">
                                     <StackPanel HorizontalAlignment="Center">
                                         <Image Height="58"
-                                               Width="55"
                                                Source="/Assets/Images/Icons/SpecialMessageTileIcon.png"
-                                               Stretch="Fill" />
+                                               Stretch="Fill"
+                                               Width="55"/>
                                         <TextBlock Text="Mensaje"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center" />
+                                                   HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
                             </CheckBox>
 
-                            <CheckBox x:Name="chkSpecialTrap"
-                                      Margin="4">
+                            <CheckBox x:Name="chkSpecialTrap" Margin="4">
                                 <Border Padding="12"
                                         BorderBrush="#DDDDDD"
                                         BorderThickness="1"
                                         CornerRadius="8">
                                     <StackPanel HorizontalAlignment="Center">
                                         <Image Height="60"
-                                               Width="62"
                                                Source="/Assets/Images/Icons/SpecialItemTileIcon.png"
-                                               Stretch="Fill" />
+                                               Stretch="Fill"
+                                               Width="62"/>
                                         <TextBlock Text="Trampa"
                                                    FontSize="12"
                                                    Opacity="0.8"
-                                                   HorizontalAlignment="Center" />
+                                                   HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
                             </CheckBox>
@@ -291,19 +307,18 @@
                     </StackPanel>
 
                     <!-- Sala privada / Jugadores -->
-                    <StackPanel Grid.Row="4"
-                                Margin="0,0,0,16">
+                    <StackPanel Grid.Row="4" Margin="0,0,0,16">
                         <TextBlock x:Name="lblPrivacy"
                                    Text="Sala privada"
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Margin="0,0,0,8"
-                                   Foreground="Black" />
+                                   Foreground="Black"/>
                         <DockPanel LastChildFill="True">
                             <CheckBox x:Name="chkPrivateRoom"
                                       Content="Habilitar"
                                       Margin="0,0,8,0"
-                                      VerticalAlignment="Center" />
+                                      VerticalAlignment="Center"/>
                         </DockPanel>
 
                         <TextBlock x:Name="lblPlayers"
@@ -311,48 +326,21 @@
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Margin="0,16,0,8"
-                                   Foreground="Black" />
+                                   Foreground="Black"/>
                         <UniformGrid Columns="3">
-                            <RadioButton x:Name="rdbPlayers2"
-                                         GroupName="Players"
-                                         IsChecked="True"
-                                         Margin="4">
-                                <Border Padding="12"
-                                        BorderBrush="#DDDDDD"
-                                        BorderThickness="1"
-                                        CornerRadius="8">
-                                    <TextBlock Text="2"
-                                               FontSize="16"
-                                               FontWeight="SemiBold"
-                                               HorizontalAlignment="Center" />
+                            <RadioButton x:Name="rdbPlayers2" GroupName="Players" IsChecked="True" Margin="4">
+                                <Border Padding="12" BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="8">
+                                    <TextBlock Text="2" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                                 </Border>
                             </RadioButton>
-
-                            <RadioButton x:Name="rdbPlayers3"
-                                         GroupName="Players"
-                                         Margin="4">
-                                <Border Padding="12"
-                                        BorderBrush="#DDDDDD"
-                                        BorderThickness="1"
-                                        CornerRadius="8">
-                                    <TextBlock Text="3"
-                                               FontSize="16"
-                                               FontWeight="SemiBold"
-                                               HorizontalAlignment="Center" />
+                            <RadioButton x:Name="rdbPlayers3" GroupName="Players" Margin="4">
+                                <Border Padding="12" BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="8">
+                                    <TextBlock Text="3" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                                 </Border>
                             </RadioButton>
-
-                            <RadioButton x:Name="rdbPlayers4"
-                                         GroupName="Players"
-                                         Margin="4">
-                                <Border Padding="12"
-                                        BorderBrush="#DDDDDD"
-                                        BorderThickness="1"
-                                        CornerRadius="8">
-                                    <TextBlock Text="4"
-                                               FontSize="16"
-                                               FontWeight="SemiBold"
-                                               HorizontalAlignment="Center" />
+                            <RadioButton x:Name="rdbPlayers4" GroupName="Players" Margin="4">
+                                <Border Padding="12" BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="8">
+                                    <TextBlock Text="4" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                                 </Border>
                             </RadioButton>
                         </UniformGrid>
@@ -366,7 +354,7 @@
                                 Content="Crear sala"
                                 Padding="16,8"
                                 Margin="0,8,0,0"
-                                Click="BtnCreateRoomClick" />
+                                Click="BtnCreateRoomClick"/>
                     </StackPanel>
                 </Grid>
 
