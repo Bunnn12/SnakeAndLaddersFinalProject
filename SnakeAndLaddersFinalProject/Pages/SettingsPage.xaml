@@ -10,13 +10,31 @@
       Title="SettingsPage">
 
     <Grid>
-        <Label Content="{x:Static language:Lang.btnSettingsText}" HorizontalAlignment="Center" Margin="0,52,0,0" VerticalAlignment="Top"/>
-        <Label Content="{x:Static language:Lang.lblSound}" HorizontalAlignment="Left" Margin="203,119,0,0" VerticalAlignment="Top"/>
-        <Label Content="{x:Static language:Lang.lblMusic}" HorizontalAlignment="Left" Margin="203,199,0,0" VerticalAlignment="Top"/>
-        <Label Content="{x:Static language:Lang.lblLanguage}" HorizontalAlignment="Left" Margin="203,266,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="400,270,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged"/>
-        <Slider HorizontalAlignment="Left" Margin="400,207,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="lblTitle" Content="{x:Static language:Lang.btnSettingsText}" HorizontalAlignment="Center" Margin="0,52,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblSound" Content="{x:Static language:Lang.lblSound}" HorizontalAlignment="Left" Margin="203,119,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblMusic" Content="{x:Static language:Lang.lblMusic}" HorizontalAlignment="Left" Margin="203,199,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblLanguag" Content="{x:Static language:Lang.lblLanguage}" HorizontalAlignment="Left" Margin="203,266,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cmbLanguage"
+          HorizontalAlignment="Left" Margin="400,266,0,0"
+          VerticalAlignment="Top" Width="220"
+          SelectionChanged="Language_SelectionChanged">
+            <ComboBoxItem Tag="es-MX">Español (México)</ComboBoxItem>
+            <ComboBoxItem Tag="en-US">English (US)</ComboBoxItem>
+            <ComboBoxItem Tag="pt-BR">Português (Brasil)</ComboBoxItem>
+            <ComboBoxItem Tag="zh-CN">中文 (简体)</ComboBoxItem>
+        </ComboBox>
+
+        <!-- Si tienes recursos Lang: usa esto -->
+        <Button x:Name="btnBack"
+        Content="regresar"  
+            Width="110" Height="32"
+        HorizontalAlignment="Left" VerticalAlignment="Top" Margin="16,16,0,0"
+        Click="BtnBackClick" />
+
+
+            <Slider HorizontalAlignment="Left" Margin="400,207,0,0" VerticalAlignment="Top" Width="120"/>
         <Slider HorizontalAlignment="Left" Margin="400,127,0,0" VerticalAlignment="Top" Width="120"/>
+        
 
 
     </Grid>

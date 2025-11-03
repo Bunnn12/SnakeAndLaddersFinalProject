@@ -242,5 +242,14 @@ namespace SnakeAndLaddersFinalProject.Pages
                 ShowError("Unexpected error while navigating.");
             }
         }
+
+        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            var currentWindow = Window.GetWindow(this);
+            var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
+            mainFrame.Navigate(new SnakeAndLaddersFinalProject.Pages.SettingsPage());
+
+
+        }
     }
 }

@@ -1,12 +1,14 @@
-﻿using SnakeAndLaddersFinalProject.Globalization;
+﻿using log4net;
+using log4net.Config;
+using SnakeAndLaddersFinalProject.Globalization;
 using System;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Resources;
-using log4net;
-using log4net.Config;
 
 namespace SnakeAndLaddersFinalProject
 {
@@ -19,13 +21,23 @@ namespace SnakeAndLaddersFinalProject
 
         protected override void OnStartup(StartupEventArgs e)
         {
-           
+            var code = SnakeAndLaddersFinalProject.Properties.Settings.Default["languageCode"] as string;
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                code = "es-MX";
+            }
+
+            var culture = new CultureInfo(code);
+            Thread.CurrentThread.CurrentUICulture = culture;
+            Thread.CurrentThread.CurrentCulture = culture;
+            SnakeAndLaddersFinalProject.Properties.Langs.Lang.Culture = culture;
+
+
             var logsDir = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "SnakeAndLadders", "logs");
             Directory.CreateDirectory(logsDir);
             log4net.GlobalContext.Properties["LogFileName"] = Path.Combine(logsDir, "client.log");
-
             
             XmlConfigurator.Configure(LogManager.GetRepository());
 
