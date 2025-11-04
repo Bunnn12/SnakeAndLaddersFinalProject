@@ -16,6 +16,11 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class LoginPage : Page
     {
+        private const int GUEST_SUFFIX_MIN_VALUE = 0;
+        private const int GUEST_SUFFIX_MAX_EXCLUSIVE = 100;
+
+        private const int GUEST_ID_MIN_VALUE = 1;
+        private const int GUEST_ID_MAX_EXCLUSIVE = 1000000;
         public LoginPage()
         {
             InitializeComponent();
@@ -214,10 +219,14 @@ namespace SnakeAndLaddersFinalProject.Pages
             try
             {
                 var random = new Random();
-                int suffix = random.Next(0, 100); 
-                string guestName = $"Guest{suffix:D2}"; 
 
-                SessionContext.Current.UserId = 0;
+                int suffix = random.Next(GUEST_SUFFIX_MIN_VALUE, GUEST_SUFFIX_MAX_EXCLUSIVE);
+                string guestName = $"Guest{suffix:D2}";
+
+                int guestRandomId = random.Next(GUEST_ID_MIN_VALUE, GUEST_ID_MAX_EXCLUSIVE);
+                int guestUserId = guestRandomId * -1;   // id negativo para guest
+
+                SessionContext.Current.UserId = guestUserId;
                 SessionContext.Current.UserName = guestName;
                 SessionContext.Current.Email = string.Empty;
                 SessionContext.Current.ProfilePhotoId = AvatarIdHelper.DefaultId;
@@ -236,16 +245,21 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                var navWindow = new NavigationWindow { ShowsNavigationUI = true };
+                var navWindow = new NavigationWindow
+                {
+                    ShowsNavigationUI = true
+                };
+
                 navWindow.Navigate(new MainPage());
                 navWindow.Show();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
                 ShowInfo("Navigation is not available right now. Please try again.");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                
                 ShowError("Unexpected error while navigating.");
             }
         }
