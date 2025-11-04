@@ -2,6 +2,7 @@
 using SnakeAndLaddersFinalProject.Navigation;
            // <-- necesario
 using SnakeAndLaddersFinalProject.ViewModels;
+using SnakeAndLaddersFinalProject.Windows;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -60,54 +61,55 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             try
             {
-                var vm = DataContext as LobbyViewModel;
-                int lobbyId = vm?.LobbyId ?? 0;
+                var lobbyViewModel = DataContext as LobbyViewModel;
+
+                if (lobbyViewModel == null)
+                {
+                    MessageBox.Show(
+                        "No se encontró el contexto del lobby.",
+                        "Chat",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+
+                    return;
+                }
+
+                var lobbyId = lobbyViewModel.LobbyId;
 
                 if (lobbyId <= 0)
                 {
-                    MessageBox.Show("Aún no hay un lobby activo. Crea o únete antes de abrir el chat.",
-                                    "Chat", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(
+                        "Aún no hay un lobby activo. Crea o únete antes de abrir el chat.",
+                        "Chat",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+
                     return;
                 }
 
-                var chatPage = new ChatPage(lobbyId);
+                var ownerWindow = Window.GetWindow(this);
 
-                if (NavigationService != null)
+                var chatWindow = new ChatWindow(lobbyId)
                 {
-                    NavigationService.Navigate(chatPage);
-                    return;
-                }
+                    Owner = ownerWindow
+                    
+                };
 
-                Window currentWindow = Window.GetWindow(this);
-                var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
-
-                if (mainFrame != null)
-                {
-                    mainFrame.Navigate(chatPage);
-                    return;
-                }
-
-                var navWindow = new NavigationWindow { ShowsNavigationUI = true };
-                navWindow.Navigate(chatPage);
-                navWindow.Show();
-            }
-            catch (InvalidOperationException ex)
-            {
-
-                MessageBox.Show("No se pudo navegar a la página de chat.",
-                                "Error de navegación", MessageBoxButton.OK, MessageBoxImage.Error);
-                Logger.Error("Error al abrir la página de chat.", ex);
-
+                chatWindow.Show(); 
             }
             catch (Exception ex)
             {
+                MessageBox.Show(
+                    "Ocurrió un error inesperado al intentar abrir el chat.",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
 
-                MessageBox.Show("Ocurrió un error inesperado al intentar abrir el chat.",
-                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Logger.Error("Error inesperado al abrir la página de chat.", ex);
-
+                Logger.Error("Error inesperado al abrir la ventana de chat.", ex);
             }
         }
+
+
 
         private void LeaveLobby(object sender, RoutedEventArgs e)
         {

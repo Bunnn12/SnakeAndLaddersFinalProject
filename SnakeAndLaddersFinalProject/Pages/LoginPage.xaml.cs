@@ -71,15 +71,13 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             try
             {
-               
                 owner?.Dispatcher.Invoke(() =>
                 {
                     var frame = owner.FindName("MainFrame") as Frame;
                     frame?.Navigate(new SnakeAndLaddersFinalProject.Pages.LoadingPage());
                 });
 
-                
-                await Task.Delay(5000); 
+                await Task.Delay(5000);
                 res = await Task.Run(() => client.Login(dto));
 
                 bool success = false;
@@ -89,8 +87,12 @@ namespace SnakeAndLaddersFinalProject.Pages
                 {
                     int userId = 0;
                     try { userId = (int)(res?.UserId ?? 0); } catch { userId = 0; }
+
                     string displayName = null;
                     try { displayName = (string)res?.DisplayName; } catch { displayName = null; }
+
+                    string profilePhotoId = null;
+                    try { profilePhotoId = (string)res?.ProfilePhotoId; } catch { profilePhotoId = null; }
 
                     SessionContext.Current.UserId = userId;
                     SessionContext.Current.UserName = string.IsNullOrWhiteSpace(displayName)
@@ -98,7 +100,10 @@ namespace SnakeAndLaddersFinalProject.Pages
                         : displayName;
                     SessionContext.Current.Email = identifier.Contains("@") ? identifier : string.Empty;
 
-                    
+                    // 🔥 Aquí ligas la sesión con el avatar de BD
+                    SessionContext.Current.ProfilePhotoId =
+                        AvatarIdHelper.NormalizeOrDefault(profilePhotoId);
+
                     owner?.Dispatcher.Invoke(() =>
                     {
                         var frame = owner.FindName("MainFrame") as Frame;
@@ -107,7 +112,6 @@ namespace SnakeAndLaddersFinalProject.Pages
                 }
                 else
                 {
-                    
                     owner?.Dispatcher.Invoke(() =>
                     {
                         var frame = owner.FindName("MainFrame") as Frame;
@@ -147,7 +151,6 @@ namespace SnakeAndLaddersFinalProject.Pages
         }
 
 
-        // ===== Helpers =====
         private static string T(string key) =>
             Globalization.LocalizationManager.Current[key];
 
@@ -210,10 +213,14 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             try
             {
-                // Deja algo consistente en sesión
+                var random = new Random();
+                int suffix = random.Next(0, 100); 
+                string guestName = $"Guest{suffix:D2}"; 
+
                 SessionContext.Current.UserId = 0;
-                SessionContext.Current.UserName = "Guest";
+                SessionContext.Current.UserName = guestName;
                 SessionContext.Current.Email = string.Empty;
+                SessionContext.Current.ProfilePhotoId = AvatarIdHelper.DefaultId;
 
                 if (NavigationService != null)
                 {

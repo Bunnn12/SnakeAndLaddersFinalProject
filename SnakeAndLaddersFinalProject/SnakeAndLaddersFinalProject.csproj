@@ -122,9 +122,6 @@
     <Compile Include="Pages\AddFriendsPage.xaml.cs">
       <DependentUpon>AddFriendsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ChatPage.xaml.cs">
-      <DependentUpon>ChatPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\CreateMatchPage.xaml.cs">
       <DependentUpon>CreateMatchPage.xaml</DependentUpon>
     </Compile>
@@ -180,6 +177,9 @@
     <Compile Include="SkinsWindow.xaml.cs">
       <DependentUpon>SkinsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\AvatarIdHelper.cs" />
+    <Compile Include="Utilities\AvatarIdToPathConverter.cs" />
+    <Compile Include="Utilities\AvatarPathUtility.cs" />
     <Compile Include="Utilities\Loading.cs" />
     <Compile Include="Utilities\PageBackground.cs" />
     <Compile Include="Utilities\WidthToBoolConverter.cs" />
@@ -187,6 +187,9 @@
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\LobbyViewModel.cs" />
     <Compile Include="ViewModels\Models\LobbyMemberViewModel.cs" />
+    <Compile Include="Windows\ChatWindow.xaml.cs">
+      <DependentUpon>ChatWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="BasicWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -200,10 +203,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\AddFriendsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\ChatPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -284,6 +283,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Fonts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ChatWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -511,6 +514,7 @@
     <Resource Include="Assets\Images\Icons\SpecialDileTileIcon.png" />
     <Resource Include="Assets\Images\Icons\SpecialItemTileIcon.png" />
     <Resource Include="Assets\Images\Icons\SpecialMessageTileIcon.png" />
+    <Resource Include="Assets\Images\Avatars\A0013.jpg" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

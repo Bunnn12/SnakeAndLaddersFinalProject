@@ -2,16 +2,19 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SnakeAndLaddersFinalProject"
+             xmlns:util="clr-namespace:SnakeAndLaddersFinalProject.Utilities"
+             
              StartupUri="BasicWindow.xaml">
     <Application.Resources>
-
         
-            <ResourceDictionary>
+        
+
+        <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/Fonts.xaml"/>
                 <ResourceDictionary Source="Themes/Buttons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
+            <util:AvatarIdToPathConverter x:Key="AvatarIdToPathConverter" />
         </ResourceDictionary>
 
         

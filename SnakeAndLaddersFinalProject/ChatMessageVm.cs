@@ -9,31 +9,39 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public string Text { get; }
         public DateTime TimestampUtc { get; }
 
-   
         public bool IsMine { get; }
         public string Header => $"{Sender}";
         public DateTime SentAt => TimestampUtc.ToLocalTime();
+        public string AvatarId { get; }
+        public bool HasAvatar => !string.IsNullOrWhiteSpace(AvatarId);
 
-
-        public string AvatarPath { get; }
-        public bool HasAvatar => !string.IsNullOrWhiteSpace(AvatarPath);
-
-        public ChatMessageVm(ChatMessageDto dto, string currentUserName, string avatarPath = "")
+        public ChatMessageVm(ChatMessageDto dto, string currentUserName)
         {
-            Sender = dto?.Sender ?? "";
-            Text = dto?.Text ?? "";
-            TimestampUtc = dto?.TimestampUtc ?? DateTime.UtcNow;
-            AvatarPath = avatarPath ?? "";
+            if (dto == null)
+            {
+                throw new ArgumentNullException(nameof(dto));
+            }
 
-            IsMine = !string.IsNullOrWhiteSpace(currentUserName) &&
-                     string.Equals(Sender, currentUserName, StringComparison.OrdinalIgnoreCase);
+            Sender = dto.Sender ?? string.Empty;
+            Text = dto.Text ?? string.Empty;
+            TimestampUtc = dto.TimestampUtc;
+
+            AvatarId = dto.SenderAvatarId;  
+
+            IsMine =
+                !string.IsNullOrWhiteSpace(currentUserName) &&
+                string.Equals(Sender, currentUserName, StringComparison.OrdinalIgnoreCase);
         }
 
-        public ChatMessageDto ToDto() => new ChatMessageDto
+        public ChatMessageDto ToDto()
         {
-            Sender = Sender,
-            Text = Text,
-            TimestampUtc = TimestampUtc
-        };
+            return new ChatMessageDto
+            {
+                Sender = Sender,
+                Text = Text,
+                TimestampUtc = TimestampUtc,
+                SenderAvatarId = AvatarId
+            };
+        }
     }
 }

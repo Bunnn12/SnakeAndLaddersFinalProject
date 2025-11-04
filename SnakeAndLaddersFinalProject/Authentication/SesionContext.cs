@@ -17,6 +17,7 @@ namespace SnakeAndLaddersFinalProject.Authentication
         public string UserName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string AuthToken { get; set; } = string.Empty;
+        public string ProfilePhotoId { get; set; }
 
         public bool IsAuthenticated =>
             UserId > 0 && !string.IsNullOrWhiteSpace(UserName);

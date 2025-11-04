@@ -88,17 +88,20 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private void Send()
         {
             var text = (NewMessage ?? string.Empty).Trim();
-            if (text.Length == 0) return;
+            if (text.Length == 0)
+            {
+                return;
+            }
 
             var localDto = new ChatMessageDto
             {
                 Sender = CurrentUserName,
                 SenderId = CurrentUserId,
                 Text = text,
-                TimestampUtc = DateTime.UtcNow
+                TimestampUtc = DateTime.UtcNow,
+                SenderAvatarId = SessionContext.Current.ProfilePhotoId
             };
 
-            
             Messages.Add(new ChatMessageVm(localDto, CurrentUserName));
 
             NewMessage = string.Empty;
@@ -126,6 +129,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 Logger.Error("Failed to send chat message.", ex);
             }
         }
+
 
         private bool IsDuplicateIncoming(ChatMessageDto dto)
         {

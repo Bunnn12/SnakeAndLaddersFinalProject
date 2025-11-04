@@ -1,18 +1,21 @@
-﻿<Page x:Class="SnakeAndLaddersFinalProject.Pages.ChatPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
-      mc:Ignorable="d"
-      d:DesignWidth="1152" d:DesignHeight="768"
-      Title="ChatPage" 
-      Unloaded="PageUnloaded" >
+﻿<Window x:Class="SnakeAndLaddersFinalProject.Windows.ChatWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
+        mc:Ignorable="d"
+        Title="Chat"
+        Height="240"
+        Width="410"
+        WindowStartupLocation="Manual"
+        Loaded="ChatWindow_Loaded"
+        Unloaded="WindowUnloaded">
 
-    <Page.Resources>
+    <Window.Resources>
+        <!-- tus recursos tal cual -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
-        <!-- Contenedor de ítems: izquierda/derecha según IsMine -->
         <Style x:Key="ChatItemContainerStyle" TargetType="ListBoxItem">
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Margin" Value="0,6"/>
@@ -27,64 +30,68 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Burbuja -->
         <DataTemplate x:Key="ChatBubbleTemplate">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="8"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <Border MaxWidth="560"
+                    Padding="10"
+                    CornerRadius="10">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="#F4E1C1"/>
+                        <Setter Property="Margin" Value="12,0,0,0"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMine}" Value="True">
+                                <Setter Property="Background" Value="#D7B899"/>
+                                <Setter Property="Margin" Value="0,0,12,0"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
 
-                <Image Grid.Column="0"
-           Width="24" Height="24"
-           Source="{Binding AvatarPath}"
-           Visibility="{Binding HasAvatar, Converter={StaticResource BooleanToVisibilityConverter}}"
-           Margin="0,2,0,0"
-           Stretch="UniformToFill"/>
+                <StackPanel>
+                    <DockPanel Margin="0,0,0,2">
+                        <TextBlock Text="{Binding Header}"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2B2117"
+                                   VerticalAlignment="Center"/>
 
-                <Border Grid.Column="2"
-            MaxWidth="560"
-            Padding="10"
-            CornerRadius="10">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <!-- Otros: café claro -->
-                            <Setter Property="Background" Value="#F4E1C1"/>
-                            <!-- café clarito -->
-                            <Setter Property="Margin" Value="12,0,0,0"/>
-                            <Style.Triggers>
-                                <!-- Míos: café medio -->
-                                <DataTrigger Binding="{Binding IsMine}" Value="True">
-                                    <Setter Property="Background" Value="#D7B899"/>
-                                    <!-- un poco más oscuro -->
-                                    <Setter Property="Margin" Value="0,0,12,0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
+                        <Image Width="24"
+                               Height="24"
+                               Margin="6,0,0,0"
+                               DockPanel.Dock="Right"
+                               Source="{Binding AvatarId,
+                                                Converter={StaticResource AvatarIdToPathConverter}}"
+                               Visibility="{Binding HasAvatar,
+                                                    Converter={StaticResource BooleanToVisibilityConverter}}"
+                               Stretch="UniformToFill"/>
+                    </DockPanel>
 
-                    <StackPanel>
-                        <TextBlock Text="{Binding Header}" FontWeight="SemiBold" Foreground="#2B2117"/>
-                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="0,2,0,0" Foreground="#2B2117"/>
-                        <TextBlock Text="{Binding SentAt, StringFormat=t}"
-                   HorizontalAlignment="Right" Opacity="0.7" FontSize="11"
-                   Margin="0,6,0,0" Foreground="#2B2117"/>
-                    </StackPanel>
-                </Border>
-            </Grid>
+                    <TextBlock Text="{Binding Text}"
+                               TextWrapping="Wrap"
+                               Margin="0,2,0,0"
+                               Foreground="#2B2117"/>
+
+                    <TextBlock Text="{Binding SentAt, StringFormat=t}"
+                               HorizontalAlignment="Right"
+                               Opacity="0.7"
+                               FontSize="11"
+                               Margin="0,6,0,0"
+                               Foreground="#2B2117"/>
+                </StackPanel>
+            </Border>
         </DataTemplate>
-    </Page.Resources>
+    </Window.Resources>
 
-    <!-- Layout centrado y compacto -->
-    <Grid>
+    <!-- Layout centrado y compacto PERO escalado -->
+    <Grid RenderTransformOrigin="0,0">
+        <Grid.LayoutTransform>
+            <!-- Ajusta 0.8 a 0.7 / 0.9 según qué tan mini lo quieras -->
+            <ScaleTransform ScaleX="0.8" ScaleY="0.8" />
+        </Grid.LayoutTransform>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Header -->
             <RowDefinition Height="*"/>
-            <!-- Mensajes -->
             <RowDefinition Height="Auto"/>
-            <!-- Input -->
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -99,14 +106,14 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- Título -->
             <TextBlock Grid.Row="0"
                        x:Name="lblChatTitle"
                        Text="{x:Static language:Lang.chatTittle}"
-                       FontSize="18" FontWeight="Bold"
-                       TextAlignment="Center" Margin="0,0,0,8"/>
+                       FontSize="18"
+                       FontWeight="Bold"
+                       TextAlignment="Center"
+                       Margin="0,0,0,8"/>
 
-            <!-- Mensajes (scroll automático cuando sea necesario) -->
             <Border Grid.Row="1" BorderThickness="1" Padding="8">
                 <ListBox x:Name="lvMessages"
                          ItemsSource="{Binding Messages}"
@@ -119,8 +126,7 @@
                          VirtualizingPanel.ScrollUnit="Pixel"/>
             </Border>
 
-            <!-- Barra de entrada -->
-            <Grid Grid.Row="2" Margin="0,8,0,0" >
+            <Grid Grid.Row="2" Margin="0,8,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="8"/>
@@ -133,7 +139,8 @@
                         Grid.Column="0"
                         Content="{x:Static language:Lang.lblStickersText}"
                         Command="{Binding OpenStickersCommand}"
-                        MinWidth="84" Padding="10,8"/>
+                        MinWidth="84"
+                        Padding="10,8"/>
 
                 <TextBox x:Name="taMessage"
                          Grid.Column="2"
@@ -145,7 +152,9 @@
                          Loaded="TaMessage_Loaded"
                          ToolTip="Enter para enviar; Shift+Enter para salto de línea.">
                     <TextBox.InputBindings>
-                        <KeyBinding Key="Enter" Modifiers="Control" Command="{Binding SendMessageCommand}"/>
+                        <KeyBinding Key="Enter"
+                                    Modifiers="Control"
+                                    Command="{Binding SendMessageCommand}"/>
                     </TextBox.InputBindings>
                 </TextBox>
 
@@ -170,4 +179,4 @@
             </Grid>
         </Grid>
     </Grid>
-</Page>
+</Window>

@@ -99,6 +99,9 @@ namespace SnakeAndLaddersFinalProject.ChatService {
         
         private string SenderField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string SenderAvatarIdField;
+        
         private int SenderIdField;
         
         private string TextField;
@@ -124,6 +127,19 @@ namespace SnakeAndLaddersFinalProject.ChatService {
                 if ((object.ReferenceEquals(this.SenderField, value) != true)) {
                     this.SenderField = value;
                     this.RaisePropertyChanged("Sender");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SenderAvatarId {
+            get {
+                return this.SenderAvatarIdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SenderAvatarIdField, value) != true)) {
+                    this.SenderAvatarIdField = value;
+                    this.RaisePropertyChanged("SenderAvatarId");
                 }
             }
         }

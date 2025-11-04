@@ -144,6 +144,9 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         private System.Collections.Generic.Dictionary<string, string> MetaField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ProfilePhotoIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool SuccessField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -210,6 +213,19 @@ namespace SnakeAndLaddersFinalProject.AuthService {
                 if ((object.ReferenceEquals(this.MetaField, value) != true)) {
                     this.MetaField = value;
                     this.RaisePropertyChanged("Meta");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ProfilePhotoId {
+            get {
+                return this.ProfilePhotoIdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ProfilePhotoIdField, value) != true)) {
+                    this.ProfilePhotoIdField = value;
+                    this.RaisePropertyChanged("ProfilePhotoId");
                 }
             }
         }

@@ -1,18 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Threading;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using SnakeAndLaddersFinalProject.ViewModels;
+using System.Windows.Threading;
 
-namespace SnakeAndLaddersFinalProject.Pages
+namespace SnakeAndLaddersFinalProject.Windows
 {
-    public partial class ChatPage : Page
+    /// <summary>
+    /// Lógica de interacción para ChatWindow.xaml
+    /// </summary>
+    public partial class ChatWindow : Window
     {
         private ChatViewModel vm;
 
-        public ChatPage(int lobbyId)
+        public ChatWindow(int lobbyId)
         {
             if (lobbyId <= 0) throw new ArgumentException("LobbyId inválido.", nameof(lobbyId));
 
@@ -23,8 +35,21 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             vm.Messages.CollectionChanged += MessagesCollectionChanged;
         }
+        private void ChatWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            var ownerWindow = Owner;
 
-        private void PageUnloaded(object sender, RoutedEventArgs e)
+            if (ownerWindow == null)
+            {
+                return;
+            }
+
+            const int margin = 16;
+
+            Left = ownerWindow.Left + ownerWindow.Width - Width - margin;
+            Top = ownerWindow.Top + ownerWindow.Height - Height - margin;
+        }
+        private void WindowUnloaded(object sender, RoutedEventArgs e)
         {
             vm?.Dispose();
         }
@@ -74,3 +99,4 @@ namespace SnakeAndLaddersFinalProject.Pages
         }
     }
 }
+
