@@ -218,9 +218,8 @@
     
     <Style TargetType="ToolTip">
        
-        <Setter Property="Background" Value="#99000000"/>
-        
-        <Setter Property="BorderBrush" Value="#40FFFFFF"/>
+        <Setter Property="Background" Value="#66000000"/>
+       
         <Setter Property="BorderThickness" Value="1"/>
 
         <Setter Property="Foreground" Value="White"/>
