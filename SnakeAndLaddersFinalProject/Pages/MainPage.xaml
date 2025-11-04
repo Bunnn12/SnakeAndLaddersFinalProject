@@ -8,65 +8,71 @@
       xmlns:util="clr-namespace:SnakeAndLaddersFinalProject.Utilities"
       mc:Ignorable="d"
       Title="MainPage"
-      d:DesignWidth="1280" d:DesignHeight="720"
+      d:DesignWidth="1280"
+      d:DesignHeight="720"
       SnapsToDevicePixels="True"
       UseLayoutRounding="True"
       TextOptions.TextRenderingMode="Aliased"
       Background="Transparent"
       util:PageBackground.Key="MainVideo">
 
-
-
     <Page.Resources>
 
-
-
         <!-- Colores -->
-        <SolidColorBrush x:Key="BrushCafe900" Color="#23130C"/>
-        <SolidColorBrush x:Key="BrushCafe700" Color="#3B2417"/>
-        <SolidColorBrush x:Key="BrushCafe500" Color="#5A3A26"/>
+        <SolidColorBrush x:Key="BrushCafe900" Color="#23130C" />
+        <SolidColorBrush x:Key="BrushCafe700" Color="#3B2417" />
+        <SolidColorBrush x:Key="BrushCafe500" Color="#5A3A26" />
 
-        <SolidColorBrush x:Key="BrushAmarillo" Color="#F2C230"/>
-        <SolidColorBrush x:Key="BrushNaranja" Color="#F28C28"/>
-        <SolidColorBrush x:Key="BrushVerde"   Color="#2E7D32"/>
-        <SolidColorBrush x:Key="BrushBlancoSuave" Color="#FFF8F0"/>
+        <SolidColorBrush x:Key="BrushAmarillo" Color="#F2C230" />
+        <SolidColorBrush x:Key="BrushNaranja" Color="#F28C28" />
+        <SolidColorBrush x:Key="BrushVerde"   Color="#2E7D32" />
+        <SolidColorBrush x:Key="BrushBlancoSuave" Color="#FFF8F0" />
 
         <!-- (opcional) Gradiente de fondo general -->
         <LinearGradientBrush x:Key="BgCafe" StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#23130C" Offset="0"/>
-            <GradientStop Color="#3B2417" Offset="0.55"/>
-            <GradientStop Color="#5A3A26" Offset="1"/>
+            <GradientStop Color="#23130C" Offset="0" />
+            <GradientStop Color="#3B2417" Offset="0.55" />
+            <GradientStop Color="#5A3A26" Offset="1" />
         </LinearGradientBrush>
 
         <!-- ImageBrush para botones -->
         <ImageBrush x:Key="IB.BtnMain"
                     ImageSource="/Assets/Images/BotonImg.png"
-                    Stretch="Fill" AlignmentX="Center" AlignmentY="Center"
+                    Stretch="Fill"
+                    AlignmentX="Center"
+                    AlignmentY="Center"
                     RenderOptions.BitmapScalingMode="NearestNeighbor"
                     ViewboxUnits="RelativeToBoundingBox"
-                    Viewbox="0.083,0.083,0.834,0.834"/>
+                    Viewbox="0.083,0.083,0.834,0.834" />
+
         <ImageBrush x:Key="IB.BtnFlat"
                     ImageSource="/Assets/Images/BotonImg.png"
-                    Stretch="Fill" AlignmentX="Center" AlignmentY="Center"
+                    Stretch="Fill"
+                    AlignmentX="Center"
+                    AlignmentY="Center"
                     RenderOptions.BitmapScalingMode="NearestNeighbor"
                     ViewboxUnits="RelativeToBoundingBox"
-                    Viewbox="0.083,0.083,0.834,0.834"/>
+                    Viewbox="0.083,0.083,0.834,0.834" />
 
         <!-- Sombra sin desplazamiento -->
-        <DropShadowEffect x:Key="ShadowSoft" BlurRadius="8" ShadowDepth="0"
-                          Direction="270" Opacity="0.35" Color="#000000"/>
+        <DropShadowEffect x:Key="ShadowSoft"
+                          BlurRadius="8"
+                          ShadowDepth="0"
+                          Direction="270"
+                          Opacity="0.35"
+                          Color="#000000" />
 
         <!-- Label HUD -->
         <Style x:Key="LblHud" TargetType="Label">
-            <Setter Property="Foreground" Value="{StaticResource BrushBlancoSuave}"/>
-            <Setter Property="FontFamily" Value="{StaticResource Font.M04}"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Background" Value="#20000000"/>
-            <Setter Property="Padding" Value="10,4"/>
-            <Setter Property="BorderBrush" Value="#40FFFFFF"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{StaticResource BrushBlancoSuave}" />
+            <Setter Property="FontFamily" Value="{StaticResource Font.M04}" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Background" Value="#20000000" />
+            <Setter Property="Padding" Value="10,4" />
+            <Setter Property="BorderBrush" Value="#40FFFFFF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Label">
@@ -76,7 +82,7 @@
                                 CornerRadius="4"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -85,30 +91,35 @@
 
         <!-- ===== Botón de menú: fondo imagen ===== -->
         <Style x:Key="BtnMenu" TargetType="Button">
-            <Setter Property="FontFamily" Value="{StaticResource Font.M04}"/>
-            <Setter Property="FontSize" Value="24"/>
-            <Setter Property="Foreground" Value="{StaticResource BrushBlancoSuave}"/>
-            <Setter Property="Background" Value="{StaticResource IB.BtnMain}"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Height" Value="90"/>
-            <Setter Property="Padding" Value="16,14"/>
-            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontFamily" Value="{StaticResource Font.M04}" />
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Foreground" Value="{StaticResource BrushBlancoSuave}" />
+            <Setter Property="Background" Value="{StaticResource IB.BtnMain}" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Height" Value="90" />
+            <Setter Property="Padding" Value="16,14" />
+            <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Grid SnapsToDevicePixels="True" ClipToBounds="False">
-                            <Border CornerRadius="18" Margin="0" Background="Transparent"
-                                    Effect="{StaticResource ShadowSoft}"/>
-                            <Border x:Name="Bg" CornerRadius="18" Margin="0"
-                                    Background="{TemplateBinding Background}"/>
+                        <Grid SnapsToDevicePixels="True"
+                              ClipToBounds="False">
+                            <Border CornerRadius="18"
+                                    Margin="0"
+                                    Background="Transparent"
+                                    Effect="{StaticResource ShadowSoft}" />
+                            <Border x:Name="Bg"
+                                    CornerRadius="18"
+                                    Margin="0"
+                                    Background="{TemplateBinding Background}" />
                             <ContentPresenter x:Name="ContentSite"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
                                               RecognizesAccessKey="True"
                                               TextElement.Foreground="{TemplateBinding Foreground}">
                                 <ContentPresenter.RenderTransform>
-                                    <TranslateTransform X="-8"/>
+                                    <TranslateTransform X="-8" />
                                 </ContentPresenter.RenderTransform>
                             </ContentPresenter>
                             <Polygon x:Name="Pointer"
@@ -120,29 +131,41 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Center"
                                      Margin="60,0,0,0"
-                                     Panel.ZIndex="2"/>
+                                     Panel.ZIndex="2" />
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Pointer" Property="Opacity" Value="1"/>
-                                <Setter Property="Foreground" Value="{StaticResource BrushAmarillo}"/>
-                                <Setter TargetName="ContentSite" Property="TextElement.Foreground"
-                                        Value="{StaticResource BrushAmarillo}"/>
+                                <Setter TargetName="Pointer"
+                                        Property="Opacity"
+                                        Value="1" />
+                                <Setter Property="Foreground"
+                                        Value="{StaticResource BrushAmarillo}" />
+                                <Setter TargetName="ContentSite"
+                                        Property="TextElement.Foreground"
+                                        Value="{StaticResource BrushAmarillo}" />
                             </Trigger>
                             <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter TargetName="Pointer" Property="Opacity" Value="1"/>
-                                <Setter Property="Foreground" Value="{StaticResource BrushVerde}"/>
-                                <Setter TargetName="ContentSite" Property="TextElement.Foreground"
-                                        Value="{StaticResource BrushVerde}"/>
+                                <Setter TargetName="Pointer"
+                                        Property="Opacity"
+                                        Value="1" />
+                                <Setter Property="Foreground"
+                                        Value="{StaticResource BrushVerde}" />
+                                <Setter TargetName="ContentSite"
+                                        Property="TextElement.Foreground"
+                                        Value="{StaticResource BrushVerde}" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bg" Property="Opacity" Value="0.9"/>
-                                <Setter Property="Foreground" Value="{StaticResource BrushNaranja}"/>
-                                <Setter TargetName="ContentSite" Property="TextElement.Foreground"
-                                        Value="{StaticResource BrushNaranja}"/>
+                                <Setter TargetName="Bg"
+                                        Property="Opacity"
+                                        Value="0.9" />
+                                <Setter Property="Foreground"
+                                        Value="{StaticResource BrushNaranja}" />
+                                <Setter TargetName="ContentSite"
+                                        Property="TextElement.Foreground"
+                                        Value="{StaticResource BrushNaranja}" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="0.6"/>
+                                <Setter Property="Opacity" Value="0.6" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -152,47 +175,59 @@
 
         <!-- ===== Botón plano ===== -->
         <Style x:Key="BtnFlat" TargetType="Button">
-            <Setter Property="FontFamily" Value="Consolas"/>
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Foreground" Value="{StaticResource BrushBlancoSuave}"/>
-            <Setter Property="Background" Value="{StaticResource IB.BtnFlat}"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="16,14"/>
-            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontFamily" Value="Consolas" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Foreground" Value="{StaticResource BrushBlancoSuave}" />
+            <Setter Property="Background" Value="{StaticResource IB.BtnFlat}" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="16,14" />
+            <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Grid>
-                            <Border CornerRadius="12" Margin="0" Background="Transparent"
-                                    Effect="{StaticResource ShadowSoft}"/>
-                            <Border x:Name="Bg" CornerRadius="12" Margin="0"
+                            <Border CornerRadius="12"
+                                    Margin="0"
+                                    Background="Transparent"
+                                    Effect="{StaticResource ShadowSoft}" />
+                            <Border x:Name="Bg"
+                                    CornerRadius="12"
+                                    Margin="0"
                                     Background="{TemplateBinding Background}">
                                 <ContentPresenter x:Name="ContentSite"
                                                   HorizontalAlignment="Center"
                                                   VerticalAlignment="Center"
-                                                  TextElement.Foreground="{TemplateBinding Foreground}"/>
+                                                  TextElement.Foreground="{TemplateBinding Foreground}" />
                             </Border>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Foreground" Value="{StaticResource BrushAmarillo}"/>
-                                <Setter TargetName="ContentSite" Property="TextElement.Foreground"
-                                        Value="{StaticResource BrushAmarillo}"/>
+                                <Setter Property="Foreground"
+                                        Value="{StaticResource BrushAmarillo}" />
+                                <Setter TargetName="ContentSite"
+                                        Property="TextElement.Foreground"
+                                        Value="{StaticResource BrushAmarillo}" />
                             </Trigger>
                             <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter Property="Foreground" Value="{StaticResource BrushVerde}"/>
-                                <Setter TargetName="ContentSite" Property="TextElement.Foreground"
-                                        Value="{StaticResource BrushVerde}"/>
+                                <Setter Property="Foreground"
+                                        Value="{StaticResource BrushVerde}" />
+                                <Setter TargetName="ContentSite"
+                                        Property="TextElement.Foreground"
+                                        Value="{StaticResource BrushVerde}" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bg" Property="Opacity" Value="0.9"/>
-                                <Setter Property="Foreground" Value="{StaticResource BrushNaranja}"/>
-                                <Setter TargetName="ContentSite" Property="TextElement.Foreground"
-                                        Value="{StaticResource BrushNaranja}"/>
+                                <Setter TargetName="Bg"
+                                        Property="Opacity"
+                                        Value="0.9" />
+                                <Setter Property="Foreground"
+                                        Value="{StaticResource BrushNaranja}" />
+                                <Setter TargetName="ContentSite"
+                                        Property="TextElement.Foreground"
+                                        Value="{StaticResource BrushNaranja}" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="0.6"/>
+                                <Setter Property="Opacity" Value="0.6" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -201,22 +236,18 @@
         </Style>
 
         <!-- ===== Storyboard con MediaTimeline: loop infinito ===== -->
-        <Storyboard x:Key="MainPageVideoStoryboard" RepeatBehavior="Forever">
-            <!-- Usa siteoforigin si el MP4 está como Content + Copy if newer -->
-            <MediaTimeline
-                Source="pack://siteoforigin:,,,/Assets/Videos/MainPageVideo.mp4"
-                Storyboard.TargetName="VideoBg" />
-            <!-- Si usas Build Action = Resource, cambia a:
-            <MediaTimeline
-                Source="pack://application:,,,/Assets/Videos/MainPageVideo.mp4"
-                Storyboard.TargetName="VideoBg" />
-            -->
+        <Storyboard x:Key="MainPageVideoStoryboard"
+                    RepeatBehavior="Forever">
+            <MediaTimeline Source="pack://siteoforigin:,,,/Assets/Videos/MainPageVideo.mp4"
+                           Storyboard.TargetName="VideoBg" />
         </Storyboard>
+
     </Page.Resources>
 
-    <!-- ===== LAYOUT ===== -->
+    <!-- ===== LAYOUT RESPONSIVO ===== -->
     <Grid Background="Transparent">
-        <!-- Video de fondo controlado por Storyboard -->
+
+        <!-- Video a pantalla completa, sin bordes negros -->
         <MediaElement x:Name="VideoBg"
                       IsMuted="True"
                       Stretch="UniformToFill"
@@ -231,133 +262,173 @@
             </MediaElement.Triggers>
         </MediaElement>
 
-        <Grid Margin="24">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <!-- Viewbox para escalar el HUD y botones -->
+        <Viewbox Stretch="Uniform"
+                 StretchDirection="Both">
+            <!-- Lienzo base 1280x720 -->
+            <Grid Width="1280"
+                  Height="720"
+                  Background="Transparent">
 
-            <!-- Cabecera -->
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+                <Grid Margin="24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <Button x:Name="btnBack" Grid.Column="0"  Width="140" Margin="0,0,0,10" BorderBrush="{x:Null}">
-                    <Button.Background>
-                        <ImageBrush/>
-                    </Button.Background>
-                    <Image Height="49" Source="/Assets/Images/Icons/BackIcon.png" Stretch="Fill" Width="62"/>
-                </Button>
+                    <!-- Cabecera -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                <Label x:Name="lblCoins" Grid.Column="1" Style="{StaticResource LblHud}"
-                       Content="{x:Static language:Lang.lblCoinsText}" />
+                        <Button x:Name="btnBack"
+                                Grid.Column="0"
+                                Width="140"
+                                Margin="0,0,0,10"
+                                BorderBrush="{x:Null}">
+                            <Button.Background>
+                                <ImageBrush />
+                            </Button.Background>
+                            <Image Height="49"
+                                   Width="62"
+                                   Source="/Assets/Images/Icons/BackIcon.png"
+                                   Stretch="Fill" />
+                        </Button>
 
-                <Button x:Name="btnSettings" Grid.Column="2"  Width="160" Background="{x:Null}" BorderBrush="{x:Null}">
-                    <Image Height="43" Source="/Assets/Images/Icons/SettingsIcon.png" Stretch="Fill" Width="47"/>
-                </Button>
+                        <Label x:Name="lblCoins"
+                               Grid.Column="1"
+                               Style="{StaticResource LblHud}"
+                               Content="{x:Static language:Lang.lblCoinsText}" />
+
+                        <Button x:Name="btnSettings"
+                                Grid.Column="2"
+                                Width="160"
+                                Background="{x:Null}"
+                                BorderBrush="{x:Null}">
+                            <Image Height="43"
+                                   Width="47"
+                                   Source="/Assets/Images/Icons/SettingsIcon.png"
+                                   Stretch="Fill" />
+                        </Button>
+                    </Grid>
+
+                    <!-- Centro: crear/unirse/código centrados -->
+                    <StackPanel Grid.Row="1"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Width="650"
+                                Margin="0">
+                        <Button x:Name="btnCreateMatch"
+                                Style="{StaticResource BtnMenu}"
+                                Height="191"
+                                Margin="0,0,0,12"
+                                Width="618"
+                                Content="{x:Static language:Lang.btnCreateMatchText}"
+                                Click="CreateMatch" />
+
+                        <Button x:Name="btnJoinMatch"
+                                Style="{StaticResource BtnMenu}"
+                                Height="195"
+                                Margin="0,0,0,16"
+                                Width="634"
+                                Content="{x:Static language:Lang.btnJoinMatchText}"
+                                Click="JoinMatch" />
+                        <TextBox x:Name="txtJoinCode"
+                                 Width="417"
+                                 Height="37"
+                                 />
+
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    Margin="0,0,0,4"/>
+                        <StackPanel Height="52"/>
+                    </StackPanel>
+
+                    <!-- Inferior -->
+                    <Grid Grid.Row="2"
+                          Margin="0,20,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="246*" />
+                            <ColumnDefinition Width="201*" />
+                            <ColumnDefinition Width="13*" />
+                            <ColumnDefinition Width="0*" />
+                            <ColumnDefinition Width="259*" />
+                            <ColumnDefinition Width="0*" />
+                            <ColumnDefinition Width="10*" />
+                            <ColumnDefinition Width="11*" />
+                            <ColumnDefinition Width="246*" />
+                            <ColumnDefinition Width="246*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="btnFriends"
+                                Grid.Column="0"
+                                Margin="0,0,8,0"
+                                Content="{x:Static language:Lang.lblFriendsListTitle}" />
+
+                        <Button x:Name="btnShop"
+                                Grid.Column="1"
+                                Margin="8,-24,8,0"
+                                Style="{StaticResource BtnIcon}"
+                                ToolTip="{x:Static language:Lang.btnShopText}">
+                            <Image Width="96"
+                                   Height="76"
+                                   Source="/Assets/Images/Icons/StoreIcon.png"
+                                   Stretch="Uniform"
+                                   RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                        </Button>
+
+                        <Button x:Name="btnInventory"
+                                Grid.Column="4"
+                                Margin="57,-23,39,0"
+                                Style="{StaticResource BtnIcon}"
+                                ToolTip="{x:Static language:Lang.btnInventoryText}">
+                            <Image Width="177"
+                                   Height="80"
+                                   Source="/Assets/Images/Icons/InventoryIcon.png"
+                                   Stretch="Uniform"
+                                   RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                        </Button>
+
+                        <Button x:Name="btnSkins"
+                                Grid.Column="7"
+                                Grid.ColumnSpan="2"
+                                Margin="10,-24,0,0"
+                                Style="{StaticResource BtnIcon}"
+                                ToolTip="{x:Static language:Lang.btnSkinsText}">
+                            <Image Width="122"
+                                   Height="78"
+                                   Source="/Assets/Images/Icons/SkinIcon.png"
+                                   Stretch="Uniform"
+                                   RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                        </Button>
+
+                        <Button x:Name="btnProfile"
+                                Grid.Column="9"
+                                Margin="8,-24,8,0"
+                                Content="{x:Static language:Lang.btnProfileText}" />
+                    </Grid>
+                </Grid>
+
+                <!-- Ranking lateral -->
+                <Button x:Name="btnRanking"
+                        Style="{StaticResource BtnFlat}"
+                        Content="RANKING"
+                        Width="71"
+                        Height="105"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="32,0,0,0" />
+                <Grid>
+                    <TextBlock Text="Codigo:"
+                                       FontFamily="{StaticResource Font.M04}"
+                                       FontSize="24"
+                                       Foreground="{StaticResource BrushBlancoSuave}" Margin="433,483,197,196" />
+                </Grid>
             </Grid>
-
-            <!-- Centro -->
-            <StackPanel Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"
-                        Width="621" Margin="105,38,0,0" Height="256">
-                <Button x:Name="btnCreateMatch"
-                        Style="{StaticResource BtnMenu}"
-                        Height="155" Margin="-20"
-                        Content="{x:Static language:Lang.btnCreateMatchText}"
-                        Click="CreateMatch" Width="529"/>
-                <Button x:Name="btnJoinMatch"
-                        Style="{StaticResource BtnMenu}"
-                        Height="161" Margin="-20"
-                        Content="{x:Static language:Lang.btnJoinMatchText}"
-                        Width="600" HorizontalAlignment="Right"
-                        Click="JoinMatch"/>
-                <TextBlock Text="Código:" Margin="0,0,8,0" Foreground="#FFFBFBFB" Height="3" RenderTransformOrigin="0.5,0.5">
-                    <TextBlock.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleY="-1"/>
-                            <SkewTransform/>
-                            <RotateTransform/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </TextBlock.RenderTransform>
-                </TextBlock>
-                <TextBox x:Name="txtJoinCode" Width="400" RenderTransformOrigin="82,0.5" Height="45">
-                    <TextBox.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform AngleX="-2.337"/>
-                            <RotateTransform/>
-                            <TranslateTransform X="-0.359"/>
-                        </TransformGroup>
-                    </TextBox.RenderTransform>
-                </TextBox>
-               
-            </StackPanel>
-
-            <!-- Inferior -->
-            <Grid Grid.Row="2" Margin="0,20,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="246*"/>
-                    <ColumnDefinition Width="201*"/>
-                    <ColumnDefinition Width="13*"/>
-                    <ColumnDefinition Width="0*"/>
-                    <ColumnDefinition Width="259*"/>
-                    <ColumnDefinition Width="0*"/>
-                    <ColumnDefinition Width="10*"/>
-                    <ColumnDefinition Width="11*"/>
-                    <ColumnDefinition Width="246*"/>
-                    <ColumnDefinition Width="246*"/>
-                </Grid.ColumnDefinitions>
-
-                <Button x:Name="btnFriends"   Grid.Column="0" 
-                        Content="{x:Static language:Lang.lblFriendsListTitle}" Margin="8,-24,8,0"/>
-                <Button x:Name="btnShop"
-                    Grid.Column="1" Margin="8,-24,8,0"
-                    Style="{StaticResource BtnIcon}"
-                    ToolTip="{x:Static language:Lang.btnShopText}">
-                    <Image Width="73" Height="55"
-                    Source="/Assets/Images/Icons/StoreIcon.png"
-                    Stretch="Uniform"
-                    RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                </Button>
-
-
-                <Button x:Name="btnInventory"
-                    Grid.Column="4"
-                    Margin="57,-23,39,0"
-                    Style="{StaticResource BtnIcon}" 
-                    ToolTip="{x:Static language:Lang.btnInventoryText}">
-                    <Image Width="147" Height="55"
-                    Source="/Assets/Images/Icons/InventoryIcon.png"
-                    Stretch="Uniform"
-                    RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                </Button>
-
-                <Button x:Name="btnSkins" 
-                    Grid.Column="7" 
-                    Style="{StaticResource BtnIcon}"
-                    ToolTip="{x:Static language:Lang.btnSkinsText}" Grid.ColumnSpan="2" Margin="10,-24,0,0">
-                    <Image Width="108" Height="60"
-                    Source="/Assets/Images/Icons/SkinIcon.png"
-                    Stretch="Uniform"
-                    RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                </Button>
-
-                <Button x:Name="btnProfile"   Grid.Column="9"
-                        Content="{x:Static language:Lang.btnProfileText}" Margin="8,-24,8,0"/>
-            </Grid>
-        </Grid>
-
-        <!-- Ranking lateral -->
-        <Button x:Name="btnRanking"
-                Style="{StaticResource BtnFlat}"
-                Content="RANKING"
-                Width="71" Height="105"
-                HorizontalAlignment="Left" VerticalAlignment="Center"
-                Margin="32,0,0,0"/>
+        </Viewbox>
     </Grid>
 </Page>
