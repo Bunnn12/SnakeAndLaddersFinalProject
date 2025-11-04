@@ -218,7 +218,7 @@
     
     <Style TargetType="ToolTip">
        
-        <Setter Property="Background" Value="#CC000000"/>
+        <Setter Property="Background" Value="#99000000"/>
         
         <Setter Property="BorderBrush" Value="#40FFFFFF"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -241,7 +241,7 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="6">
-                        <ContentPresenter Margin="2"
+                        <ContentPresenter Margin="3.5"
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"/>
                     </Border>
@@ -249,8 +249,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-
-
+ 
 
 </ResourceDictionary>
