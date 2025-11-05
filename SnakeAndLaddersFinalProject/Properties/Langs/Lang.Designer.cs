@@ -259,6 +259,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Report player.
+        /// </summary>
+        public static string btnReportPlayerText {
+            get {
+                return ResourceManager.GetString("btnReportPlayerText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Resend the code.
         /// </summary>
         public static string btnResendCodeText {
@@ -529,6 +538,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Report detail.
+        /// </summary>
+        public static string lblReportDetailText {
+            get {
+                return ResourceManager.GetString("lblReportDetailText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Sound.
         /// </summary>
         public static string lblSound {
@@ -597,6 +615,24 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string pwdPasswordText {
             get {
                 return ResourceManager.GetString("pwdPasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Reason for the report.
+        /// </summary>
+        public static string ReasonForReportText {
+            get {
+                return ResourceManager.GetString("ReasonForReportText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Report reason.
+        /// </summary>
+        public static string reportReasonWindowTitle {
+            get {
+                return ResourceManager.GetString("reportReasonWindowTitle", resourceCulture);
             }
         }
         

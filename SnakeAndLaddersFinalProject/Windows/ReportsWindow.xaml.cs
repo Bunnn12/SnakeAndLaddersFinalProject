@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace SnakeAndLaddersFinalProject
+namespace SnakeAndLaddersFinalProject.Windows
 {
     /// <summary>
     /// Lógica de interacción para ReportsWindow.xaml
@@ -22,6 +22,11 @@ namespace SnakeAndLaddersFinalProject
         public ReportsWindow()
         {
             InitializeComponent();
+        }
+
+        private void BtnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

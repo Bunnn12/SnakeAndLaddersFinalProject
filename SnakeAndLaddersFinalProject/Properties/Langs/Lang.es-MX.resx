@@ -364,4 +364,16 @@
   <data name="lblSpecialTilesText" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="ReasonForReportText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="btnReportPlayerText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="reportReasonWindowTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblReportDetailText" xml:space="preserve">
+    <value />
+  </data>
 </root>

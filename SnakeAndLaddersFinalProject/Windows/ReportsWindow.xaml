@@ -1,0 +1,257 @@
+﻿<Window x:Class="SnakeAndLaddersFinalProject.Windows.ReportsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
+        mc:Ignorable="d"
+        Title="{x:Static language:Lang.reportUserTittle}"
+        Height="350"
+        Width="390"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="Transparent"
+        AllowsTransparency="True"
+        WindowStyle="None">
+
+    <Window.Resources>
+        <!-- Colores base tipo pixel-art -->
+        <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#331B26"/>
+        <SolidColorBrush x:Key="PanelInnerBrush" Color="#441F33"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="#FFB84A"/>
+        <SolidColorBrush x:Key="AccentDarkBrush" Color="#D08020"/>
+        <SolidColorBrush x:Key="TextPrimaryBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="TextSecondaryBrush" Color="#FFE0C0"/>
+
+        <!-- Botones de motivo: rectos, tipo pixel -->
+        <Style x:Key="ReasonButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Background" Value="#2A1824"/>
+            <Setter Property="BorderBrush" Value="#FFB84A"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter VerticalAlignment="Center"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#3A2030"/>
+                    <Setter Property="BorderBrush" Value="#FFD56A"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#1E0F1A"/>
+                    <Setter Property="BorderBrush" Value="#C86F16"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Botón principal estilo “pill” naranja -->
+        <Style x:Key="PrimaryPixelButtonStyle" TargetType="Button">
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Foreground" Value="#2C120C"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentDarkBrush}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ContentPresenter VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              Margin="8,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFD56A"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#C87A24"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Botón secundario (Cancelar) -->
+        <Style x:Key="SecondaryPixelButtonStyle" TargetType="Button">
+            <Setter Property="MinWidth" Value="100"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TextSecondaryBrush}"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              Margin="8,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2E1A28"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!-- Marco exterior con brillo -->
+        <Border CornerRadius="8"
+                BorderThickness="2"
+                BorderBrush="{StaticResource AccentBrush}"
+                SnapsToDevicePixels="True"
+                Margin="18">
+            <Border.Effect>
+                <DropShadowEffect Color="#FFB84A"
+                                  BlurRadius="18"
+                                  ShadowDepth="0"
+                                  Opacity="0.7"/>
+            </Border.Effect>
+
+            <!-- Panel interno -->
+            <Border Background="{StaticResource PanelBackgroundBrush}"
+                    CornerRadius="4"
+                    BorderThickness="1"
+                    BorderBrush="#855050"
+                    Padding="12">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!-- Barra título -->
+                        <RowDefinition Height="6"/>
+                        <!-- Separador -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Label motivo -->
+                        <RowDefinition Height="6"/>
+                        <!-- Separador -->
+                        <RowDefinition Height="*"/>
+                        <!-- Motivos -->
+                        <RowDefinition Height="10"/>
+                        <!-- Separador -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Botones Aceptar/Cancelar -->
+                    </Grid.RowDefinitions>
+
+                    <!-- Barra de título tipo “player report” -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Icono de advertencia -->
+                        <TextBlock Text="⚠"
+                                   FontSize="18"
+                                   Margin="0,0,6,0"
+                                   VerticalAlignment="Center"
+                                   Foreground="{StaticResource AccentBrush}"/>
+
+                        <!-- Título -->
+                        <TextBlock Grid.Column="1"
+                                   Text="{x:Static language:Lang.reportUserTittle}"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   VerticalAlignment="Center"/>
+
+                        <!-- Botón cerrar (X) -->
+                        <Button x:Name="btnClose"
+                                Grid.Column="2"
+                                Width="26"
+                                Height="26"
+                                Margin="4,0,0,0"
+                                Background="Transparent"
+                                BorderBrush="{StaticResource AccentBrush}"
+                                BorderThickness="1.5"
+                                Foreground="{StaticResource AccentBrush}"
+                                FontWeight="Bold"
+                                Content="X"
+                                Cursor="Hand"
+                                Click="BtnClose_Click"/>
+                    </Grid>
+
+                    <!-- Label: motivo del reporte -->
+                    <!-- Ajusta ReasonForReportText al ID real del .resx -->
+                    <TextBlock Grid.Row="2"
+                               x:Name="lblReportReason"
+                               Text="{x:Static language:Lang.ReasonForReportText}"
+                               FontSize="14"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               Margin="2,0,0,2"/>
+
+                    <!-- Botones de motivo (columna única) -->
+                    <StackPanel Grid.Row="4">
+                        <Button x:Name="btnHarassment"
+                                Style="{StaticResource ReasonButtonStyle}"
+                                Content="{x:Static language:Lang.btnHarassmentText}"/>
+
+                        <Button x:Name="btnInappropriateLanguage"
+                                Style="{StaticResource ReasonButtonStyle}"
+                                Content="{x:Static language:Lang.btnInappropiateLangText}"/>
+
+                        <Button x:Name="btnToxicBehavior"
+                                Style="{StaticResource ReasonButtonStyle}"
+                                Content="{x:Static language:Lang.btnToxicBehaviorText}"/>
+
+                        <Button x:Name="btnExploiting"
+                                Style="{StaticResource ReasonButtonStyle}"
+                                Content="{x:Static language:Lang.btnExploitingText}"/>
+
+                        <Button x:Name="btnOtherReason"
+                                Style="{StaticResource ReasonButtonStyle}"
+                                Content="{x:Static language:Lang.btnOtherReasonText}"/>
+                    </StackPanel>
+
+                    <!-- Botones inferiores -->
+                    <StackPanel Grid.Row="6"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                        <Button x:Name="btnAccept"
+                                Style="{StaticResource PrimaryPixelButtonStyle}"
+                                Content="{x:Static language:Lang.btnAcceptText}"/>
+
+                        <Button x:Name="btnCancel"
+                                Style="{StaticResource SecondaryPixelButtonStyle}"
+                                Content="{x:Static language:Lang.btnCancelText}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Border>
+    </Grid>
+</Window>
