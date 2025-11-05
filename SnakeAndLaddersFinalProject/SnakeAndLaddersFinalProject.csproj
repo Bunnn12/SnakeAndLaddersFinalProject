@@ -115,6 +115,9 @@
     <Compile Include="DialogBasicWindow.xaml.cs">
       <DependentUpon>DialogBasicWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Game\BoardCell.cs" />
+    <Compile Include="Game\BoardDefinition.cs" />
+    <Compile Include="Game\BoardFactory.cs" />
     <Compile Include="Globalization\LocalizationManager.cs" />
     <Compile Include="Infrastructure\AsyncCommand.cs" />
     <Compile Include="Infrastructure\CollectionSyncExtensions.cs" />
@@ -190,6 +193,7 @@
     <Compile Include="ViewModels\ChatClientCallback.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\CreateMatchViewModel.cs" />
+    <Compile Include="ViewModels\GameBoardViewModel.cs" />
     <Compile Include="ViewModels\LobbyViewModel.cs" />
     <Compile Include="ViewModels\Models\LobbyMemberViewModel.cs" />
     <Compile Include="Windows\ChatWindow.xaml.cs">

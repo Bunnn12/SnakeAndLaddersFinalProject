@@ -23,6 +23,9 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int BoardSideField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DificultadField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -30,6 +33,12 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private byte MaxPlayersField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private byte PlayersRequestedField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string SpecialTilesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int TtlMinutesField;
@@ -41,6 +50,19 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int BoardSide {
+            get {
+                return this.BoardSideField;
+            }
+            set {
+                if ((this.BoardSideField.Equals(value) != true)) {
+                    this.BoardSideField = value;
+                    this.RaisePropertyChanged("BoardSide");
+                }
             }
         }
         
@@ -79,6 +101,32 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
                 if ((this.MaxPlayersField.Equals(value) != true)) {
                     this.MaxPlayersField = value;
                     this.RaisePropertyChanged("MaxPlayers");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public byte PlayersRequested {
+            get {
+                return this.PlayersRequestedField;
+            }
+            set {
+                if ((this.PlayersRequestedField.Equals(value) != true)) {
+                    this.PlayersRequestedField = value;
+                    this.RaisePropertyChanged("PlayersRequested");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SpecialTiles {
+            get {
+                return this.SpecialTilesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SpecialTilesField, value) != true)) {
+                    this.SpecialTilesField = value;
+                    this.RaisePropertyChanged("SpecialTiles");
                 }
             }
         }
@@ -424,7 +472,13 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int BoardSideField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string CodigoPartidaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string DifficultyField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime ExpiresAtUtcField;
@@ -445,6 +499,12 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         private SnakeAndLaddersFinalProject.LobbyService.LobbyMember[] PlayersField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private byte PlayersRequestedField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string SpecialTilesField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private SnakeAndLaddersFinalProject.LobbyService.LobbyStatus StatusField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -458,6 +518,19 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public int BoardSide {
+            get {
+                return this.BoardSideField;
+            }
+            set {
+                if ((this.BoardSideField.Equals(value) != true)) {
+                    this.BoardSideField = value;
+                    this.RaisePropertyChanged("BoardSide");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string CodigoPartida {
             get {
                 return this.CodigoPartidaField;
@@ -466,6 +539,19 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
                 if ((object.ReferenceEquals(this.CodigoPartidaField, value) != true)) {
                     this.CodigoPartidaField = value;
                     this.RaisePropertyChanged("CodigoPartida");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Difficulty {
+            get {
+                return this.DifficultyField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DifficultyField, value) != true)) {
+                    this.DifficultyField = value;
+                    this.RaisePropertyChanged("Difficulty");
                 }
             }
         }
@@ -544,6 +630,32 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
                 if ((object.ReferenceEquals(this.PlayersField, value) != true)) {
                     this.PlayersField = value;
                     this.RaisePropertyChanged("Players");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public byte PlayersRequested {
+            get {
+                return this.PlayersRequestedField;
+            }
+            set {
+                if ((this.PlayersRequestedField.Equals(value) != true)) {
+                    this.PlayersRequestedField = value;
+                    this.RaisePropertyChanged("PlayersRequested");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SpecialTiles {
+            get {
+                return this.SpecialTilesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SpecialTilesField, value) != true)) {
+                    this.SpecialTilesField = value;
+                    this.RaisePropertyChanged("SpecialTiles");
                 }
             }
         }

@@ -54,7 +54,7 @@
                 <Button Style="{StaticResource ActionButton}"
                         Content="{x:Static language:Lang.btnStartMatchText}"
                         Command="{Binding StartMatchCommand}"
-                        IsEnabled="{Binding CanStartMatch}"/>
+                        IsEnabled="{Binding CanStartMatch}" Click="StartMatch"/>
 
                 <Button Style="{StaticResource ActionButton}"
                         Content="{x:Static language:Lang.btnExitMatchText}"

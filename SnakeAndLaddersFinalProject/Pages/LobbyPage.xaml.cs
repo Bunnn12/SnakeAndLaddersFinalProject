@@ -1,6 +1,5 @@
 ﻿using log4net;
 using SnakeAndLaddersFinalProject.Navigation;
-           // <-- necesario
 using SnakeAndLaddersFinalProject.ViewModels;
 using SnakeAndLaddersFinalProject.Windows;
 using System;
@@ -13,31 +12,50 @@ namespace SnakeAndLaddersFinalProject.Pages
     public partial class LobbyPage : Page
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(LobbyPage));
+
         private readonly LobbyNavigationArgs args;
 
-        public LobbyPage() : this(new LobbyNavigationArgs { Mode = LobbyEntryMode.Create }) { }
+        private LobbyViewModel ViewModel
+        {
+            get { return DataContext as LobbyViewModel; }
+        }
+
+        public LobbyPage()
+            : this(new LobbyNavigationArgs { Mode = LobbyEntryMode.Create })
+        {
+        }
 
         public LobbyPage(LobbyNavigationArgs value)
         {
             InitializeComponent();
+
             args = value ?? new LobbyNavigationArgs { Mode = LobbyEntryMode.Create };
             DataContext = new LobbyViewModel();
+
             Loaded += OnLoaded;
+            Unloaded += OnUnloaded;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var vm = DataContext as LobbyViewModel;
-            if (vm == null) return;
+            var vm = ViewModel;
+            if (vm == null)
+            {
+                return;
+            }
+
+            vm.NavigateToBoardRequested -= OnNavigateToBoardRequested;
+            vm.NavigateToBoardRequested += OnNavigateToBoardRequested;
 
             try
             {
                 if (args.Mode == LobbyEntryMode.Create)
                 {
                     if (args.CreateOptions != null)
+                    {
                         vm.ApplyCreateOptions(args.CreateOptions);
+                    }
 
-                    // Igual que tu versión que sí funcionaba: ejecuta directo
                     vm.CreateLobbyCommand?.Execute(null);
                 }
                 else if (args.Mode == LobbyEntryMode.Join)
@@ -52,8 +70,68 @@ namespace SnakeAndLaddersFinalProject.Pages
             catch (Exception ex)
             {
                 Logger.Error("Error inicializando LobbyPage.", ex);
-                MessageBox.Show("No fue posible inicializar el lobby.",
-                                "Lobby", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                MessageBox.Show(
+                    "No fue posible inicializar el lobby.",
+                    "Lobby",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            var vm = ViewModel;
+            if (vm == null)
+            {
+                return;
+            }
+
+            vm.NavigateToBoardRequested -= OnNavigateToBoardRequested;
+        }
+
+        private void OnNavigateToBoardRequested(object sender, SnakeAndLaddersFinalProject.CreateMatchOptions options)
+        {
+            if (options == null)
+            {
+                options = new SnakeAndLaddersFinalProject.CreateMatchOptions();
+            }
+
+            var boardPage = new GameBoardPage(options);
+
+            try
+            {
+                if (NavigationService != null)
+                {
+                    NavigationService.Navigate(boardPage);
+                    return;
+                }
+
+                var currentWindow = Window.GetWindow(this);
+                var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
+                if (mainFrame != null)
+                {
+                    mainFrame.Navigate(boardPage);
+                    return;
+                }
+
+                var navigationWindow = new NavigationWindow
+                {
+                    ShowsNavigationUI = true
+                };
+
+                navigationWindow.Navigate(boardPage);
+                navigationWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error al navegar hacia GameBoardPage.", ex);
+
+                MessageBox.Show(
+                    "No fue posible abrir el tablero de juego.",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
 
@@ -61,7 +139,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             try
             {
-                var lobbyViewModel = DataContext as LobbyViewModel;
+                var lobbyViewModel = ViewModel;
 
                 if (lobbyViewModel == null)
                 {
@@ -92,10 +170,9 @@ namespace SnakeAndLaddersFinalProject.Pages
                 var chatWindow = new ChatWindow(lobbyId)
                 {
                     Owner = ownerWindow
-                    
                 };
 
-                chatWindow.Show(); 
+                chatWindow.Show();
             }
             catch (Exception ex)
             {
@@ -109,11 +186,16 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-
-
         private void LeaveLobby(object sender, RoutedEventArgs e)
         {
+            var vm = ViewModel;
+            vm?.LeaveLobbyCommand?.Execute(null);
+        }
 
+        private void StartMatch(object sender, RoutedEventArgs e)
+        {
+            var vm = ViewModel;
+            vm?.StartMatchCommand?.Execute(null);
         }
     }
 }
