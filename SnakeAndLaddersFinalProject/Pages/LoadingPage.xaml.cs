@@ -15,7 +15,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         public LoadingPage()
         {
-            InitializeComponent();   // <- aparecerá cuando el XAML compile como Page
+            InitializeComponent();   
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             SizeChanged += OnSizeChanged;

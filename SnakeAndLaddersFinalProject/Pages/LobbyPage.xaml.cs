@@ -6,12 +6,20 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using System.Windows.Input;
+using SnakeAndLaddersFinalProject.Authentication;
+
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class LobbyPage : Page
     {
+
         private static readonly ILog Logger = LogManager.GetLogger(typeof(LobbyPage));
+
+        private const int MIN_REGISTERED_USER_ID = 1;
+
+        private const string GUEST_NAME_PREFIX = "Guest";
 
         private readonly LobbyNavigationArgs args;
 
@@ -196,6 +204,184 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             var vm = ViewModel;
             vm?.StartMatchCommand?.Execute(null);
+        }
+        private void MemberBorder_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                var border = sender as Border;
+                if (border == null)
+                {
+                    return;
+                }
+
+                var currentUserId = SessionContext.Current.UserId;
+
+                if (!CanCurrentUserReportTarget(currentUserId, border.DataContext))
+                {
+                    return;
+                }
+
+                var contextMenu = border.ContextMenu;
+                if (contextMenu == null)
+                {
+                    return;
+                }
+
+                contextMenu.DataContext = border.DataContext;
+                contextMenu.PlacementTarget = border;
+                contextMenu.IsOpen = true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error al mostrar el menú contextual del miembro del lobby.", ex);
+            }
+        }
+
+        private void ReportPlayerMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var menuItem = sender as MenuItem;
+                if (menuItem == null)
+                {
+                    return;
+                }
+
+                var contextMenu = menuItem.Parent as ContextMenu;
+                var border = contextMenu?.PlacementTarget as Border;
+
+                var currentUserId = SessionContext.Current.UserId;
+
+                if (!CanCurrentUserReportTarget(currentUserId, border?.DataContext))
+                {
+                    return;
+                }
+
+                var ownerWindow = Window.GetWindow(this);
+
+                var reportsWindow = new ReportsWindow
+                {
+                    Owner = ownerWindow
+                };
+
+                reportsWindow.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error al abrir ReportsWindow desde LobbyPage.", ex);
+
+                MessageBox.Show(
+                    "Ocurrió un error al intentar abrir la ventana de reportes.",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
+
+        private void PlayerBorder_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            try
+            {
+                var border = sender as Border;
+                if (border == null)
+                {
+                    return;
+                }
+
+                var currentUserId = SessionContext.Current.UserId;
+
+                if (!CanCurrentUserReportTarget(currentUserId, border.DataContext))
+                {
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error al validar la apertura del menú contextual del miembro del lobby.", ex);
+            }
+        }
+
+        private static int GetMemberUserId(object dataContext)
+        {
+            if (dataContext == null)
+            {
+                return 0;
+            }
+
+            var dataContextType = dataContext.GetType();
+            var userIdProperty = dataContextType.GetProperty("UserId");
+            if (userIdProperty == null)
+            {
+                return 0;
+            }
+
+            var value = userIdProperty.GetValue(dataContext, null);
+            if (value is int memberUserId)
+            {
+                return memberUserId;
+            }
+
+            return 0;
+        }
+
+        private static string GetMemberUserName(object dataContext)
+        {
+            if (dataContext == null)
+            {
+                return string.Empty;
+            }
+
+            var dataContextType = dataContext.GetType();
+            var userNameProperty = dataContextType.GetProperty("UserName");
+            if (userNameProperty == null)
+            {
+                return string.Empty;
+            }
+
+            var value = userNameProperty.GetValue(dataContext, null);
+            return value as string ?? string.Empty;
+        }
+
+        private static bool IsGuestMember(object dataContext)
+        {
+            var memberUserId = GetMemberUserId(dataContext);
+            var memberUserName = GetMemberUserName(dataContext);
+
+            if (memberUserId < MIN_REGISTERED_USER_ID)
+            {
+                return true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(memberUserName) &&
+                memberUserName.StartsWith(GUEST_NAME_PREFIX, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool CanCurrentUserReportTarget(int currentUserId, object memberDataContext)
+        {
+            if (currentUserId < MIN_REGISTERED_USER_ID)
+            {
+                return false;
+            }
+
+            if (IsGuestMember(memberDataContext))
+            {
+                return false;
+            }
+
+            var memberUserId = GetMemberUserId(memberDataContext);
+
+            if (memberUserId == currentUserId)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

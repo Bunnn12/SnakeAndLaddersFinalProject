@@ -32,16 +32,32 @@
             <ItemsControl ItemsSource="{Binding Members}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Padding="10" Margin="0,6"
-                                CornerRadius="8"
-                                BorderBrush="#CCCCCC" BorderThickness="1">
+                        <Border Padding="10"
+                            Margin="0,6"
+                            CornerRadius="8"
+                            BorderBrush="#CCCCCC"
+                            BorderThickness="1"
+                            MouseLeftButtonUp="MemberBorder_MouseLeftButtonUp"
+                            ContextMenuOpening="PlayerBorder_ContextMenuOpening">
+
+                            <Border.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="{x:Static language:Lang.btnReportPlayerText}"
+                      Click="ReportPlayerMenuItem_Click" />
+                                </ContextMenu>
+                            </Border.ContextMenu>
+
                             <DockPanel LastChildFill="True">
-                                <TextBlock Text="★" Margin="0,0,8,0" Foreground="Gold"
-                                           Visibility="{Binding IsHost, Converter={StaticResource BoolToVisibility}}"/>
+                                <TextBlock Text="★"
+                               Margin="0,0,8,0"
+                               Foreground="Gold"
+                               Visibility="{Binding IsHost, Converter={StaticResource BoolToVisibility}}" />
                                 <StackPanel>
-                                    <TextBlock Text="{Binding UserName}" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding UserName}"
+                                   FontWeight="Bold" />
                                     <TextBlock Text="{Binding JoinedAt, StringFormat='{}{0:HH:mm}'}"
-                                               Opacity="0.7" FontSize="12"/>
+                                   Opacity="0.7"
+                                   FontSize="12" />
                                 </StackPanel>
                             </DockPanel>
                         </Border>
