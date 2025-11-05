@@ -1,24 +1,21 @@
-﻿using log4net;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Navigation;
+using log4net;
+using SnakeAndLaddersFinalProject.Authentication;
 using SnakeAndLaddersFinalProject.Navigation;
 using SnakeAndLaddersFinalProject.ViewModels;
 using SnakeAndLaddersFinalProject.Windows;
-using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Navigation;
-using System.Windows.Input;
-using SnakeAndLaddersFinalProject.Authentication;
-
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class LobbyPage : Page
     {
-
         private static readonly ILog Logger = LogManager.GetLogger(typeof(LobbyPage));
 
         private const int MIN_REGISTERED_USER_ID = 1;
-
         private const string GUEST_NAME_PREFIX = "Guest";
 
         private readonly LobbyNavigationArgs args;
@@ -52,6 +49,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
+            // Suscribimos el evento de navegación al tablero
             vm.NavigateToBoardRequested -= OnNavigateToBoardRequested;
             vm.NavigateToBoardRequested += OnNavigateToBoardRequested;
 
@@ -98,23 +96,30 @@ namespace SnakeAndLaddersFinalProject.Pages
             vm.NavigateToBoardRequested -= OnNavigateToBoardRequested;
         }
 
-        private void OnNavigateToBoardRequested(object sender, SnakeAndLaddersFinalProject.CreateMatchOptions options)
+        // AHORA el handler recibe directamente el GameBoardViewModel
+        private void OnNavigateToBoardRequested(GameBoardViewModel boardViewModel)
         {
-            if (options == null)
+            if (boardViewModel == null)
             {
-                options = new SnakeAndLaddersFinalProject.CreateMatchOptions();
+                Logger.Warn("Se recibió una solicitud de navegación al tablero sin ViewModel.");
+                return;
             }
 
-            var boardPage = new GameBoardPage(options);
+            var boardPage = new GameBoardPage
+            {
+                DataContext = boardViewModel
+            };
 
             try
             {
+                // 1) Si esta Page tiene NavigationService, úsalo
                 if (NavigationService != null)
                 {
                     NavigationService.Navigate(boardPage);
                     return;
                 }
 
+                // 2) Si la ventana principal tiene un Frame llamado MainFrame, úsalo
                 var currentWindow = Window.GetWindow(this);
                 var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
                 if (mainFrame != null)
@@ -123,6 +128,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
+                // 3) Último recurso: NavigationWindow independiente
                 var navigationWindow = new NavigationWindow
                 {
                     ShowsNavigationUI = true
@@ -205,6 +211,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             var vm = ViewModel;
             vm?.StartMatchCommand?.Execute(null);
         }
+
         private void MemberBorder_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             try

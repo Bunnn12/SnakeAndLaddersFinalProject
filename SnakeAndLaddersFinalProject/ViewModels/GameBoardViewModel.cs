@@ -1,21 +1,42 @@
-﻿using System.Collections.Generic;
-using SnakeAndLaddersFinalProject.Game;
+﻿using SnakeAndLaddersFinalProject.Game;
+using SnakeAndLaddersFinalProject.GameBoardService;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class GameBoardViewModel
     {
         public int Rows { get; }
+
         public int Columns { get; }
-        public IList<BoardCell> Cells { get; }
 
-        public GameBoardViewModel(CreateMatchOptions options)
+        public ObservableCollection<GameBoardCellViewModel> Cells { get; }
+
+        public GameBoardViewModel(BoardDefinitionDto dto)
         {
-            var definition = BoardDefinition.FromBoardSize(options.BoardSize);
+            if (dto == null)
+            {
+                throw new ArgumentNullException(nameof(dto));
+            }
 
-            Rows = definition.Rows;
-            Columns = definition.Columns;
-            Cells = BoardFactory.CreateBoard(options.BoardSize);
+            Rows = dto.Rows;
+            Columns = dto.Columns;
+
+            var cellViewModels = new ObservableCollection<GameBoardCellViewModel>();
+
+            if (dto.Cells != null)
+            {
+                foreach (BoardCellDto cellDto in dto.Cells)
+                {
+                    var cellViewModel = new GameBoardCellViewModel(cellDto);
+                    cellViewModels.Add(cellViewModel);
+                }
+            }
+
+            Cells = cellViewModels;
         }
     }
+
 }

@@ -64,7 +64,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             if (rdbSize7x7.IsChecked == true)
             {
-                return BoardSizeOption.SevenBySeven;
+                return BoardSizeOption.EightByEight;
             }
 
             if (rdbSize12x12.IsChecked == true)

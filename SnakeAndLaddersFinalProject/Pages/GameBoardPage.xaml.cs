@@ -1,24 +1,20 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
+using log4net;
 using SnakeAndLaddersFinalProject.ViewModels;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class GameBoardPage : Page
     {
-        private readonly GameBoardViewModel viewModel;
 
-        public GameBoardPage(CreateMatchOptions options)
+        public GameBoardPage()
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
             InitializeComponent();
+        }
 
-            viewModel = new GameBoardViewModel(options);
-            DataContext = viewModel;
+        public GameBoardViewModel ViewModel
+        {
+            get { return DataContext as GameBoardViewModel; }
         }
     }
 }

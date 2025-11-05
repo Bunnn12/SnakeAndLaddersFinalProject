@@ -100,6 +100,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Connected Services\GameBoardService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\LobbyService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -118,10 +123,13 @@
     <Compile Include="Game\BoardCell.cs" />
     <Compile Include="Game\BoardDefinition.cs" />
     <Compile Include="Game\BoardFactory.cs" />
+    <Compile Include="Game\SpecialCellType.cs" />
     <Compile Include="Globalization\LocalizationManager.cs" />
     <Compile Include="Infrastructure\AsyncCommand.cs" />
     <Compile Include="Infrastructure\CollectionSyncExtensions.cs" />
     <Compile Include="Infrastructure\RelayCommand.cs" />
+    <Compile Include="Services\GameBoardClient.cs" />
+    <Compile Include="Services\IGameBoardClient.cs" />
     <Compile Include="Navigation\LobbyNavigationArgs.cs" />
     <Compile Include="Pages\AddFriendsPage.xaml.cs">
       <DependentUpon>AddFriendsPage.xaml</DependentUpon>
@@ -190,6 +198,7 @@
     <Compile Include="ViewModels\ChatClientCallback.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\CreateMatchViewModel.cs" />
+    <Compile Include="ViewModels\GameBoardCellViewModel.cs" />
     <Compile Include="ViewModels\GameBoardViewModel.cs" />
     <Compile Include="ViewModels\LobbyViewModel.cs" />
     <Compile Include="ViewModels\Models\LobbyMemberViewModel.cs" />
@@ -376,6 +385,25 @@
     <None Include="Connected Services\ChatService\SnakeAndLaddersFinalProject.ChatService.SendMessageResponse2.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\GameBoardService\GameBoardService.wsdl" />
+    <None Include="Connected Services\GameBoardService\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GameBoardService\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GameBoardService\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GameBoardService\item3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\GameBoardService\SnakeAndLaddersFinalProject.GameBoardService.BoardDefinitionDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\GameBoardService\SnakeAndLaddersFinalProject.GameBoardService.CreateBoardResponseDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\LobbyService\item.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -447,6 +475,7 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\AuthService\" />
     <WCFMetadataStorage Include="Connected Services\ChatService\" />
+    <WCFMetadataStorage Include="Connected Services\GameBoardService\" />
     <WCFMetadataStorage Include="Connected Services\LobbyService\" />
     <WCFMetadataStorage Include="Connected Services\UserService\" />
   </ItemGroup>
@@ -463,6 +492,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\GameBoardService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\GameBoardService\configuration.svcinfo" />
+    <None Include="Connected Services\GameBoardService\configuration91.svcinfo" />
+    <None Include="Connected Services\GameBoardService\item.disco" />
     <Resource Include="Pages\loginFrame.png" />
     <None Include="Connected Services\ChatService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>

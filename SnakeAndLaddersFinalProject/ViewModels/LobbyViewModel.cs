@@ -1,9 +1,4 @@
-﻿using log4net;
-using SnakeAndLaddersFinalProject.Authentication;
-using SnakeAndLaddersFinalProject.Infrastructure;
-using SnakeAndLaddersFinalProject.LobbyService;
-using SnakeAndLaddersFinalProject.ViewModels.Models;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -13,6 +8,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using log4net;
+using SnakeAndLaddersFinalProject.Authentication;
+using SnakeAndLaddersFinalProject.GameBoardService;
+using SnakeAndLaddersFinalProject.Infrastructure;
+using SnakeAndLaddersFinalProject.LobbyService;
+using SnakeAndLaddersFinalProject.Services;
+using SnakeAndLaddersFinalProject.ViewModels.Models;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
@@ -39,15 +41,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string LOBBY_STATUS_WAITING = "Waiting";
         private const string LOBBY_STATUS_IN_MATCH = "InMatch";
 
-
         private const string DIFFICULTY_EASY = "Easy";
         private const string DIFFICULTY_NORMAL = "Normal";
         private const string DIFFICULTY_HARD = "Hard";
 
-        public event EventHandler<CreateMatchOptions> NavigateToBoardRequested;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Ahora el evento manda directamente el GameBoardViewModel
+        public event Action<GameBoardViewModel> NavigateToBoardRequested;
 
         private readonly DispatcherTimer pollTimer =
             new DispatcherTimer { Interval = TimeSpan.FromSeconds(POLL_INTERVAL_SECONDS) };
+
+        private readonly IGameBoardClient gameBoardClient;
 
         private string statusText = STATUS_LOBBY_READY;
         private string codigoInput = string.Empty;
@@ -56,8 +62,25 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private CreateMatchOptions createOptions;
         private bool hasNavigatedToBoard;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public LobbyViewModel()
+        {
+            InitializeCurrentUser();
 
+            gameBoardClient = new GameBoardClient();
+
+            CreateLobbyCommand = new AsyncCommand(CreateLobbyAsync);
+            JoinLobbyCommand = new AsyncCommand(
+                JoinLobbyAsync,
+                () => !string.IsNullOrWhiteSpace(CodigoInput));
+
+            StartMatchCommand = new AsyncCommand(StartMatchAsync, () => CanStartMatch);
+            LeaveLobbyCommand = new AsyncCommand(LeaveLobbyAsync);
+            CopyInviteLinkCommand = new RelayCommand(_ => CopyInviteLink());
+
+            pollTimer.Tick += async (_, __) => await RefreshLobbyAsync();
+
+            Members.CollectionChanged += OnMembersChanged;
+        }
 
         public string StatusText
         {
@@ -94,16 +117,23 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             new ObservableCollection<LobbyMemberViewModel>();
 
         public int CurrentUserId { get; private set; }
+
         public string CurrentUserName { get; private set; }
 
         public int LobbyId { get; private set; }
+
         public int HostUserId { get; private set; }
+
         public string HostUserName { get; private set; }
+
         public string CodigoPartida { get; private set; }
+
         public string LobbyStatus { get; private set; } = LOBBY_STATUS_WAITING;
+
         public DateTime ExpiresAtUtc { get; private set; }
 
         public DifficultyOption Difficulty { get; private set; } = DifficultyOption.Medium;
+
         public byte PlayersRequested { get; private set; } = AppConstants.MIN_PLAYERS_TO_START;
 
         public byte MaxPlayers
@@ -124,9 +154,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         }
 
         public ICommand CreateLobbyCommand { get; }
+
         public ICommand JoinLobbyCommand { get; }
+
         public ICommand StartMatchCommand { get; }
+
         public ICommand LeaveLobbyCommand { get; }
+
         public ICommand CopyInviteLinkCommand { get; }
 
         public bool CanStartMatch =>
@@ -134,24 +168,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             Members.Count <= MaxPlayers &&
             IsCurrentUserHost() &&
             string.Equals(LobbyStatus, LOBBY_STATUS_WAITING, StringComparison.OrdinalIgnoreCase);
-
-        public LobbyViewModel()
-        {
-            InitializeCurrentUser();
-
-            CreateLobbyCommand = new AsyncCommand(CreateLobbyAsync);
-            JoinLobbyCommand = new AsyncCommand(
-                JoinLobbyAsync,
-                () => !string.IsNullOrWhiteSpace(CodigoInput));
-
-            StartMatchCommand = new AsyncCommand(StartMatchAsync, () => CanStartMatch);
-            LeaveLobbyCommand = new AsyncCommand(LeaveLobbyAsync);
-            CopyInviteLinkCommand = new RelayCommand(_ => CopyInviteLink());
-
-            pollTimer.Tick += async (_, __) => await RefreshLobbyAsync();
-
-            Members.CollectionChanged += OnMembersChanged;
-        }
 
         public void ApplyCreateOptions(CreateMatchOptions options)
         {
@@ -236,7 +252,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 await UseLobbyClientAsync(async client =>
                 {
-                    // Tomamos los ajustes que vienen desde CreateMatchOptions
                     var boardSize = createOptions?.BoardSize ?? BoardSizeOption.TenByTen;
                     var difficultyOption = createOptions?.Difficulty ?? DifficultyOption.Medium;
                     var specialTiles = createOptions?.SpecialTiles ?? SpecialTileOptions.None;
@@ -248,8 +263,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                         MaxPlayers = playersRequested,
                         Dificultad = MapDifficulty(difficultyOption),
                         TtlMinutes = AppConstants.DEFAULT_TTL_MINUTES,
-
-                        // 👉 NUEVO: estos vienen del CreateMatch y el server ya los conoce
                         BoardSide = (int)boardSize,
                         PlayersRequested = playersRequested,
                         SpecialTiles = specialTiles.ToString()
@@ -274,7 +287,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 RaiseCanExecutes();
             }
         }
-
 
         private async Task JoinLobbyAsync()
         {
@@ -358,7 +370,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-
         private async Task StartMatchAsync()
         {
             try
@@ -376,15 +387,40 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                     if (result.Success)
                     {
-                        
                         var options = createOptions ?? new CreateMatchOptions
                         {
                             BoardSize = BoardSizeOption.TenByTen,
                             Difficulty = Difficulty,
-                            Players = Members.Count
+                            Players = Members.Count,
+                            SpecialTiles = SpecialTileOptions.None,
+                            RoomKey = CodigoPartida
                         };
 
-                        NavigateToBoardRequested?.Invoke(this, options);
+                        // 👉 Aquí mapeamos las opciones a 3 banderas
+                        bool enableBonusCells;
+                        bool enableTrapCells;
+                        bool enableTeleportCells;
+
+                        MapSpecialTileBooleans(
+                            options.SpecialTiles,
+                            out enableBonusCells,
+                            out enableTrapCells,
+                            out enableTeleportCells);
+
+                        var boardDto = gameBoardClient.CreateBoard(
+                            LobbyId,
+                            options.BoardSize,
+                            enableBonusCells,
+                            enableTrapCells,
+                            enableTeleportCells);
+
+                        Debug.WriteLine("LobbyID:" + LobbyId);
+                        Debug.WriteLine("BoardID:" + boardDto);
+
+                        var boardViewModel = new GameBoardViewModel(boardDto);
+
+                        hasNavigatedToBoard = true;
+                        NavigateToBoardRequested?.Invoke(boardViewModel);
                     }
 
                     await Task.CompletedTask;
@@ -398,6 +434,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 Logger.Error("Error al iniciar la partida.", ex);
             }
         }
+
+        private static void MapSpecialTileBooleans(
+    SpecialTileOptions options,
+    out bool enableBonus,
+    out bool enableTrap,
+    out bool enableTeleport)
+        {
+            // Si SpecialTileOptions es [Flags], esto funciona perfecto.
+            enableBonus = options.HasFlag(SpecialTileOptions.Dice);
+            enableTrap = options.HasFlag(SpecialTileOptions.Trap);
+            enableTeleport = options.HasFlag(SpecialTileOptions.Message);
+        }
+
 
 
         private async Task LeaveLobbyAsync()
@@ -453,53 +502,51 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         }
 
         private void ApplyLobbyInfo(LobbyInfo info)
-{
-    if (info == null)
-    {
-        return;
-    }
+        {
+            if (info == null)
+            {
+                return;
+            }
 
-    LobbyId = info.PartidaId;
-    CodigoPartida = info.CodigoPartida;
-    HostUserId = info.HostUserId;
-    HostUserName = info.HostUserName;
-    MaxPlayers = info.MaxPlayers;
-    LobbyStatus = info.Status.ToString();
-    ExpiresAtUtc = info.ExpiresAtUtc;
+            LobbyId = info.PartidaId;
+            CodigoPartida = info.CodigoPartida;
+            HostUserId = info.HostUserId;
+            HostUserName = info.HostUserName;
+            MaxPlayers = info.MaxPlayers;
+            LobbyStatus = info.Status.ToString();
+            ExpiresAtUtc = info.ExpiresAtUtc;
 
-    Members.SynchronizeWith(
-        info.Players,
-        (vm, dto) => vm.UserId == dto.UserId,
-        dto => new LobbyMemberViewModel(
-            dto.UserId,
-            dto.UserName,
-            dto.IsHost,
-            dto.JoinedAtUtc),
-        (vm, dto) => vm.IsHost = dto.IsHost);
+            Members.SynchronizeWith(
+                info.Players,
+                (vm, dto) => vm.UserId == dto.UserId,
+                dto => new LobbyMemberViewModel(
+                    dto.UserId,
+                    dto.UserName,
+                    dto.IsHost,
+                    dto.JoinedAtUtc),
+                (vm, dto) => vm.IsHost = dto.IsHost);
 
-    // 👉 NUEVO: reconstruimos CreateMatchOptions usando lo que manda el servidor
-    var boardSize = MapBoardSize(info.BoardSide);
-    var difficultyOption = MapDifficultyFromServer(info.Difficulty);
-    var specialTiles = MapSpecialTiles(info.SpecialTiles);
-    var playersRequested = info.PlayersRequested > 0
-        ? info.PlayersRequested
-        : (byte)AppConstants.MIN_PLAYERS_TO_START;
+            var boardSize = MapBoardSize(info.BoardSide);
+            var difficultyOption = MapDifficultyFromServer(info.Difficulty);
+            var specialTiles = MapSpecialTiles(info.SpecialTiles);
+            var playersRequested = info.PlayersRequested > 0
+                ? info.PlayersRequested
+                : (byte)AppConstants.MIN_PLAYERS_TO_START;
 
-    createOptions = new CreateMatchOptions
-    {
-        BoardSize = boardSize,
-        Difficulty = difficultyOption,
-        SpecialTiles = specialTiles,
-        Players = playersRequested,
-        IsPrivate = false,
-        RoomKey = CodigoPartida
-    };
+            createOptions = new CreateMatchOptions
+            {
+                BoardSize = boardSize,
+                Difficulty = difficultyOption,
+                SpecialTiles = specialTiles,
+                Players = playersRequested,
+                IsPrivate = false,
+                RoomKey = CodigoPartida
+            };
 
-    UpdateStatus();
+            UpdateStatus();
 
-    // 👉 NUEVO: aquí todos verifican si la partida ya se inició
-    TryNavigateToBoardIfMatchStarted();
-}
+            TryNavigateToBoardIfMatchStarted();
+        }
 
         private void TryNavigateToBoardIfMatchStarted()
         {
@@ -513,11 +560,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            if (string.Equals(LobbyStatus, LOBBY_STATUS_WAITING, StringComparison.OrdinalIgnoreCase))
-            {
-                return;
-            }
-
             if (!string.Equals(LobbyStatus, LOBBY_STATUS_IN_MATCH, StringComparison.OrdinalIgnoreCase))
             {
                 return;
@@ -525,19 +567,27 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             hasNavigatedToBoard = true;
 
-            var options = createOptions ?? new CreateMatchOptions
+            try
             {
-                BoardSize = BoardSizeOption.TenByTen,
-                Difficulty = Difficulty,
-                Players = Members.Count,
-                SpecialTiles = SpecialTileOptions.None,
-                RoomKey = CodigoPartida
-            };
+                var boardDto = gameBoardClient.GetBoard(LobbyId);
 
-            NavigateToBoardRequested?.Invoke(this, options);
+                if (boardDto == null)
+                {
+                    Logger.Warn($"El servidor no devolvió el tablero para LobbyId {LobbyId}. Intentaremos más tarde.");
+                    hasNavigatedToBoard = false; // Permitimos que el poller lo intente de nuevo
+                    return;
+                }
+
+                var boardViewModel = new GameBoardViewModel(boardDto);
+
+                NavigateToBoardRequested?.Invoke(boardViewModel);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error al obtener el tablero cuando la partida inició.", ex);
+                hasNavigatedToBoard = false;
+            }
         }
-
-
 
         private void ApplyCreatedLobby(CreateGameResponse response)
         {
@@ -573,8 +623,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 case DifficultyOption.Easy:
                     return DIFFICULTY_EASY;
+
                 case DifficultyOption.Hard:
                     return DIFFICULTY_HARD;
+
                 default:
                     return DIFFICULTY_NORMAL;
             }
@@ -623,9 +675,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             switch (boardSide)
             {
                 case 7:
-                    return BoardSizeOption.SevenBySeven;
+                    return BoardSizeOption.EightByEight;
+
                 case 12:
                     return BoardSizeOption.TwelveByTwelve;
+
                 case 10:
                 default:
                     return BoardSizeOption.TenByTen;
@@ -634,12 +688,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private static DifficultyOption MapDifficultyFromServer(string difficulty)
         {
-            if (string.Equals(difficulty, "Easy", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(difficulty, DIFFICULTY_EASY, StringComparison.OrdinalIgnoreCase))
             {
                 return DifficultyOption.Easy;
             }
 
-            if (string.Equals(difficulty, "Hard", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(difficulty, DIFFICULTY_HARD, StringComparison.OrdinalIgnoreCase))
             {
                 return DifficultyOption.Hard;
             }
@@ -654,7 +708,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return SpecialTileOptions.None;
             }
 
-            if (Enum.TryParse<SpecialTileOptions>(value, ignoreCase: true, out var parsed))
+            SpecialTileOptions parsed;
+            if (Enum.TryParse(value, true, out parsed))
             {
                 return parsed;
             }
@@ -662,6 +717,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             return SpecialTileOptions.None;
         }
 
+        private static bool HasAnySpecialTiles(SpecialTileOptions options)
+        {
+            return options != SpecialTileOptions.None;
+        }
 
         private void OnPropertyChanged([CallerMemberName] string name = null)
         {
