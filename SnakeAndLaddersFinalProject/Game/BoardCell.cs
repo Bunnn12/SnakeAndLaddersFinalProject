@@ -6,11 +6,15 @@
         public int Row { get; }
         public int Column { get; }
 
-        public BoardCell(int index, int row, int column)
+        public bool IsDark { get; set; }
+
+
+        public BoardCell(int index, int row, int column, bool isDark)
         {
             Index = index;
             Row = row;
             Column = column;
+            IsDark = isDark;
         }
     }
 }

@@ -5,35 +5,68 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
       d:DesignWidth="1280" d:DesignHeight="720"
-      Title="GameBoardPage">
+      Title="GameBoardPage"
+      Background="Transparent">
 
     <Page.Resources>
-        <!-- Aquí evitamos usar Double como recurso -->
         <Thickness x:Key="CellMargin">2</Thickness>
 
+        <!-- Fondo claro -->
+        <LinearGradientBrush x:Key="BrushBoardCellBackgroundLight"
+                             StartPoint="0,0"
+                             EndPoint="1,1">
+            <GradientStop Color="#F7E0AD" Offset="0.0" />
+            <GradientStop Color="#E9C97F" Offset="0.5" />
+            <GradientStop Color="#CEA456" Offset="1.0" />
+        </LinearGradientBrush>
+
+        <!-- Fondo un poco más oscuro -->
+        <LinearGradientBrush x:Key="BrushBoardCellBackgroundDark"
+                             StartPoint="0,0"
+                             EndPoint="1,1">
+            <GradientStop Color="#D2A25C" Offset="0.0" />
+            <GradientStop Color="#B17B38" Offset="0.5" />
+            <GradientStop Color="#8C541F" Offset="1.0" />
+        </LinearGradientBrush>
+
+        <SolidColorBrush x:Key="BrushBoardCellBorder" Color="#8B5A2B" />
+
+        <!-- Estilo de casilla con colores intercalados -->
         <Style x:Key="BoardCellStyle" TargetType="Border">
-            <!-- Sí, aquí van literales; si luego quieres, los pasamos a diccionario separado -->
             <Setter Property="Width" Value="64" />
             <Setter Property="Height" Value="64" />
             <Setter Property="Margin" Value="{StaticResource CellMargin}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="BorderBrush" Value="Gray" />
-            <Setter Property="Background" Value="#222222" />
+            <Setter Property="BorderBrush" Value="{StaticResource BrushBoardCellBorder}" />
+            <!-- Por defecto, la clara -->
+            <Setter Property="Background" Value="{StaticResource BrushBoardCellBackgroundLight}" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+
+            <!-- Usamos IsDark que viene del ViewModel -->
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsDark}" Value="True">
+                    <Setter Property="Background"
+                            Value="{StaticResource BrushBoardCellBackgroundDark}" />
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
 
-        <!-- SIN DataType, así XAML no intenta resolver game:BoardCell -->
         <DataTemplate x:Key="BoardCellTemplate">
             <Border Style="{StaticResource BoardCellStyle}">
                 <TextBlock Text="{Binding Index}"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Foreground="White"
-                           FontWeight="Bold" />
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
+                           Margin="0,0,6,4"
+                           Foreground="#3B2313"
+                           FontSize="16"
+                           FontWeight="Bold"
+                           TextOptions.TextRenderingMode="Aliased"
+                           TextOptions.TextFormattingMode="Display" />
             </Border>
         </DataTemplate>
     </Page.Resources>
 
-    <Grid Background="Black">
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
