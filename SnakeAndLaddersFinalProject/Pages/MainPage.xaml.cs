@@ -1,18 +1,28 @@
-﻿using System;
+﻿using SnakeAndLaddersFinalProject.Authentication;
+using SnakeAndLaddersFinalProject.Navigation;
+using SnakeAndLaddersFinalProject.Pages;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using SnakeAndLaddersFinalProject.Navigation;
-using SnakeAndLaddersFinalProject.Pages;
 
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class MainPage : Page
     {
+
+        public string AvatarId { get; }
+        public bool HasAvatar => !string.IsNullOrWhiteSpace(AvatarId);
         public MainPage()
         {
             InitializeComponent();
+
+            AvatarId = SessionContext.Current?.ProfilePhotoId;
+
+            
+            DataContext = this;
+
         }
 
         // Ir a la pantalla de ajustes antes de crear

@@ -1,6 +1,6 @@
 ﻿using log4net;
 using SnakeAndLaddersFinalProject.Authentication;
-using SnakeAndLaddersFinalProject.Infrastructure;    
+using SnakeAndLaddersFinalProject.Infrastructure;
 using SnakeAndLaddersFinalProject.LobbyService;
 using SnakeAndLaddersFinalProject.ViewModels.Models;
 using System;
@@ -21,26 +21,51 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private static readonly ILog Logger = LogManager.GetLogger(typeof(LobbyViewModel));
 
         private const string LOBBY_ENDPOINT = "NetTcpBinding_ILobbyService";
-        private const int POLL_INTERVAL_SECONDS = 2; 
+        private const int POLL_INTERVAL_SECONDS = 2;
+        private const int LOBBY_ID_NOT_SET = 0;
 
-        private readonly DispatcherTimer pollTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(POLL_INTERVAL_SECONDS) };
+        private const string STATUS_LOBBY_READY = "Lobby listo.";
+        private const string STATUS_NO_LOBBY = "Sin lobby";
+        private const string STATUS_LOBBY_CLOSED = "El lobby se cerró o expiró.";
+        private const string STATUS_CODE_COPIED = "Código copiado al portapapeles.";
+        private const string STATUS_JOIN_FAILED_PREFIX = "No se pudo entrar: ";
+        private const string STATUS_CREATE_ERROR_PREFIX = "Error creando lobby: ";
+        private const string STATUS_JOIN_ERROR_PREFIX = "Error al unirse: ";
+        private const string STATUS_REFRESH_ERROR_PREFIX = "Error al refrescar el lobby.";
+        private const string STATUS_START_ERROR_PREFIX = "Error al iniciar: ";
+        private const string STATUS_LEAVE_ERROR_PREFIX = "Error al salir: ";
+        private const string STATUS_LEAVE_DEFAULT = "Saliste del lobby.";
 
-        private string statusText = "Lobby listo.";
+        private const string LOBBY_STATUS_WAITING = "Waiting";
+
+        private const string DIFFICULTY_EASY = "Easy";
+        private const string DIFFICULTY_NORMAL = "Normal";
+        private const string DIFFICULTY_HARD = "Hard";
+
+        private readonly DispatcherTimer pollTimer =
+            new DispatcherTimer { Interval = TimeSpan.FromSeconds(POLL_INTERVAL_SECONDS) };
+
+        private string statusText = STATUS_LOBBY_READY;
         private string codigoInput = string.Empty;
+        private byte maxPlayers;
 
-        
-        public BoardSizeOption BoardSize { get; private set; } = BoardSizeOption.TenByTen;
-        public DifficultyOption Difficulty { get; private set; } = DifficultyOption.Medium;
-        public SpecialTileOptions SpecialTiles { get; private set; } = SpecialTileOptions.None;
-        public bool IsPrivate { get; private set; }
-        public string RoomKey { get; private set; } = string.Empty;
-        public byte PlayersRequested { get; private set; } = AppConstants.MIN_PLAYERS_TO_START;
+        private CreateMatchOptions createOptions;
 
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public string StatusText
         {
             get { return statusText; }
-            private set { statusText = value; OnPropertyChanged(); }
+            private set
+            {
+                if (statusText == value)
+                {
+                    return;
+                }
+
+                statusText = value;
+                OnPropertyChanged();
+            }
         }
 
         public string CodigoInput
@@ -59,7 +84,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        public ObservableCollection<LobbyMemberViewModel> Members { get; } = new ObservableCollection<LobbyMemberViewModel>();
+        public ObservableCollection<LobbyMemberViewModel> Members { get; } =
+            new ObservableCollection<LobbyMemberViewModel>();
 
         public int CurrentUserId { get; private set; }
         public string CurrentUserName { get; private set; }
@@ -68,7 +94,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public int HostUserId { get; private set; }
         public string HostUserName { get; private set; }
         public string CodigoPartida { get; private set; }
-        private byte maxPlayers;
+        public string LobbyStatus { get; private set; } = LOBBY_STATUS_WAITING;
+        public DateTime ExpiresAtUtc { get; private set; }
+
+        public DifficultyOption Difficulty { get; private set; } = DifficultyOption.Medium;
+        public byte PlayersRequested { get; private set; } = AppConstants.MIN_PLAYERS_TO_START;
+
         public byte MaxPlayers
         {
             get { return maxPlayers; }
@@ -81,14 +112,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 maxPlayers = value;
                 OnPropertyChanged();
-                // Si tu botón "Iniciar" depende de esto:
                 (StartMatchCommand as AsyncCommand)?.RaiseCanExecuteChanged();
-                // Si muestras "X/Y" en StatusText:
                 UpdateStatus();
             }
         }
-        public string LobbyStatus { get; private set; } = "Waiting";
-        public DateTime ExpiresAtUtc { get; private set; }
 
         public ICommand CreateLobbyCommand { get; }
         public ICommand JoinLobbyCommand { get; }
@@ -96,59 +123,21 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public ICommand LeaveLobbyCommand { get; }
         public ICommand CopyInviteLinkCommand { get; }
 
-        private bool IsCurrentUserHost()
-        {
-            // 1) Si en la lista aparece mi usuario, confío en el flag IsHost
-            foreach (var m in Members)
-            {
-                if (!string.IsNullOrWhiteSpace(m?.UserName) &&
-                    string.Equals(m.UserName, CurrentUserName, StringComparison.OrdinalIgnoreCase))
-                {
-                    return m.IsHost;
-                }
-
-                if (m.UserId == CurrentUserId) // por si Id sí coincide
-                {
-                    return m.IsHost;
-                }
-            }
-
-            // 2) Fallback: nombre del host que reporta el servidor
-            if (!string.IsNullOrWhiteSpace(HostUserName) &&
-                string.Equals(HostUserName, CurrentUserName, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            // 3) Último recurso: comparación por Id
-            return HostUserId == CurrentUserId;
-        }
-
-
         public bool CanStartMatch =>
             Members.Count >= AppConstants.MIN_PLAYERS_TO_START &&
             Members.Count <= MaxPlayers &&
             IsCurrentUserHost() &&
-            string.Equals(LobbyStatus, "Waiting", StringComparison.OrdinalIgnoreCase);
-
+            string.Equals(LobbyStatus, LOBBY_STATUS_WAITING, StringComparison.OrdinalIgnoreCase);
 
         public LobbyViewModel()
         {
-            var sc = SessionContext.Current;
-            if (sc.IsAuthenticated)
-            {
-                CurrentUserId = sc.UserId;
-                CurrentUserName = string.IsNullOrWhiteSpace(sc.UserName) ? "Unknown" : sc.UserName.Trim();
-            }
-            else
-            {
-                var fallbackName = $"Guest-{Environment.UserName}-{Process.GetCurrentProcess().Id}";
-                CurrentUserName = fallbackName;
-                CurrentUserId = Math.Abs(fallbackName.GetHashCode());
-            }
+            InitializeCurrentUser();
 
             CreateLobbyCommand = new AsyncCommand(CreateLobbyAsync);
-            JoinLobbyCommand = new AsyncCommand(JoinLobbyAsync, () => !string.IsNullOrWhiteSpace(CodigoInput));
+            JoinLobbyCommand = new AsyncCommand(
+                JoinLobbyAsync,
+                () => !string.IsNullOrWhiteSpace(CodigoInput));
+
             StartMatchCommand = new AsyncCommand(StartMatchAsync, () => CanStartMatch);
             LeaveLobbyCommand = new AsyncCommand(LeaveLobbyAsync);
             CopyInviteLinkCommand = new RelayCommand(_ => CopyInviteLink());
@@ -158,124 +147,157 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             Members.CollectionChanged += OnMembersChanged;
         }
 
+        public void ApplyCreateOptions(CreateMatchOptions options)
+        {
+            if (options == null)
+            {
+                return;
+            }
+
+            createOptions = options;
+
+            Difficulty = options.Difficulty;
+            PlayersRequested = (byte)options.Players;
+        }
+
+        private void InitializeCurrentUser()
+        {
+            var sessionContext = SessionContext.Current;
+
+            if (sessionContext.IsAuthenticated)
+            {
+                CurrentUserId = sessionContext.UserId;
+                CurrentUserName = string.IsNullOrWhiteSpace(sessionContext.UserName)
+                    ? "Unknown"
+                    : sessionContext.UserName.Trim();
+
+                return;
+            }
+
+            var fallbackName = $"Guest-{Environment.UserName}-{Process.GetCurrentProcess().Id}";
+            CurrentUserName = fallbackName;
+            CurrentUserId = Math.Abs(fallbackName.GetHashCode());
+        }
+
         private void OnMembersChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UpdateStatus();
             NotifyStartAvailabilityChanged();
         }
-        public void ApplyCreateOptions(CreateMatchOptions options)
+
+        private bool IsCurrentUserHost()
         {
-            if (options == null) return;
+            foreach (var member in Members)
+            {
+                if (!string.IsNullOrWhiteSpace(member?.UserName) &&
+                    string.Equals(member.UserName, CurrentUserName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return member.IsHost;
+                }
 
-            BoardSize = options.BoardSize;
-            Difficulty = options.Difficulty;
-            SpecialTiles = options.SpecialTiles;
-            IsPrivate = options.IsPrivate;
-            RoomKey = options.RoomKey ?? string.Empty;
+                if (member.UserId == CurrentUserId)
+                {
+                    return member.IsHost;
+                }
+            }
 
-            var players = options.Players;
-            
-            PlayersRequested = (byte)players;
+            if (!string.IsNullOrWhiteSpace(HostUserName) &&
+                string.Equals(HostUserName, CurrentUserName, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return HostUserId == CurrentUserId;
+        }
+
+        private void NotifyStartAvailabilityChanged()
+        {
+            OnPropertyChanged(nameof(CanStartMatch));
+            (StartMatchCommand as AsyncCommand)?.RaiseCanExecuteChanged();
+        }
+
+        private async Task UseLobbyClientAsync(Func<LobbyServiceClient, Task> action)
+        {
+            using (var client = new LobbyServiceClient(LOBBY_ENDPOINT))
+            {
+                await action(client);
+            }
         }
 
         private async Task CreateLobbyAsync()
         {
             try
             {
-                using (var client = new LobbyServiceClient(LOBBY_ENDPOINT))
+                await UseLobbyClientAsync(async client =>
                 {
-                    var res = await client.CreateGameAsync(new CreateGameRequest
+                    var request = new CreateGameRequest
                     {
                         HostUserId = CurrentUserId,
-                        
-                        MaxPlayers = PlayersRequested,                 
+                        MaxPlayers = PlayersRequested,
                         Dificultad = MapDifficulty(Difficulty),
                         TtlMinutes = AppConstants.DEFAULT_TTL_MINUTES
-                    });
+                        // Más adelante, si el servicio acepta tamaño de tablero u otros ajustes,
+                        // se sacan desde createOptions aquí.
+                    };
 
-                    LobbyId = res.PartidaId;
-                    CodigoPartida = res.CodigoPartida;
-                    ExpiresAtUtc = res.ExpiresAtUtc;
+                    var response = await client.CreateGameAsync(request);
 
-                    HostUserId = CurrentUserId;
-                    HostUserName = CurrentUserName;
-                    LobbyStatus = "Waiting";
-                    RaiseCanExecutes();
+                    ApplyCreatedLobby(response);
 
-                    MaxPlayers = PlayersRequested; // ← esto evita ver “/2” en la primera pintura
+                    await Task.CompletedTask;
+                });
 
-
-                    Members.Clear();
-                    Members.Add(new LobbyMemberViewModel(CurrentUserId, CurrentUserName, true, DateTime.Now));
-
-                    StatusText = $"Lobby creado. Código {CodigoPartida}. " +
-                                 $"Límite {MaxPlayers}. Expira {ExpiresAtUtc:HH:mm} UTC";
-                }
-
-                if (!pollTimer.IsEnabled) pollTimer.Start();
-                await RefreshLobbyAsync(); 
+                await EnsurePollingAndRefreshAsync();
             }
             catch (Exception ex)
             {
-                StatusText = $"Error creando lobby: {ex.Message}";
+                StatusText = STATUS_CREATE_ERROR_PREFIX + ex.Message;
                 Logger.Error("Error al crear lobby.", ex);
             }
-            finally { RaiseCanExecutes(); }
+            finally
+            {
+                RaiseCanExecutes();
+            }
         }
-
 
         private async Task JoinLobbyAsync()
         {
             var code = (CodigoInput ?? string.Empty).Trim();
-            if (code.Length == 0)
+            if (string.IsNullOrWhiteSpace(code))
             {
                 return;
             }
 
             try
             {
-                using (var client = new LobbyServiceClient(LOBBY_ENDPOINT))
+                await UseLobbyClientAsync(async client =>
                 {
-                    var join = client.JoinLobby(new JoinLobbyRequest
+                    var joinResult = client.JoinLobby(new JoinLobbyRequest
                     {
                         CodigoPartida = code,
                         UserId = CurrentUserId,
                         UserName = CurrentUserName
                     });
 
-                    if (!join.Success)
+                    if (!joinResult.Success)
                     {
-                        StatusText = $"No se pudo entrar: {join.FailureReason}";
+                        StatusText = STATUS_JOIN_FAILED_PREFIX + joinResult.FailureReason;
                         return;
                     }
 
-                    var info = join.Lobby;
-                    LobbyId = info.PartidaId;
-                    CodigoPartida = info.CodigoPartida;
-                    HostUserId = info.HostUserId;
-                    HostUserName = info.HostUserName;
-                    MaxPlayers = info.MaxPlayers;
-                    LobbyStatus = info.Status.ToString();
-                    ExpiresAtUtc = info.ExpiresAtUtc;
+                    ApplyLobbyInfo(joinResult.Lobby);
 
-                    Members.SynchronizeWith(info.Players,
-                        match: (vm, dto) => vm.UserId == dto.UserId,
-                        selector: dto => new LobbyMemberViewModel(dto.UserId, dto.UserName, dto.IsHost, dto.JoinedAtUtc),
-                        update: (vm, dto) => vm.IsHost = dto.IsHost);
+                    StatusText = $"Unido a {CodigoPartida}. Host: {HostUserName}. " +
+                                 $"{Members.Count}/{MaxPlayers}";
 
-                    StatusText = $"Unido a {CodigoPartida}. Host: {HostUserName}. {Members.Count}/{MaxPlayers}";
-                }
+                    await Task.CompletedTask;
+                });
 
-                if (!pollTimer.IsEnabled)
-                {
-                    pollTimer.Start();
-                }
-
-                await RefreshLobbyAsync();
+                await EnsurePollingAndRefreshAsync();
             }
             catch (Exception ex)
             {
-                StatusText = $"Error al unirse: {ex.Message}";
+                StatusText = STATUS_JOIN_ERROR_PREFIX + ex.Message;
                 Logger.Error("Error al unirse al lobby.", ex);
             }
             finally
@@ -286,43 +308,33 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private async Task RefreshLobbyAsync()
         {
-            if (LobbyId == 0)
+            if (!HasLobby())
             {
                 return;
             }
 
             try
             {
-                using (var client = new LobbyServiceClient(LOBBY_ENDPOINT))
+                await UseLobbyClientAsync(async client =>
                 {
-                    var info = client.GetLobbyInfo(new GetLobbyInfoRequest { PartidaId = LobbyId });
+                    var info = client.GetLobbyInfo(new GetLobbyInfoRequest
+                    {
+                        PartidaId = LobbyId
+                    });
+
                     if (info == null)
                     {
-                        pollTimer.Stop();
-                        StatusText = "El lobby se cerró o expiró.";
-                        Members.Clear();
-                        LobbyId = 0;
+                        ResetLobbyState(STATUS_LOBBY_CLOSED);
                         return;
                     }
 
-                    HostUserId = info.HostUserId;
-                    HostUserName = info.HostUserName;
-                    MaxPlayers = info.MaxPlayers;
-                    LobbyStatus = info.Status.ToString();
-                    CodigoPartida = info.CodigoPartida;
-                    ExpiresAtUtc = info.ExpiresAtUtc;
-
-                    Members.SynchronizeWith(info.Players,
-                        match: (vm, dto) => vm.UserId == dto.UserId,
-                        selector: dto => new LobbyMemberViewModel(dto.UserId, dto.UserName, dto.IsHost, dto.JoinedAtUtc),
-                        update: (vm, dto) => vm.IsHost = dto.IsHost);
-
-                    StatusText = $"Lobby {CodigoPartida} — Host: {HostUserName} — {Members.Count}/{MaxPlayers} — {LobbyStatus}";
-                }
+                    ApplyLobbyInfo(info);
+                    await Task.CompletedTask;
+                });
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al refrescar el lobby.", ex);
+                Logger.Error(STATUS_REFRESH_ERROR_PREFIX, ex);
             }
             finally
             {
@@ -330,37 +342,29 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        private void NotifyStartAvailabilityChanged()
-        {
-            // Para el binding IsEnabled="{Binding CanStartMatch}"
-            OnPropertyChanged(nameof(CanStartMatch));
-
-            // Para el botón que usa Command
-            (StartMatchCommand as AsyncCommand)?.RaiseCanExecuteChanged();
-        }
-
-
         private async Task StartMatchAsync()
         {
             try
             {
-                using (var client = new LobbyServiceClient(LOBBY_ENDPOINT))
+                await UseLobbyClientAsync(async client =>
                 {
                     var result = client.StartMatch(new StartMatchRequest
                     {
                         PartidaId = LobbyId,
                         HostUserId = CurrentUserId
-                        
                     });
 
-                    StatusText = result.Message ?? (result.Success ? "Iniciando..." : "No se pudo iniciar.");
-                }
+                    StatusText = result.Message ??
+                                 (result.Success ? "Iniciando..." : "No se pudo iniciar.");
+
+                    await Task.CompletedTask;
+                });
 
                 await RefreshLobbyAsync();
             }
             catch (Exception ex)
             {
-                StatusText = $"Error al iniciar: {ex.Message}";
+                StatusText = STATUS_START_ERROR_PREFIX + ex.Message;
                 Logger.Error("Error al iniciar la partida.", ex);
             }
         }
@@ -369,7 +373,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             try
             {
-                using (var client = new LobbyServiceClient(LOBBY_ENDPOINT))
+                await UseLobbyClientAsync(async client =>
                 {
                     var result = client.LeaveLobby(new LeaveLobbyRequest
                     {
@@ -377,18 +381,28 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                         UserId = CurrentUserId
                     });
 
-                    StatusText = result.Message ?? "Saliste del lobby.";
-                }
+                    var message = result.Message ?? STATUS_LEAVE_DEFAULT;
 
-                pollTimer.Stop();
-                Members.Clear();
-                LobbyId = 0;
+                    ResetLobbyState(message);
+
+                    await Task.CompletedTask;
+                });
             }
             catch (Exception ex)
             {
-                StatusText = $"Error al salir: {ex.Message}";
+                StatusText = STATUS_LEAVE_ERROR_PREFIX + ex.Message;
                 Logger.Error("Error al salir del lobby.", ex);
             }
+        }
+
+        private async Task EnsurePollingAndRefreshAsync()
+        {
+            if (!pollTimer.IsEnabled)
+            {
+                pollTimer.Start();
+            }
+
+            await RefreshLobbyAsync();
         }
 
         private void CopyInviteLink()
@@ -398,7 +412,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 if (!string.IsNullOrWhiteSpace(CodigoPartida))
                 {
                     Clipboard.SetText(CodigoPartida);
-                    StatusText = "Código copiado al portapapeles.";
+                    StatusText = STATUS_CODE_COPIED;
                 }
             }
             catch (Exception ex)
@@ -407,16 +421,72 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
+        private void ApplyLobbyInfo(LobbyInfo info)
+        {
+            if (info == null)
+            {
+                return;
+            }
+
+            LobbyId = info.PartidaId;
+            CodigoPartida = info.CodigoPartida;
+            HostUserId = info.HostUserId;
+            HostUserName = info.HostUserName;
+            MaxPlayers = info.MaxPlayers;
+            LobbyStatus = info.Status.ToString();
+            ExpiresAtUtc = info.ExpiresAtUtc;
+
+            Members.SynchronizeWith(
+                info.Players,
+                (vm, dto) => vm.UserId == dto.UserId,
+                dto => new LobbyMemberViewModel(
+                    dto.UserId,
+                    dto.UserName,
+                    dto.IsHost,
+                    dto.JoinedAtUtc),
+                (vm, dto) => vm.IsHost = dto.IsHost);
+
+            UpdateStatus();
+        }
+
+        private void ApplyCreatedLobby(CreateGameResponse response)
+        {
+            if (response == null)
+            {
+                return;
+            }
+
+            LobbyId = response.PartidaId;
+            CodigoPartida = response.CodigoPartida;
+            ExpiresAtUtc = response.ExpiresAtUtc;
+
+            HostUserId = CurrentUserId;
+            HostUserName = CurrentUserName;
+            LobbyStatus = LOBBY_STATUS_WAITING;
+
+            MaxPlayers = PlayersRequested;
+
+            Members.Clear();
+            Members.Add(new LobbyMemberViewModel(
+                CurrentUserId,
+                CurrentUserName,
+                true,
+                DateTime.Now));
+
+            StatusText = $"Lobby creado. Código {CodigoPartida}. " +
+                         $"Límite {MaxPlayers}. Expira {ExpiresAtUtc:HH:mm} UTC";
+        }
+
         private static string MapDifficulty(DifficultyOption value)
         {
             switch (value)
             {
                 case DifficultyOption.Easy:
-                    return "Easy";
+                    return DIFFICULTY_EASY;
                 case DifficultyOption.Hard:
-                    return "Hard";
+                    return DIFFICULTY_HARD;
                 default:
-                    return "Normal";
+                    return DIFFICULTY_NORMAL;
             }
         }
 
@@ -426,77 +496,42 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             (JoinLobbyCommand as AsyncCommand)?.RaiseCanExecuteChanged();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-
         private void UpdateStatus()
         {
-            if (LobbyId <= 0)
+            if (!HasLobby())
             {
-                StatusText = "Sin lobby";
+                StatusText = STATUS_NO_LOBBY;
                 return;
             }
 
-            StatusText = $"Lobby {CodigoPartida} — Host: {HostUserName} — {Members.Count}/{MaxPlayers} — {LobbyStatus}";
+            StatusText = $"Lobby {CodigoPartida} — Host: {HostUserName} — " +
+                         $"{Members.Count}/{MaxPlayers} — {LobbyStatus}";
         }
 
-
-    }
-
-
-
-    internal static class CollectionSyncExtensions
-    {
-        public static void SynchronizeWith<TVm, TDto>(
-            this ObservableCollection<TVm> target,
-            System.Collections.Generic.IEnumerable<TDto> source,
-            Func<TVm, TDto, bool> match,
-            Func<TDto, TVm> selector,
-            Action<TVm, TDto> update)
+        private bool HasLobby()
         {
-            
-            for (int i = target.Count - 1; i >= 0; i--)
-            {
-                var vm = target[i];
-                bool exists = false;
-                foreach (var dto in source)
-                {
-                    if (match(vm, dto))
-                    {
-                        exists = true;
-                        break;
-                    }
-                }
-                if (!exists)
-                {
-                    target.RemoveAt(i);
-                }
-            }
+            return LobbyId > LOBBY_ID_NOT_SET;
+        }
 
-            foreach (var dto in source)
-            {
-                TVm found = default(TVm);
-                foreach (var vm in target)
-                {
-                    if (match(vm, dto))
-                    {
-                        found = vm;
-                        break;
-                    }
-                }
+        private void ResetLobbyState(string statusMessage)
+        {
+            pollTimer.Stop();
+            Members.Clear();
 
-                if (Equals(found, default(TVm)))
-                {
-                    target.Add(selector(dto));
-                }
-                else
-                {
-                    update(found, dto);
-                }
-            }
+            LobbyId = LOBBY_ID_NOT_SET;
+            HostUserId = 0;
+            HostUserName = string.Empty;
+            CodigoPartida = string.Empty;
+            LobbyStatus = string.Empty;
+            ExpiresAtUtc = DateTime.MinValue;
+
+            StatusText = statusMessage;
+        }
+
+        private void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

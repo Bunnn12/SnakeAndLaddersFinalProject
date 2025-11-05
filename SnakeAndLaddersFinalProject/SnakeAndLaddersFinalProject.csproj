@@ -117,6 +117,7 @@
     </Compile>
     <Compile Include="Globalization\LocalizationManager.cs" />
     <Compile Include="Infrastructure\AsyncCommand.cs" />
+    <Compile Include="Infrastructure\CollectionSyncExtensions.cs" />
     <Compile Include="Infrastructure\RelayCommand.cs" />
     <Compile Include="Navigation\LobbyNavigationArgs.cs" />
     <Compile Include="Pages\AddFriendsPage.xaml.cs">
@@ -130,6 +131,9 @@
     </Compile>
     <Compile Include="Pages\FriendsListPage.xaml.cs">
       <DependentUpon>FriendsListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GameBoardPage.xaml.cs">
+      <DependentUpon>GameBoardPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\InventoryPage.xaml.cs">
       <DependentUpon>InventoryPage.xaml</DependentUpon>
@@ -185,6 +189,7 @@
     <Compile Include="Utilities\WidthToBoolConverter.cs" />
     <Compile Include="ViewModels\ChatClientCallback.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
+    <Compile Include="ViewModels\CreateMatchViewModel.cs" />
     <Compile Include="ViewModels\LobbyViewModel.cs" />
     <Compile Include="ViewModels\Models\LobbyMemberViewModel.cs" />
     <Compile Include="Windows\ChatWindow.xaml.cs">
@@ -217,6 +222,10 @@
     <Page Include="Pages\FriendsListPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\GameBoardPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\InventoryPage.xaml">
       <SubType>Designer</SubType>

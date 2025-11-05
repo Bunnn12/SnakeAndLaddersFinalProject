@@ -13,8 +13,6 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             InitializeComponent();
         }
-
-        // Botón "Crear sala" (asegúrate en XAML: Click="BtnCreateRoomClick")
         private void BtnCreateRoomClick(object sender, RoutedEventArgs e)
         {
             try

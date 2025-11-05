@@ -18,6 +18,9 @@
 
     <Page.Resources>
 
+
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
         <!-- Colores -->
         <SolidColorBrush x:Key="BrushCafe900" Color="#23130C" />
         <SolidColorBrush x:Key="BrushCafe700" Color="#3B2417" />
@@ -409,11 +412,28 @@
                         <Button x:Name="btnProfile"
                                 Grid.Column="9"
                                 Margin="8,-24,8,0"
-                                Content="{x:Static language:Lang.btnProfileText}" />
+                                Style="{StaticResource BtnIcon}"
+                                ToolTip="{x:Static language:Lang.btnProfileText}">
+                                <Ellipse Width="88"
+                                    Height="88"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Stroke="#FFFFFFFF"
+                                    StrokeThickness="2">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding AvatarId,
+                                              Converter={StaticResource AvatarIdToPathConverter},
+                                              FallbackValue=/Assets/Images/Icons/A0013.jpg,
+                                              TargetNullValue=/Assets/Images/Icons/A0013.jpg}"
+                                              Stretch="UniformToFill" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Button>
+
                     </Grid>
                 </Grid>
 
-                <!-- Ranking lateral -->
+               
                 <Button x:Name="btnRanking"
                         Style="{StaticResource BtnFlat}"
                         Content="RANKING"
