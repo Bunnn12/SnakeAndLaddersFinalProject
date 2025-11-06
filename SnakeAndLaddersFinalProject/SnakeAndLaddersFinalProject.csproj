@@ -130,6 +130,7 @@
     <Compile Include="Infrastructure\AsyncCommand.cs" />
     <Compile Include="Infrastructure\CollectionSyncExtensions.cs" />
     <Compile Include="Infrastructure\RelayCommand.cs" />
+    <Compile Include="Policies\PlayerReportPolicy.cs" />
     <Compile Include="Services\GameBoardClient.cs" />
     <Compile Include="Services\IGameBoardClient.cs" />
     <Compile Include="Navigation\LobbyNavigationArgs.cs" />
