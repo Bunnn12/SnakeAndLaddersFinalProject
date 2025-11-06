@@ -646,6 +646,42 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a You have already reported this player recently. Please wait for the sanction to be processed before reporting again..
+        /// </summary>
+        public static string ReportErrorDuplicate {
+            get {
+                return ResourceManager.GetString("ReportErrorDuplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The report request is invalid. Please try again..
+        /// </summary>
+        public static string ReportErrorInvalidRequest {
+            get {
+                return ResourceManager.GetString("ReportErrorInvalidRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The report could not be processed because the player information is invalid..
+        /// </summary>
+        public static string ReportErrorInvalidUser {
+            get {
+                return ResourceManager.GetString("ReportErrorInvalidUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An unexpected error occurred while processing your report. Please try again..
+        /// </summary>
+        public static string ReportGenericErrorMessage {
+            get {
+                return ResourceManager.GetString("ReportGenericErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Report reason.
         /// </summary>
         public static string reportReasonWindowTitle {

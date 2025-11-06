@@ -6,42 +6,183 @@
         xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
         mc:Ignorable="d"
         Title="Chat"
-        Height="240"
-        Width="410"
+        Height="245"
+        Width="405"
         WindowStartupLocation="Manual"
         Loaded="ChatWindow_Loaded"
-        Unloaded="WindowUnloaded">
+        Unloaded="WindowUnloaded"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
 
     <Window.Resources>
-        <!-- tus recursos tal cual -->
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
-        <Style x:Key="ChatItemContainerStyle" TargetType="ListBoxItem">
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Margin" Value="0,6"/>
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <!-- Panel principal tipo pergamino, claro -->
+        <Style x:Key="ChatPanelStyle" TargetType="Border">
+            <Setter Property="Background" Value="#FFF9F0" />
+            <Setter Property="BorderBrush" Value="#D3A772" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="6"
+                                      ShadowDepth="2"
+                                      Opacity="0.55"
+                                      Direction="270" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Botón principal (Enviar) -->
+        <Style x:Key="ChatButtonPrimary" TargetType="Button">
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="#FFFDF9" />
+            <Setter Property="Background" Value="#FFA857" />
+            <Setter Property="BorderBrush" Value="#E18A3A" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Padding" Value="6,4" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FFB96E" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#E58C3D" />
+                                <Setter Property="BorderBrush" Value="#C26D24" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Botón secundario (Stickers) -->
+        <Style x:Key="ChatButtonSecondary"
+               TargetType="Button"
+               BasedOn="{StaticResource ChatButtonPrimary}">
+            <Setter Property="Background" Value="#76C6A6" />
+            <Setter Property="BorderBrush" Value="#5BA489" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding IsMine}" Value="True">
-                    <Setter Property="HorizontalContentAlignment" Value="Right"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsMine}" Value="False">
-                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#8BD4B6" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#5BA489" />
+                    <Setter Property="BorderBrush" Value="#427865" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.45" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Estilo para botón Enviar que se desactiva si el mensaje está vacío -->
+        <Style x:Key="ChatSendButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource ChatButtonPrimary}">
+            <Setter Property="IsEnabled" Value="True" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding NewMessage}" Value="">
+                    <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
+        <!-- Botón pequeñito de cerrar -->
+        <Style x:Key="ChatCloseButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource ChatButtonPrimary}">
+            <Setter Property="Width" Value="22" />
+            <Setter Property="Height" Value="22" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Background" Value="#E57373" />
+            <Setter Property="BorderBrush" Value="#C62828" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#EF9A9A" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#D32F2F" />
+                    <Setter Property="BorderBrush" Value="#B71C1C" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- TextBox redondeado para escribir el mensaje -->
+        <Style x:Key="ChatTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="#FFFFFF" />
+            <Setter Property="BorderBrush" Value="#D3A772" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Padding" Value="4,2" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="14"
+                                SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="8,2" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Items del ListBox -->
+        <Style x:Key="ChatItemContainerStyle" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0,4" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsMine}" Value="True">
+                    <Setter Property="HorizontalContentAlignment" Value="Right" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsMine}" Value="False">
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Burbujas de mensajes -->
         <DataTemplate x:Key="ChatBubbleTemplate">
-            <Border MaxWidth="560"
-                    Padding="10"
-                    CornerRadius="10">
+            <Border MaxWidth="360"
+                    Padding="8"
+                    CornerRadius="8"
+                    BorderThickness="1.5">
                 <Border.Style>
                     <Style TargetType="Border">
-                        <Setter Property="Background" Value="#F4E1C1"/>
-                        <Setter Property="Margin" Value="12,0,0,0"/>
+                        <Setter Property="Background" Value="#FFF4DF" />
+                        <Setter Property="BorderBrush" Value="#E3B879" />
+                        <Setter Property="Margin" Value="8,0,40,0" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsMine}" Value="True">
-                                <Setter Property="Background" Value="#D7B899"/>
-                                <Setter Property="Margin" Value="0,0,12,0"/>
+                                <Setter Property="Background" Value="#FFE2B8" />
+                                <Setter Property="BorderBrush" Value="#D79C63" />
+                                <Setter Property="Margin" Value="40,0,8,0" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -50,133 +191,134 @@
                 <StackPanel>
                     <DockPanel Margin="0,0,0,2">
                         <TextBlock Text="{Binding Header}"
-                                   FontWeight="SemiBold"
-                                   Foreground="#2B2117"
-                                   VerticalAlignment="Center"/>
+                                   FontWeight="Bold"
+                                   Foreground="#3B2718"
+                                   VerticalAlignment="Center" />
 
-                        <Image Width="24"
-                               Height="24"
+                        <Image Width="20"
+                               Height="20"
                                Margin="6,0,0,0"
                                DockPanel.Dock="Right"
                                Source="{Binding AvatarId,
                                                 Converter={StaticResource AvatarIdToPathConverter}}"
                                Visibility="{Binding HasAvatar,
                                                     Converter={StaticResource BooleanToVisibilityConverter}}"
-                               Stretch="UniformToFill"/>
+                               Stretch="UniformToFill" />
                     </DockPanel>
 
                     <TextBlock Text="{Binding Text}"
                                TextWrapping="Wrap"
                                Margin="0,2,0,0"
-                               Foreground="#2B2117"/>
+                               Foreground="#3B2718" />
 
                     <TextBlock Text="{Binding SentAt, StringFormat=t}"
                                HorizontalAlignment="Right"
                                Opacity="0.7"
                                FontSize="11"
-                               Margin="0,6,0,0"
-                               Foreground="#2B2117"/>
+                               Margin="0,4,0,0"
+                               Foreground="#3B2718" />
                 </StackPanel>
             </Border>
         </DataTemplate>
     </Window.Resources>
 
-    <!-- Layout centrado y compacto PERO escalado -->
-    <Grid RenderTransformOrigin="0,0">
-        <Grid.LayoutTransform>
-            <!-- Ajusta 0.8 a 0.7 / 0.9 según qué tan mini lo quieras -->
-            <ScaleTransform ScaleX="0.8" ScaleY="0.8" />
-        </Grid.LayoutTransform>
+    <Grid Margin="0,0,25,-30">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+        <!-- Panel del chat -->
+        <Border Style="{StaticResource ChatPanelStyle}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Height="190"
+                Width="340">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-        <Grid Grid.Column="1" Grid.RowSpan="3" Margin="16" MaxWidth="820" MinWidth="480">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+                <!-- Título + botón cerrar -->
+                <DockPanel Grid.Row="0" Margin="0,0,0,4">
+                    <Button x:Name="btnClose"
+                            Style="{StaticResource ChatCloseButtonStyle}"
+                            Content="✕"
+                            DockPanel.Dock="Right"
+                            Click="Close_Click"
+                            Margin="4,0,0,0" />
 
-            <TextBlock Grid.Row="0"
-                       x:Name="lblChatTitle"
-                       Text="{x:Static language:Lang.chatTittle}"
-                       FontSize="18"
-                       FontWeight="Bold"
-                       TextAlignment="Center"
-                       Margin="0,0,0,8"/>
+                    <TextBlock Text="{x:Static language:Lang.chatTittle}"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               Foreground="#3B2718"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                </DockPanel>
 
-            <Border Grid.Row="1" BorderThickness="1" Padding="8">
-                <ListBox x:Name="lvMessages"
-                         ItemsSource="{Binding Messages}"
-                         ItemContainerStyle="{StaticResource ChatItemContainerStyle}"
-                         ItemTemplate="{StaticResource ChatBubbleTemplate}"
-                         BorderThickness="0"
-                         ScrollViewer.CanContentScroll="True"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         VirtualizingPanel.IsVirtualizing="True"
-                         VirtualizingPanel.ScrollUnit="Pixel"/>
-            </Border>
+                <!-- Lista de mensajes -->
+                <Border Grid.Row="1"
+                        Background="#E6F5EA"
+                        CornerRadius="6"
+                        BorderThickness="1.5"
+                        BorderBrush="#9BC8A6"
+                        Padding="4"
+                        SnapsToDevicePixels="True">
+                    <ListBox x:Name="lvMessages"
+                             ItemsSource="{Binding Messages}"
+                             ItemContainerStyle="{StaticResource ChatItemContainerStyle}"
+                             ItemTemplate="{StaticResource ChatBubbleTemplate}"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             ScrollViewer.CanContentScroll="True"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             VirtualizingPanel.IsVirtualizing="True"
+                             VirtualizingPanel.ScrollUnit="Pixel" />
+                </Border>
 
-            <Grid Grid.Row="2" Margin="0,8,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="8"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="8"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+                <!-- Entrada + botones -->
+                <Grid Grid.Row="2" Margin="0,6,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="6" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="6" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-                <Button x:Name="btnStickers"
-                        Grid.Column="0"
-                        Content="{x:Static language:Lang.lblStickersText}"
-                        Command="{Binding OpenStickersCommand}"
-                        MinWidth="84"
-                        Padding="10,8"/>
+                    <!-- Stickers -->
+                    <Button x:Name="btnStickers"
+                            Grid.Column="0"
+                            Style="{StaticResource ChatButtonSecondary}"
+                            Content="{x:Static language:Lang.lblStickersText}"
+                            Command="{Binding OpenStickersCommand}"
+                            MinWidth="70" />
 
-                <TextBox x:Name="taMessage"
-                         Grid.Column="2"
-                         Text="{Binding NewMessage, UpdateSourceTrigger=PropertyChanged}"
-                         AcceptsReturn="False"
-                         TextWrapping="Wrap"
-                         MaxLength="500"
-                         MinHeight="36"
-                         Loaded="TaMessage_Loaded"
-                         ToolTip="Enter para enviar; Shift+Enter para salto de línea.">
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Enter"
-                                    Modifiers="Control"
-                                    Command="{Binding SendMessageCommand}"/>
-                    </TextBox.InputBindings>
-                </TextBox>
+                    <!-- TextBox redondeado -->
+                    <TextBox x:Name="taMessage"
+                             Grid.Column="2"
+                             Style="{StaticResource ChatTextBox}"
+                             Text="{Binding NewMessage, UpdateSourceTrigger=PropertyChanged}"
+                             AcceptsReturn="False"
+                             MaxLength="500"
+                             MinHeight="32"
+                             Loaded="TaMessage_Loaded"
+                             ToolTip="Enter para enviar; Ctrl+Enter para salto de línea.">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter"
+                                        Modifiers="Control"
+                                        Command="{Binding SendMessageCommand}" />
+                        </TextBox.InputBindings>
+                    </TextBox>
 
-                <Button x:Name="btnSend"
-                        Grid.Column="4"
-                        Content="{x:Static language:Lang.btnSendText}"
-                        Command="{Binding SendMessageCommand}"
-                        MinWidth="84"
-                        Padding="10,8"
-                        IsDefault="True">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="IsEnabled" Value="True"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding NewMessage}" Value="">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
+                    <!-- Enviar -->
+                    <Button x:Name="btnSend"
+                            Grid.Column="4"
+                            Style="{StaticResource ChatSendButtonStyle}"
+                            Content="{x:Static language:Lang.btnSendText}"
+                            Command="{Binding SendMessageCommand}"
+                            MinWidth="70"
+                            IsDefault="True" />
+                </Grid>
             </Grid>
-        </Grid>
+        </Border>
     </Grid>
 </Window>

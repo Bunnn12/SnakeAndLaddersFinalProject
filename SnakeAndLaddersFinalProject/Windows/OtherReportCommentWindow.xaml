@@ -8,26 +8,108 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
         WindowStyle="None"
-        Background="#331B26"
+        Background="Transparent"
         AllowsTransparency="True">
+
+    <Window.Resources>
+        <!-- Colores base tipo pixel-art -->
+        <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#331B26"/>
+        <SolidColorBrush x:Key="PanelInnerBrush" Color="#441F33"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="#FFB84A"/>
+        <SolidColorBrush x:Key="AccentDarkBrush" Color="#D08020"/>
+        <SolidColorBrush x:Key="TextPrimaryBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="TextSecondaryBrush" Color="#FFE0C0"/>
+
+        <!-- Botón principal estilo “pill” naranja -->
+        <Style x:Key="PrimaryPixelButtonStyle" TargetType="Button">
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Foreground" Value="#2C120C"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentDarkBrush}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ContentPresenter VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              Margin="8,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFD56A"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#C87A24"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Botón secundario (Cancelar) -->
+        <Style x:Key="SecondaryPixelButtonStyle" TargetType="Button">
+            <Setter Property="MinWidth" Value="100"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TextSecondaryBrush}"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              Margin="8,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2E1A28"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
 
     <Border Margin="12"
             CornerRadius="6"
             BorderThickness="2"
-            BorderBrush="#FFB84A"
-            Background="#441F33">
+            BorderBrush="{StaticResource AccentBrush}"
+            Background="{StaticResource PanelInnerBrush}">
         <Grid Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <!-- Label -->
                 <RowDefinition Height="8"/>
+                <!-- Espacio -->
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="10"/>
+                <!-- TextBox -->
                 <RowDefinition Height="Auto"/>
+                <!-- Contador -->
+                <RowDefinition Height="10"/>
+                <!-- Espacio -->
+                <RowDefinition Height="Auto"/>
+                <!-- Botones -->
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0"
                        Text="{x:Static language:Lang.OtherReasonDescriptionLabel}"
-                       Foreground="White"
+                       Foreground="{StaticResource TextPrimaryBrush}"
                        FontWeight="Bold"
                        Margin="0,0,0,4"/>
 
@@ -36,18 +118,32 @@
                      AcceptsReturn="True"
                      TextWrapping="Wrap"
                      VerticalScrollBarVisibility="Auto"
-                     MaxLength="250"/>
+                     Background="{StaticResource PanelBackgroundBrush}"
+                     Foreground="{StaticResource TextPrimaryBrush}"
+                     BorderBrush="{StaticResource AccentBrush}"
+                     BorderThickness="1.5"
+                     Padding="4"
+                     MaxLength="100" /> 
 
-            <StackPanel Grid.Row="4"
+            <!-- Contador de caracteres -->
+            <TextBlock x:Name="lblCharCount"
+                       Grid.Row="3"
+                       HorizontalAlignment="Right"
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       FontSize="11"
+                       Text="0/100"
+                       Margin="0,2,0,0"/>       
+
+            <StackPanel Grid.Row="5"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right">
                 <Button x:Name="btnOk"
-                        Width="90"
-                        Margin="0,0,8,0"
+                        Style="{StaticResource PrimaryPixelButtonStyle}"
                         Content="{x:Static language:Lang.btnAcceptText}"
                         Click="BtnOk_Click"/>
+
                 <Button x:Name="btnCancel"
-                        Width="90"
+                        Style="{StaticResource SecondaryPixelButtonStyle}"
                         Content="{x:Static language:Lang.btnCancelText}"
                         Click="BtnCancel_Click"/>
             </StackPanel>
