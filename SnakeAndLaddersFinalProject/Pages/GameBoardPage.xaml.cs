@@ -10,6 +10,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         public GameBoardPage()
         {
             InitializeComponent();
+
         }
 
         public GameBoardViewModel ViewModel

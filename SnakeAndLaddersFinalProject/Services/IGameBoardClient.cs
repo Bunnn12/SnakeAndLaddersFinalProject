@@ -14,7 +14,7 @@ namespace SnakeAndLaddersFinalProject.Services
             BoardSizeOption boardSize,
             bool enableBonusCells,
             bool enableTrapCells,
-            bool enableTeleportCells);
+            bool enableTeleportCells, string difficulty);
 
         BoardDefinitionDto GetBoard(int gameId);
     }

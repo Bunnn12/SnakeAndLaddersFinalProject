@@ -26,6 +26,9 @@ namespace SnakeAndLaddersFinalProject.GameBoardService {
         private SnakeAndLaddersFinalProject.GameBoardService.BoardSizeOption BoardSizeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string DifficultyField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool EnableBonusCellsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -56,6 +59,19 @@ namespace SnakeAndLaddersFinalProject.GameBoardService {
                 if ((this.BoardSizeField.Equals(value) != true)) {
                     this.BoardSizeField = value;
                     this.RaisePropertyChanged("BoardSize");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Difficulty {
+            get {
+                return this.DifficultyField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DifficultyField, value) != true)) {
+                    this.DifficultyField = value;
+                    this.RaisePropertyChanged("Difficulty");
                 }
             }
         }
@@ -200,6 +216,9 @@ namespace SnakeAndLaddersFinalProject.GameBoardService {
         private int ColumnsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private SnakeAndLaddersFinalProject.GameBoardService.BoardLinkDto[] LinksField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int RowsField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -247,6 +266,19 @@ namespace SnakeAndLaddersFinalProject.GameBoardService {
                 if ((this.ColumnsField.Equals(value) != true)) {
                     this.ColumnsField = value;
                     this.RaisePropertyChanged("Columns");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public SnakeAndLaddersFinalProject.GameBoardService.BoardLinkDto[] Links {
+            get {
+                return this.LinksField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LinksField, value) != true)) {
+                    this.LinksField = value;
+                    this.RaisePropertyChanged("Links");
                 }
             }
         }
@@ -369,6 +401,83 @@ namespace SnakeAndLaddersFinalProject.GameBoardService {
                 if ((this.SpecialTypeField.Equals(value) != true)) {
                     this.SpecialTypeField = value;
                     this.RaisePropertyChanged("SpecialType");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="BoardLinkDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay")]
+    [System.SerializableAttribute()]
+    public partial class BoardLinkDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int EndIndexField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsLadderField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int StartIndexField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int EndIndex {
+            get {
+                return this.EndIndexField;
+            }
+            set {
+                if ((this.EndIndexField.Equals(value) != true)) {
+                    this.EndIndexField = value;
+                    this.RaisePropertyChanged("EndIndex");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsLadder {
+            get {
+                return this.IsLadderField;
+            }
+            set {
+                if ((this.IsLadderField.Equals(value) != true)) {
+                    this.IsLadderField = value;
+                    this.RaisePropertyChanged("IsLadder");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int StartIndex {
+            get {
+                return this.StartIndexField;
+            }
+            set {
+                if ((this.StartIndexField.Equals(value) != true)) {
+                    this.StartIndexField = value;
+                    this.RaisePropertyChanged("StartIndex");
                 }
             }
         }

@@ -412,7 +412,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                             options.BoardSize,
                             enableBonusCells,
                             enableTrapCells,
-                            enableTeleportCells);
+                            enableTeleportCells,
+                            options.Difficulty.ToString());
 
                         Debug.WriteLine("LobbyID:" + LobbyId);
                         Debug.WriteLine("BoardID:" + boardDto);

@@ -16,7 +16,8 @@ namespace SnakeAndLaddersFinalProject.Services
     BoardSizeOption boardSize,
     bool enableBonusCells,
     bool enableTrapCells,
-    bool enableTeleportCells)
+    bool enableTeleportCells,
+    string difficulty)
         {
             GameBoardServiceClient client = null;
 
@@ -30,7 +31,8 @@ namespace SnakeAndLaddersFinalProject.Services
                     BoardSize = MapBoardSize(boardSize),
                     EnableBonusCells = enableBonusCells,
                     EnableTrapCells = enableTrapCells,
-                    EnableTeleportCells = enableTeleportCells
+                    EnableTeleportCells = enableTeleportCells,
+                    Difficulty = difficulty
                 };
 
 

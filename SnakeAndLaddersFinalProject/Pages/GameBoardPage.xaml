@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:conv="clr-namespace:SnakeAndLaddersFinalProject.Converters"
       mc:Ignorable="d"
       d:DesignWidth="1280"
       d:DesignHeight="720"
@@ -10,30 +11,29 @@
       Background="Transparent">
 
     <Page.Resources>
+
+        <!-- Converters serpiente / escalera -->
+        <conv:IsSnakeToColorConverter x:Key="IsSnakeToColorConverter" />
+        <conv:IsSnakeToStyleConverter x:Key="IsSnakeToStyleConverter" />
+
         <Thickness x:Key="CellMargin">2</Thickness>
 
         <!-- Fondo claro -->
         <LinearGradientBrush x:Key="BrushBoardCellBackgroundLight"
                              StartPoint="0,0"
                              EndPoint="1,1">
-            <GradientStop Color="#F7E0AD"
-                          Offset="0.0" />
-            <GradientStop Color="#E9C97F"
-                          Offset="0.5" />
-            <GradientStop Color="#CEA456"
-                          Offset="1.0" />
+            <GradientStop Color="#F7E0AD" Offset="0.0" />
+            <GradientStop Color="#E9C97F" Offset="0.5" />
+            <GradientStop Color="#CEA456" Offset="1.0" />
         </LinearGradientBrush>
 
         <!-- Fondo oscuro -->
         <LinearGradientBrush x:Key="BrushBoardCellBackgroundDark"
                              StartPoint="0,0"
                              EndPoint="1,1">
-            <GradientStop Color="#D2A25C"
-                          Offset="0.0" />
-            <GradientStop Color="#B17B38"
-                          Offset="0.5" />
-            <GradientStop Color="#8C541F"
-                          Offset="1.0" />
+            <GradientStop Color="#D2A25C" Offset="0.0" />
+            <GradientStop Color="#B17B38" Offset="0.5" />
+            <GradientStop Color="#8C541F" Offset="1.0" />
         </LinearGradientBrush>
 
         <SolidColorBrush x:Key="BrushBoardCellBorder"
@@ -43,84 +43,64 @@
         <LinearGradientBrush x:Key="BrushBoardCellBonus"
                              StartPoint="0,0"
                              EndPoint="1,1">
-            <GradientStop Color="#C6F6D5"
-                          Offset="0.0" />
-            <GradientStop Color="#68D391"
-                          Offset="0.5" />
-            <GradientStop Color="#2F855A"
-                          Offset="1.0" />
+            <GradientStop Color="#C6F6D5" Offset="0.0" />
+            <GradientStop Color="#68D391" Offset="0.5" />
+            <GradientStop Color="#2F855A" Offset="1.0" />
         </LinearGradientBrush>
 
         <!-- TRAMPA -->
         <LinearGradientBrush x:Key="BrushBoardCellTrap"
                              StartPoint="0,0"
                              EndPoint="1,1">
-            <GradientStop Color="#FED7D7"
-                          Offset="0.0" />
-            <GradientStop Color="#FC8181"
-                          Offset="0.5" />
-            <GradientStop Color="#C53030"
-                          Offset="1.0" />
+            <GradientStop Color="#FED7D7" Offset="0.0" />
+            <GradientStop Color="#FC8181" Offset="0.5" />
+            <GradientStop Color="#C53030" Offset="1.0" />
         </LinearGradientBrush>
 
         <!-- TELEPORT -->
         <LinearGradientBrush x:Key="BrushBoardCellTeleport"
                              StartPoint="0,0"
                              EndPoint="1,1">
-            <GradientStop Color="#E9D8FD"
-                          Offset="0.0" />
-            <GradientStop Color="#9F7AEA"
-                          Offset="0.5" />
-            <GradientStop Color="#553C9A"
-                          Offset="1.0" />
+            <GradientStop Color="#E9D8FD" Offset="0.0" />
+            <GradientStop Color="#9F7AEA" Offset="0.5" />
+            <GradientStop Color="#553C9A" Offset="1.0" />
         </LinearGradientBrush>
 
         <!-- Estilo de casilla -->
         <Style x:Key="BoardCellStyle"
                TargetType="Border">
-            <Setter Property="Width"
-                    Value="64" />
-            <Setter Property="Height"
-                    Value="64" />
-            <Setter Property="Margin"
-                    Value="{StaticResource CellMargin}" />
-            <Setter Property="BorderThickness"
-                    Value="1" />
-            <Setter Property="BorderBrush"
-                    Value="{StaticResource BrushBoardCellBorder}" />
-            <Setter Property="Background"
-                    Value="{StaticResource BrushBoardCellBackgroundLight}" />
-            <Setter Property="SnapsToDevicePixels"
-                    Value="True" />
+            <Setter Property="Width" Value="64" />
+            <Setter Property="Height" Value="64" />
+            <Setter Property="Margin" Value="{StaticResource CellMargin}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{StaticResource BrushBoardCellBorder}" />
+            <Setter Property="Background" Value="{StaticResource BrushBoardCellBackgroundLight}" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
 
             <Style.Triggers>
-
-                <!-- Oscura solo para las normales -->
+                <!-- Oscura (alternado) -->
                 <DataTrigger Binding="{Binding IsDark}" Value="True">
                     <Setter Property="Background"
-                    Value="{StaticResource BrushBoardCellBackgroundDark}" />
+                            Value="{StaticResource BrushBoardCellBackgroundDark}" />
                 </DataTrigger>
 
                 <!-- BONUS -->
                 <DataTrigger Binding="{Binding IsBonus}" Value="True">
                     <Setter Property="Background"
-                    Value="{StaticResource BrushBoardCellBonus}" />
+                            Value="{StaticResource BrushBoardCellBonus}" />
                 </DataTrigger>
 
                 <!-- TRAMPA -->
                 <DataTrigger Binding="{Binding IsTrap}" Value="True">
                     <Setter Property="Background"
-                    Value="{StaticResource BrushBoardCellTrap}" />
+                            Value="{StaticResource BrushBoardCellTrap}" />
                 </DataTrigger>
 
                 <!-- TELEPORT -->
                 <DataTrigger Binding="{Binding IsTeleport}" Value="True">
                     <Setter Property="Background"
-                    Value="{StaticResource BrushBoardCellTeleport}" />
+                            Value="{StaticResource BrushBoardCellTeleport}" />
                 </DataTrigger>
-
-               
-
             </Style.Triggers>
         </Style>
 
@@ -142,20 +122,17 @@
 
                     <!-- Indicador BONUS -->
                     <TextBlock Text="★"
-                               FontSize="20"
+                               FontSize="18"
                                FontWeight="Bold"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Visibility="Collapsed">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
-                                <Setter Property="Visibility"
-                                        Value="Collapsed" />
+                                <Setter Property="Visibility" Value="Collapsed" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsBonus}"
-                                                 Value="True">
-                                        <Setter Property="Visibility"
-                                                Value="Visible" />
+                                    <DataTrigger Binding="{Binding IsBonus}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -164,20 +141,17 @@
 
                     <!-- Indicador TRAMPA -->
                     <TextBlock Text="!"
-                               FontSize="20"
+                               FontSize="18"
                                FontWeight="Bold"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Visibility="Collapsed">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
-                                <Setter Property="Visibility"
-                                        Value="Collapsed" />
+                                <Setter Property="Visibility" Value="Collapsed" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsTrap}"
-                                                 Value="True">
-                                        <Setter Property="Visibility"
-                                                Value="Visible" />
+                                    <DataTrigger Binding="{Binding IsTrap}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -186,20 +160,17 @@
 
                     <!-- Indicador TELEPORT -->
                     <TextBlock Text="↺"
-                               FontSize="20"
+                               FontSize="18"
                                FontWeight="Bold"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Visibility="Collapsed">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
-                                <Setter Property="Visibility"
-                                        Value="Collapsed" />
+                                <Setter Property="Visibility" Value="Collapsed" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsTeleport}"
-                                                 Value="True">
-                                        <Setter Property="Visibility"
-                                                Value="Visible" />
+                                    <DataTrigger Binding="{Binding IsTeleport}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -209,6 +180,7 @@
                 </Grid>
             </Border>
         </DataTemplate>
+
     </Page.Resources>
 
     <Grid Background="Transparent">
@@ -231,21 +203,61 @@
                        Margin="8,0,0,0" />
         </StackPanel>
 
-        <!-- Tablero -->
+        <!-- Tablero + serpientes/escaleras -->
         <Viewbox Grid.Row="1"
                  Margin="16"
                  Stretch="Uniform"
                  HorizontalAlignment="Center"
                  VerticalAlignment="Center">
-            <ItemsControl ItemsSource="{Binding Cells}"
-                          ItemTemplate="{StaticResource BoardCellTemplate}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Rows="{Binding Rows}"
-                                     Columns="{Binding Columns}" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
+            <Grid>
+
+                <!-- Celdas del tablero -->
+                <ItemsControl ItemsSource="{Binding Cells}"
+                              ItemTemplate="{StaticResource BoardCellTemplate}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="{Binding Rows}"
+                                         Columns="{Binding Columns}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+
+                <!-- Serpientes y escaleras -->
+                <ItemsControl ItemsSource="{Binding Connections}"
+                              IsHitTestVisible="False"
+                              Panel.ZIndex="10">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <!-- Canvas en coordenadas de casillas -->
+                            <Canvas Width="{Binding Columns}"
+                                    Height="{Binding Rows}">
+                                <!-- Escala: 1 unidad = 1 casilla (64 px) -->
+                                <Canvas.LayoutTransform>
+                                    <ScaleTransform ScaleX="64" ScaleY="64" />
+                                </Canvas.LayoutTransform>
+                            </Canvas>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Line X1="{Binding StartX}"
+                                  Y1="{Binding StartY}"
+                                  X2="{Binding EndX}"
+                                  Y2="{Binding EndY}"
+                                  StrokeThickness="0.15"
+                                  Stroke="{Binding IsLadder,
+                                                   Converter={StaticResource IsSnakeToColorConverter}}"
+                                  StrokeDashArray="{Binding IsLadder,
+                                                            Converter={StaticResource IsSnakeToStyleConverter}}"
+                                  StrokeStartLineCap="Round"
+                                  StrokeEndLineCap="Round"
+                                  Opacity="0.9" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </Grid>
         </Viewbox>
     </Grid>
 </Page>

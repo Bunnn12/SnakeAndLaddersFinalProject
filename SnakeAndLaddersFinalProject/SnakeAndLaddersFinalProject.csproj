@@ -115,6 +115,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Converters\GameBoardConverters.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="CreateMatchOptions.cs" />
     <Compile Include="DialogBasicWindow.xaml.cs">
@@ -199,6 +200,7 @@
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\CreateMatchViewModel.cs" />
     <Compile Include="ViewModels\GameBoardCellViewModel.cs" />
+    <Compile Include="ViewModels\GameBoardConnectionViewModel.cs" />
     <Compile Include="ViewModels\GameBoardViewModel.cs" />
     <Compile Include="ViewModels\LobbyViewModel.cs" />
     <Compile Include="ViewModels\Models\LobbyMemberViewModel.cs" />

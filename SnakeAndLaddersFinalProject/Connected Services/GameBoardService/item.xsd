@@ -4,6 +4,7 @@
   <xs:complexType name="CreateBoardRequestDto">
     <xs:sequence>
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" minOccurs="0" name="BoardSize" type="q1:BoardSizeOption" />
+      <xs:element minOccurs="0" name="Difficulty" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="EnableBonusCells" type="xs:boolean" />
       <xs:element minOccurs="0" name="EnableTeleportCells" type="xs:boolean" />
       <xs:element minOccurs="0" name="EnableTrapCells" type="xs:boolean" />
@@ -22,6 +23,7 @@
       <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" minOccurs="0" name="BoardSize" type="q2:BoardSizeOption" />
       <xs:element minOccurs="0" name="Cells" nillable="true" type="tns:ArrayOfBoardCellDto" />
       <xs:element minOccurs="0" name="Columns" type="xs:int" />
+      <xs:element minOccurs="0" name="Links" nillable="true" type="tns:ArrayOfBoardLinkDto" />
       <xs:element minOccurs="0" name="Rows" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
@@ -42,4 +44,18 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="BoardCellDto" nillable="true" type="tns:BoardCellDto" />
+  <xs:complexType name="ArrayOfBoardLinkDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BoardLinkDto" nillable="true" type="tns:BoardLinkDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBoardLinkDto" nillable="true" type="tns:ArrayOfBoardLinkDto" />
+  <xs:complexType name="BoardLinkDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EndIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="IsLadder" type="xs:boolean" />
+      <xs:element minOccurs="0" name="StartIndex" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BoardLinkDto" nillable="true" type="tns:BoardLinkDto" />
 </xs:schema>
