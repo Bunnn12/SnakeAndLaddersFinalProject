@@ -32,11 +32,20 @@ namespace SnakeAndLaddersFinalProject.Policies
 
             return true;
         }
+        public int GetMemberUserId(object dataContext)
+        {
+            return GetMemberUserIdInternal(dataContext);
+        }
+
+        public string GetMemberUserName(object dataContext)
+        {
+            return GetMemberUserNameInternal(dataContext);
+        }
 
         private static bool IsGuestMember(object dataContext)
         {
-            int memberUserId = GetMemberUserId(dataContext);
-            string memberUserName = GetMemberUserName(dataContext);
+            int memberUserId = GetMemberUserIdInternal(dataContext);
+            string memberUserName = GetMemberUserNameInternal(dataContext);
 
             if (memberUserId < MIN_REGISTERED_USER_ID)
             {
@@ -51,8 +60,7 @@ namespace SnakeAndLaddersFinalProject.Policies
 
             return false;
         }
-
-        private static int GetMemberUserId(object dataContext)
+        private static int GetMemberUserIdInternal(object dataContext)
         {
             if (dataContext == null)
             {
@@ -75,7 +83,7 @@ namespace SnakeAndLaddersFinalProject.Policies
             return 0;
         }
 
-        private static string GetMemberUserName(object dataContext)
+        private static string GetMemberUserNameInternal(object dataContext)
         {
             if (dataContext == null)
             {

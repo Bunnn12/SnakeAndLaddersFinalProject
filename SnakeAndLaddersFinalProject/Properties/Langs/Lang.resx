@@ -375,4 +375,10 @@
   <data name="lblReportDetailText" xml:space="preserve">
     <value>Report detail</value>
   </data>
+  <data name="OtherReasonWindowTitle" xml:space="preserve">
+    <value>Other reason </value>
+  </data>
+  <data name="OtherReasonDescriptionLabel" xml:space="preserve">
+    <value>Report reason description</value>
+  </data>
 </root>

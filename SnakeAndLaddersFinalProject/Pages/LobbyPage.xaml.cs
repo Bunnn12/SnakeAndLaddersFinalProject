@@ -263,8 +263,19 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 int currentUserId = SessionContext.Current.UserId;
 
-                bool canReport = playerReportPolicy.CanCurrentUserReportTarget(currentUserId, border?.DataContext);
+                bool canReport = playerReportPolicy.CanCurrentUserReportTarget(
+                    currentUserId,
+                    border?.DataContext);
+
                 if (!canReport)
+                {
+                    return;
+                }
+
+                int reportedUserId = playerReportPolicy.GetMemberUserId(border?.DataContext);
+                string reportedUserName = playerReportPolicy.GetMemberUserName(border?.DataContext);
+
+                if (reportedUserId < 1)
                 {
                     return;
                 }
@@ -273,7 +284,10 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 var reportsWindow = new ReportsWindow
                 {
-                    Owner = ownerWindow
+                    Owner = ownerWindow,
+                    ReporterUserId = currentUserId,
+                    ReportedUserId = reportedUserId,
+                    ReportedUserName = reportedUserName
                 };
 
                 reportsWindow.ShowDialog();
@@ -284,7 +298,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 MessageBox.Show(
                     "Ocurrió un error al intentar abrir la ventana de reportes.",
-                    "Error",
+                    "Reportes",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }

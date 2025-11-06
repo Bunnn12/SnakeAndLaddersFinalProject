@@ -218,25 +218,36 @@
                     <!-- Botones de motivo (columna única) -->
                     <StackPanel Grid.Row="4">
                         <Button x:Name="btnHarassment"
-                                Style="{StaticResource ReasonButtonStyle}"
-                                Content="{x:Static language:Lang.btnHarassmentText}"/>
+                            Style="{StaticResource ReasonButtonStyle}"
+                            Content="{x:Static language:Lang.btnHarassmentText}"
+                            Tag="Harassment"
+                            Click="ReasonButton_Click"/>    
 
                         <Button x:Name="btnInappropriateLanguage"
-                                Style="{StaticResource ReasonButtonStyle}"
-                                Content="{x:Static language:Lang.btnInappropiateLangText}"/>
+                            Style="{StaticResource ReasonButtonStyle}"
+                            Content="{x:Static language:Lang.btnInappropiateLangText}"
+                            Tag="InappropriateLanguage"
+                            Click="ReasonButton_Click"/>
 
                         <Button x:Name="btnToxicBehavior"
-                                Style="{StaticResource ReasonButtonStyle}"
-                                Content="{x:Static language:Lang.btnToxicBehaviorText}"/>
+                            Style="{StaticResource ReasonButtonStyle}"
+                            Content="{x:Static language:Lang.btnToxicBehaviorText}"
+                            Tag="ToxicBehavior"
+                            Click="ReasonButton_Click"/>
 
                         <Button x:Name="btnExploiting"
-                                Style="{StaticResource ReasonButtonStyle}"
-                                Content="{x:Static language:Lang.btnExploitingText}"/>
+                            Style="{StaticResource ReasonButtonStyle}"
+                            Content="{x:Static language:Lang.btnExploitingText}"
+                            Tag="Exploiting"
+                            Click="ReasonButton_Click"/>
 
                         <Button x:Name="btnOtherReason"
-                                Style="{StaticResource ReasonButtonStyle}"
-                                Content="{x:Static language:Lang.btnOtherReasonText}"/>
+                            Style="{StaticResource ReasonButtonStyle}"
+                            Content="{x:Static language:Lang.btnOtherReasonText}"
+                            Tag="Other"
+                            Click="ReasonButton_Click"/>
                     </StackPanel>
+
 
                     <!-- Botones inferiores -->
                     <StackPanel Grid.Row="6"

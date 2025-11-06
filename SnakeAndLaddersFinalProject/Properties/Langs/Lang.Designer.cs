@@ -610,6 +610,24 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Report reason description.
+        /// </summary>
+        public static string OtherReasonDescriptionLabel {
+            get {
+                return ResourceManager.GetString("OtherReasonDescriptionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Other reason .
+        /// </summary>
+        public static string OtherReasonWindowTitle {
+            get {
+                return ResourceManager.GetString("OtherReasonWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Password.
         /// </summary>
         public static string pwdPasswordText {

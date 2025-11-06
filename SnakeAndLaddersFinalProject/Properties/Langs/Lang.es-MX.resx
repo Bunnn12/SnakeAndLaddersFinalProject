@@ -376,4 +376,10 @@
   <data name="lblReportDetailText" xml:space="preserve">
     <value />
   </data>
+  <data name="OtherReasonWindowTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OtherReasonDescriptionLabel" xml:space="preserve">
+    <value />
+  </data>
 </root>

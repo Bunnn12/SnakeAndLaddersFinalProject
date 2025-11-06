@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="e14d95cb-d5c2-4a5f-92bb-70c32feeb69c" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8085/report/" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="item.disco" MetadataType="Disco" ID="68d23b6b-34be-4752-a3fd-6ef92a66ade1" SourceId="1" SourceUrl="http://localhost:8085/report/?disco" />
+    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="7c8f9525-ba70-4545-9e66-474da393aa36" SourceId="1" SourceUrl="http://localhost:8085/report/?xsd=xsd2" />
+    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="82c858db-b507-48fa-a6ba-31c133a1bed2" SourceId="1" SourceUrl="http://localhost:8085/report/?xsd=xsd1" />
+    <MetadataFile FileName="item2.xsd" MetadataType="Schema" ID="d6972729-bee9-4b9b-91e5-3bf2bfcce1c7" SourceId="1" SourceUrl="http://localhost:8085/report/?xsd=xsd3" />
+    <MetadataFile FileName="item3.xsd" MetadataType="Schema" ID="10249a5d-f8d2-4b44-b15a-a92fa9ef3fd3" SourceId="1" SourceUrl="http://localhost:8085/report/?xsd=xsd0" />
+    <MetadataFile FileName="PlayerReportService.wsdl" MetadataType="Wsdl" ID="ed19c6c6-0ab7-4a52-8351-94d620593d18" SourceId="1" SourceUrl="http://localhost:8085/report/?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

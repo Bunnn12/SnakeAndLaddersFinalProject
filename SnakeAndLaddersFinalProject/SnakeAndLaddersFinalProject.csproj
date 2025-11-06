@@ -110,6 +110,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Connected Services\PlayerReportService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\UserService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -130,6 +135,7 @@
     <Compile Include="Infrastructure\AsyncCommand.cs" />
     <Compile Include="Infrastructure\CollectionSyncExtensions.cs" />
     <Compile Include="Infrastructure\RelayCommand.cs" />
+    <Compile Include="Mappers\PlayerReportErrorMapper.cs" />
     <Compile Include="Policies\PlayerReportPolicy.cs" />
     <Compile Include="Services\GameBoardClient.cs" />
     <Compile Include="Services\IGameBoardClient.cs" />
@@ -208,6 +214,9 @@
     <Compile Include="ViewModels\Models\LobbyMemberViewModel.cs" />
     <Compile Include="Windows\ChatWindow.xaml.cs">
       <DependentUpon>ChatWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\OtherReportCommentWindow.xaml.cs">
+      <DependentUpon>OtherReportCommentWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ReportsWindow.xaml.cs">
       <DependentUpon>ReportsWindow.xaml</DependentUpon>
@@ -309,6 +318,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ChatWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\OtherReportCommentWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -433,6 +446,25 @@
     <None Include="Connected Services\LobbyService\SnakeAndLaddersFinalProject.LobbyService.OperationResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\PlayerReportService\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\PlayerReportService\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\PlayerReportService\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\PlayerReportService\item3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\PlayerReportService\PlayerReportService.wsdl" />
+    <None Include="Connected Services\PlayerReportService\SnakeAndLaddersFinalProject.PlayerReportService.BanInfoDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\PlayerReportService\SnakeAndLaddersFinalProject.PlayerReportService.SanctionDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\UserService\service.wsdl" />
     <None Include="Connected Services\UserService\service.xsd">
       <SubType>Designer</SubType>
@@ -481,6 +513,7 @@
     <WCFMetadataStorage Include="Connected Services\ChatService\" />
     <WCFMetadataStorage Include="Connected Services\GameBoardService\" />
     <WCFMetadataStorage Include="Connected Services\LobbyService\" />
+    <WCFMetadataStorage Include="Connected Services\PlayerReportService\" />
     <WCFMetadataStorage Include="Connected Services\UserService\" />
   </ItemGroup>
   <ItemGroup>
@@ -496,6 +529,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\PlayerReportService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\PlayerReportService\configuration.svcinfo" />
+    <None Include="Connected Services\PlayerReportService\configuration91.svcinfo" />
+    <None Include="Connected Services\PlayerReportService\item.disco" />
     <None Include="Connected Services\GameBoardService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
