@@ -22,6 +22,11 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private const int GUEST_ID_MIN_VALUE = 1;
         private const int GUEST_ID_MAX_EXCLUSIVE = 1000000;
+
+        private const string BAN_DATE_DISPLAY_FORMAT = "dd/MM/yyyy HH:mm";
+        private const string META_KEY_SANCTION_TYPE = "sanctionType";
+        private const string META_KEY_BAN_ENDS_AT_UTC = "banEndsAtUtc";
+
         public LoginPage()
         {
             InitializeComponent();
@@ -203,7 +208,23 @@ namespace SnakeAndLaddersFinalProject.Pages
                 case "Auth.CodeExpired": return T("AuthCodeExpired");
                 case "Auth.CodeInvalid": return T("AuthCodeInvalid");
                 case "Auth.EmailSendFailed": return T("AuthEmailSendFailed");
-                default: return T("AuthServerError");
+                case "Auth.Banned":
+                    if (m.TryGetValue(META_KEY_SANCTION_TYPE, out var sanctionType) &&
+                        string.Equals(sanctionType, "S4", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return T("AuthBannedPermanent");
+                    }
+                    if (m.TryGetValue(META_KEY_BAN_ENDS_AT_UTC, out var rawDate) &&
+                        DateTime.TryParse(rawDate, out var banEndsUtc))
+                    {
+                        var local = banEndsUtc.ToLocalTime();
+                        return string.Format(
+                            T("AuthBannedUntilFmt"),
+                            local.ToString(BAN_DATE_DISPLAY_FORMAT));
+                    }
+                    return T("AuthBannedGeneric");
+                default:
+                    return T("AuthServerError");
             }
         }
 
