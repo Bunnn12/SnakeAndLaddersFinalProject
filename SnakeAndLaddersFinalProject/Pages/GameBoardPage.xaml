@@ -15,6 +15,8 @@
         <!-- Converters serpiente / escalera -->
         <conv:IsSnakeToColorConverter x:Key="IsSnakeToColorConverter" />
         <conv:IsSnakeToStyleConverter x:Key="IsSnakeToStyleConverter" />
+        <!-- Converter para centrar la cabeza de la serpiente -->
+        <conv:SnakeHeadOffsetConverter x:Key="SnakeHeadOffsetConverter" />
 
         <Thickness x:Key="CellMargin">2</Thickness>
 
@@ -241,18 +243,44 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Line X1="{Binding StartX}"
-                                  Y1="{Binding StartY}"
-                                  X2="{Binding EndX}"
-                                  Y2="{Binding EndY}"
-                                  StrokeThickness="0.15"
-                                  Stroke="{Binding IsLadder,
-                                                   Converter={StaticResource IsSnakeToColorConverter}}"
-                                  StrokeDashArray="{Binding IsLadder,
-                                                            Converter={StaticResource IsSnakeToStyleConverter}}"
-                                  StrokeStartLineCap="Round"
-                                  StrokeEndLineCap="Round"
-                                  Opacity="0.9" />
+                            <Canvas>
+                                <!-- Línea serpiente/escalera -->
+                                <Line X1="{Binding StartX}"
+                                      Y1="{Binding StartY}"
+                                      X2="{Binding EndX}"
+                                      Y2="{Binding EndY}"
+                                      StrokeThickness="0.15"
+                                      Stroke="{Binding IsLadder,
+                                                       Converter={StaticResource IsSnakeToColorConverter}}"
+                                      StrokeDashArray="{Binding IsLadder,
+                                                                Converter={StaticResource IsSnakeToStyleConverter}}"
+                                      StrokeStartLineCap="Round"
+                                      StrokeEndLineCap="Round"
+                                      Opacity="0.9" />
+
+                                <!-- Cabeza de serpiente (solo cuando NO es escalera) -->
+                                <Ellipse Width="0.40"
+                                         Height="0.40"
+                                         Fill="#49a067"
+                                         Stroke="#49a067"
+                                         StrokeThickness="0.04"
+                                         Canvas.Left="{Binding StartX,
+                                                               Converter={StaticResource SnakeHeadOffsetConverter}}"
+                                         Canvas.Top="{Binding StartY,
+                                                              Converter={StaticResource SnakeHeadOffsetConverter}}">
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <!-- Mostrar solo cuando IsLadder = False (es serpiente) -->
+                                                <DataTrigger Binding="{Binding IsLadder}" Value="False">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                            </Canvas>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

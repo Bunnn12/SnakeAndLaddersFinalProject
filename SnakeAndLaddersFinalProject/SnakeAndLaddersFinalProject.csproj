@@ -117,6 +117,7 @@
     </Compile>
     <Compile Include="Converters\GameBoardConverters.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Converters\SnakeHeadOffsetConverter.cs" />
     <Compile Include="CreateMatchOptions.cs" />
     <Compile Include="DialogBasicWindow.xaml.cs">
       <DependentUpon>DialogBasicWindow.xaml</DependentUpon>
