@@ -121,7 +121,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Converters\GameBoardConverters.cs" />
+    <Compile Include="Converters\LadderGeometryConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Converters\SnakeCurveGeometryConverter.cs" />
     <Compile Include="Converters\SnakeHeadOffsetConverter.cs" />
     <Compile Include="CreateMatchOptions.cs" />
     <Compile Include="DialogBasicWindow.xaml.cs">
@@ -608,6 +610,9 @@
     <Resource Include="Assets\Images\Icons\SpecialItemTileIcon.png" />
     <Resource Include="Assets\Images\Icons\SpecialMessageTileIcon.png" />
     <Resource Include="Assets\Images\Avatars\A0013.jpg" />
+    <Resource Include="Assets\Images\Icons\ItemIcon.png" />
+    <Resource Include="Assets\Images\Icons\DieIcon.png" />
+    <Resource Include="Assets\Images\Icons\MessageIcon.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

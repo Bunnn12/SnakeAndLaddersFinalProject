@@ -15,8 +15,11 @@
         <!-- Converters serpiente / escalera -->
         <conv:IsSnakeToColorConverter x:Key="IsSnakeToColorConverter" />
         <conv:IsSnakeToStyleConverter x:Key="IsSnakeToStyleConverter" />
-        <!-- Converter para centrar la cabeza de la serpiente -->
         <conv:SnakeHeadOffsetConverter x:Key="SnakeHeadOffsetConverter" />
+        <!-- Serpientes curvas -->
+        <conv:SnakeCurveGeometryConverter x:Key="SnakeCurveGeometryConverter" />
+        <!-- Escaleras con barandales + peldaños -->
+        <conv:LadderGeometryConverter x:Key="LadderGeometryConverter" />
 
         <Thickness x:Key="CellMargin">2</Thickness>
 
@@ -41,7 +44,7 @@
         <SolidColorBrush x:Key="BrushBoardCellBorder"
                          Color="#8B5A2B" />
 
-        <!-- BONUS -->
+        <!-- BONUS (verde) -->
         <LinearGradientBrush x:Key="BrushBoardCellBonus"
                              StartPoint="0,0"
                              EndPoint="1,1">
@@ -50,7 +53,7 @@
             <GradientStop Color="#2F855A" Offset="1.0" />
         </LinearGradientBrush>
 
-        <!-- TRAMPA -->
+        <!-- TRAMPA (rojo) -->
         <LinearGradientBrush x:Key="BrushBoardCellTrap"
                              StartPoint="0,0"
                              EndPoint="1,1">
@@ -59,7 +62,7 @@
             <GradientStop Color="#C53030" Offset="1.0" />
         </LinearGradientBrush>
 
-        <!-- TELEPORT -->
+        <!-- TELEPORT (morado) -->
         <LinearGradientBrush x:Key="BrushBoardCellTeleport"
                              StartPoint="0,0"
                              EndPoint="1,1">
@@ -67,6 +70,14 @@
             <GradientStop Color="#9F7AEA" Offset="0.5" />
             <GradientStop Color="#553C9A" Offset="1.0" />
         </LinearGradientBrush>
+
+        <!-- ICONOS ESPECIALES -->
+        <BitmapImage x:Key="DiceIconSource"
+                     UriSource="/Assets/Images/Icons/DieIcon.png" />
+        <BitmapImage x:Key="MessageIconSource"
+                     UriSource="/Assets/Images/Icons/MessageIcon.png" />
+        <BitmapImage x:Key="ItemIconSource"
+                     UriSource="/Assets/Images/Icons/ItemIcon.png" />
 
         <!-- Estilo de casilla -->
         <Style x:Key="BoardCellStyle"
@@ -80,25 +91,21 @@
             <Setter Property="SnapsToDevicePixels" Value="True" />
 
             <Style.Triggers>
-                <!-- Oscura (alternado) -->
                 <DataTrigger Binding="{Binding IsDark}" Value="True">
                     <Setter Property="Background"
                             Value="{StaticResource BrushBoardCellBackgroundDark}" />
                 </DataTrigger>
 
-                <!-- BONUS -->
                 <DataTrigger Binding="{Binding IsBonus}" Value="True">
                     <Setter Property="Background"
                             Value="{StaticResource BrushBoardCellBonus}" />
                 </DataTrigger>
 
-                <!-- TRAMPA -->
                 <DataTrigger Binding="{Binding IsTrap}" Value="True">
                     <Setter Property="Background"
                             Value="{StaticResource BrushBoardCellTrap}" />
                 </DataTrigger>
 
-                <!-- TELEPORT -->
                 <DataTrigger Binding="{Binding IsTeleport}" Value="True">
                     <Setter Property="Background"
                             Value="{StaticResource BrushBoardCellTeleport}" />
@@ -109,6 +116,11 @@
         <!-- Plantilla de celda -->
         <DataTemplate x:Key="BoardCellTemplate">
             <Border Style="{StaticResource BoardCellStyle}">
+                <!-- Des–flip del contenido, porque el tablero completo va volteado -->
+                <Border.LayoutTransform>
+                    <ScaleTransform ScaleY="-1" />
+                </Border.LayoutTransform>
+
                 <Grid>
 
                     <!-- Número de casilla -->
@@ -117,20 +129,20 @@
                                VerticalAlignment="Bottom"
                                Margin="0,0,6,4"
                                Foreground="#3B2313"
-                               FontSize="16"
+                               FontFamily="{StaticResource Font.PixelatedDisplay}"
+                               FontSize="12"
                                FontWeight="Bold"
                                TextOptions.TextRenderingMode="Aliased"
                                TextOptions.TextFormattingMode="Display" />
 
-                    <!-- Indicador BONUS -->
-                    <TextBlock Text="★"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="Collapsed">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
+                    <!-- BONUS (verde) -> DiceIcon -->
+                    <Image Width="60"
+                           Height="60"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Source="{StaticResource DiceIconSource}">
+                        <Image.Style>
+                            <Style TargetType="Image">
                                 <Setter Property="Visibility" Value="Collapsed" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsBonus}" Value="True">
@@ -138,18 +150,17 @@
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                        </Image.Style>
+                    </Image>
 
-                    <!-- Indicador TRAMPA -->
-                    <TextBlock Text="!"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="Collapsed">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
+                    <!-- TRAMPA (rojo) -> ItemIcon -->
+                    <Image Width="60"
+                           Height="60"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Source="{StaticResource ItemIconSource}">
+                        <Image.Style>
+                            <Style TargetType="Image">
                                 <Setter Property="Visibility" Value="Collapsed" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsTrap}" Value="True">
@@ -157,18 +168,17 @@
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                        </Image.Style>
+                    </Image>
 
-                    <!-- Indicador TELEPORT -->
-                    <TextBlock Text="↺"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="Collapsed">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
+                    <!-- TELEPORT (morado) -> MessageIcon -->
+                    <Image Width="60"
+                           Height="60"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Source="{StaticResource MessageIconSource}">
+                        <Image.Style>
+                            <Style TargetType="Image">
                                 <Setter Property="Visibility" Value="Collapsed" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsTeleport}" Value="True">
@@ -176,8 +186,8 @@
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                        </Image.Style>
+                    </Image>
 
                 </Grid>
             </Border>
@@ -205,13 +215,18 @@
                        Margin="8,0,0,0" />
         </StackPanel>
 
-        <!-- Tablero + serpientes/escaleras -->
+        <!-- Tablero -->
         <Viewbox Grid.Row="1"
                  Margin="16"
                  Stretch="Uniform"
                  HorizontalAlignment="Center"
                  VerticalAlignment="Center">
             <Grid>
+                <!-- Flip vertical del tablero completo:
+                     hace que la primera fila se vaya abajo -->
+                <Grid.LayoutTransform>
+                    <ScaleTransform ScaleY="-1" />
+                </Grid.LayoutTransform>
 
                 <!-- Celdas del tablero -->
                 <ItemsControl ItemsSource="{Binding Cells}"
@@ -230,7 +245,6 @@
                               Panel.ZIndex="10">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <!-- Canvas en coordenadas de casillas -->
                             <Canvas Width="{Binding Columns}"
                                     Height="{Binding Rows}">
                                 <!-- Escala: 1 unidad = 1 casilla (64 px) -->
@@ -244,21 +258,76 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Canvas>
-                                <!-- Línea serpiente/escalera -->
-                                <Line X1="{Binding StartX}"
-                                      Y1="{Binding StartY}"
-                                      X2="{Binding EndX}"
-                                      Y2="{Binding EndY}"
-                                      StrokeThickness="0.15"
+
+                                <!-- Serpientes: curvas -->
+                                <Path StrokeThickness="0.15"
                                       Stroke="{Binding IsLadder,
                                                        Converter={StaticResource IsSnakeToColorConverter}}"
                                       StrokeDashArray="{Binding IsLadder,
                                                                 Converter={StaticResource IsSnakeToStyleConverter}}"
                                       StrokeStartLineCap="Round"
                                       StrokeEndLineCap="Round"
-                                      Opacity="0.9" />
+                                      StrokeLineJoin="Round"
+                                      Opacity="0.95">
+                                    <Path.Effect>
+                                        <DropShadowEffect ShadowDepth="0"
+                                                          BlurRadius="0.18"
+                                                          Opacity="0.6" />
+                                    </Path.Effect>
+                                    <Path.Style>
+                                        <Style TargetType="Path">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsLadder}" Value="False">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                    <Path.Data>
+                                        <MultiBinding Converter="{StaticResource SnakeCurveGeometryConverter}">
+                                            <Binding Path="StartX" />
+                                            <Binding Path="StartY" />
+                                            <Binding Path="EndX" />
+                                            <Binding Path="EndY" />
+                                            <Binding Path="IsLadder" />
+                                        </MultiBinding>
+                                    </Path.Data>
+                                </Path>
 
-                                <!-- Cabeza de serpiente (solo cuando NO es escalera) -->
+                                <!-- Escaleras: barandales + peldaños -->
+                                <Path StrokeThickness="0.11"
+                                      Stroke="#85462D"
+                                      StrokeStartLineCap="Round"
+                                      StrokeEndLineCap="Round"
+                                      StrokeLineJoin="Round"
+                                      Opacity="0.95">
+                                    <Path.Effect>
+                                        <DropShadowEffect ShadowDepth="0"
+                                                          BlurRadius="0.20"
+                                                          Opacity="0.5" />
+                                    </Path.Effect>
+                                    <Path.Style>
+                                        <Style TargetType="Path">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsLadder}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                    <Path.Data>
+                                        <MultiBinding Converter="{StaticResource LadderGeometryConverter}">
+                                            <Binding Path="StartX" />
+                                            <Binding Path="StartY" />
+                                            <Binding Path="EndX" />
+                                            <Binding Path="EndY" />
+                                        </MultiBinding>
+                                    </Path.Data>
+                                </Path>
+
+                                <!-- Cabeza simple (círculo) solo para serpientes -->
                                 <Ellipse Width="0.40"
                                          Height="0.40"
                                          Fill="#49a067"
@@ -272,7 +341,6 @@
                                         <Style TargetType="Ellipse">
                                             <Setter Property="Visibility" Value="Collapsed" />
                                             <Style.Triggers>
-                                                <!-- Mostrar solo cuando IsLadder = False (es serpiente) -->
                                                 <DataTrigger Binding="{Binding IsLadder}" Value="False">
                                                     <Setter Property="Visibility" Value="Visible" />
                                                 </DataTrigger>
@@ -280,6 +348,7 @@
                                         </Style>
                                     </Ellipse.Style>
                                 </Ellipse>
+
                             </Canvas>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
