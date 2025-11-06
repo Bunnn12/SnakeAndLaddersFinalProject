@@ -6,8 +6,8 @@
         xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
         mc:Ignorable="d"
         Title="{x:Static language:Lang.reportUserTittle}"
-        Height="350"
-        Width="390"
+        Height="325"
+        Width="305"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
         Background="Transparent"
@@ -128,7 +128,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid>
+    <Grid Margin="0,0,10,10">
         <!-- Marco exterior con brillo -->
         <Border CornerRadius="8"
                 BorderThickness="2"
@@ -241,15 +241,7 @@
                     <!-- Botones inferiores -->
                     <StackPanel Grid.Row="6"
                                 Orientation="Horizontal"
-                                HorizontalAlignment="Right">
-                        <Button x:Name="btnAccept"
-                                Style="{StaticResource PrimaryPixelButtonStyle}"
-                                Content="{x:Static language:Lang.btnAcceptText}"/>
-
-                        <Button x:Name="btnCancel"
-                                Style="{StaticResource SecondaryPixelButtonStyle}"
-                                Content="{x:Static language:Lang.btnCancelText}"/>
-                    </StackPanel>
+                                HorizontalAlignment="Right"/>
                 </Grid>
             </Border>
         </Border>
