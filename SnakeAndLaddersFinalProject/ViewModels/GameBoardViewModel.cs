@@ -17,70 +17,29 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public GameBoardViewModel(BoardDefinitionDto dto)
         {
-            if (dto == null)
-            {
-                throw new ArgumentNullException(nameof(dto));
-            }
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
 
             Rows = dto.Rows;
             Columns = dto.Columns;
 
-            // ----- CELDAS -----
             var cellVms = new ObservableCollection<GameBoardCellViewModel>();
-
-            if (dto.Cells != null)
+            foreach (var cellDto in dto.Cells ?? Array.Empty<BoardCellDto>())
             {
-                foreach (BoardCellDto cellDto in dto.Cells)
-                {
-                    cellVms.Add(new GameBoardCellViewModel(cellDto));
-                }
+                cellVms.Add(new GameBoardCellViewModel(cellDto));
             }
-
             Cells = cellVms;
 
-            // Para pasárselo a GameBoardConnectionViewModel
-            IList<GameBoardCellViewModel> cellList = Cells.ToList();
+            var connVms = new ObservableCollection<GameBoardConnectionViewModel>();
+            // usamos la misma lista de celdas para buscar índices
+            IList<GameBoardCellViewModel> cellsList = cellVms.ToList();
 
-            // ----- CONEXIONES (serpientes / escaleras) -----
-            var connectionVms = new ObservableCollection<GameBoardConnectionViewModel>();
-
-            if (dto.Links != null)
+            foreach (var link in dto.Links ?? Array.Empty<BoardLinkDto>())
             {
-                foreach (BoardLinkDto link in dto.Links)
-                {
-                    // OJO: aquí asumo que en BoardLinkDto tienes:
-                    //   int StartIndex
-                    //   int EndIndex
-                    //   bool IsSnake
-                    //
-                    // Si el bool se llama distinto (p.e. IsSnakeLink), cámbialo abajo.
-
-                    bool isLadder = link.IsLadder;   // ajusta el nombre si hace falta
-
-                    var connVm = new GameBoardConnectionViewModel(
-                        link.StartIndex,
-                        link.EndIndex,
-                        isLadder,
-                        Rows,
-                        Columns,
-                        cellList);
-
-                    connectionVms.Add(connVm);
-                }
+                connVms.Add(new GameBoardConnectionViewModel(link, Rows, Columns, cellsList));
             }
 
-            Connections = connectionVms;
-
-            // Debug para ver qué llega
-            System.Diagnostics.Debug.WriteLine(
-                $"Board: Cells={Cells.Count}, Links={Connections.Count}");
-
-            foreach (var c in Connections)
-            {
-                System.Diagnostics.Debug.WriteLine(
-                    $"Connection: {c.StartIndex} -> {c.EndIndex} | IsLadder={c.IsLadder} | " +
-                    $"({c.StartX},{c.StartY}) -> ({c.EndX},{c.EndY})");
-            }
+            Connections = connVms;
         }
+
     }
 }

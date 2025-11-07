@@ -17,9 +17,6 @@ using System.Windows.Threading;
 
 namespace SnakeAndLaddersFinalProject.Windows
 {
-    /// <summary>
-    /// Lógica de interacción para ChatWindow.xaml
-    /// </summary>
     public partial class ChatWindow : Window
     {
         private ChatViewModel vm;
@@ -96,6 +93,10 @@ namespace SnakeAndLaddersFinalProject.Windows
                 }),
                 DispatcherPriority.ContextIdle
             );
+        }
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

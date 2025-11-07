@@ -12,7 +12,7 @@ namespace SnakeAndLaddersFinalProject.Converters
         private const double RAIL_OFFSET_FACTOR = 0.10;
         private const double MAX_RAIL_OFFSET = 0.25;
 
-        private const double STEPS_PER_UNIT = 1.2;
+        private const double STEPS_PER_UNIT = 1;
         private const int MIN_STEPS = 2;
         private const int MAX_STEPS = 7;
 

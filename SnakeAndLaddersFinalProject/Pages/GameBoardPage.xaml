@@ -116,11 +116,6 @@
         <!-- Plantilla de celda -->
         <DataTemplate x:Key="BoardCellTemplate">
             <Border Style="{StaticResource BoardCellStyle}">
-                <!-- Des–flip del contenido, porque el tablero completo va volteado -->
-                <Border.LayoutTransform>
-                    <ScaleTransform ScaleY="-1" />
-                </Border.LayoutTransform>
-
                 <Grid>
 
                     <!-- Número de casilla -->
@@ -222,11 +217,6 @@
                  HorizontalAlignment="Center"
                  VerticalAlignment="Center">
             <Grid>
-                <!-- Flip vertical del tablero completo:
-                     hace que la primera fila se vaya abajo -->
-                <Grid.LayoutTransform>
-                    <ScaleTransform ScaleY="-1" />
-                </Grid.LayoutTransform>
 
                 <!-- Celdas del tablero -->
                 <ItemsControl ItemsSource="{Binding Cells}"

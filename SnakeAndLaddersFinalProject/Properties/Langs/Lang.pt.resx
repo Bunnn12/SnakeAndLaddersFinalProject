@@ -382,4 +382,16 @@
   <data name="OtherReasonDescriptionLabel" xml:space="preserve">
     <value />
   </data>
+  <data name="ReportGenericErrorMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ReportErrorDuplicate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ReportErrorInvalidUser" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ReportErrorInvalidRequest" xml:space="preserve">
+    <value />
+  </data>
 </root>
