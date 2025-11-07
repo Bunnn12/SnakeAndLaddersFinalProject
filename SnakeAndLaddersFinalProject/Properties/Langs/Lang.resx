@@ -393,4 +393,19 @@
   <data name="ReportErrorInvalidRequest" xml:space="preserve">
     <value>The report request is invalid. Please try again.</value>
   </data>
+  <data name="lblRankingTitleText" xml:space="preserve">
+    <value>Players ranking</value>
+  </data>
+  <data name="colRankingPositionHeader" xml:space="preserve">
+    <value>#</value>
+  </data>
+  <data name="colRankingUsernameHeader" xml:space="preserve">
+    <value>Player</value>
+  </data>
+  <data name="colRankingCoinsHeader" xml:space="preserve">
+    <value>Coins</value>
+  </data>
+  <data name="lblRankingFooterText" xml:space="preserve">
+    <value>Players are sorted by their coin count</value>
+  </data>
 </root>

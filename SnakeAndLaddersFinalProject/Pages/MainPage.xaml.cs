@@ -77,6 +77,27 @@ namespace SnakeAndLaddersFinalProject.Pages
             NavigateToLobby(new LobbyNavigationArgs { Mode = LobbyEntryMode.Join, JoinCode = code });
         }
 
+        private void BtnRanking_Click(object sender, RoutedEventArgs e)
+        {
+            var page = new RankingPage();
+
+            if (NavigationService != null)
+            {
+                NavigationService.Navigate(page);
+                return;
+            }
+
+            var window = Application.Current.MainWindow as NavigationWindow;
+            if (window != null)
+            {
+                window.Navigate(page);
+            }
+            else
+            {
+                Application.Current.MainWindow.Content = page;
+            }
+        }
+
         private void btnFriends_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
         {
             return;

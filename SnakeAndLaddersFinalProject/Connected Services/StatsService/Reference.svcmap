@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="1e0303ab-600b-4a83-8ae9-133b18542a92" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8085/stats/" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="StatsService.wsdl" MetadataType="Wsdl" ID="63df13bf-d760-4d9d-8a35-020acfdf1908" SourceId="1" SourceUrl="http://localhost:8085/stats/?wsdl" />
+    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="cba5ee1e-91e3-42c7-bd35-eaefe39e8959" SourceId="1" SourceUrl="http://localhost:8085/stats/?xsd=xsd2" />
+    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="9cbf47dd-d56c-4a3c-a5ab-f0e37bb66d75" SourceId="1" SourceUrl="http://localhost:8085/stats/?xsd=xsd1" />
+    <MetadataFile FileName="item.disco" MetadataType="Disco" ID="90f342d0-a190-46a7-b401-ea7d0e14b4b8" SourceId="1" SourceUrl="http://localhost:8085/stats/?disco" />
+    <MetadataFile FileName="item2.xsd" MetadataType="Schema" ID="334fc1ef-01ca-4996-ac5b-d6aecf59fdd5" SourceId="1" SourceUrl="http://localhost:8085/stats/?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

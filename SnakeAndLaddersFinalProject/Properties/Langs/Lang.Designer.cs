@@ -367,6 +367,33 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Coins.
+        /// </summary>
+        public static string colRankingCoinsHeader {
+            get {
+                return ResourceManager.GetString("colRankingCoinsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a #.
+        /// </summary>
+        public static string colRankingPositionHeader {
+            get {
+                return ResourceManager.GetString("colRankingPositionHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Player.
+        /// </summary>
+        public static string colRankingUsernameHeader {
+            get {
+                return ResourceManager.GetString("colRankingUsernameHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Add friends.
         /// </summary>
         public static string lblAddFriends {
@@ -525,6 +552,24 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string lblPlayersText {
             get {
                 return ResourceManager.GetString("lblPlayersText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Players are sorted by their coin count.
+        /// </summary>
+        public static string lblRankingFooterText {
+            get {
+                return ResourceManager.GetString("lblRankingFooterText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Players ranking.
+        /// </summary>
+        public static string lblRankingTitleText {
+            get {
+                return ResourceManager.GetString("lblRankingTitleText", resourceCulture);
             }
         }
         

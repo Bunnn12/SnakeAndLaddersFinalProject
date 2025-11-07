@@ -394,4 +394,19 @@
   <data name="ReportErrorInvalidRequest" xml:space="preserve">
     <value />
   </data>
+  <data name="lblRankingTitleText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="colRankingPositionHeader" xml:space="preserve">
+    <value />
+  </data>
+  <data name="colRankingUsernameHeader" xml:space="preserve">
+    <value />
+  </data>
+  <data name="colRankingCoinsHeader" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblRankingFooterText" xml:space="preserve">
+    <value />
+  </data>
 </root>
