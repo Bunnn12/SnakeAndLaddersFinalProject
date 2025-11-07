@@ -29,7 +29,10 @@
     <FontFamily x:Key="Font.SetiaHati-Regular">
         pack://application:,,,/Assets/Fonts/#Setia hati regular
     </FontFamily>
-    
+    <FontFamily x:Key="Font.Jungle">
+        pack://application:,,,/Assets/Fonts/#Jungle
+    </FontFamily>
+
     <Style x:Key="Txt.Pixel" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Font.PressStart2P}"/>
         <Setter Property="FontSize" Value="20"/>

@@ -259,17 +259,16 @@
 
                     <!-- Banner madera título -->
                     <Border Grid.Column="1"
-                            Background="{StaticResource BrushWoodDark}"
                             CornerRadius="10"
-                            BorderBrush="{StaticResource BrushBoardBorder}"
+                            BorderBrush="{DynamicResource BrushWoodDark}"
                             BorderThickness="4"
                             Padding="40,8"
                             HorizontalAlignment="Center"
-                            Effect="{StaticResource ShadowSoft}">
+                            Effect="{StaticResource ShadowSoft}" Background="#FF59320B">
                         <TextBlock Text="{x:Static language:Lang.lblRankingTitleText}"
                                    d:Text="Players ranking"
                                    Style="{StaticResource LblRankingTitle}"
-                                   HorizontalAlignment="Center" />
+                                   HorizontalAlignment="Center" FontFamily="{StaticResource Font.M04B}" FontWeight="Bold" />
                     </Border>
                 </Grid>
 
@@ -307,7 +306,7 @@
                                     <DataGridTextColumn Header="{x:Static language:Lang.colRankingCoinsHeader}"
                                                         Binding="{Binding Coins}"
                                                         Width="150"
-                                                        ElementStyle="{StaticResource CenterCellStyle}" />  
+                                                        ElementStyle="{StaticResource CenterCellStyle}" />
 
                                 </DataGrid.Columns>
                             </DataGrid>

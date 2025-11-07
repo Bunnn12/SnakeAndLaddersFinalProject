@@ -384,6 +384,7 @@
     <Resource Include="Assets\Fonts\MinecraftStandard.otf" />
     <Resource Include="Assets\Fonts\MinecraftStandardBold.otf" />
     <Resource Include="Assets\Fonts\SetiaHati-Regular.ttf" />
+    <Resource Include="Assets\Fonts\Jungle.otf" />
     <None Include="Connected Services\AuthService\AuthService.wsdl" />
     <None Include="Connected Services\AuthService\item.xsd">
       <SubType>Designer</SubType>
