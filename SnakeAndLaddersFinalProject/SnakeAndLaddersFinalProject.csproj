@@ -211,6 +211,7 @@
     <Compile Include="Utilities\AvatarIdHelper.cs" />
     <Compile Include="Utilities\AvatarIdToPathConverter.cs" />
     <Compile Include="Utilities\AvatarPathUtility.cs" />
+    <Compile Include="Utilities\BanPlayerHelper.cs" />
     <Compile Include="Utilities\Loading.cs" />
     <Compile Include="Utilities\PageBackground.cs" />
     <Compile Include="Utilities\TextBoxCharCounterHelper.cs" />

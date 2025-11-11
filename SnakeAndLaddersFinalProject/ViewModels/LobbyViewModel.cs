@@ -49,6 +49,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         // Ahora el evento manda directamente el GameBoardViewModel
         public event Action<GameBoardViewModel> NavigateToBoardRequested;
+        public event Action CurrentUserKickedFromLobby;
+
 
         private readonly DispatcherTimer pollTimer =
             new DispatcherTimer { Interval = TimeSpan.FromSeconds(POLL_INTERVAL_SECONDS) };
@@ -505,6 +507,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             if (info == null)
             {
+                ResetLobbyState(STATUS_LOBBY_CLOSED);
                 return;
             }
 
@@ -525,6 +528,26 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     dto.IsHost,
                     dto.JoinedAtUtc),
                 (vm, dto) => vm.IsHost = dto.IsHost);
+
+            bool isCurrentUserStillInLobby = false;
+
+            foreach (var member in Members)
+            {
+                if (member.UserId == CurrentUserId)
+                {
+                    isCurrentUserStillInLobby = true;
+                    break;
+                }
+            }
+
+            if (!isCurrentUserStillInLobby)
+            {
+                pollTimer.Stop();
+                StatusText = "Has sido expulsado del lobby.";
+                var handler = CurrentUserKickedFromLobby;
+                handler?.Invoke();
+                return;
+            }
 
             var boardSize = MapBoardSize(info.BoardSide);
             var difficultyOption = MapDifficultyFromServer(info.Difficulty);

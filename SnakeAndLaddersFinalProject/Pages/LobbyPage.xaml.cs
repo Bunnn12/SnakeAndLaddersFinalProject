@@ -9,6 +9,7 @@ using SnakeAndLaddersFinalProject.Navigation;
 using SnakeAndLaddersFinalProject.ViewModels;
 using SnakeAndLaddersFinalProject.Windows;
 using SnakeAndLaddersFinalProject.Policies;
+using SnakeAndLaddersFinalProject.Utilities;
 
 
 namespace SnakeAndLaddersFinalProject.Pages
@@ -53,6 +54,8 @@ namespace SnakeAndLaddersFinalProject.Pages
             // Suscribimos el evento de navegación al tablero
             vm.NavigateToBoardRequested -= OnNavigateToBoardRequested;
             vm.NavigateToBoardRequested += OnNavigateToBoardRequested;
+            vm.CurrentUserKickedFromLobby -= OnCurrentUserKickedFromLobby;
+            vm.CurrentUserKickedFromLobby += OnCurrentUserKickedFromLobby;
 
             try
             {
@@ -95,9 +98,23 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
 
             vm.NavigateToBoardRequested -= OnNavigateToBoardRequested;
+            vm.CurrentUserKickedFromLobby -= OnCurrentUserKickedFromLobby;
         }
 
-        // AHORA el handler recibe directamente el GameBoardViewModel
+        private void OnCurrentUserKickedFromLobby()
+        {
+            try
+            {
+                BanPlayerHelper.HandleBanAndNavigateToLogin(
+                    this,
+                    "Has sido baneado y expulsado del juego.");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error al manejar el baneo del usuario actual.", ex);
+            }
+        }
+
         private void OnNavigateToBoardRequested(GameBoardViewModel boardViewModel)
         {
             if (boardViewModel == null)
