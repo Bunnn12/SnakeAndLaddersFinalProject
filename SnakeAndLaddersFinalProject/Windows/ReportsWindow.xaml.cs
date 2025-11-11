@@ -83,6 +83,8 @@ namespace SnakeAndLaddersFinalProject.Windows
             return true;
         }
 
+
+
         private void HandlePredefinedReason(string reasonKey)
         {
             string displayText = ResolveDisplayText(reasonKey);

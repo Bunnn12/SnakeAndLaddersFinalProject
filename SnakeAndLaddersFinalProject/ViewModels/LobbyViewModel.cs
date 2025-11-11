@@ -185,8 +185,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private void InitializeCurrentUser()
         {
             var sessionContext = SessionContext.Current;
-
-            if (sessionContext.IsAuthenticated)
+            if (sessionContext != null && sessionContext.UserId != 0)
             {
                 CurrentUserId = sessionContext.UserId;
                 CurrentUserName = string.IsNullOrWhiteSpace(sessionContext.UserName)
@@ -195,11 +194,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 return;
             }
-
             var fallbackName = $"Guest-{Environment.UserName}-{Process.GetCurrentProcess().Id}";
             CurrentUserName = fallbackName;
-            CurrentUserId = Math.Abs(fallbackName.GetHashCode());
+            CurrentUserId = -Math.Abs(fallbackName.GetHashCode());
         }
+
 
         private void OnMembersChanged(object sender, NotifyCollectionChangedEventArgs e)
         {

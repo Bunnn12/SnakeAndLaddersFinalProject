@@ -5,11 +5,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using log4net;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class SignUpPage : Page
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(SignUpPage));
         public SignUpPage()
         {
             InitializeComponent();
@@ -92,6 +94,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             catch (System.ServiceModel.EndpointNotFoundException)
             {
                 ShowError(T("UiEndpointNotFound"));
+                Logger.Warn("No se ha encontrado el endpoint");
                 client.Abort();
             }
             catch (Exception ex)

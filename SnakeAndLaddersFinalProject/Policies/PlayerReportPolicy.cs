@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SnakeAndLaddersFinalProject.Policies
 {
     public sealed class PlayerReportPolicy
     {
         private const int MIN_REGISTERED_USER_ID = 1;
-        private const string GUEST_NAME_PREFIX = "Guest";
 
         public bool CanCurrentUserReportTarget(int currentUserId, object memberDataContext)
         {
@@ -18,12 +13,12 @@ namespace SnakeAndLaddersFinalProject.Policies
                 return false;
             }
 
-            if (IsGuestMember(memberDataContext))
+            int memberUserId = GetMemberUserIdInternal(memberDataContext);
+
+            if (memberUserId < MIN_REGISTERED_USER_ID)
             {
                 return false;
             }
-
-            int memberUserId = GetMemberUserId(memberDataContext);
 
             if (memberUserId == currentUserId)
             {
@@ -32,6 +27,7 @@ namespace SnakeAndLaddersFinalProject.Policies
 
             return true;
         }
+
         public int GetMemberUserId(object dataContext)
         {
             return GetMemberUserIdInternal(dataContext);
@@ -42,24 +38,6 @@ namespace SnakeAndLaddersFinalProject.Policies
             return GetMemberUserNameInternal(dataContext);
         }
 
-        private static bool IsGuestMember(object dataContext)
-        {
-            int memberUserId = GetMemberUserIdInternal(dataContext);
-            string memberUserName = GetMemberUserNameInternal(dataContext);
-
-            if (memberUserId < MIN_REGISTERED_USER_ID)
-            {
-                return true;
-            }
-
-            if (!string.IsNullOrWhiteSpace(memberUserName) &&
-                memberUserName.StartsWith(GUEST_NAME_PREFIX, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            return false;
-        }
         private static int GetMemberUserIdInternal(object dataContext)
         {
             if (dataContext == null)
@@ -75,12 +53,7 @@ namespace SnakeAndLaddersFinalProject.Policies
             }
 
             var value = userIdProperty.GetValue(dataContext, null);
-            if (value is int memberUserId)
-            {
-                return memberUserId;
-            }
-
-            return 0;
+            return value is int memberUserId ? memberUserId : 0;
         }
 
         private static string GetMemberUserNameInternal(object dataContext)
