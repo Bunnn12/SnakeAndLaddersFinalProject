@@ -35,6 +35,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             foreach (var link in dto.Links ?? Array.Empty<BoardLinkDto>())
             {
+
                 connVms.Add(new GameBoardConnectionViewModel(link, Rows, Columns, cellsList));
             }
 
