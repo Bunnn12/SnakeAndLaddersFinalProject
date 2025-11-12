@@ -325,6 +325,12 @@ namespace SnakeAndLaddersFinalProject.GameBoardService {
         private bool IsDarkField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsFinalField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsStartField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int RowField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -375,6 +381,32 @@ namespace SnakeAndLaddersFinalProject.GameBoardService {
                 if ((this.IsDarkField.Equals(value) != true)) {
                     this.IsDarkField = value;
                     this.RaisePropertyChanged("IsDark");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsFinal {
+            get {
+                return this.IsFinalField;
+            }
+            set {
+                if ((this.IsFinalField.Equals(value) != true)) {
+                    this.IsFinalField = value;
+                    this.RaisePropertyChanged("IsFinal");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsStart {
+            get {
+                return this.IsStartField;
+            }
+            set {
+                if ((this.IsStartField.Equals(value) != true)) {
+                    this.IsStartField = value;
+                    this.RaisePropertyChanged("IsStart");
                 }
             }
         }
