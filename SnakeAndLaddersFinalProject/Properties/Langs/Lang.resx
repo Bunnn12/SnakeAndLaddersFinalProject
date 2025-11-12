@@ -408,4 +408,67 @@
   <data name="lblRankingFooterText" xml:space="preserve">
     <value>Players are sorted by their coin count</value>
   </data>
+  <data name="btnInviteFriendsText" xml:space="preserve">
+    <value>Invite friends</value>
+  </data>
+  <data name="friendAcceptedText" xml:space="preserve">
+    <value>Friend request accepted</value>
+  </data>
+  <data name="friendRejectedText" xml:space="preserve">
+    <value>Friend request rejected</value>
+  </data>
+  <data name="friendRequestCanceledText" xml:space="preserve">
+    <value>Friend request canceled</value>
+  </data>
+  <data name="lblFriendRequestsTitle" xml:space="preserve">
+    <value>Friend requests</value>
+  </data>
+  <data name="lblIncomingRequests" xml:space="preserve">
+    <value>Friend requests received</value>
+  </data>
+  <data name="lblOutgoingRequests" xml:space="preserve">
+    <value>Friend requests sent</value>
+  </data>
+  <data name="errorLoadingFriendsListText" xml:space="preserve">
+    <value>Could not load friend list</value>
+  </data>
+  <data name="errorLoadingRequestsText" xml:space="preserve">
+    <value>Could not load requests</value>
+  </data>
+  <data name="errorSearchingUsersText" xml:space="preserve">
+    <value>Error searching for users</value>
+  </data>
+  <data name="errorSendingRequestText" xml:space="preserve">
+    <value>Could not sent the request</value>
+  </data>
+  <data name="friendRemovedOkText" xml:space="preserve">
+    <value>Friend successfully removed</value>
+  </data>
+  <data name="friendRequestSentText" xml:space="preserve">
+    <value>Friend request sent</value>
+  </data>
+  <data name="errorAcceptingRequestText" xml:space="preserve">
+    <value>Error accepting the request</value>
+  </data>
+  <data name="errorCancelingRequestText" xml:space="preserve">
+    <value>Error canceling the request</value>
+  </data>
+  <data name="errorRejectingRequestText" xml:space="preserve">
+    <value>Error rejecting the request</value>
+  </data>
+  <data name="errorRemovingFriendText" xml:space="preserve">
+    <value>Could not remove friend</value>
+  </data>
+  <data name="errorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="infoTitle" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="btnRejectText" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="btnFriendRequestsText" xml:space="preserve">
+    <value>Friend requests</value>
+  </data>
 </root>

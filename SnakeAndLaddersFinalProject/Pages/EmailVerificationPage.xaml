@@ -138,8 +138,7 @@
                     <!-- Botón volver -->
                     <Button x:Name="btnBack"
                             Grid.Column="0"
-                            Style="{StaticResource BtnBackPage}"
-                            Click="Back">
+                            Style="{StaticResource BtnBackPage}">
                         <Image Source="/Assets/Images/Icons/BackIcon.png"
                                Width="48"
                                Height="48"

@@ -409,4 +409,13 @@
   <data name="lblRankingFooterText" xml:space="preserve">
     <value />
   </data>
+  <data name="btnInviteFriendsText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="btnRejectText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="btnFriendRequestsText" xml:space="preserve">
+    <value />
+  </data>
 </root>

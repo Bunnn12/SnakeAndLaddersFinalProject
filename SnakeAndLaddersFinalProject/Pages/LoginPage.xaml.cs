@@ -88,7 +88,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                     frame?.Navigate(new SnakeAndLaddersFinalProject.Pages.LoadingPage());
                 });
 
-                await Task.Delay(5000);
+                await Task.Delay(500); // pequeño delay visual, no 5s
+
                 res = await Task.Run(() => client.Login(dto));
 
                 bool success = false;
@@ -105,15 +106,18 @@ namespace SnakeAndLaddersFinalProject.Pages
                     string profilePhotoId = null;
                     try { profilePhotoId = (string)res?.ProfilePhotoId; } catch { profilePhotoId = null; }
 
-                    SessionContext.Current.UserId = userId;
-                    SessionContext.Current.UserName = string.IsNullOrWhiteSpace(displayName)
-                        ? identifier
-                        : displayName;
-                    SessionContext.Current.Email = identifier.Contains("@") ? identifier : string.Empty;
+                    string token = TryGetToken(res);
 
-                    // 🔥 Aquí ligas la sesión con el avatar de BD
-                    SessionContext.Current.ProfilePhotoId =
-                        AvatarIdHelper.NormalizeOrDefault(profilePhotoId);
+                    SessionContext.Current.UserId = userId;
+                    SessionContext.Current.UserName = string.IsNullOrWhiteSpace(displayName) ? identifier : displayName;
+                    SessionContext.Current.Email = identifier.Contains("@") ? identifier : string.Empty;
+                    SessionContext.Current.ProfilePhotoId = AvatarIdHelper.NormalizeOrDefault(profilePhotoId);
+                    SessionContext.Current.AuthToken = token ?? string.Empty;
+
+                    if (string.IsNullOrWhiteSpace(SessionContext.Current.AuthToken))
+                    {
+                        ShowWarn("Sesión iniciada, pero el servicio no devolvió token. Algunas funciones pueden no estar disponibles.");
+                    }
 
                     owner?.Dispatcher.Invoke(() =>
                     {
@@ -159,6 +163,18 @@ namespace SnakeAndLaddersFinalProject.Pages
                 ShowError($"{T("UiGenericError")} {ex.Message}");
                 client.Abort();
             }
+        }
+        private static string TryGetToken(dynamic res)
+        {
+            try
+            {
+                
+                return (string)(res?.Token
+                                ?? res?.AuthToken
+                                ?? res?.SessionToken
+                                ?? res?.AccessToken);
+            }
+            catch { return null; }
         }
 
 
@@ -242,16 +258,18 @@ namespace SnakeAndLaddersFinalProject.Pages
             {
                 var random = new Random();
 
-                int suffix = random.Next(GUEST_SUFFIX_MIN_VALUE, GUEST_SUFFIX_MAX_EXCLUSIVE);
+                int suffix = random.Next(0, 100);
                 string guestName = $"Guest{suffix:D2}";
 
-                int guestRandomId = random.Next(GUEST_ID_MIN_VALUE, GUEST_ID_MAX_EXCLUSIVE);
-                int guestUserId = guestRandomId * -1;   // id negativo para guest
+                int guestRandomId = random.Next(1, 1000000);
+                int guestUserId = guestRandomId * -1;
 
                 SessionContext.Current.UserId = guestUserId;
                 SessionContext.Current.UserName = guestName;
                 SessionContext.Current.Email = string.Empty;
                 SessionContext.Current.ProfilePhotoId = AvatarIdHelper.DefaultId;
+
+                SessionContext.Current.AuthToken = $"GUEST-{Guid.NewGuid():N}";
 
                 if (NavigationService != null)
                 {
@@ -266,22 +284,9 @@ namespace SnakeAndLaddersFinalProject.Pages
                     mainFrame.Navigate(new MainPage());
                     return;
                 }
-
-                var navWindow = new NavigationWindow
-                {
-                    ShowsNavigationUI = true
-                };
-
-                navWindow.Navigate(new MainPage());
-                navWindow.Show();
             }
-            catch (InvalidOperationException ex)
+            catch
             {
-                ShowInfo("Navigation is not available right now. Please try again.");
-            }
-            catch (Exception ex)
-            {
-                
                 ShowError("Unexpected error while navigating.");
             }
         }

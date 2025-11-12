@@ -160,6 +160,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Friend requests.
+        /// </summary>
+        public static string btnFriendRequestsText {
+            get {
+                return ResourceManager.GetString("btnFriendRequestsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Friends.
         /// </summary>
         public static string btnFriendsText {
@@ -192,6 +201,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string btnInventoryText {
             get {
                 return ResourceManager.GetString("btnInventoryText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Invite friends.
+        /// </summary>
+        public static string btnInviteFriendsText {
+            get {
+                return ResourceManager.GetString("btnInviteFriendsText", resourceCulture);
             }
         }
         
@@ -255,6 +273,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string btnRankingText {
             get {
                 return ResourceManager.GetString("btnRankingText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Reject.
+        /// </summary>
+        public static string btnRejectText {
+            get {
+                return ResourceManager.GetString("btnRejectText", resourceCulture);
             }
         }
         
@@ -394,6 +421,141 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Error accepting the request.
+        /// </summary>
+        public static string errorAcceptingRequestText {
+            get {
+                return ResourceManager.GetString("errorAcceptingRequestText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Error canceling the request.
+        /// </summary>
+        public static string errorCancelingRequestText {
+            get {
+                return ResourceManager.GetString("errorCancelingRequestText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Could not load friend list.
+        /// </summary>
+        public static string errorLoadingFriendsListText {
+            get {
+                return ResourceManager.GetString("errorLoadingFriendsListText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Could not load requests.
+        /// </summary>
+        public static string errorLoadingRequestsText {
+            get {
+                return ResourceManager.GetString("errorLoadingRequestsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Error rejecting the request.
+        /// </summary>
+        public static string errorRejectingRequestText {
+            get {
+                return ResourceManager.GetString("errorRejectingRequestText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Could not remove friend.
+        /// </summary>
+        public static string errorRemovingFriendText {
+            get {
+                return ResourceManager.GetString("errorRemovingFriendText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Error searching for users.
+        /// </summary>
+        public static string errorSearchingUsersText {
+            get {
+                return ResourceManager.GetString("errorSearchingUsersText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Could not sent the request.
+        /// </summary>
+        public static string errorSendingRequestText {
+            get {
+                return ResourceManager.GetString("errorSendingRequestText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Error.
+        /// </summary>
+        public static string errorTitle {
+            get {
+                return ResourceManager.GetString("errorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Friend request accepted.
+        /// </summary>
+        public static string friendAcceptedText {
+            get {
+                return ResourceManager.GetString("friendAcceptedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Friend request rejected.
+        /// </summary>
+        public static string friendRejectedText {
+            get {
+                return ResourceManager.GetString("friendRejectedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Friend successfully removed.
+        /// </summary>
+        public static string friendRemovedOkText {
+            get {
+                return ResourceManager.GetString("friendRemovedOkText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Friend request canceled.
+        /// </summary>
+        public static string friendRequestCanceledText {
+            get {
+                return ResourceManager.GetString("friendRequestCanceledText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Friend request sent.
+        /// </summary>
+        public static string friendRequestSentText {
+            get {
+                return ResourceManager.GetString("friendRequestSentText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Information.
+        /// </summary>
+        public static string infoTitle {
+            get {
+                return ResourceManager.GetString("infoTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Add friends.
         /// </summary>
         public static string lblAddFriends {
@@ -475,11 +637,29 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Friend requests.
+        /// </summary>
+        public static string lblFriendRequestsTitle {
+            get {
+                return ResourceManager.GetString("lblFriendRequestsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Friends List.
         /// </summary>
         public static string lblFriendsListTitle {
             get {
                 return ResourceManager.GetString("lblFriendsListTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Friend requests received.
+        /// </summary>
+        public static string lblIncomingRequests {
+            get {
+                return ResourceManager.GetString("lblIncomingRequests", resourceCulture);
             }
         }
         
@@ -543,6 +723,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string lblMusic {
             get {
                 return ResourceManager.GetString("lblMusic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Friend requests sent.
+        /// </summary>
+        public static string lblOutgoingRequests {
+            get {
+                return ResourceManager.GetString("lblOutgoingRequests", resourceCulture);
             }
         }
         

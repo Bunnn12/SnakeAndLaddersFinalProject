@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SnakeAndLaddersFinalProject.Authentication
+﻿namespace SnakeAndLaddersFinalProject.Authentication
 {
     public sealed class SessionContext
     {
@@ -16,7 +10,7 @@ namespace SnakeAndLaddersFinalProject.Authentication
         public int UserId { get; set; } = 0;
         public string UserName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string AuthToken { get; set; } = string.Empty;
+        public string AuthToken { get; set; } = string.Empty;  
         public string ProfilePhotoId { get; set; }
 
         public bool IsAuthenticated =>

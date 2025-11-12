@@ -102,5 +102,26 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             return;
         }
+        private void BtnFriends_Click(object sender, RoutedEventArgs e)
+        {
+            var page = new FriendsListPage();
+
+            if (NavigationService != null)
+            {
+                NavigationService.Navigate(page);
+                return;
+            }
+
+            var window = Application.Current.MainWindow as NavigationWindow;
+            if (window != null)
+            {
+                window.Navigate(page);
+            }
+            else
+            {
+                Application.Current.MainWindow.Content = page;
+            }
+        }
+
     }
 }

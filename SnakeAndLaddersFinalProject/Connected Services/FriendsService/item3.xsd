@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8085/friends/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" />
+  <xs:complexType name="FriendLinkDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FriendLinkId" type="xs:int" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" minOccurs="0" name="Status" type="q1:FriendRequestStatus" />
+      <xs:element minOccurs="0" name="UserId1" type="xs:int" />
+      <xs:element minOccurs="0" name="UserId2" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FriendLinkDto" nillable="true" type="tns:FriendLinkDto" />
+  <xs:complexType name="ArrayOfFriendLinkDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FriendLinkDto" nillable="true" type="tns:FriendLinkDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFriendLinkDto" nillable="true" type="tns:ArrayOfFriendLinkDto" />
+  <xs:complexType name="ArrayOfFriendListItemDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FriendListItemDto" nillable="true" type="tns:FriendListItemDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFriendListItemDto" nillable="true" type="tns:ArrayOfFriendListItemDto" />
+  <xs:complexType name="FriendListItemDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FriendLinkId" type="xs:int" />
+      <xs:element minOccurs="0" name="FriendUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="FriendUserName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProfilePhotoId" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FriendListItemDto" nillable="true" type="tns:FriendListItemDto" />
+  <xs:complexType name="ArrayOfFriendRequestItemDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FriendRequestItemDto" nillable="true" type="tns:FriendRequestItemDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFriendRequestItemDto" nillable="true" type="tns:ArrayOfFriendRequestItemDto" />
+  <xs:complexType name="FriendRequestItemDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FriendLinkId" type="xs:int" />
+      <xs:element minOccurs="0" name="RequesterUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="RequesterUserName" nillable="true" type="xs:string" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" minOccurs="0" name="Status" type="q2:FriendRequestStatus" />
+      <xs:element minOccurs="0" name="TargetUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="TargetUserName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FriendRequestItemDto" nillable="true" type="tns:FriendRequestItemDto" />
+  <xs:complexType name="ArrayOfUserBriefDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserBriefDto" nillable="true" type="tns:UserBriefDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserBriefDto" nillable="true" type="tns:ArrayOfUserBriefDto" />
+  <xs:complexType name="UserBriefDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ProfilePhotoId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserBriefDto" nillable="true" type="tns:UserBriefDto" />
+</xs:schema>

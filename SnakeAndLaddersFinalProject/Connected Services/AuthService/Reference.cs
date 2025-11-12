@@ -138,6 +138,9 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         private string DisplayNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<System.DateTime> ExpiresAtUtcField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string MessageField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -151,6 +154,9 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string TechnicalMessageField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string TokenField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Nullable<int> UserIdField;
@@ -187,6 +193,19 @@ namespace SnakeAndLaddersFinalProject.AuthService {
                 if ((object.ReferenceEquals(this.DisplayNameField, value) != true)) {
                     this.DisplayNameField = value;
                     this.RaisePropertyChanged("DisplayName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<System.DateTime> ExpiresAtUtc {
+            get {
+                return this.ExpiresAtUtcField;
+            }
+            set {
+                if ((this.ExpiresAtUtcField.Equals(value) != true)) {
+                    this.ExpiresAtUtcField = value;
+                    this.RaisePropertyChanged("ExpiresAtUtc");
                 }
             }
         }
@@ -252,6 +271,19 @@ namespace SnakeAndLaddersFinalProject.AuthService {
                 if ((object.ReferenceEquals(this.TechnicalMessageField, value) != true)) {
                     this.TechnicalMessageField = value;
                     this.RaisePropertyChanged("TechnicalMessage");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Token {
+            get {
+                return this.TokenField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TokenField, value) != true)) {
+                    this.TokenField = value;
+                    this.RaisePropertyChanged("Token");
                 }
             }
         }
