@@ -37,6 +37,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             get { return SpecialType == GameSpecialCellType.Teleport; }
         }
 
+        // NUEVO: flags que vienen del server
+        public bool IsStart { get; }
+
+        public bool IsFinal { get; }
+
         public GameBoardCellViewModel(BoardCellDto dto)
         {
             if (dto == null)
@@ -50,6 +55,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             IsDark = dto.IsDark;
 
             SpecialType = MapSpecialType(dto.SpecialType);
+
+            IsStart = dto.IsStart;
+            IsFinal = dto.IsFinal;
         }
 
         private static GameSpecialCellType MapSpecialType(ServiceSpecialCellType source)

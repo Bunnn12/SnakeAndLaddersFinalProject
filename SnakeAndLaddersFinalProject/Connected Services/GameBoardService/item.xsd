@@ -39,6 +39,8 @@
       <xs:element minOccurs="0" name="Column" type="xs:int" />
       <xs:element minOccurs="0" name="Index" type="xs:int" />
       <xs:element minOccurs="0" name="IsDark" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsFinal" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsStart" type="xs:boolean" />
       <xs:element minOccurs="0" name="Row" type="xs:int" />
       <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" minOccurs="0" name="SpecialType" type="q3:SpecialCellType" />
     </xs:sequence>

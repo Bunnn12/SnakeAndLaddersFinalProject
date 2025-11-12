@@ -652,6 +652,8 @@
     <Resource Include="Assets\Images\Icons\DieIcon.png" />
     <Resource Include="Assets\Images\Icons\MessageIcon.png" />
     <Resource Include="Assets\Images\Backgrounds\RankingBackground.png" />
+    <Resource Include="Assets\Images\Icons\FinalCellIcon.png" />
+    <Resource Include="Assets\Images\Icons\StartCellIcon.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

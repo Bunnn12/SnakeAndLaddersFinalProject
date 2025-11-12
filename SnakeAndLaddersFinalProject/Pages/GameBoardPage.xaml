@@ -79,6 +79,14 @@
         <BitmapImage x:Key="ItemIconSource"
                      UriSource="/Assets/Images/Icons/ItemIcon.png" />
 
+        <!-- ICONO CASILLA FINAL -->
+        <BitmapImage x:Key="FinalCellIconSource"
+                     UriSource="/Assets/Images/Icons/FinalCellIcon.png" />
+
+        <!-- ICONO CASILLA INICIO -->
+        <BitmapImage x:Key="StartCellIconSource"
+                     UriSource="/Assets/Images/Icons/StartCellIcon.png" />
+
         <!-- Estilo de casilla -->
         <Style x:Key="BoardCellStyle"
                TargetType="Border">
@@ -184,6 +192,42 @@
                         </Image.Style>
                     </Image>
 
+                    <!-- CASILLA INICIAL -> StartCellIcon -->
+                    <Image Width="65"
+                           Height="65"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Source="{StaticResource StartCellIconSource}">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsStart}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+
+                    <!-- CASILLA FINAL -> FinalCellIcon -->
+                    <Image Width="65"
+                           Height="65"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Source="{StaticResource FinalCellIconSource}">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsFinal}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+
                 </Grid>
             </Border>
         </DataTemplate>
@@ -237,7 +281,6 @@
                         <ItemsPanelTemplate>
                             <Canvas Width="{Binding Columns}"
                                     Height="{Binding Rows}">
-                                <!-- Escala: 1 unidad = 1 casilla (64 px) -->
                                 <Canvas.LayoutTransform>
                                     <ScaleTransform ScaleX="64" ScaleY="64" />
                                 </Canvas.LayoutTransform>
@@ -249,7 +292,7 @@
                         <DataTemplate>
                             <Canvas>
 
-                                <!-- Serpientes: curvas -->
+                                <!-- Serpientes -->
                                 <Path StrokeThickness="0.15"
                                       Stroke="{Binding IsLadder,
                                                        Converter={StaticResource IsSnakeToColorConverter}}"
@@ -285,7 +328,7 @@
                                     </Path.Data>
                                 </Path>
 
-                                <!-- Escaleras: barandales + peldaños -->
+                                <!-- Escaleras -->
                                 <Path StrokeThickness="0.11"
                                       Stroke="#85462D"
                                       StrokeStartLineCap="Round"
@@ -317,7 +360,7 @@
                                     </Path.Data>
                                 </Path>
 
-                                <!-- Cabeza simple (círculo) solo para serpientes -->
+                                <!-- Cabeza de serpiente -->
                                 <Ellipse Width="0.40"
                                          Height="0.40"
                                          Fill="#49a067"
