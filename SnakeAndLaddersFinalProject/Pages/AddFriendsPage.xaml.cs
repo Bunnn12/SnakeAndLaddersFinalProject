@@ -84,10 +84,18 @@ namespace SnakeAndLaddersFinalProject.Pages
                 {
                     using (var api = new FriendsApi())
                     {
-                        api.SendFriendRequest(user.UserId);
+                        var link = api.SendFriendRequest(user.UserId);
+                        results.Remove(user);
+
+                        if (link != null && link.Status == FriendRequestStatus.Accepted)
+                        {
+                            MessageBox.Show("This user had already sended a friend request to you, both now are friends", Lang.infoTitle);
+                        }
+                        else
+                        {
+                            MessageBox.Show(Lang.friendRequestSentText, Lang.infoTitle);
+                        }
                     }
-                    results.Remove(user);
-                    MessageBox.Show(Lang.friendRequestSentText, Lang.infoTitle);
                 }
                 catch (FaultException ex)
                 {

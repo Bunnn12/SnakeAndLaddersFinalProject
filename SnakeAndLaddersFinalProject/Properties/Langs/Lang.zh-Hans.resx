@@ -365,57 +365,126 @@
     <value />
   </data>
   <data name="ReasonForReportText" xml:space="preserve">
-    <value />
+    <value>报告原因</value>
   </data>
   <data name="btnReportPlayerText" xml:space="preserve">
-    <value />
+    <value>举报玩家</value>
   </data>
   <data name="reportReasonWindowTitle" xml:space="preserve">
-    <value />
+    <value>举报原因</value>
   </data>
   <data name="lblReportDetailText" xml:space="preserve">
-    <value />
+    <value>报告详情</value>
   </data>
   <data name="OtherReasonWindowTitle" xml:space="preserve">
-    <value />
+    <value>其他原因</value>
   </data>
   <data name="OtherReasonDescriptionLabel" xml:space="preserve">
-    <value />
+    <value>举报原因说明</value>
   </data>
   <data name="ReportGenericErrorMessage" xml:space="preserve">
-    <value />
+    <value>处理您的报告时发生意外错误。请再试一次。</value>
   </data>
   <data name="ReportErrorDuplicate" xml:space="preserve">
-    <value />
+    <value>您最近已经举报了该玩家。请等待制裁处理后再重新报告。</value>
   </data>
   <data name="ReportErrorInvalidUser" xml:space="preserve">
-    <value />
+    <value>由于玩家信息无效，无法处理该报告。</value>
   </data>
   <data name="ReportErrorInvalidRequest" xml:space="preserve">
-    <value />
+    <value>报告请求无效。请再试一次。</value>
   </data>
   <data name="lblRankingTitleText" xml:space="preserve">
-    <value />
+    <value>选手排名</value>
   </data>
   <data name="colRankingPositionHeader" xml:space="preserve">
-    <value />
+    <value>#</value>
   </data>
   <data name="colRankingUsernameHeader" xml:space="preserve">
-    <value />
+    <value>玩家</value>
   </data>
   <data name="colRankingCoinsHeader" xml:space="preserve">
-    <value />
+    <value>硬币</value>
   </data>
   <data name="lblRankingFooterText" xml:space="preserve">
-    <value />
+    <value>玩家按硬币数量排序</value>
   </data>
   <data name="btnInviteFriendsText" xml:space="preserve">
-    <value />
+    <value>邀请朋友</value>
   </data>
   <data name="btnRejectText" xml:space="preserve">
-    <value />
+    <value>拒绝</value>
   </data>
   <data name="btnFriendRequestsText" xml:space="preserve">
-    <value />
+    <value>好友请求</value>
+  </data>
+  <data name="errorTitle" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="infoTitle" xml:space="preserve">
+    <value>信息</value>
+  </data>
+  <data name="lblMatchSettingsText" xml:space="preserve">
+    <value>比赛设置</value>
+  </data>
+  <data name="lblDifficultyText" xml:space="preserve">
+    <value>困难</value>
+  </data>
+  <data name="lblBoardSizeText" xml:space="preserve">
+    <value>板尺寸</value>
+  </data>
+  <data name="lblPlayersText" xml:space="preserve">
+    <value>玩家</value>
+  </data>
+  <data name="lblSpecialTilesText" xml:space="preserve">
+    <value>特种瓷砖</value>
+  </data>
+  <data name="friendAcceptedText" xml:space="preserve">
+    <value>已接受好友请求</value>
+  </data>
+  <data name="friendRejectedText" xml:space="preserve">
+    <value>好友请求被拒绝</value>
+  </data>
+  <data name="friendRequestCanceledText" xml:space="preserve">
+    <value>好友请求已取消</value>
+  </data>
+  <data name="lblFriendRequestsTitle" xml:space="preserve">
+    <value>好友请求</value>
+  </data>
+  <data name="lblIncomingRequests" xml:space="preserve">
+    <value>收到好友请求</value>
+  </data>
+  <data name="lblOutgoingRequests" xml:space="preserve">
+    <value>已发送好友请求</value>
+  </data>
+  <data name="errorLoadingFriendsListText" xml:space="preserve">
+    <value>无法加载好友列表</value>
+  </data>
+  <data name="errorLoadingRequestsText" xml:space="preserve">
+    <value>无法加载请求</value>
+  </data>
+  <data name="errorSearchingUsersText" xml:space="preserve">
+    <value>搜索用户时出错</value>
+  </data>
+  <data name="errorSendingRequestText" xml:space="preserve">
+    <value>无法发送请求</value>
+  </data>
+  <data name="friendRemovedOkText" xml:space="preserve">
+    <value>好友删除成功</value>
+  </data>
+  <data name="friendRequestSentText" xml:space="preserve">
+    <value>好友请求已发送</value>
+  </data>
+  <data name="errorAcceptingRequestText" xml:space="preserve">
+    <value>接受请求时出错</value>
+  </data>
+  <data name="errorCancelingRequestText" xml:space="preserve">
+    <value>取消请求时出错</value>
+  </data>
+  <data name="errorRejectingRequestText" xml:space="preserve">
+    <value>拒绝请求时出错</value>
+  </data>
+  <data name="errorRemovingFriendText" xml:space="preserve">
+    <value>无法删除好友</value>
   </data>
 </root>

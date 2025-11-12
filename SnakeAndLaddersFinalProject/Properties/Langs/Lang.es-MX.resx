@@ -365,57 +365,126 @@
     <value />
   </data>
   <data name="ReasonForReportText" xml:space="preserve">
-    <value />
+    <value>Razón del informe</value>
   </data>
   <data name="btnReportPlayerText" xml:space="preserve">
-    <value />
+    <value>Denunciar jugador</value>
   </data>
   <data name="reportReasonWindowTitle" xml:space="preserve">
-    <value />
+    <value>Motivo del informe</value>
   </data>
   <data name="lblReportDetailText" xml:space="preserve">
-    <value />
+    <value>Detalle del informe</value>
   </data>
   <data name="OtherReasonWindowTitle" xml:space="preserve">
-    <value />
+    <value>Otra razón</value>
   </data>
   <data name="OtherReasonDescriptionLabel" xml:space="preserve">
-    <value />
+    <value>Descripción del motivo del informe</value>
   </data>
   <data name="ReportGenericErrorMessage" xml:space="preserve">
-    <value />
+    <value>Se produjo un error inesperado al procesar su informe. Por favor inténtalo de nuevo.</value>
   </data>
   <data name="ReportErrorDuplicate" xml:space="preserve">
-    <value />
+    <value>Ya denunciaste a este jugador recientemente. Espere a que se procese la sanción antes de volver a informar.</value>
   </data>
   <data name="ReportErrorInvalidUser" xml:space="preserve">
-    <value />
+    <value>El informe no se pudo procesar porque la información del jugador no es válida.</value>
   </data>
   <data name="ReportErrorInvalidRequest" xml:space="preserve">
-    <value />
+    <value>La solicitud de informe no es válida. Por favor inténtalo de nuevo.</value>
   </data>
   <data name="lblRankingTitleText" xml:space="preserve">
-    <value />
+    <value>Clasificación de jugadores</value>
   </data>
   <data name="colRankingPositionHeader" xml:space="preserve">
-    <value />
+    <value>#</value>
   </data>
   <data name="colRankingUsernameHeader" xml:space="preserve">
-    <value />
+    <value>Jugador</value>
   </data>
   <data name="colRankingCoinsHeader" xml:space="preserve">
-    <value />
+    <value>Monedas</value>
   </data>
   <data name="lblRankingFooterText" xml:space="preserve">
-    <value />
+    <value>Los jugadores están ordenados por su cantidad de monedas.</value>
   </data>
   <data name="btnInviteFriendsText" xml:space="preserve">
-    <value />
+    <value>invitar amigos</value>
   </data>
   <data name="btnRejectText" xml:space="preserve">
-    <value />
+    <value>Rechazar</value>
   </data>
   <data name="btnFriendRequestsText" xml:space="preserve">
-    <value />
+    <value>Solicitudes de amistad</value>
+  </data>
+  <data name="errorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="infoTitle" xml:space="preserve">
+    <value>Información</value>
+  </data>
+  <data name="lblMatchSettingsText" xml:space="preserve">
+    <value>Configuración del partido</value>
+  </data>
+  <data name="lblDifficultyText" xml:space="preserve">
+    <value>Dificultad</value>
+  </data>
+  <data name="lblBoardSizeText" xml:space="preserve">
+    <value>Tamaño del tablero</value>
+  </data>
+  <data name="lblPlayersText" xml:space="preserve">
+    <value>Jugadores</value>
+  </data>
+  <data name="lblSpecialTilesText" xml:space="preserve">
+    <value>Azulejos especiales</value>
+  </data>
+  <data name="friendAcceptedText" xml:space="preserve">
+    <value>Solicitud de amistad aceptada</value>
+  </data>
+  <data name="friendRejectedText" xml:space="preserve">
+    <value>Solicitud de amistad rechazada</value>
+  </data>
+  <data name="friendRequestCanceledText" xml:space="preserve">
+    <value>Solicitud de amistad cancelada</value>
+  </data>
+  <data name="lblFriendRequestsTitle" xml:space="preserve">
+    <value>Solicitudes de amistad</value>
+  </data>
+  <data name="lblIncomingRequests" xml:space="preserve">
+    <value>Solicitudes de amistad recibidas</value>
+  </data>
+  <data name="lblOutgoingRequests" xml:space="preserve">
+    <value>Solicitudes de amistad enviadas</value>
+  </data>
+  <data name="errorLoadingFriendsListText" xml:space="preserve">
+    <value>No se pudo cargar la lista de amigos</value>
+  </data>
+  <data name="errorLoadingRequestsText" xml:space="preserve">
+    <value>No se pudieron cargar las solicitudes</value>
+  </data>
+  <data name="errorSearchingUsersText" xml:space="preserve">
+    <value>Error al buscar usuarios</value>
+  </data>
+  <data name="errorSendingRequestText" xml:space="preserve">
+    <value>No se pudo enviar la solicitud</value>
+  </data>
+  <data name="friendRemovedOkText" xml:space="preserve">
+    <value>Amigo eliminado exitosamente</value>
+  </data>
+  <data name="friendRequestSentText" xml:space="preserve">
+    <value>Solicitud de amistad enviada</value>
+  </data>
+  <data name="errorAcceptingRequestText" xml:space="preserve">
+    <value>Error al aceptar la solicitud</value>
+  </data>
+  <data name="errorCancelingRequestText" xml:space="preserve">
+    <value>Error al cancelar la solicitud</value>
+  </data>
+  <data name="errorRejectingRequestText" xml:space="preserve">
+    <value>Error al rechazar la solicitud</value>
+  </data>
+  <data name="errorRemovingFriendText" xml:space="preserve">
+    <value>No se pudo eliminar amigo</value>
   </data>
 </root>

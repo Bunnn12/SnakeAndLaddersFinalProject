@@ -264,11 +264,11 @@
                             BorderThickness="4"
                             Padding="40,8"
                             HorizontalAlignment="Center"
-                            Effect="{StaticResource ShadowSoft}" Background="#FF59320B">
+                            Effect="{StaticResource ShadowSoft}" Background="#FF59320B" Width="954">
                         <TextBlock Text="{x:Static language:Lang.lblRankingTitleText}"
                                    d:Text="Players ranking"
                                    Style="{StaticResource LblRankingTitle}"
-                                   HorizontalAlignment="Center" FontFamily="{StaticResource Font.M04B}" FontWeight="Bold" />
+                                   HorizontalAlignment="Center" FontFamily="{StaticResource Font.M04B}" FontWeight="Bold" FontSize="26" />
                     </Border>
                 </Grid>
 
