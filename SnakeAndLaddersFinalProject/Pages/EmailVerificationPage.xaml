@@ -1,21 +1,245 @@
 ﻿<Page x:Class="SnakeAndLaddersFinalProject.Pages.EmailVerificationPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
       xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
-      xmlns:res="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
       xmlns:glob="clr-namespace:SnakeAndLaddersFinalProject.Globalization"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="EmailVerificationPage">
+      mc:Ignorable="d"
+      Title="EmailVerificationPage"
+      d:DesignWidth="1280"
+      d:DesignHeight="720"
+      SnapsToDevicePixels="True"
+      UseLayoutRounding="True"
+      TextOptions.TextRenderingMode="Aliased"
+      Background="Transparent">
 
-    <Grid>
-        <Label x:Name="lblEmailVerificationTitle" Content="{x:Static language:Lang.lblEmailVerificationTitle}" HorizontalAlignment="Center" Margin="0,44,0,0" VerticalAlignment="Top" Height="42" Width="344" FontSize="18"/>
-        <TextBox x:Name="txtCodeSended" HorizontalAlignment="Center" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="200" Height="32" Margin="0,204,0,0"/>
-        <Label x:Name="lblInsertCode" Content="{x:Static language:Lang.lblVerificationMessageText}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="0,170,0,0" Height="29"/>
-        <Button x:Name="btnVerificateCode" Content="{x:Static language:Lang.btnAcceptText}" HorizontalAlignment="Center" Margin="0,352,0,0" VerticalAlignment="Top" Height="33" Width="200" Click="VerificateCode"/>
-        <Button x:Name="btnResendCode" Content="{x:Static language:Lang.btnResendCodeText}" HorizontalAlignment="Center" Margin="0,299,0,0" VerticalAlignment="Top" Height="33" Width="200" Click="ResendCode"/>
+    <Page.Resources>
+
+        <!-- Fondo general (mismo que RankingPage) -->
+        <ImageBrush x:Key="RankingBackgroundBrush"
+                    ImageSource="/Assets/Images/Backgrounds/RankingBackground.png"
+                    Stretch="UniformToFill"
+                    AlignmentX="Center"
+                    AlignmentY="Center"
+                    RenderOptions.BitmapScalingMode="NearestNeighbor" />
+
+        <!-- Sombra suave -->
+        <DropShadowEffect x:Key="ShadowSoft"
+                          BlurRadius="10"
+                          ShadowDepth="0"
+                          Direction="270"
+                          Opacity="0.6"
+                          Color="#22000000" />
+
+        <!-- Paleta tipo tablón -->
+        <SolidColorBrush x:Key="BrushBoardBackground" Color="#F7C76B" />
+        <SolidColorBrush x:Key="BrushBoardBorder" Color="#9B4C24" />
+        <SolidColorBrush x:Key="BrushBoardInner" Color="#FEE1A9" />
+        <SolidColorBrush x:Key="BrushBoardInnerBorder" Color="#D0893A" />
+
+        <!-- Texto encabezados / footer -->
+        <SolidColorBrush x:Key="BrushHeaderText" Color="#FFFDF2" />
+        <SolidColorBrush x:Key="BrushFooterText" Color="#FFFDF2" />
+
+        <!-- Madera oscura para banner -->
+        <SolidColorBrush x:Key="BrushWoodDark" Color="#5C3721" />
+
+        <!-- Fuente principal -->
+        <FontFamily x:Key="Font.RankingMain">Bahnschrift SemiBold</FontFamily>
+
+        <!-- Estilo título (igual que RankingPage) -->
+        <Style x:Key="LblRankingTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource BrushHeaderText}" />
+            <Setter Property="FontFamily" Value="Impact" />
+            <Setter Property="FontSize" Value="48" />
+            <Setter Property="TextWrapping" Value="NoWrap" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Effect" Value="{StaticResource ShadowSoft}" />
+        </Style>
+
+        <!-- Estilo de label interno -->
+        <Style x:Key="InnerLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource Font.RankingMain}" />
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="Foreground" Value="#321309" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Estilo TextBox -->
+        <Style x:Key="InnerTextBoxStyle" TargetType="TextBox">
+            <Setter Property="FontFamily" Value="{StaticResource Font.RankingMain}" />
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+        <!-- Botón principal -->
+        <Style x:Key="PrimaryActionButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="260" />
+            <Setter Property="Height" Value="52" />
+            <Setter Property="FontFamily" Value="{StaticResource Font.RankingMain}" />
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="Foreground" Value="#321309" />
+            <Setter Property="Background" Value="#E37A2B" />
+            <Setter Property="BorderBrush" Value="#D0893A" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Effect" Value="{StaticResource ShadowSoft}" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Botón secundario -->
+        <Style x:Key="SecondaryActionButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource PrimaryActionButtonStyle}">
+            <Setter Property="Background" Value="#FBD9A0" />
+            <Setter Property="BorderBrush" Value="#D0893A" />
+        </Style>
+
+        <!-- Botón back (igual que ranking) -->
+        <Style x:Key="BtnBackPage" TargetType="Button">
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Height" Value="80" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+
+    </Page.Resources>
+
+    <Grid Background="{StaticResource RankingBackgroundBrush}">
+
+        <Viewbox Stretch="Uniform"
+                 StretchDirection="Both">
+            <Grid Width="1280"
+                  Height="720"
+                  Background="Transparent"
+                  Margin="24">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- CABECERA -->
+                <Grid Grid.Row="0"
+                      Margin="0,0,0,24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Botón volver -->
+                    <Button x:Name="btnBack"
+                            Grid.Column="0"
+                            Style="{StaticResource BtnBackPage}"
+                            Click="Back">
+                        <Image Source="/Assets/Images/Icons/BackIcon.png"
+                               Width="48"
+                               Height="48"
+                               Stretch="Fill"
+                               RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                    </Button>
+
+                    <!-- Banner madera título -->
+                    <Border Grid.Column="1"
+                            CornerRadius="10"
+                            BorderBrush="{StaticResource BrushWoodDark}"
+                            BorderThickness="4"
+                            Padding="40,8"
+                            HorizontalAlignment="Center"
+                            Effect="{StaticResource ShadowSoft}"
+                            Background="#FF59320B">
+                        <TextBlock x:Name="lblEmailVerificationTitle"
+                                   Text="{x:Static language:Lang.lblEmailVerificationTitle}"
+                                   d:Text="Email verification"
+                                   Style="{StaticResource LblRankingTitle}"
+                                   HorizontalAlignment="Center"
+                                   FontFamily="{StaticResource Font.M04B}"
+                                   FontWeight="Bold" FontSize="36" />
+                    </Border>
+                </Grid>
+
+                <!-- CONTENIDO PRINCIPAL -->
+                <Grid Grid.Row="1"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center">
+                    <!-- Marco de madera exterior -->
+                    <Border CornerRadius="0"
+                            Width="680"
+                            Background="{StaticResource BrushBoardBackground}"
+                            BorderBrush="{StaticResource BrushBoardBorder}"
+                            BorderThickness="10"
+                            Padding="10"
+                            Effect="{StaticResource ShadowSoft}">
+                        <!-- Inner panel -->
+                        <Border CornerRadius="0"
+                                Background="{StaticResource BrushBoardInner}"
+                                BorderBrush="{StaticResource BrushBoardInnerBorder}"
+                                BorderThickness="4"
+                                Padding="32">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="24" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="24" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="16" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <!-- Mensaje de instrucción -->
+                                <TextBlock x:Name="lblInsertCode"
+                                           Grid.Row="0"
+                                           Text="{x:Static language:Lang.lblVerificationMessageText}"
+                                           d:Text="Enter the verification code we sent to your email."
+                                           Style="{StaticResource InnerLabelStyle}"
+                                           TextAlignment="Center" />
+
+                                <!-- TextBox código -->
+                                <TextBox x:Name="txtCodeSended"
+                                         Grid.Row="2"
+                                         Width="260"
+                                         Height="40"
+                                         MaxLength="8"
+                                         Style="{StaticResource InnerTextBoxStyle}" />
+
+                                <!-- Botón verificar -->
+                                <Button x:Name="btnVerificateCode"
+                                        Grid.Row="4"
+                                        Content="{x:Static language:Lang.btnAcceptText}"
+                                        Style="{StaticResource PrimaryActionButtonStyle}"
+                                        Click="VerificateCode" />
+
+                                <!-- Botón reenviar código -->
+                                <Button x:Name="btnResendCode"
+                                        Grid.Row="6"
+                                        Content="{x:Static language:Lang.btnResendCodeText}"
+                                        Style="{StaticResource SecondaryActionButtonStyle}"
+                                        Click="ResendCode" />
+                            </Grid>
+                        </Border>
+                    </Border>
+                </Grid>
+
+                <!-- PIE -->
+                <TextBlock Grid.Row="2"
+                           Margin="0,24,0,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontFamily="{StaticResource Font.RankingMain}"
+                           FontSize="22"
+                           Foreground="{StaticResource BrushFooterText}"
+                           Text=""
+                           d:Text="Check your email and enter the code to continue." />
+            </Grid>
+        </Viewbox>
     </Grid>
 </Page>
