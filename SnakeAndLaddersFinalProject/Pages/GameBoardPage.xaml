@@ -4,6 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:conv="clr-namespace:SnakeAndLaddersFinalProject.Converters"
+      xmlns:vmModels="clr-namespace:SnakeAndLaddersFinalProject.ViewModels.Models"
+      xmlns:utils="clr-namespace:SnakeAndLaddersFinalProject.Utilities"
       mc:Ignorable="d"
       d:DesignWidth="1280"
       d:DesignHeight="720"
@@ -20,6 +22,9 @@
         <conv:SnakeCurveGeometryConverter x:Key="SnakeCurveGeometryConverter" />
         <!-- Escaleras con barandales + peldaños -->
         <conv:LadderGeometryConverter x:Key="LadderGeometryConverter" />
+
+        <!-- Converter avatarId -> pack URI -->
+        <utils:AvatarIdToPathConverter x:Key="AvatarIdToPathConverter" />
 
         <Thickness x:Key="CellMargin">2</Thickness>
 
@@ -232,6 +237,52 @@
             </Border>
         </DataTemplate>
 
+        <!-- Template para jugador en esquina (skin grande + foto de perfil) -->
+        <DataTemplate x:Key="CornerPlayerTemplate"
+                      DataType="{x:Type vmModels:LobbyMemberViewModel}">
+            <StackPanel Orientation="Vertical"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+
+                <!-- Skin grande -->
+                <Grid Width="112"
+                      Height="112"
+                      Margin="4">
+                    <Border CornerRadius="12"
+                            Background="#22000000">
+                        <Image Source="{Binding SkinImagePath}"
+                               Stretch="Uniform"
+                               Margin="4" />
+                    </Border>
+
+                    <!-- Avatar circular pequeño encima (abajo a la derecha) -->
+                    <Grid Width="44"
+                          Height="44"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Margin="0,0,-4,-4">
+                        <Ellipse Stroke="White"
+                                 StrokeThickness="2" />
+                        <Ellipse>
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{Binding AvatarId, Converter={StaticResource AvatarIdToPathConverter}}"
+                                            Stretch="UniformToFill" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </Grid>
+                </Grid>
+
+                <!-- Nombre del jugador -->
+                <TextBlock Text="{Binding UserName}"
+                           Margin="0,4,0,0"
+                           HorizontalAlignment="Center"
+                           Foreground="White"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+        </DataTemplate>
+
     </Page.Resources>
 
     <Grid Background="Transparent">
@@ -389,5 +440,39 @@
 
             </Grid>
         </Viewbox>
+
+        <!-- Esquinas para jugadores -->
+        <ContentControl Content="{Binding CornerPlayers.TopLeftPlayer}"
+                        ContentTemplate="{StaticResource CornerPlayerTemplate}"
+                        Grid.RowSpan="2"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="16"
+                        Panel.ZIndex="50" />
+
+        <ContentControl Content="{Binding CornerPlayers.TopRightPlayer}"
+                        ContentTemplate="{StaticResource CornerPlayerTemplate}"
+                        Grid.RowSpan="2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="16"
+                        Panel.ZIndex="50" />
+
+        <ContentControl Content="{Binding CornerPlayers.BottomLeftPlayer}"
+                        ContentTemplate="{StaticResource CornerPlayerTemplate}"
+                        Grid.RowSpan="2"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Margin="16"
+                        Panel.ZIndex="50" />
+
+        <ContentControl Content="{Binding CornerPlayers.BottomRightPlayer}"
+                        ContentTemplate="{StaticResource CornerPlayerTemplate}"
+                        Grid.RowSpan="2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Margin="16"
+                        Panel.ZIndex="50" />
+
     </Grid>
 </Page>

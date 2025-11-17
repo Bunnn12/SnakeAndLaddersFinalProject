@@ -10,7 +10,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using log4net;
 using SnakeAndLaddersFinalProject.Authentication;
-using SnakeAndLaddersFinalProject.GameBoardService;
 using SnakeAndLaddersFinalProject.Infrastructure;
 using SnakeAndLaddersFinalProject.LobbyService;
 using SnakeAndLaddersFinalProject.Services;
@@ -47,10 +46,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // Ahora el evento manda directamente el GameBoardViewModel
         public event Action<GameBoardViewModel> NavigateToBoardRequested;
         public event Action CurrentUserKickedFromLobby;
-
 
         private readonly DispatcherTimer pollTimer =
             new DispatcherTimer { Interval = TimeSpan.FromSeconds(POLL_INTERVAL_SECONDS) };
@@ -119,23 +116,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             new ObservableCollection<LobbyMemberViewModel>();
 
         public int CurrentUserId { get; private set; }
-
         public string CurrentUserName { get; private set; }
 
         public int LobbyId { get; private set; }
-
         public int HostUserId { get; private set; }
-
         public string HostUserName { get; private set; }
-
         public string CodigoPartida { get; private set; }
-
         public string LobbyStatus { get; private set; } = LOBBY_STATUS_WAITING;
-
         public DateTime ExpiresAtUtc { get; private set; }
 
         public DifficultyOption Difficulty { get; private set; } = DifficultyOption.Medium;
-
         public byte PlayersRequested { get; private set; } = AppConstants.MIN_PLAYERS_TO_START;
 
         public byte MaxPlayers
@@ -156,13 +146,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         }
 
         public ICommand CreateLobbyCommand { get; }
-
         public ICommand JoinLobbyCommand { get; }
-
         public ICommand StartMatchCommand { get; }
-
         public ICommand LeaveLobbyCommand { get; }
-
         public ICommand CopyInviteLinkCommand { get; }
 
         public bool CanStartMatch =>
@@ -196,11 +182,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 return;
             }
+
             var fallbackName = $"Guest-{Environment.UserName}-{Process.GetCurrentProcess().Id}";
             CurrentUserName = fallbackName;
             CurrentUserId = -Math.Abs(fallbackName.GetHashCode());
         }
-
 
         private void OnMembersChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -258,6 +244,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     var specialTiles = createOptions?.SpecialTiles ?? SpecialTileOptions.None;
                     var playersRequested = (byte)(createOptions?.Players ?? AppConstants.MIN_PLAYERS_TO_START);
 
+                    var session = SessionContext.Current;
+                    var profilePhotoId = session?.ProfilePhotoId;
+                    var currentSkinId = session?.CurrentSkinId; // string
+                    var currentSkinUnlockedId = session?.CurrentSkinUnlockedId ?? 0; // int?
+
                     var request = new CreateGameRequest
                     {
                         HostUserId = CurrentUserId,
@@ -266,7 +257,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                         TtlMinutes = AppConstants.DEFAULT_TTL_MINUTES,
                         BoardSide = (int)boardSize,
                         PlayersRequested = playersRequested,
-                        SpecialTiles = specialTiles.ToString()
+                        SpecialTiles = specialTiles.ToString(),
+                        HostAvatarId = profilePhotoId,
+
+                        // 🔹 Skin info hacia el servidor
+                        CurrentSkinId = currentSkinId,
+                        CurrentSkinUnlockedId = currentSkinUnlockedId
                     };
 
                     var response = await client.CreateGameAsync(request);
@@ -301,11 +297,21 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 await UseLobbyClientAsync(async client =>
                 {
+                    var session = SessionContext.Current;
+                    var profilePhotoId = session?.ProfilePhotoId;
+                    var currentSkinId = session?.CurrentSkinId; // string
+                    var currentSkinUnlockedId = session?.CurrentSkinUnlockedId ?? 0;
+
                     var joinResult = client.JoinLobby(new JoinLobbyRequest
                     {
                         CodigoPartida = code,
                         UserId = CurrentUserId,
-                        UserName = CurrentUserName
+                        UserName = CurrentUserName,
+                        AvatarId = profilePhotoId,
+
+                        // 🔹 Skin hacia el servidor
+                        CurrentSkinId = currentSkinId,
+                        CurrentSkinUnlockedId = currentSkinUnlockedId
                     });
 
                     if (!joinResult.Success)
@@ -397,7 +403,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                             RoomKey = CodigoPartida
                         };
 
-                        // 👉 Aquí mapeamos las opciones a 3 banderas
                         bool enableBonusCells;
                         bool enableTrapCells;
                         bool enableTeleportCells;
@@ -420,6 +425,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                         Debug.WriteLine("BoardID:" + boardDto);
 
                         var boardViewModel = new GameBoardViewModel(boardDto);
+                        boardViewModel.InitializeCornerPlayers(Members);
 
                         hasNavigatedToBoard = true;
                         NavigateToBoardRequested?.Invoke(boardViewModel);
@@ -438,18 +444,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         }
 
         private static void MapSpecialTileBooleans(
-    SpecialTileOptions options,
-    out bool enableBonus,
-    out bool enableTrap,
-    out bool enableTeleport)
+            SpecialTileOptions options,
+            out bool enableBonus,
+            out bool enableTrap,
+            out bool enableTeleport)
         {
-            // Si SpecialTileOptions es [Flags], esto funciona perfecto.
             enableBonus = options.HasFlag(SpecialTileOptions.Dice);
             enableTrap = options.HasFlag(SpecialTileOptions.Trap);
             enableTeleport = options.HasFlag(SpecialTileOptions.Message);
         }
-
-
 
         private async Task LeaveLobbyAsync()
         {
@@ -526,7 +529,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     dto.UserId,
                     dto.UserName,
                     dto.IsHost,
-                    dto.JoinedAtUtc),
+                    dto.JoinedAtUtc,
+                    dto.AvatarId,
+                    dto.CurrentSkinId,          // string
+                    dto.CurrentSkinUnlockedId), // int
                 (vm, dto) => vm.IsHost = dto.IsHost);
 
             bool isCurrentUserStillInLobby = false;
@@ -597,11 +603,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 if (boardDto == null)
                 {
                     Logger.Warn($"El servidor no devolvió el tablero para LobbyId {LobbyId}. Intentaremos más tarde.");
-                    hasNavigatedToBoard = false; // Permitimos que el poller lo intente de nuevo
+                    hasNavigatedToBoard = false;
                     return;
                 }
 
                 var boardViewModel = new GameBoardViewModel(boardDto);
+                boardViewModel.InitializeCornerPlayers(Members);
 
                 NavigateToBoardRequested?.Invoke(boardViewModel);
             }
@@ -629,12 +636,20 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             MaxPlayers = PlayersRequested;
 
+            var session = SessionContext.Current;
+            var avatarId = session?.ProfilePhotoId;
+            var currentSkinId = session?.CurrentSkinId;
+            var currentSkinUnlockedId = session?.CurrentSkinUnlockedId ?? 0;
+
             Members.Clear();
             Members.Add(new LobbyMemberViewModel(
                 CurrentUserId,
                 CurrentUserName,
                 true,
-                DateTime.Now));
+                DateTime.Now,
+                avatarId,
+                currentSkinId,
+                currentSkinUnlockedId));
 
             StatusText = $"Lobby creado. Código {CodigoPartida}. " +
                          $"Límite {MaxPlayers}. Expira {ExpiresAtUtc:HH:mm} UTC";
@@ -646,10 +661,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 case DifficultyOption.Easy:
                     return DIFFICULTY_EASY;
-
                 case DifficultyOption.Hard:
                     return DIFFICULTY_HARD;
-
                 default:
                     return DIFFICULTY_NORMAL;
             }
@@ -699,10 +712,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 case 7:
                     return BoardSizeOption.EightByEight;
-
                 case 12:
                     return BoardSizeOption.TwelveByTwelve;
-
                 case 10:
                 default:
                     return BoardSizeOption.TenByTen;
@@ -714,6 +725,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             if (string.Equals(difficulty, DIFFICULTY_EASY, StringComparison.OrdinalIgnoreCase))
             {
                 return DifficultyOption.Easy;
+
             }
 
             if (string.Equals(difficulty, DIFFICULTY_HARD, StringComparison.OrdinalIgnoreCase))
@@ -738,11 +750,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
 
             return SpecialTileOptions.None;
-        }
-
-        private static bool HasAnySpecialTiles(SpecialTileOptions options)
-        {
-            return options != SpecialTileOptions.None;
         }
 
         private void OnPropertyChanged([CallerMemberName] string name = null)

@@ -88,7 +88,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                     frame?.Navigate(new SnakeAndLaddersFinalProject.Pages.LoadingPage());
                 });
 
-                await Task.Delay(500); // pequeño delay visual, no 5s
+                await Task.Delay(500);
 
                 res = await Task.Run(() => client.Login(dto));
 
@@ -108,11 +108,30 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                     string token = TryGetToken(res);
 
+                    // 🔹 NUEVO: leer skin del resultado de login
+                    string currentSkinId = null;
+                    int? currentSkinUnlockedId = null;
+
+                    try { currentSkinId = (string)res?.CurrentSkinId; } catch { currentSkinId = null; }
+                    try
+                    {
+                        // si viene como int
+                        currentSkinUnlockedId = (int?)res?.CurrentSkinUnlockedId;
+                    }
+                    catch
+                    {
+                        currentSkinUnlockedId = null;
+                    }
+
+                    // 🔹 Guardar todo en SessionContext
                     SessionContext.Current.UserId = userId;
                     SessionContext.Current.UserName = string.IsNullOrWhiteSpace(displayName) ? identifier : displayName;
                     SessionContext.Current.Email = identifier.Contains("@") ? identifier : string.Empty;
                     SessionContext.Current.ProfilePhotoId = AvatarIdHelper.NormalizeOrDefault(profilePhotoId);
                     SessionContext.Current.AuthToken = token ?? string.Empty;
+
+                    SessionContext.Current.CurrentSkinId = currentSkinId;                  // puede ser null → luego haces fallback
+                    SessionContext.Current.CurrentSkinUnlockedId = currentSkinUnlockedId;  // FK o null
 
                     if (string.IsNullOrWhiteSpace(SessionContext.Current.AuthToken))
                     {
@@ -164,6 +183,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 client.Abort();
             }
         }
+
         private static string TryGetToken(dynamic res)
         {
             try
@@ -271,6 +291,10 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 SessionContext.Current.AuthToken = $"GUEST-{Guid.NewGuid():N}";
 
+                
+                SessionContext.Current.CurrentSkinId = "001";
+                SessionContext.Current.CurrentSkinUnlockedId = null;
+
                 if (NavigationService != null)
                 {
                     NavigationService.Navigate(new MainPage());
@@ -290,6 +314,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                 ShowError("Unexpected error while navigating.");
             }
         }
+
+
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {

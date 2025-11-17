@@ -3,7 +3,10 @@
   <xs:complexType name="CreateGameRequest">
     <xs:sequence>
       <xs:element minOccurs="0" name="BoardSide" type="xs:int" />
+      <xs:element minOccurs="0" name="CurrentSkinId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentSkinUnlockedId" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="Dificultad" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="HostAvatarId" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="HostUserId" type="xs:int" />
       <xs:element minOccurs="0" name="MaxPlayers" type="xs:unsignedByte" />
       <xs:element minOccurs="0" name="PlayersRequested" type="xs:unsignedByte" />
@@ -22,7 +25,10 @@
   <xs:element name="CreateGameResponse" nillable="true" type="tns:CreateGameResponse" />
   <xs:complexType name="JoinLobbyRequest">
     <xs:sequence>
+      <xs:element minOccurs="0" name="AvatarId" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="CodigoPartida" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentSkinId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentSkinUnlockedId" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="UserId" type="xs:int" />
       <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
     </xs:sequence>
@@ -61,6 +67,9 @@
   <xs:element name="ArrayOfLobbyMember" nillable="true" type="tns:ArrayOfLobbyMember" />
   <xs:complexType name="LobbyMember">
     <xs:sequence>
+      <xs:element minOccurs="0" name="AvatarId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentSkinId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentSkinUnlockedId" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="IsHost" type="xs:boolean" />
       <xs:element minOccurs="0" name="JoinedAtUtc" type="xs:dateTime" />
       <xs:element minOccurs="0" name="UserId" type="xs:int" />

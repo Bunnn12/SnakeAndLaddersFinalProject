@@ -26,7 +26,16 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         private int BoardSideField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CurrentSkinIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> CurrentSkinUnlockedIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DificultadField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string HostAvatarIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int HostUserIdField;
@@ -67,6 +76,32 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CurrentSkinId {
+            get {
+                return this.CurrentSkinIdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CurrentSkinIdField, value) != true)) {
+                    this.CurrentSkinIdField = value;
+                    this.RaisePropertyChanged("CurrentSkinId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> CurrentSkinUnlockedId {
+            get {
+                return this.CurrentSkinUnlockedIdField;
+            }
+            set {
+                if ((this.CurrentSkinUnlockedIdField.Equals(value) != true)) {
+                    this.CurrentSkinUnlockedIdField = value;
+                    this.RaisePropertyChanged("CurrentSkinUnlockedId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string Dificultad {
             get {
                 return this.DificultadField;
@@ -75,6 +110,19 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
                 if ((object.ReferenceEquals(this.DificultadField, value) != true)) {
                     this.DificultadField = value;
                     this.RaisePropertyChanged("Dificultad");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string HostAvatarId {
+            get {
+                return this.HostAvatarIdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.HostAvatarIdField, value) != true)) {
+                    this.HostAvatarIdField = value;
+                    this.RaisePropertyChanged("HostAvatarId");
                 }
             }
         }
@@ -318,7 +366,16 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AvatarIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string CodigoPartidaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CurrentSkinIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> CurrentSkinUnlockedIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int UserIdField;
@@ -337,6 +394,19 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AvatarId {
+            get {
+                return this.AvatarIdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AvatarIdField, value) != true)) {
+                    this.AvatarIdField = value;
+                    this.RaisePropertyChanged("AvatarId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string CodigoPartida {
             get {
                 return this.CodigoPartidaField;
@@ -345,6 +415,32 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
                 if ((object.ReferenceEquals(this.CodigoPartidaField, value) != true)) {
                     this.CodigoPartidaField = value;
                     this.RaisePropertyChanged("CodigoPartida");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CurrentSkinId {
+            get {
+                return this.CurrentSkinIdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CurrentSkinIdField, value) != true)) {
+                    this.CurrentSkinIdField = value;
+                    this.RaisePropertyChanged("CurrentSkinId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> CurrentSkinUnlockedId {
+            get {
+                return this.CurrentSkinUnlockedIdField;
+            }
+            set {
+                if ((this.CurrentSkinUnlockedIdField.Equals(value) != true)) {
+                    this.CurrentSkinUnlockedIdField = value;
+                    this.RaisePropertyChanged("CurrentSkinUnlockedId");
                 }
             }
         }
@@ -693,6 +789,15 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AvatarIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CurrentSkinIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> CurrentSkinUnlockedIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsHostField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -711,6 +816,45 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AvatarId {
+            get {
+                return this.AvatarIdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AvatarIdField, value) != true)) {
+                    this.AvatarIdField = value;
+                    this.RaisePropertyChanged("AvatarId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CurrentSkinId {
+            get {
+                return this.CurrentSkinIdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CurrentSkinIdField, value) != true)) {
+                    this.CurrentSkinIdField = value;
+                    this.RaisePropertyChanged("CurrentSkinId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> CurrentSkinUnlockedId {
+            get {
+                return this.CurrentSkinUnlockedIdField;
+            }
+            set {
+                if ((this.CurrentSkinUnlockedIdField.Equals(value) != true)) {
+                    this.CurrentSkinUnlockedIdField = value;
+                    this.RaisePropertyChanged("CurrentSkinUnlockedId");
+                }
             }
         }
         

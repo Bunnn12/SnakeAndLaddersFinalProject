@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using SnakeAndLaddersFinalProject.GameBoardService;
+using SnakeAndLaddersFinalProject.ViewModels.Models;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
@@ -15,6 +16,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public ObservableCollection<GameBoardCellViewModel> Cells { get; }
         public ObservableCollection<GameBoardConnectionViewModel> Connections { get; }
+
+        public CornerPlayersViewModel CornerPlayers { get; }
 
         public GameBoardViewModel(BoardDefinitionDto boardDefinition)
         {
@@ -29,8 +32,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             Cells = new ObservableCollection<GameBoardCellViewModel>();
             Connections = new ObservableCollection<GameBoardConnectionViewModel>();
 
+            CornerPlayers = new CornerPlayersViewModel();
+
             BuildCells(boardDefinition.Cells);
             BuildConnections(boardDefinition.Links);
+        }
+
+        public void InitializeCornerPlayers(IList<LobbyMemberViewModel> lobbyMembers)
+        {
+            CornerPlayers.InitializeFromLobbyMembers(lobbyMembers);
         }
 
         private void BuildCells(IList<BoardCellDto> cellDtos)
