@@ -135,6 +135,7 @@
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Converters\SnakeCurveGeometryConverter.cs" />
     <Compile Include="Converters\SnakeHeadOffsetConverter.cs" />
+    <Compile Include="Converters\TokensForCellConverter.cs" />
     <Compile Include="CreateMatchOptions.cs" />
     <Compile Include="DialogBasicWindow.xaml.cs">
       <DependentUpon>DialogBasicWindow.xaml</DependentUpon>
@@ -237,6 +238,7 @@
     <Compile Include="ViewModels\LobbyViewModel.cs" />
     <Compile Include="ViewModels\Models\LobbyMemberViewModel.cs" />
     <Compile Include="ViewModels\PlayerRankingItemViewModel.cs" />
+    <Compile Include="ViewModels\PlayerTokenViewModel.cs" />
     <Compile Include="ViewModels\RankingViewModel.cs" />
     <Compile Include="Windows\ChatWindow.xaml.cs">
       <DependentUpon>ChatWindow.xaml</DependentUpon>
@@ -706,20 +708,20 @@
     <Resource Include="Assets\Images\Backgrounds\RankingBackground.png" />
     <Resource Include="Assets\Images\Icons\FinalCellIcon.png" />
     <Resource Include="Assets\Images\Icons\StartCellIcon.png" />
-    <Resource Include="Assets\Images\Skins\002.png" />
+    <Resource Include="Assets\Images\Skins\001.png" />
     <Resource Include="Assets\Images\Skins\003.png" />
     <Resource Include="Assets\Images\Skins\004.png" />
     <Resource Include="Assets\Images\Skins\005.png" />
-    <Resource Include="Assets\Images\Tokens\T002.png" />
-    <Resource Include="Assets\Images\Tokens\T003.png" />
-    <Resource Include="Assets\Images\Tokens\T004.png" />
-    <Resource Include="Assets\Images\Tokens\T005.png" />
+    <Resource Include="Assets\Images\Skins\Tokens\T001.png" />
+    <Resource Include="Assets\Images\Skins\Tokens\T003.png" />
+    <Resource Include="Assets\Images\Skins\Tokens\T004.png" />
+    <Resource Include="Assets\Images\Skins\Tokens\T005.png" />
     <Resource Include="Assets\Images\Skins\010.png" />
     <Resource Include="Assets\Images\Skins\009.png" />
-    <Resource Include="Assets\Images\Tokens\T010.png" />
-    <Resource Include="Assets\Images\Tokens\T009.png" />
+    <Resource Include="Assets\Images\Skins\Tokens\T010.png" />
+    <Resource Include="Assets\Images\Skins\Tokens\T009.png" />
     <Resource Include="Assets\Images\Skins\011.png" />
-    <Resource Include="Assets\Images\Tokens\T011.png" />
+    <Resource Include="Assets\Images\Skins\Tokens\T011.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

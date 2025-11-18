@@ -18,17 +18,18 @@
         <conv:IsSnakeToColorConverter x:Key="IsSnakeToColorConverter" />
         <conv:IsSnakeToStyleConverter x:Key="IsSnakeToStyleConverter" />
         <conv:SnakeHeadOffsetConverter x:Key="SnakeHeadOffsetConverter" />
-        <!-- Serpientes curvas -->
         <conv:SnakeCurveGeometryConverter x:Key="SnakeCurveGeometryConverter" />
-        <!-- Escaleras con barandales + peldaños -->
         <conv:LadderGeometryConverter x:Key="LadderGeometryConverter" />
+
+        <!-- Tokens -> celdas -->
+        <conv:TokensForCellConverter x:Key="TokensForCellConverter" />
 
         <!-- Converter avatarId -> pack URI -->
         <utils:AvatarIdToPathConverter x:Key="AvatarIdToPathConverter" />
 
         <Thickness x:Key="CellMargin">2</Thickness>
 
-        <!-- Fondo claro -->
+        <!-- Fondos -->
         <LinearGradientBrush x:Key="BrushBoardCellBackgroundLight"
                              StartPoint="0,0"
                              EndPoint="1,1">
@@ -37,7 +38,6 @@
             <GradientStop Color="#CEA456" Offset="1.0" />
         </LinearGradientBrush>
 
-        <!-- Fondo oscuro -->
         <LinearGradientBrush x:Key="BrushBoardCellBackgroundDark"
                              StartPoint="0,0"
                              EndPoint="1,1">
@@ -84,11 +84,9 @@
         <BitmapImage x:Key="ItemIconSource"
                      UriSource="/Assets/Images/Icons/ItemIcon.png" />
 
-        <!-- ICONO CASILLA FINAL -->
+        <!-- ICONOS CASILLAS INICIO/FINAL -->
         <BitmapImage x:Key="FinalCellIconSource"
                      UriSource="/Assets/Images/Icons/FinalCellIcon.png" />
-
-        <!-- ICONO CASILLA INICIO -->
         <BitmapImage x:Key="StartCellIconSource"
                      UriSource="/Assets/Images/Icons/StartCellIcon.png" />
 
@@ -197,7 +195,7 @@
                         </Image.Style>
                     </Image>
 
-                    <!-- CASILLA INICIAL -> StartCellIcon -->
+                    <!-- CASILLA INICIAL -->
                     <Image Width="65"
                            Height="65"
                            HorizontalAlignment="Center"
@@ -215,7 +213,7 @@
                         </Image.Style>
                     </Image>
 
-                    <!-- CASILLA FINAL -> FinalCellIcon -->
+                    <!-- CASILLA FINAL -->
                     <Image Width="65"
                            Height="65"
                            HorizontalAlignment="Center"
@@ -232,6 +230,48 @@
                             </Style>
                         </Image.Style>
                     </Image>
+
+                    <!-- TOKENS DE JUGADORES EN ESTA CASILLA -->
+                    <ItemsControl HorizontalAlignment="Center"
+              VerticalAlignment="Center">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <!-- 2x2 cuadrícula centrada: caben hasta 4 tokens -->
+                                <UniformGrid Rows="2"
+                         Columns="2"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemsSource>
+                            <MultiBinding Converter="{StaticResource TokensForCellConverter}">
+                                <!-- Colección de tokens en el VM del tablero -->
+                                <Binding RelativeSource="{RelativeSource AncestorType=Page}"
+                     Path="DataContext.PlayerTokens" />
+                                <!-- Índice de esta casilla -->
+                                <Binding Path="Index" />
+                            </MultiBinding>
+                        </ItemsControl.ItemsSource>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type vmModels:PlayerTokenViewModel}">
+                                <!-- Token CUADRADO usando la skin -->
+                                <Grid Width="26"
+                  Height="26"
+                  Margin="2">
+                                    <Border CornerRadius="4"
+                        BorderBrush="White"
+                        BorderThickness="1.5">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="{Binding TokenImagePath}"
+                                    Stretch="UniformToFill" />
+                                        </Border.Background>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
                 </Grid>
             </Border>
@@ -473,6 +513,5 @@
                         VerticalAlignment="Bottom"
                         Margin="16"
                         Panel.ZIndex="50" />
-
     </Grid>
 </Page>

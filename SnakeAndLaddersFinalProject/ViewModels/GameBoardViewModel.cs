@@ -19,6 +19,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public CornerPlayersViewModel CornerPlayers { get; }
 
+        /// <summary>
+        /// Fichas de jugadores sobre el tablero.
+        /// </summary>
+        public ObservableCollection<PlayerTokenViewModel> PlayerTokens { get; }
+
         public GameBoardViewModel(BoardDefinitionDto boardDefinition)
         {
             if (boardDefinition == null)
@@ -31,8 +36,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             Cells = new ObservableCollection<GameBoardCellViewModel>();
             Connections = new ObservableCollection<GameBoardConnectionViewModel>();
-
             CornerPlayers = new CornerPlayersViewModel();
+            PlayerTokens = new ObservableCollection<PlayerTokenViewModel>();
 
             BuildCells(boardDefinition.Cells);
             BuildConnections(boardDefinition.Links);
@@ -41,6 +46,38 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public void InitializeCornerPlayers(IList<LobbyMemberViewModel> lobbyMembers)
         {
             CornerPlayers.InitializeFromLobbyMembers(lobbyMembers);
+        }
+
+        /// <summary>
+        /// Inicializa las fichas de los jugadores en la casilla inicial.
+        /// </summary>
+        public void InitializeTokensFromLobbyMembers(IList<LobbyMemberViewModel> lobbyMembers)
+        {
+            PlayerTokens.Clear();
+
+            if (lobbyMembers == null || lobbyMembers.Count == 0)
+            {
+                return;
+            }
+
+            // Buscar la casilla inicial (IsStart = true); si no hay, usar índice 1
+            int startIndex = MIN_INDEX;
+            var startCell = Cells.FirstOrDefault(c => c.IsStart);
+            if (startCell != null)
+            {
+                startIndex = startCell.Index;
+            }
+
+            foreach (var member in lobbyMembers)
+            {
+                // CurrentSkinId viene del LobbyMemberViewModel
+                PlayerTokens.Add(
+                    new PlayerTokenViewModel(
+                        member.UserId,
+                        member.UserName,
+                        member.CurrentSkinId,
+                        startIndex));
+            }
         }
 
         private void BuildCells(IList<BoardCellDto> cellDtos)

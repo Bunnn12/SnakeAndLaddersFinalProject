@@ -30,10 +30,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
         private const string BASE_SKINS_FOLDER = "/Assets/Images/Skins/";
         private const string TOKENS_SUBFOLDER = "Tokens/";
 
-        // ================= NORMALIZACIÓN =================
-        // 3   -> "003"
-        // "3" -> "003"
-        // null / vacío / <=0 -> "002" (default)
+       
 
         public static string NormalizeSkinKey(int skinId)
         {

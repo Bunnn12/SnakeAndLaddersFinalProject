@@ -426,9 +426,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                         var boardViewModel = new GameBoardViewModel(boardDto);
                         boardViewModel.InitializeCornerPlayers(Members);
+                        boardViewModel.InitializeTokensFromLobbyMembers(Members);
 
                         hasNavigatedToBoard = true;
                         NavigateToBoardRequested?.Invoke(boardViewModel);
+
                     }
 
                     await Task.CompletedTask;
@@ -609,8 +611,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 var boardViewModel = new GameBoardViewModel(boardDto);
                 boardViewModel.InitializeCornerPlayers(Members);
+                boardViewModel.InitializeTokensFromLobbyMembers(Members);
 
                 NavigateToBoardRequested?.Invoke(boardViewModel);
+
             }
             catch (Exception ex)
             {
