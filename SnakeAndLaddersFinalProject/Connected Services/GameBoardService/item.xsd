@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:8085/gameboard/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" />
+  <xs:import schemaLocation="http://localhost:8085/gameboard/?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:complexType name="CreateBoardRequestDto">
     <xs:sequence>
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" minOccurs="0" name="BoardSize" type="q1:BoardSizeOption" />
@@ -9,6 +10,7 @@
       <xs:element minOccurs="0" name="EnableTeleportCells" type="xs:boolean" />
       <xs:element minOccurs="0" name="EnableTrapCells" type="xs:boolean" />
       <xs:element minOccurs="0" name="GameId" type="xs:int" />
+      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="PlayerUserIds" nillable="true" type="q2:ArrayOfint" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="CreateBoardRequestDto" nillable="true" type="tns:CreateBoardRequestDto" />
@@ -20,7 +22,7 @@
   <xs:element name="CreateBoardResponseDto" nillable="true" type="tns:CreateBoardResponseDto" />
   <xs:complexType name="BoardDefinitionDto">
     <xs:sequence>
-      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" minOccurs="0" name="BoardSize" type="q2:BoardSizeOption" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" minOccurs="0" name="BoardSize" type="q3:BoardSizeOption" />
       <xs:element minOccurs="0" name="Cells" nillable="true" type="tns:ArrayOfBoardCellDto" />
       <xs:element minOccurs="0" name="Columns" type="xs:int" />
       <xs:element minOccurs="0" name="Links" nillable="true" type="tns:ArrayOfBoardLinkDto" />
@@ -42,7 +44,7 @@
       <xs:element minOccurs="0" name="IsFinal" type="xs:boolean" />
       <xs:element minOccurs="0" name="IsStart" type="xs:boolean" />
       <xs:element minOccurs="0" name="Row" type="xs:int" />
-      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" minOccurs="0" name="SpecialType" type="q3:SpecialCellType" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" minOccurs="0" name="SpecialType" type="q4:SpecialCellType" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="BoardCellDto" nillable="true" type="tns:BoardCellDto" />

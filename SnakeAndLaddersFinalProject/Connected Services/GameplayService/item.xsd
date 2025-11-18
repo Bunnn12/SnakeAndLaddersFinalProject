@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8085/gameplay/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" />
+  <xs:complexType name="RollDiceRequestDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GameId" type="xs:int" />
+      <xs:element minOccurs="0" name="PlayerUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="CurrentCellIndex" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RollDiceRequestDto" nillable="true" type="tns:RollDiceRequestDto" />
+  <xs:complexType name="RollDiceResponseDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Success" type="xs:boolean" />
+      <xs:element minOccurs="0" name="FailureReason" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PlayerUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="FromCellIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="ToCellIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="DiceValue" type="xs:int" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" minOccurs="0" name="MoveResult" type="q1:MoveEffectType" />
+      <xs:element minOccurs="0" name="UpdatedTokens" nillable="true" type="tns:ArrayOfTokenStateDto" />
+      <xs:element minOccurs="0" name="ExtraInfo" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RollDiceResponseDto" nillable="true" type="tns:RollDiceResponseDto" />
+  <xs:complexType name="ArrayOfTokenStateDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TokenStateDto" nillable="true" type="tns:TokenStateDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTokenStateDto" nillable="true" type="tns:ArrayOfTokenStateDto" />
+  <xs:complexType name="TokenStateDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CellIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TokenStateDto" nillable="true" type="tns:TokenStateDto" />
+</xs:schema>

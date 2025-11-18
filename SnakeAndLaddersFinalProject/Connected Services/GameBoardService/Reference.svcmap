@@ -22,6 +22,7 @@
     <MetadataSource Address="http://localhost:8085/gameboard/" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
+    <MetadataFile FileName="item4.xsd" MetadataType="Schema" ID="8a641bb1-283b-4ef5-af37-710db9f4df4a" SourceId="1" SourceUrl="http://localhost:8085/gameboard/?xsd=xsd4" />
     <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="6f1bae1d-3f97-4910-9a8c-93fb16bb0936" SourceId="1" SourceUrl="http://localhost:8085/gameboard/?xsd=xsd2" />
     <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="f368fc02-d05f-473f-bc50-91990ab428b2" SourceId="1" SourceUrl="http://localhost:8085/gameboard/?xsd=xsd3" />
     <MetadataFile FileName="item2.xsd" MetadataType="Schema" ID="ad3658f7-2fa1-4a48-ad90-a23b10044070" SourceId="1" SourceUrl="http://localhost:8085/gameboard/?xsd=xsd0" />

@@ -4,7 +4,7 @@ namespace SnakeAndLaddersFinalProject
 {
     public enum BoardSizeOption 
     { 
-        EightByEight = 7, TenByTen = 10, TwelveByTwelve = 12 
+        EightByEight = 8, TenByTen = 10, TwelveByTwelve = 12 
     }
     public enum DifficultyOption 
     { 

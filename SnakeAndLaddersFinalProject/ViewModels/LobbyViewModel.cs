@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using log4net;
 using SnakeAndLaddersFinalProject.Authentication;
+using SnakeAndLaddersFinalProject.GameplayService;
 using SnakeAndLaddersFinalProject.Infrastructure;
 using SnakeAndLaddersFinalProject.LobbyService;
 using SnakeAndLaddersFinalProject.Services;
@@ -24,6 +26,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string LOBBY_ENDPOINT = "NetTcpBinding_ILobbyService";
         private const int POLL_INTERVAL_SECONDS = 2;
         private const int LOBBY_ID_NOT_SET = 0;
+        private const int FALLBACK_LOCAL_USER_ID = 1;
 
         private const string STATUS_LOBBY_READY = "Lobby listo.";
         private const string STATUS_NO_LOBBY = "Sin lobby";
@@ -50,9 +53,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public event Action CurrentUserKickedFromLobby;
 
         private readonly DispatcherTimer pollTimer =
-            new DispatcherTimer { Interval = TimeSpan.FromSeconds(POLL_INTERVAL_SECONDS) };
+        new DispatcherTimer { Interval = TimeSpan.FromSeconds(POLL_INTERVAL_SECONDS) };
 
-        private readonly IGameBoardClient gameBoardClient;
+        private readonly GameBoardClient gameBoardClient;
+
+
 
         private string statusText = STATUS_LOBBY_READY;
         private string codigoInput = string.Empty;
@@ -65,7 +70,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             InitializeCurrentUser();
 
-            gameBoardClient = new GameBoardClient();
+            gameBoardClient = new GameBoardClient();   
 
             CreateLobbyCommand = new AsyncCommand(CreateLobbyAsync);
             JoinLobbyCommand = new AsyncCommand(
@@ -80,6 +85,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             Members.CollectionChanged += OnMembersChanged;
         }
+
 
         public string StatusText
         {
@@ -246,8 +252,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                     var session = SessionContext.Current;
                     var profilePhotoId = session?.ProfilePhotoId;
-                    var currentSkinId = session?.CurrentSkinId; // string
-                    var currentSkinUnlockedId = session?.CurrentSkinUnlockedId ?? 0; // int?
+                    var currentSkinId = session?.CurrentSkinId;
+                    var currentSkinUnlockedId = session?.CurrentSkinUnlockedId ?? 0;
 
                     var request = new CreateGameRequest
                     {
@@ -259,8 +265,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                         PlayersRequested = playersRequested,
                         SpecialTiles = specialTiles.ToString(),
                         HostAvatarId = profilePhotoId,
-
-                        // 🔹 Skin info hacia el servidor
                         CurrentSkinId = currentSkinId,
                         CurrentSkinUnlockedId = currentSkinUnlockedId
                     };
@@ -299,7 +303,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     var session = SessionContext.Current;
                     var profilePhotoId = session?.ProfilePhotoId;
-                    var currentSkinId = session?.CurrentSkinId; // string
+                    var currentSkinId = session?.CurrentSkinId;
                     var currentSkinUnlockedId = session?.CurrentSkinUnlockedId ?? 0;
 
                     var joinResult = client.JoinLobby(new JoinLobbyRequest
@@ -308,8 +312,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                         UserId = CurrentUserId,
                         UserName = CurrentUserName,
                         AvatarId = profilePhotoId,
-
-                        // 🔹 Skin hacia el servidor
                         CurrentSkinId = currentSkinId,
                         CurrentSkinUnlockedId = currentSkinUnlockedId
                     });
@@ -412,6 +414,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                             out enableBonusCells,
                             out enableTrapCells,
                             out enableTeleportCells);
+                        
+                        var playerUserIds = Members
+                            .Where(m => m != null && m.UserId > 0)
+                            .Select(m => m.UserId)
+                            .Distinct()
+                            .ToList();
+
+                        if (playerUserIds.Count == 0)
+                        {
+                            Logger.Error("StartMatchAsync: no valid player IDs to create the board.");
+                            StatusText = "No hay jugadores válidos para crear el tablero.";
+                            return;
+                        }
 
                         var boardDto = gameBoardClient.CreateBoard(
                             LobbyId,
@@ -419,18 +434,28 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                             enableBonusCells,
                             enableTrapCells,
                             enableTeleportCells,
-                            options.Difficulty.ToString());
+                            options.Difficulty.ToString(),
+                            playerUserIds);
+
 
                         Debug.WriteLine("LobbyID:" + LobbyId);
                         Debug.WriteLine("BoardID:" + boardDto);
 
-                        var boardViewModel = new GameBoardViewModel(boardDto);
+                        IGameplayClient gameplayClient = new GameplayClient();
+
+                        int localUserId = ResolveLocalUserIdForBoard();
+
+                        var boardViewModel = new GameBoardViewModel(
+                            boardDto,
+                            gameplayClient,
+                            LobbyId,
+                            localUserId);
+
                         boardViewModel.InitializeCornerPlayers(Members);
                         boardViewModel.InitializeTokensFromLobbyMembers(Members);
 
                         hasNavigatedToBoard = true;
                         NavigateToBoardRequested?.Invoke(boardViewModel);
-
                     }
 
                     await Task.CompletedTask;
@@ -533,20 +558,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     dto.IsHost,
                     dto.JoinedAtUtc,
                     dto.AvatarId,
-                    dto.CurrentSkinId,          // string
-                    dto.CurrentSkinUnlockedId), // int
+                    dto.CurrentSkinId,
+                    dto.CurrentSkinUnlockedId),
                 (vm, dto) => vm.IsHost = dto.IsHost);
 
-            bool isCurrentUserStillInLobby = false;
-
-            foreach (var member in Members)
-            {
-                if (member.UserId == CurrentUserId)
-                {
-                    isCurrentUserStillInLobby = true;
-                    break;
-                }
-            }
+            bool isCurrentUserStillInLobby = Members.Any(m => m.UserId == CurrentUserId);
 
             if (!isCurrentUserStillInLobby)
             {
@@ -609,18 +625,60 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     return;
                 }
 
-                var boardViewModel = new GameBoardViewModel(boardDto);
+                IGameplayClient gameplayClient = new GameplayClient();
+
+                int localUserId = ResolveLocalUserIdForBoard();
+
+                var boardViewModel = new GameBoardViewModel(
+                    boardDto,
+                    gameplayClient,
+                    LobbyId,
+                    localUserId);
+
                 boardViewModel.InitializeCornerPlayers(Members);
                 boardViewModel.InitializeTokensFromLobbyMembers(Members);
 
                 NavigateToBoardRequested?.Invoke(boardViewModel);
-
             }
             catch (Exception ex)
             {
                 Logger.Error("Error al obtener el tablero cuando la partida inició.", ex);
                 hasNavigatedToBoard = false;
             }
+        }
+
+        private int ResolveLocalUserIdForBoard()
+        {
+            if (CurrentUserId > 0)
+            {
+                return CurrentUserId;
+            }
+
+            LobbyMemberViewModel self = null;
+
+            if (!string.IsNullOrWhiteSpace(CurrentUserName))
+            {
+                self = Members
+                    .FirstOrDefault(m =>
+                        !string.IsNullOrWhiteSpace(m.UserName) &&
+                        string.Equals(
+                            m.UserName,
+                            CurrentUserName,
+                            StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (self == null)
+            {
+                self = Members.FirstOrDefault(m => m.UserId > 0);
+            }
+
+            if (self != null && self.UserId > 0)
+            {
+                return self.UserId;
+            }
+
+            Logger.Warn("ResolveLocalUserIdForBoard no pudo determinar un UserId válido. Se usará un valor de respaldo.");
+            return FALLBACK_LOCAL_USER_ID;
         }
 
         private void ApplyCreatedLobby(CreateGameResponse response)
@@ -729,7 +787,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             if (string.Equals(difficulty, DIFFICULTY_EASY, StringComparison.OrdinalIgnoreCase))
             {
                 return DifficultyOption.Easy;
-
             }
 
             if (string.Equals(difficulty, DIFFICULTY_HARD, StringComparison.OrdinalIgnoreCase))

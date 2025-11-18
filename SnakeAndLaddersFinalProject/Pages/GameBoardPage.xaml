@@ -233,14 +233,14 @@
 
                     <!-- TOKENS DE JUGADORES EN ESTA CASILLA -->
                     <ItemsControl HorizontalAlignment="Center"
-              VerticalAlignment="Center">
+                                  VerticalAlignment="Center">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <!-- 2x2 cuadrícula centrada: caben hasta 4 tokens -->
                                 <UniformGrid Rows="2"
-                         Columns="2"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center" />
+                                             Columns="2"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
 
@@ -248,7 +248,7 @@
                             <MultiBinding Converter="{StaticResource TokensForCellConverter}">
                                 <!-- Colección de tokens en el VM del tablero -->
                                 <Binding RelativeSource="{RelativeSource AncestorType=Page}"
-                     Path="DataContext.PlayerTokens" />
+                                         Path="DataContext.PlayerTokens" />
                                 <!-- Índice de esta casilla -->
                                 <Binding Path="Index" />
                             </MultiBinding>
@@ -256,16 +256,16 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type vmModels:PlayerTokenViewModel}">
-                                <!-- Token CUADRADO usando la skin -->
+                                <!-- Token cuadrado usando la skin -->
                                 <Grid Width="26"
-                  Height="26"
-                  Margin="2">
+                                      Height="26"
+                                      Margin="2">
                                     <Border CornerRadius="4"
-                        BorderBrush="White"
-                        BorderThickness="1.5">
+                                            BorderBrush="White"
+                                            BorderThickness="1.5">
                                         <Border.Background>
                                             <ImageBrush ImageSource="{Binding TokenImagePath}"
-                                    Stretch="UniformToFill" />
+                                                        Stretch="UniformToFill" />
                                         </Border.Background>
                                     </Border>
                                 </Grid>
@@ -305,7 +305,8 @@
                                  StrokeThickness="2" />
                         <Ellipse>
                             <Ellipse.Fill>
-                                <ImageBrush ImageSource="{Binding AvatarId, Converter={StaticResource AvatarIdToPathConverter}}"
+                                <ImageBrush ImageSource="{Binding AvatarId,
+                                              Converter={StaticResource AvatarIdToPathConverter}}"
                                             Stretch="UniformToFill" />
                             </Ellipse.Fill>
                         </Ellipse>
@@ -331,19 +332,42 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Barra superior -->
-        <StackPanel Grid.Row="0"
-                    Orientation="Horizontal"
-                    Margin="16">
-            <TextBlock Text="Snakes &amp; Ladders"
-                       Foreground="White"
-                       FontSize="20"
-                       FontWeight="Bold" />
-            <TextBlock Text="  -  Game Board"
-                       Foreground="White"
-                       FontSize="16"
-                       Margin="8,0,0,0" />
-        </StackPanel>
+        <!-- Barra superior con botón de dado -->
+        <Grid Grid.Row="0"
+              Margin="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Título -->
+            <StackPanel Orientation="Horizontal"
+                        Grid.Column="0">
+                <TextBlock Text="Snakes &amp; Ladders"
+                           Foreground="White"
+                           FontSize="20"
+                           FontWeight="Bold" />
+                <TextBlock Text="  -  Game Board"
+                           Foreground="White"
+                           FontSize="16"
+                           Margin="8,0,0,0" />
+            </StackPanel>
+
+            <!-- Controles derecha -->
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        >
+
+                <!-- Botón tirar dado -->
+                <Button Width="120"
+                        Height="32"
+                        Padding="8,2"
+                        Content="Roll dice"
+                        Command="{Binding RollDiceCommand}" />
+            </StackPanel>
+        </Grid>
 
         <!-- Tablero -->
         <Viewbox Grid.Row="1"
@@ -373,7 +397,8 @@
                             <Canvas Width="{Binding Columns}"
                                     Height="{Binding Rows}">
                                 <Canvas.LayoutTransform>
-                                    <ScaleTransform ScaleX="64" ScaleY="64" />
+                                    <ScaleTransform ScaleX="64"
+                                                    ScaleY="64" />
                                 </Canvas.LayoutTransform>
                             </Canvas>
                         </ItemsPanelTemplate>

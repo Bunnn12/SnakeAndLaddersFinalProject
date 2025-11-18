@@ -40,6 +40,9 @@ namespace SnakeAndLaddersFinalProject.GameBoardService {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int GameIdField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int[] PlayerUserIdsField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -124,6 +127,19 @@ namespace SnakeAndLaddersFinalProject.GameBoardService {
                 if ((this.GameIdField.Equals(value) != true)) {
                     this.GameIdField = value;
                     this.RaisePropertyChanged("GameId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int[] PlayerUserIds {
+            get {
+                return this.PlayerUserIdsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PlayerUserIdsField, value) != true)) {
+                    this.PlayerUserIdsField = value;
+                    this.RaisePropertyChanged("PlayerUserIds");
                 }
             }
         }

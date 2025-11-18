@@ -9,7 +9,7 @@
         public const int MIN_PLAYERS_TO_START = 2;
         public const int MAX_PLAYERS = 4;
 
-        public const string LABEL_SIZE_7X7 = "7×7";
+        public const string LABEL_SIZE_8X8 = "8×8";
         public const string LABEL_SIZE_10X10 = "10×10";
         public const string LABEL_SIZE_12X12 = "12×12";
 
