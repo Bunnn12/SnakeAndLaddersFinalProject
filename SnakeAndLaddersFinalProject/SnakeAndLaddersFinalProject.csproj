@@ -139,6 +139,7 @@
     <Compile Include="Converters\GameBoardConverters.cs" />
     <Compile Include="Converters\LadderGeometryConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Converters\PlayerColorConverter.cs" />
     <Compile Include="Converters\SnakeCurveGeometryConverter.cs" />
     <Compile Include="Converters\SnakeHeadOffsetConverter.cs" />
     <Compile Include="Converters\TokensForCellConverter.cs" />
@@ -150,6 +151,9 @@
     <Compile Include="Game\BoardCell.cs" />
     <Compile Include="Game\BoardDefinition.cs" />
     <Compile Include="Game\BoardFactory.cs" />
+    <Compile Include="Game\GameBoardAnimationService.cs" />
+    <Compile Include="Game\GameBoardPathHelper.cs" />
+    <Compile Include="Game\PlayerTokenManager.cs" />
     <Compile Include="Game\SpecialCellType.cs" />
     <Compile Include="Globalization\LocalizationManager.cs" />
     <Compile Include="Infrastructure\AsyncCommand.cs" />

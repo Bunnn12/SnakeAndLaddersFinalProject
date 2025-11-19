@@ -21,14 +21,11 @@
         <conv:SnakeCurveGeometryConverter x:Key="SnakeCurveGeometryConverter" />
         <conv:LadderGeometryConverter x:Key="LadderGeometryConverter" />
 
-        <!-- Converter antiguo (ya casi no lo usamos para tokens, lo puedes borrar si quieres) -->
-        <conv:TokensForCellConverter x:Key="TokensForCellConverter" />
-
         <!-- Converter avatarId -> pack URI -->
         <utils:AvatarIdToPathConverter x:Key="AvatarIdToPathConverter" />
 
-        <!-- Converter para decidir si un token se ve en esta celda -->
-        <conv:CellTokenVisibleConverter x:Key="CellTokenVisibleConverter" />
+        <!-- Color por jugador -->
+        <conv:PlayerColorConverter x:Key="PlayerColorConverter" />
 
         <Thickness x:Key="CellMargin">2</Thickness>
 
@@ -127,7 +124,7 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Plantilla de celda -->
+        <!-- Plantilla de casilla (sin tokens dentro) -->
         <DataTemplate x:Key="BoardCellTemplate">
             <Border Style="{StaticResource BoardCellStyle}">
                 <Grid>
@@ -144,7 +141,7 @@
                                TextOptions.TextRenderingMode="Aliased"
                                TextOptions.TextFormattingMode="Display" />
 
-                    <!-- BONUS (verde) -> DiceIcon -->
+                    <!-- BONUS (verde) -->
                     <Image Width="60"
                            Height="60"
                            HorizontalAlignment="Center"
@@ -162,7 +159,7 @@
                         </Image.Style>
                     </Image>
 
-                    <!-- TRAMPA (rojo) -> ItemIcon -->
+                    <!-- TRAMPA (rojo) -->
                     <Image Width="60"
                            Height="60"
                            HorizontalAlignment="Center"
@@ -180,7 +177,7 @@
                         </Image.Style>
                     </Image>
 
-                    <!-- TELEPORT (morado) -> MessageIcon -->
+                    <!-- TELEPORT (morado) -->
                     <Image Width="60"
                            Height="60"
                            HorizontalAlignment="Center"
@@ -234,96 +231,50 @@
                         </Image.Style>
                     </Image>
 
-                    <!-- TOKENS DE JUGADORES EN ESTA CASILLA -->
-                    <ItemsControl HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  ItemsSource="{Binding DataContext.PlayerTokens,
-                                                        RelativeSource={RelativeSource AncestorType=Page}}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <!-- 2x2 cuadrícula centrada: caben hasta 4 tokens -->
-                                <UniformGrid Rows="2"
-                                             Columns="2"
-                                             HorizontalAlignment="Center"
-                                             VerticalAlignment="Center" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type vmModels:PlayerTokenViewModel}">
-                                <!-- Token cuadrado usando la skin -->
-                                <Grid Width="26"
-                                      Height="26"
-                                      Margin="2">
-                                    <Grid.RenderTransform>
-                                        <!-- se anima arriba/abajo con VerticalOffset -->
-                                        <TranslateTransform Y="{Binding VerticalOffset}" />
-                                    </Grid.RenderTransform>
-
-                                    <Border CornerRadius="4"
-                                            BorderBrush="White"
-                                            BorderThickness="1.5">
-                                        <Border.Visibility>
-                                            <MultiBinding Converter="{StaticResource CellTokenVisibleConverter}">
-                                                <!-- Índice actual del token -->
-                                                <Binding Path="CurrentCellIndex" />
-                                                <!-- Índice de la celda (GameBoardCellViewModel.Index) -->
-                                                <Binding Path="DataContext.Index"
-                                                         RelativeSource="{RelativeSource AncestorType=Border}" />
-                                            </MultiBinding>
-                                        </Border.Visibility>
-
-                                        <Border.Background>
-                                            <ImageBrush ImageSource="{Binding TokenImagePath}"
-                                                        Stretch="UniformToFill" />
-                                        </Border.Background>
-                                    </Border>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-
                 </Grid>
             </Border>
         </DataTemplate>
 
-        <!-- Template para jugador en esquina (skin grande + foto de perfil) -->
+        <!-- Template para jugador en esquina -->
         <DataTemplate x:Key="CornerPlayerTemplate"
                       DataType="{x:Type vmModels:LobbyMemberViewModel}">
             <StackPanel Orientation="Vertical"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
 
-                <!-- Skin grande -->
                 <Grid Width="112"
-                      Height="112"
-                      Margin="4">
+      Height="112"
+      Margin="4">
                     <Border CornerRadius="12"
-                            Background="#22000000">
+            Background="#22000000">
                         <Image Source="{Binding SkinImagePath}"
-                               Stretch="Uniform"
-                               Margin="4" />
+               Stretch="Uniform"
+               Margin="4" />
                     </Border>
 
-                    <!-- Avatar circular pequeño encima (abajo a la derecha) -->
-                    <Grid Width="44"
-                          Height="44"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Bottom"
-                          Margin="0,0,-4,-4">
-                        <Ellipse Stroke="White"
-                                 StrokeThickness="2" />
-                        <Ellipse>
+                    <!-- Aro de color + avatar -->
+                    <Grid Width="56"
+          Height="56"
+          HorizontalAlignment="Right"
+          VerticalAlignment="Bottom"
+          Margin="0,0,-4,-4">
+                        <!-- Aro de color (mismo que el token) -->
+                        <Ellipse Stroke="{Binding UserId,
+                                  Converter={StaticResource PlayerColorConverter}}"
+                 StrokeThickness="4" />
+
+                        <!-- Foto de perfil un poco más pequeña para que se vea el aro -->
+                        <Ellipse Margin="4">
                             <Ellipse.Fill>
                                 <ImageBrush ImageSource="{Binding AvatarId,
-                                              Converter={StaticResource AvatarIdToPathConverter}}"
-                                            Stretch="UniformToFill" />
+                                          Converter={StaticResource AvatarIdToPathConverter}}"
+                            Stretch="UniformToFill" />
                             </Ellipse.Fill>
                         </Ellipse>
                     </Grid>
                 </Grid>
 
-                <!-- Nombre del jugador -->
+
                 <TextBlock Text="{Binding UserName}"
                            Margin="0,4,0,0"
                            HorizontalAlignment="Center"
@@ -342,7 +293,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Barra superior con botón de dado -->
+        <!-- Barra superior -->
         <Grid Grid.Row="0"
               Margin="16">
             <Grid.ColumnDefinitions>
@@ -350,7 +301,6 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <!-- Título -->
             <StackPanel Orientation="Horizontal"
                         Grid.Column="0">
                 <TextBlock Text="Snakes &amp; Ladders"
@@ -363,13 +313,10 @@
                            Margin="8,0,0,0" />
             </StackPanel>
 
-            <!-- Controles derecha -->
             <StackPanel Grid.Column="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center">
-
-                <!-- Botón tirar dado -->
                 <Button Width="120"
                         Height="32"
                         Padding="8,2"
@@ -386,7 +333,7 @@
                  VerticalAlignment="Center">
             <Grid>
 
-                <!-- Celdas del tablero -->
+                <!-- Celdas -->
                 <ItemsControl ItemsSource="{Binding Cells}"
                               ItemTemplate="{StaticResource BoardCellTemplate}">
                     <ItemsControl.ItemsPanel>
@@ -485,7 +432,7 @@
                                     </Path.Data>
                                 </Path>
 
-                                <!-- Cabeza de serpiente -->
+                                <!-- Cabeza serpiente -->
                                 <Ellipse Width="0.40"
                                          Height="0.40"
                                          Fill="#49a067"
@@ -512,10 +459,57 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
+                <!-- TOKENS en canvas global -->
+                <ItemsControl ItemsSource="{Binding PlayerTokens}"
+                              Panel.ZIndex="30">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Width="{Binding Columns}"
+                                    Height="{Binding Rows}">
+                                <Canvas.LayoutTransform>
+                                    <ScaleTransform ScaleX="64"
+                                                    ScaleY="64" />
+                                </Canvas.LayoutTransform>
+                            </Canvas>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <!-- Posición en Canvas -->
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Canvas.Left"
+                                    Value="{Binding X}" />
+                            <Setter Property="Canvas.Top"
+                                    Value="{Binding Y}" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type vmModels:PlayerTokenViewModel}">
+                            <Grid Width="0.7"
+                                  Height="0.7">
+                                <Grid.RenderTransform>
+                                    <TranslateTransform Y="{Binding VerticalOffset}" />
+                                </Grid.RenderTransform>
+
+                                <Border CornerRadius="0.15"
+                                        BorderThickness="0.06"
+                                        BorderBrush="{Binding UserId,
+                                                              Converter={StaticResource PlayerColorConverter}}">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="{Binding TokenImagePath}"
+                                                    Stretch="UniformToFill" />
+                                    </Border.Background>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
             </Grid>
         </Viewbox>
 
-        <!-- Esquinas para jugadores -->
+        <!-- Esquinas jugadores -->
         <ContentControl Content="{Binding CornerPlayers.TopLeftPlayer}"
                         ContentTemplate="{StaticResource CornerPlayerTemplate}"
                         Grid.RowSpan="2"

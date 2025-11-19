@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using SnakeAndLaddersFinalProject.Utilities;
 
@@ -9,10 +8,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
     {
         private int currentCellIndex;
         private double verticalOffset;
+        private double x;
+        private double y;
 
         public int UserId { get; }
         public string UserName { get; }
-
         public int? CurrentSkinUnlockedId { get; }
 
         public int CurrentCellIndex
@@ -35,12 +35,43 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
             get { return verticalOffset; }
             set
             {
-                if (Math.Abs(verticalOffset - value) < 0.001)
+                if (verticalOffset.Equals(value))
                 {
                     return;
                 }
 
                 verticalOffset = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // coordenadas lógicas sobre el tablero (mismas unidades que las serpientes)
+        public double X
+        {
+            get { return x; }
+            set
+            {
+                if (x.Equals(value))
+                {
+                    return;
+                }
+
+                x = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double Y
+        {
+            get { return y; }
+            set
+            {
+                if (y.Equals(value))
+                {
+                    return;
+                }
+
+                y = value;
                 OnPropertyChanged();
             }
         }
@@ -69,8 +100,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
