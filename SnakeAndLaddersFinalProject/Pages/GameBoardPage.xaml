@@ -21,11 +21,14 @@
         <conv:SnakeCurveGeometryConverter x:Key="SnakeCurveGeometryConverter" />
         <conv:LadderGeometryConverter x:Key="LadderGeometryConverter" />
 
-        <!-- Tokens -> celdas -->
+        <!-- Converter antiguo (ya casi no lo usamos para tokens, lo puedes borrar si quieres) -->
         <conv:TokensForCellConverter x:Key="TokensForCellConverter" />
 
         <!-- Converter avatarId -> pack URI -->
         <utils:AvatarIdToPathConverter x:Key="AvatarIdToPathConverter" />
+
+        <!-- Converter para decidir si un token se ve en esta celda -->
+        <conv:CellTokenVisibleConverter x:Key="CellTokenVisibleConverter" />
 
         <Thickness x:Key="CellMargin">2</Thickness>
 
@@ -233,7 +236,9 @@
 
                     <!-- TOKENS DE JUGADORES EN ESTA CASILLA -->
                     <ItemsControl HorizontalAlignment="Center"
-                                  VerticalAlignment="Center">
+                                  VerticalAlignment="Center"
+                                  ItemsSource="{Binding DataContext.PlayerTokens,
+                                                        RelativeSource={RelativeSource AncestorType=Page}}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <!-- 2x2 cuadrícula centrada: caben hasta 4 tokens -->
@@ -244,25 +249,30 @@
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
 
-                        <ItemsControl.ItemsSource>
-                            <MultiBinding Converter="{StaticResource TokensForCellConverter}">
-                                <!-- Colección de tokens en el VM del tablero -->
-                                <Binding RelativeSource="{RelativeSource AncestorType=Page}"
-                                         Path="DataContext.PlayerTokens" />
-                                <!-- Índice de esta casilla -->
-                                <Binding Path="Index" />
-                            </MultiBinding>
-                        </ItemsControl.ItemsSource>
-
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type vmModels:PlayerTokenViewModel}">
                                 <!-- Token cuadrado usando la skin -->
                                 <Grid Width="26"
                                       Height="26"
                                       Margin="2">
+                                    <Grid.RenderTransform>
+                                        <!-- se anima arriba/abajo con VerticalOffset -->
+                                        <TranslateTransform Y="{Binding VerticalOffset}" />
+                                    </Grid.RenderTransform>
+
                                     <Border CornerRadius="4"
                                             BorderBrush="White"
                                             BorderThickness="1.5">
+                                        <Border.Visibility>
+                                            <MultiBinding Converter="{StaticResource CellTokenVisibleConverter}">
+                                                <!-- Índice actual del token -->
+                                                <Binding Path="CurrentCellIndex" />
+                                                <!-- Índice de la celda (GameBoardCellViewModel.Index) -->
+                                                <Binding Path="DataContext.Index"
+                                                         RelativeSource="{RelativeSource AncestorType=Border}" />
+                                            </MultiBinding>
+                                        </Border.Visibility>
+
                                         <Border.Background>
                                             <ImageBrush ImageSource="{Binding TokenImagePath}"
                                                         Stretch="UniformToFill" />
@@ -357,8 +367,7 @@
             <StackPanel Grid.Column="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        >
+                        VerticalAlignment="Center">
 
                 <!-- Botón tirar dado -->
                 <Button Width="120"

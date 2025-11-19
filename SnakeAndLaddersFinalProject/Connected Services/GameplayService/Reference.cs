@@ -347,6 +347,144 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="GetGameStateRequestDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay")]
+    [System.SerializableAttribute()]
+    public partial class GetGameStateRequestDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int GameIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int GameId {
+            get {
+                return this.GameIdField;
+            }
+            set {
+                if ((this.GameIdField.Equals(value) != true)) {
+                    this.GameIdField = value;
+                    this.RaisePropertyChanged("GameId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="GetGameStateResponseDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay")]
+    [System.SerializableAttribute()]
+    public partial class GetGameStateResponseDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int CurrentTurnUserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int GameIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsFinishedField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private SnakeAndLaddersFinalProject.GameplayService.TokenStateDto[] TokensField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int CurrentTurnUserId {
+            get {
+                return this.CurrentTurnUserIdField;
+            }
+            set {
+                if ((this.CurrentTurnUserIdField.Equals(value) != true)) {
+                    this.CurrentTurnUserIdField = value;
+                    this.RaisePropertyChanged("CurrentTurnUserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int GameId {
+            get {
+                return this.GameIdField;
+            }
+            set {
+                if ((this.GameIdField.Equals(value) != true)) {
+                    this.GameIdField = value;
+                    this.RaisePropertyChanged("GameId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsFinished {
+            get {
+                return this.IsFinishedField;
+            }
+            set {
+                if ((this.IsFinishedField.Equals(value) != true)) {
+                    this.IsFinishedField = value;
+                    this.RaisePropertyChanged("IsFinished");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public SnakeAndLaddersFinalProject.GameplayService.TokenStateDto[] Tokens {
+            get {
+                return this.TokensField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TokensField, value) != true)) {
+                    this.TokensField = value;
+                    this.RaisePropertyChanged("Tokens");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="GameplayService.IGameplayService")]
     public interface IGameplayService {
@@ -356,6 +494,12 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGameplayService/RollDice", ReplyAction="http://tempuri.org/IGameplayService/RollDiceResponse")]
         System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.GameplayService.RollDiceResponseDto> RollDiceAsync(SnakeAndLaddersFinalProject.GameplayService.RollDiceRequestDto request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGameplayService/GetGameState", ReplyAction="http://tempuri.org/IGameplayService/GetGameStateResponse")]
+        SnakeAndLaddersFinalProject.GameplayService.GetGameStateResponseDto GetGameState(SnakeAndLaddersFinalProject.GameplayService.GetGameStateRequestDto request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGameplayService/GetGameState", ReplyAction="http://tempuri.org/IGameplayService/GetGameStateResponse")]
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.GameplayService.GetGameStateResponseDto> GetGameStateAsync(SnakeAndLaddersFinalProject.GameplayService.GetGameStateRequestDto request);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -391,6 +535,14 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         
         public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.GameplayService.RollDiceResponseDto> RollDiceAsync(SnakeAndLaddersFinalProject.GameplayService.RollDiceRequestDto request) {
             return base.Channel.RollDiceAsync(request);
+        }
+        
+        public SnakeAndLaddersFinalProject.GameplayService.GetGameStateResponseDto GetGameState(SnakeAndLaddersFinalProject.GameplayService.GetGameStateRequestDto request) {
+            return base.Channel.GetGameState(request);
+        }
+        
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.GameplayService.GetGameStateResponseDto> GetGameStateAsync(SnakeAndLaddersFinalProject.GameplayService.GetGameStateRequestDto request) {
+            return base.Channel.GetGameStateAsync(request);
         }
     }
 }

@@ -36,4 +36,19 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="TokenStateDto" nillable="true" type="tns:TokenStateDto" />
+  <xs:complexType name="GetGameStateRequestDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GameId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetGameStateRequestDto" nillable="true" type="tns:GetGameStateRequestDto" />
+  <xs:complexType name="GetGameStateResponseDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CurrentTurnUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="GameId" type="xs:int" />
+      <xs:element minOccurs="0" name="IsFinished" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Tokens" nillable="true" type="tns:ArrayOfTokenStateDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetGameStateResponseDto" nillable="true" type="tns:GetGameStateResponseDto" />
 </xs:schema>

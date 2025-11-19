@@ -43,10 +43,20 @@
   <wsdl:message name="IGameplayService_RollDice_OutputMessage">
     <wsdl:part name="parameters" element="tns:RollDiceResponse" />
   </wsdl:message>
+  <wsdl:message name="IGameplayService_GetGameState_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetGameState" />
+  </wsdl:message>
+  <wsdl:message name="IGameplayService_GetGameState_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetGameStateResponse" />
+  </wsdl:message>
   <wsdl:portType name="IGameplayService">
     <wsdl:operation name="RollDice">
       <wsdl:input wsaw:Action="http://tempuri.org/IGameplayService/RollDice" message="tns:IGameplayService_RollDice_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IGameplayService/RollDiceResponse" message="tns:IGameplayService_RollDice_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGameState">
+      <wsdl:input wsaw:Action="http://tempuri.org/IGameplayService/GetGameState" message="tns:IGameplayService_GetGameState_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IGameplayService/GetGameStateResponse" message="tns:IGameplayService_GetGameState_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IGameplayService" type="tns:IGameplayService">
@@ -60,12 +70,30 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetGameState">
+      <soap:operation soapAction="http://tempuri.org/IGameplayService/GetGameState" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="NetTcpBinding_IGameplayService" type="tns:IGameplayService">
     <wsp:PolicyReference URI="#NetTcpBinding_IGameplayService_policy" />
     <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
     <wsdl:operation name="RollDice">
       <soap12:operation soapAction="http://tempuri.org/IGameplayService/RollDice" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGameState">
+      <soap12:operation soapAction="http://tempuri.org/IGameplayService/GetGameState" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

@@ -1,11 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SnakeAndLaddersFinalProject.GameplayService;
+using SnakeAndLaddersFinalProject.GameBoardService;
 
 namespace SnakeAndLaddersFinalProject.Services
 {
-    public interface IGameplayClient : IDisposable
+    public interface IGameplayClient
     {
-        Task<RollDiceResponseDto> RollDiceAsync(int gameId, int playerUserId);
+        Task<RollDiceResponseDto> GetRollDiceAsync(int gameId, int playerUserId);
+
+        Task<GetGameStateResponseDto> GetGameStateAsync(int gameId);
     }
 }

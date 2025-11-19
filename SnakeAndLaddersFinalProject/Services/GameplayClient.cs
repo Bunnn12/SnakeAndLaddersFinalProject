@@ -7,27 +7,48 @@ namespace SnakeAndLaddersFinalProject.Services
 {
     public sealed class GameplayClient : IGameplayClient
     {
-        private const string GAMEPLAY_ENDPOINT = "NetTcpBinding_IGameplayService";
+        private const string ENDPOINT_NAME = "NetTcpBinding_IGameplayService";
 
-        private readonly GameplayServiceClient client;
-
-        public GameplayClient()
+        public async Task<RollDiceResponseDto> GetRollDiceAsync(int gameId, int playerUserId)
         {
-            client = new GameplayServiceClient(GAMEPLAY_ENDPOINT);
-        }
+            var client = new GameplayServiceClient(ENDPOINT_NAME);
 
-        public async Task<RollDiceResponseDto> RollDiceAsync(int gameId, int playerUserId)
-        {
-            var request = new RollDiceRequestDto
+            try
             {
-                GameId = gameId,
-                PlayerUserId = playerUserId
-            };
+                var request = new RollDiceRequestDto
+                {
+                    GameId = gameId,
+                    PlayerUserId = playerUserId
+                };
 
-            return await client.RollDiceAsync(request).ConfigureAwait(false);
+                return await client.RollDiceAsync(request).ConfigureAwait(false);
+            }
+            finally
+            {
+                CloseSafely(client);
+            }
         }
 
-        public void Dispose()
+        public async Task<GetGameStateResponseDto> GetGameStateAsync(int gameId)
+        {
+            var client = new GameplayServiceClient(ENDPOINT_NAME);
+
+            try
+            {
+                var request = new GetGameStateRequestDto
+                {
+                    GameId = gameId
+                };
+
+                return await client.GetGameStateAsync(request).ConfigureAwait(false);
+            }
+            finally
+            {
+                CloseSafely(client);
+            }
+        }
+
+        private static void CloseSafely(ICommunicationObject client)
         {
             try
             {
