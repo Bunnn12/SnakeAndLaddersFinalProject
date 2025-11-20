@@ -6,6 +6,9 @@ namespace SnakeAndLaddersFinalProject.Policies
     {
         private const int MIN_REGISTERED_USER_ID = 1;
 
+        private const string PROPERTY_USER_ID = "UserId";
+        private const string PROPERTY_USER_NAME = "UserName";
+
         public bool CanCurrentUserReportTarget(int currentUserId, object memberDataContext)
         {
             if (currentUserId < MIN_REGISTERED_USER_ID)
@@ -46,7 +49,7 @@ namespace SnakeAndLaddersFinalProject.Policies
             }
 
             var dataContextType = dataContext.GetType();
-            var userIdProperty = dataContextType.GetProperty("UserId");
+            var userIdProperty = dataContextType.GetProperty(PROPERTY_USER_ID);
             if (userIdProperty == null)
             {
                 return 0;
@@ -64,7 +67,7 @@ namespace SnakeAndLaddersFinalProject.Policies
             }
 
             var dataContextType = dataContext.GetType();
-            var userNameProperty = dataContextType.GetProperty("UserName");
+            var userNameProperty = dataContextType.GetProperty(PROPERTY_USER_NAME);
             if (userNameProperty == null)
             {
                 return string.Empty;

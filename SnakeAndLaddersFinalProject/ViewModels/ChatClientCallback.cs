@@ -6,27 +6,31 @@ using SnakeAndLaddersFinalProject.ChatService;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
-
     [CallbackBehavior(UseSynchronizationContext = false)]
     public sealed class ChatClientCallback : IChatServiceCallback
     {
-        private readonly ChatViewModel _vm;
-        private readonly Dispatcher _ui;
+        private readonly ChatViewModel chatViewModel;
+        private readonly Dispatcher uiDispatcher;
 
-        public ChatClientCallback(ChatViewModel vm)
+        public ChatClientCallback(ChatViewModel chatViewModelValue)
         {
-            _vm = vm;
-            _ui = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
+            chatViewModel = chatViewModelValue ?? throw new ArgumentNullException(nameof(chatViewModelValue));
+            uiDispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
         }
 
         public void OnMessage(int lobbyId, ChatMessageDto message)
         {
-            if (message == null) return;
-
-            _ui.BeginInvoke(new Action(() =>
+            if (message == null)
             {
-                _vm.AddIncoming(message);
-            }));
+                return;
+            }
+
+            uiDispatcher.BeginInvoke(
+                new Action(
+                    () =>
+                    {
+                        chatViewModel.AddIncoming(message);
+                    }));
         }
     }
 }

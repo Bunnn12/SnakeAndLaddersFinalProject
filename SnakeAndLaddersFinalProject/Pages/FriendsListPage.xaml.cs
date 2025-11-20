@@ -16,73 +16,102 @@ namespace SnakeAndLaddersFinalProject.Pages
     public partial class FriendsListPage : Page
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(FriendsListPage));
-        private readonly ObservableCollection<FriendListItemDto> friends = new ObservableCollection<FriendListItemDto>();
 
         private const string CONFIRM_UNFRIEND_TITLE = "Confirm action";
         private const string CONFIRM_UNFRIEND_MESSAGE = "Remove this user from your friends list?";
         private const string GENERIC_ERROR_TITLE = "Error";
+
+        private readonly ObservableCollection<FriendListItemDto> _friends =
+            new ObservableCollection<FriendListItemDto>();
+
         public FriendsListPage()
         {
             InitializeComponent();
-            tvFriends.ItemsSource = friends;
 
-            if (!SessionGuard.HasValidSession()) return;
+            tvFriends.ItemsSource = _friends;
+
+            if (!SessionGuard.HasValidSession())
+            {
+                return;
+            }
 
             LoadFriends();
         }
 
         private void tvFriends_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
-            var dep = Mouse.DirectlyOver as DependencyObject;
-            while (dep != null && !(dep is DataGridRow)) dep = VisualTreeHelper.GetParent(dep);
-            if (dep is DataGridRow row) row.IsSelected = true;
+            DependencyObject element = Mouse.DirectlyOver as DependencyObject;
+
+            while (element != null && !(element is DataGridRow))
+            {
+                element = VisualTreeHelper.GetParent(element);
+            }
+
+            if (element is DataGridRow row)
+            {
+                row.IsSelected = true;
+            }
         }
 
         private void TvFriends_RowDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (!SessionGuard.HasValidSession()) return;
-            if (tvFriends.SelectedItem is FriendListItemDto item)
+            if (!SessionGuard.HasValidSession())
             {
-                TryUnfriend(item);
+                return;
+            }
+
+            if (tvFriends.SelectedItem is FriendListItemDto friendItem)
+            {
+                TryUnfriend(friendItem);
             }
         }
 
         private void TvFriends_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (!SessionGuard.HasValidSession()) return;
-            if (tvFriends.SelectedItem is FriendListItemDto item)
+            if (!SessionGuard.HasValidSession())
+            {
+                return;
+            }
+
+            if (tvFriends.SelectedItem is FriendListItemDto friendItem)
             {
                 if (e.Key == Key.Enter || e.Key == Key.Delete)
                 {
                     e.Handled = true;
-                    TryUnfriend(item);
+                    TryUnfriend(friendItem);
                 }
             }
         }
 
-        private void TryUnfriend(FriendListItemDto item)
+        private void TryUnfriend(FriendListItemDto friendItem)
         {
-            if (item == null) return;
+            if (friendItem == null)
+            {
+                return;
+            }
 
-            var title = TryGetLangOr(CONFIRM_UNFRIEND_TITLE, language: Lang.btnUnfriendText);
-            var msg = TryGetLangOr(CONFIRM_UNFRIEND_MESSAGE, "language: Lang.confirmUnfriendText");
+            string title = TryGetLangOr(CONFIRM_UNFRIEND_TITLE, language: Lang.btnUnfriendText);
+            string message = TryGetLangOr(CONFIRM_UNFRIEND_MESSAGE, "language: Lang.confirmUnfriendText");
 
-            var result = MessageBox.Show(
-                msg,
+            MessageBoxResult result = MessageBox.Show(
+                message,
                 title,
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
 
-            if (result != MessageBoxResult.Yes) return;
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
 
             try
             {
-                using (var api = new FriendsApi())
+                using (var friendsApi = new FriendsApi())
                 {
-                    api.Remove(item.FriendLinkId);
+                    friendsApi.Remove(friendItem.FriendLinkId);
                 }
 
-                friends.Remove(item);
+                _friends.Remove(friendItem);
                 MessageBox.Show(Lang.friendRemovedOkText, Lang.infoTitle);
             }
             catch (FaultException ex)
@@ -99,15 +128,21 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void LoadFriends()
         {
-            if (!SessionGuard.HasValidSession()) return;
+            if (!SessionGuard.HasValidSession())
+            {
+                return;
+            }
 
             try
             {
-                using (var api = new FriendsApi())
+                using (var friendsApi = new FriendsApi())
                 {
-                    friends.Clear();
-                    foreach (var f in api.GetFriends())
-                        friends.Add(f);
+                    _friends.Clear();
+
+                    foreach (FriendListItemDto friendItem in friendsApi.GetFriends())
+                    {
+                        _friends.Add(friendItem);
+                    }
                 }
             }
             catch (Exception ex)
@@ -119,42 +154,59 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void BtnUnfriend_Click(object sender, RoutedEventArgs e)
         {
-            if (!SessionGuard.HasValidSession()) return;
-
-            if (((FrameworkElement)sender).DataContext is FriendListItemDto item)
+            if (!SessionGuard.HasValidSession())
             {
-                try
+                return;
+            }
+
+            if (!(((FrameworkElement)sender).DataContext is FriendListItemDto friendItem))
+            {
+                return;
+            }
+
+            try
+            {
+                using (var friendsApi = new FriendsApi())
                 {
-                    using (var api = new FriendsApi())
-                    {
-                        api.Remove(item.FriendLinkId);
-                    }
-                    friends.Remove(item);
-                    MessageBox.Show(Lang.friendRemovedOkText, Lang.infoTitle);
+                    friendsApi.Remove(friendItem.FriendLinkId);
                 }
-                catch (Exception ex)
-                {
-                    Logger.Error("Error removing friend.", ex);
-                    MessageBox.Show(Lang.errorRemovingFriendText, Lang.errorTitle);
-                }
+
+                _friends.Remove(friendItem);
+                MessageBox.Show(Lang.friendRemovedOkText, Lang.infoTitle);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error removing friend.", ex);
+                MessageBox.Show(Lang.errorRemovingFriendText, Lang.errorTitle);
             }
         }
 
         private void ContextUnfriend_Click(object sender, RoutedEventArgs e)
         {
-            if (!SessionGuard.HasValidSession()) return;
-            if (tvFriends.SelectedItem is FriendListItemDto item)
+            if (!SessionGuard.HasValidSession())
             {
-                TryUnfriend(item);
+                return;
+            }
+
+            if (tvFriends.SelectedItem is FriendListItemDto friendItem)
+            {
+                TryUnfriend(friendItem);
             }
         }
+
         private void BtnAddFriends_Click(object sender, RoutedEventArgs e)
-            => NavigationService?.Navigate(new AddFriendsPage());
+        {
+            NavigationService?.Navigate(new AddFriendsPage());
+        }
 
         private void BtnFriendRequests_Click(object sender, RoutedEventArgs e)
-            => NavigationService?.Navigate(new FriendRequestsPage());
-        private static string TryGetLangOr(string fallback, string language)
-        => string.IsNullOrWhiteSpace(language) ? fallback : language;
+        {
+            NavigationService?.Navigate(new FriendRequestsPage());
+        }
+
+        private static string TryGetLangOr(string fallback, string language) =>
+            string.IsNullOrWhiteSpace(language) ? fallback : language;
+
         private void Back(object sender, RoutedEventArgs e)
         {
             if (NavigationService != null && NavigationService.CanGoBack)

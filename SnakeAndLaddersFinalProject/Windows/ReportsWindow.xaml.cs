@@ -13,6 +13,20 @@ namespace SnakeAndLaddersFinalProject.Windows
         private static readonly ILog Logger = LogManager.GetLogger(typeof(ReportsWindow));
 
         private const int MIN_REGISTERED_USER_ID = 1;
+
+        private const string REASON_KEY_OTHER = "Other";
+        private const string REASON_KEY_HARASSMENT = "Harassment";
+        private const string REASON_KEY_INAPPROPRIATE_LANGUAGE = "InappropriateLanguage";
+        private const string REASON_KEY_TOXIC_BEHAVIOR = "ToxicBehavior";
+        private const string REASON_KEY_EXPLOITING = "Exploiting";
+
+        private const string REPORT_INVALID_CONTEXT_MESSAGE_TEXT_KEY = "Lang.ReportInvalidContextMessage";
+        private const string REPORT_UNKNOWN_USER_DISPLAY_NAME_TEXT_KEY = "Lang.ReportUnknownUserDisplayName";
+        private const string REPORT_CONFIRM_MESSAGE_FORMAT_TEXT_KEY = "Lang.ReportConfirmMessageFormat";
+        private const string REPORT_SENT_SUCCESSFULLY_MESSAGE_TEXT_KEY = "Lang.ReportSentSuccessfullyMessage";
+        private const string REPORT_ENDPOINT_NOT_FOUND_MESSAGE_TEXT_KEY = "Lang.ReportEndpointNotFoundMessage";
+        private const string REPORT_GENERIC_ERROR_MESSAGE_TEXT_KEY = "Lang.ReportGenericErrorMessage";
+
         public int ReporterUserId { get; set; }
         public int ReportedUserId { get; set; }
         public string ReportedUserName { get; set; }
@@ -29,8 +43,8 @@ namespace SnakeAndLaddersFinalProject.Windows
 
         private void ReasonButton_Click(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            if (button == null)
+            var reasonButton = sender as Button;
+            if (reasonButton == null)
             {
                 return;
             }
@@ -38,7 +52,7 @@ namespace SnakeAndLaddersFinalProject.Windows
             if (!IsReportContextValid())
             {
                 MessageBox.Show(
-                    "Lang.ReportInvalidContextMessage",
+                    REPORT_INVALID_CONTEXT_MESSAGE_TEXT_KEY,
                     Lang.reportUserTittle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
@@ -47,13 +61,13 @@ namespace SnakeAndLaddersFinalProject.Windows
                 return;
             }
 
-            string reasonKey = button.Tag as string;
+            var reasonKey = reasonButton.Tag as string;
             if (string.IsNullOrWhiteSpace(reasonKey))
             {
                 return;
             }
 
-            if (string.Equals(reasonKey, "Other", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(reasonKey, REASON_KEY_OTHER, StringComparison.OrdinalIgnoreCase))
             {
                 HandleCustomReason();
             }
@@ -83,15 +97,13 @@ namespace SnakeAndLaddersFinalProject.Windows
             return true;
         }
 
-
-
         private void HandlePredefinedReason(string reasonKey)
         {
             string displayText = ResolveDisplayText(reasonKey);
             string internalText = displayText;
 
-            bool confirmed = ShowConfirmDialog(displayText);
-            if (!confirmed)
+            bool isConfirmed = ShowConfirmDialog(displayText);
+            if (!isConfirmed)
             {
                 return;
             }
@@ -107,8 +119,8 @@ namespace SnakeAndLaddersFinalProject.Windows
                 Owner = this
             };
 
-            bool? result = commentWindow.ShowDialog();
-            if (result != true)
+            bool? dialogResult = commentWindow.ShowDialog();
+            if (dialogResult != true)
             {
                 return;
             }
@@ -119,8 +131,8 @@ namespace SnakeAndLaddersFinalProject.Windows
                 return;
             }
 
-            bool confirmed = ShowConfirmDialog(customComment);
-            if (!confirmed)
+            bool isConfirmed = ShowConfirmDialog(customComment);
+            if (!isConfirmed)
             {
                 return;
             }
@@ -131,22 +143,22 @@ namespace SnakeAndLaddersFinalProject.Windows
 
         private static string ResolveDisplayText(string reasonKey)
         {
-            if (string.Equals(reasonKey, "Harassment", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(reasonKey, REASON_KEY_HARASSMENT, StringComparison.OrdinalIgnoreCase))
             {
                 return Lang.btnHarassmentText;
             }
 
-            if (string.Equals(reasonKey, "InappropriateLanguage", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(reasonKey, REASON_KEY_INAPPROPRIATE_LANGUAGE, StringComparison.OrdinalIgnoreCase))
             {
                 return Lang.btnInappropiateLangText;
             }
 
-            if (string.Equals(reasonKey, "ToxicBehavior", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(reasonKey, REASON_KEY_TOXIC_BEHAVIOR, StringComparison.OrdinalIgnoreCase))
             {
                 return Lang.btnToxicBehaviorText;
             }
 
-            if (string.Equals(reasonKey, "Exploiting", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(reasonKey, REASON_KEY_EXPLOITING, StringComparison.OrdinalIgnoreCase))
             {
                 return Lang.btnExploitingText;
             }
@@ -157,15 +169,15 @@ namespace SnakeAndLaddersFinalProject.Windows
         private bool ShowConfirmDialog(string reasonText)
         {
             string targetName = string.IsNullOrWhiteSpace(ReportedUserName)
-                ? "Lang.ReportUnknownUserDisplayName"
+                ? REPORT_UNKNOWN_USER_DISPLAY_NAME_TEXT_KEY
                 : ReportedUserName;
 
             string message = string.Format(
-                "Lang.ReportConfirmMessageFormat",
+                REPORT_CONFIRM_MESSAGE_FORMAT_TEXT_KEY,
                 targetName,
                 reasonText);
 
-            var result = MessageBox.Show(
+            MessageBoxResult result = MessageBox.Show(
                 message,
                 Lang.reportUserTittle,
                 MessageBoxButton.YesNo,
@@ -191,14 +203,14 @@ namespace SnakeAndLaddersFinalProject.Windows
                 client.Close();
 
                 MessageBox.Show(
-                    "Lang.ReportSentSuccessfullyMessage",
+                    REPORT_SENT_SUCCESSFULLY_MESSAGE_TEXT_KEY,
                     Lang.reportUserTittle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
             }
-            catch (FaultException<PlayerReportService.ServiceFault> fault)
+            catch (FaultException<PlayerReportService.ServiceFault> faultException)
             {
-                string faultCode = fault.Detail != null ? fault.Detail.Code : null;
+                string faultCode = faultException.Detail != null ? faultException.Detail.Code : null;
                 string translated = PlayerReportErrorMapper.GetMessageForCode(faultCode);
 
                 MessageBox.Show(
@@ -209,31 +221,30 @@ namespace SnakeAndLaddersFinalProject.Windows
 
                 client.Abort();
             }
-            catch (EndpointNotFoundException ex)
+            catch (EndpointNotFoundException endpointException)
             {
-                Logger.Error("Endpoint de PlayerReportService no encontrado.", ex);
+                Logger.Error("Endpoint de PlayerReportService no encontrado.", endpointException);
 
                 MessageBox.Show(
-                    "Lang.ReportEndpointNotFoundMessage",
+                    REPORT_ENDPOINT_NOT_FOUND_MESSAGE_TEXT_KEY,
                     Lang.reportUserTittle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
 
                 client.Abort();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Logger.Error("Error inesperado al enviar el reporte.", ex);
+                Logger.Error("Error inesperado al enviar el reporte.", exception);
 
                 MessageBox.Show(
-                    "Lang.ReportGenericErrorMessage",
+                    REPORT_GENERIC_ERROR_MESSAGE_TEXT_KEY,
                     Lang.reportUserTittle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
 
                 client.Abort();
             }
-
         }
     }
 }

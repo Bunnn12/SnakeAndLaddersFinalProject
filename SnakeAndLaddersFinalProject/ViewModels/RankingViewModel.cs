@@ -11,6 +11,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     public sealed class RankingViewModel
     {
         private const int DEFAULT_MAX_RESULTS = 50;
+        private const int INITIAL_POSITION = 1;
 
         private const string STATS_ENDPOINT_NAME = "BasicHttpBinding_IStatsService";
 
@@ -28,11 +29,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             try
             {
-                using (var client = new StatsServiceClient(STATS_ENDPOINT_NAME))
+                using (var statsClient = new StatsServiceClient(STATS_ENDPOINT_NAME))
                 {
-                    var dtos = client.GetTopPlayersByCoins(DEFAULT_MAX_RESULTS);
+                    var rankingItems = statsClient.GetTopPlayersByCoins(DEFAULT_MAX_RESULTS);
 
-                    if (dtos == null || dtos.Length == 0)
+                    if (rankingItems == null || rankingItems.Length == 0)
                     {
                         Players.Clear();
                         return;
@@ -40,40 +41,40 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                     Players.Clear();
 
-                    var ordered = dtos
-                        .OrderByDescending(x => x.Coins)
-                        .ThenBy(x => x.Username)
+                    var orderedPlayers = rankingItems
+                        .OrderByDescending(player => player.Coins)
+                        .ThenBy(player => player.Username)
                         .ToList();
 
-                    var position = 1;
+                    int currentPosition = INITIAL_POSITION;
 
-                    foreach (var dto in ordered)
+                    foreach (var player in orderedPlayers)
                     {
                         var viewModel = new PlayerRankingItemViewModel
                         {
-                            Position = position,
-                            Username = dto.Username,
-                            Coins = dto.Coins
+                            Position = currentPosition,
+                            Username = player.Username,
+                            Coins = player.Coins
                         };
 
                         Players.Add(viewModel);
-                        position++;
+                        currentPosition++;
                     }
                 }
             }
-            catch (FaultException faultEx)
+            catch (FaultException faultException)
             {
-                Logger.Warn("FaultException al cargar el ranking.", faultEx);
+                Logger.Warn("FaultException al cargar el ranking.", faultException);
 
                 MessageBox.Show(
-                    "El servidor reportó un error al obtener el ranking:\n\n" + faultEx.Message,
+                    "El servidor reportó un error al obtener el ranking:\n\n" + faultException.Message,
                     "Ranking",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
             }
-            catch (CommunicationException commEx)
+            catch (CommunicationException communicationException)
             {
-                Logger.Error("CommunicationException al cargar el ranking.", commEx);
+                Logger.Error("CommunicationException al cargar el ranking.", communicationException);
 
                 MessageBox.Show(
                     "No se pudo comunicar con el servidor para obtener el ranking.\n" +
@@ -82,9 +83,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Logger.Error("Error inesperado al cargar el ranking.", ex);
+                Logger.Error("Error inesperado al cargar el ranking.", exception);
 
                 MessageBox.Show(
                     "Ocurrió un error inesperado al cargar el ranking de jugadores.",

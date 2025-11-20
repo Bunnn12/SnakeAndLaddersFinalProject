@@ -12,6 +12,24 @@ namespace SnakeAndLaddersFinalProject.Pages
     public partial class SignUpPage : Page
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(SignUpPage));
+
+        private const int MIN_PASSWORD_LENGTH = 8;
+
+        private const string AUTH_CODE_OK = "Auth.Ok";
+        private const string AUTH_CODE_EMAIL_REQUIRED = "Auth.EmailRequired";
+        private const string AUTH_CODE_EMAIL_ALREADY_EXISTS = "Auth.EmailAlreadyExists";
+        private const string AUTH_CODE_USERNAME_ALREADY_EXISTS = "Auth.UserNameAlreadyExists";
+        private const string AUTH_CODE_INVALID_CREDENTIALS = "Auth.InvalidCredentials";
+        private const string AUTH_CODE_THROTTLE_WAIT = "Auth.ThrottleWait";
+        private const string AUTH_CODE_NOT_REQUESTED = "Auth.CodeNotRequested";
+        private const string AUTH_CODE_EXPIRED = "Auth.CodeExpired";
+        private const string AUTH_CODE_INVALID = "Auth.CodeInvalid";
+        private const string AUTH_CODE_EMAIL_SEND_FAILED = "Auth.EmailSendFailed";
+
+        private const string META_KEY_SECONDS = "seconds";
+
+        private const string AUTH_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IAuthService";
+
         public SignUpPage()
         {
             InitializeComponent();
@@ -20,126 +38,190 @@ namespace SnakeAndLaddersFinalProject.Pages
         public sealed class RegistrationInput
         {
             public string Username { get; set; }
+
             public string GivenName { get; set; }
+
             public string FamilyName { get; set; }
+
             public string EmailAddress { get; set; }
+
             public string PlainPassword { get; set; }
         }
 
-        private static RegistrationInput NormalizeParam(RegistrationInput m) => new RegistrationInput
+        private static RegistrationInput NormalizeParam(RegistrationInput input)
         {
-            Username = (m.Username ?? "").Trim(),
-            GivenName = (m.GivenName ?? "").Trim(),
-            FamilyName = (m.FamilyName ?? "").Trim(),
-            EmailAddress = (m.EmailAddress ?? "").Trim().ToLowerInvariant(),
-            PlainPassword = m.PlainPassword ?? "",
-        };
+            return new RegistrationInput
+            {
+                Username = (input.Username ?? string.Empty).Trim(),
+                GivenName = (input.GivenName ?? string.Empty).Trim(),
+                FamilyName = (input.FamilyName ?? string.Empty).Trim(),
+                EmailAddress = (input.EmailAddress ?? string.Empty).Trim().ToLowerInvariant(),
+                PlainPassword = input.PlainPassword ?? string.Empty
+            };
+        }
 
-        private static string[] ValidateRegistration(RegistrationInput m)
+        private static string[] ValidateRegistration(RegistrationInput input)
         {
             var errors = new List<string>();
 
-            if (string.IsNullOrWhiteSpace(m.GivenName)) errors.Add(T("UiFirstNameRequired"));
-            if (string.IsNullOrWhiteSpace(m.FamilyName)) errors.Add(T("UiLastNameRequired"));
-            if (string.IsNullOrWhiteSpace(m.Username)) errors.Add(T("UiUserNameRequired"));
+            if (string.IsNullOrWhiteSpace(input.GivenName))
+            {
+                errors.Add(T("UiFirstNameRequired"));
+            }
 
-            if (string.IsNullOrWhiteSpace(m.EmailAddress)) errors.Add(T("UiEmailRequired"));
-            else if (!Regex.IsMatch(m.EmailAddress, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            if (string.IsNullOrWhiteSpace(input.FamilyName))
+            {
+                errors.Add(T("UiLastNameRequired"));
+            }
+
+            if (string.IsNullOrWhiteSpace(input.Username))
+            {
+                errors.Add(T("UiUserNameRequired"));
+            }
+
+            if (string.IsNullOrWhiteSpace(input.EmailAddress))
+            {
+                errors.Add(T("UiEmailRequired"));
+            }
+            else if (!Regex.IsMatch(input.EmailAddress, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            {
                 errors.Add(T("UiEmailInvalid"));
+            }
 
-            if (string.IsNullOrWhiteSpace(m.PlainPassword) || m.PlainPassword.Length < 8)
+            if (string.IsNullOrWhiteSpace(input.PlainPassword) ||
+                input.PlainPassword.Length < MIN_PASSWORD_LENGTH)
+            {
                 errors.Add(T("UiPasswordTooShort"));
+            }
 
             return errors.ToArray();
         }
 
         private async void SignUp(object sender, RoutedEventArgs e)
         {
-            var input = NormalizeParam(new RegistrationInput
+            var input = NormalizeParam(
+                new RegistrationInput
+                {
+                    Username = txtUsername.Text,
+                    GivenName = txtNameOfUser.Text,
+                    FamilyName = txtLastname.Text,
+                    EmailAddress = txtEmail.Text,
+                    PlainPassword = pwdPassword.Password
+                });
+
+            string[] errors = ValidateRegistration(input);
+            if (errors.Any())
             {
-                Username = txtUsername.Text,
-                GivenName = txtNameOfUser.Text,
-                FamilyName = txtLastname.Text,
-                EmailAddress = txtEmail.Text,
-                PlainPassword = pwdPassword.Password,
-            });
+                ShowWarn(string.Join("\n", errors));
+                return;
+            }
 
-            var errors = ValidateRegistration(input);
-            if (errors.Any()) { ShowWarn(string.Join("\n", errors)); return; }
-
-            var dto = new AuthService.RegistrationDto
+            var registrationDto = new AuthService.RegistrationDto
             {
                 UserName = input.Username,
                 FirstName = input.GivenName,
                 LastName = input.FamilyName,
                 Email = input.EmailAddress,
-                Password = input.PlainPassword,
+                Password = input.PlainPassword
             };
 
-            var client = new AuthService.AuthServiceClient("BasicHttpBinding_IAuthService");
+            var authClient = new AuthService.AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
+
             try
             {
-                var send = await Task.Run(() => client.RequestEmailVerification(dto.Email));
-                if (!send.Success)
+                var sendResult = await Task.Run(
+                    () => authClient.RequestEmailVerification(registrationDto.Email));
+
+                if (!sendResult.Success)
                 {
-                    ShowWarn(MapAuth(send.Code, send.Meta));
-                    client.Close();
+                    ShowWarn(MapAuth(sendResult.Code, sendResult.Meta));
+                    authClient.Close();
                     return;
                 }
 
-                ShowInfo(string.Format(T("UiVerificationSentFmt"), dto.Email));
-                NavigationService?.Navigate(new EmailVerificationPage(dto));
-                client.Close();
+                ShowInfo(string.Format(T("UiVerificationSentFmt"), registrationDto.Email));
+                NavigationService?.Navigate(new EmailVerificationPage(registrationDto));
+                authClient.Close();
             }
             catch (System.ServiceModel.EndpointNotFoundException)
             {
                 ShowError(T("UiEndpointNotFound"));
                 Logger.Warn("No se ha encontrado el endpoint");
-                client.Abort();
+                authClient.Abort();
             }
             catch (Exception ex)
             {
                 ShowError($"{T("UiGenericError")} {ex.Message}");
-                client.Abort();
+                authClient.Abort();
             }
         }
 
-
         private void Login(object sender, RoutedEventArgs e)
         {
-            if (NavigationService?.CanGoBack == true) NavigationService.GoBack();
-            else ShowWarn(T("UiNoBackPage"));
+            if (NavigationService?.CanGoBack == true)
+            {
+                NavigationService.GoBack();
+            }
+            else
+            {
+                ShowWarn(T("UiNoBackPage"));
+            }
         }
+
         private static string T(string key) =>
             Globalization.LocalizationManager.Current[key];
 
-        private static void ShowWarn(string msg) =>
-            MessageBox.Show(msg, T("UiTitleWarning"), MessageBoxButton.OK, MessageBoxImage.Warning);
+        private static void ShowWarn(string message) =>
+            MessageBox.Show(message, T("UiTitleWarning"), MessageBoxButton.OK, MessageBoxImage.Warning);
 
-        private static void ShowInfo(string msg) =>
-            MessageBox.Show(msg, T("UiTitleInfo"), MessageBoxButton.OK, MessageBoxImage.Information);
+        private static void ShowInfo(string message) =>
+            MessageBox.Show(message, T("UiTitleInfo"), MessageBoxButton.OK, MessageBoxImage.Information);
 
-        private static void ShowError(string msg) =>
-            MessageBox.Show(msg, T("UiTitleError"), MessageBoxButton.OK, MessageBoxImage.Error);
+        private static void ShowError(string message) =>
+            MessageBox.Show(message, T("UiTitleError"), MessageBoxButton.OK, MessageBoxImage.Error);
 
         private static string MapAuth(string code, Dictionary<string, string> meta)
         {
-            var m = meta ?? new Dictionary<string, string>();
+            var metaDictionary = meta ?? new Dictionary<string, string>();
+
             switch (code)
             {
-                case "Auth.Ok": return T("AuthOk");
-                case "Auth.EmailRequired": return T("AuthEmailRequired");
-                case "Auth.EmailAlreadyExists": return T("AuthEmailAlreadyExists");
-                case "Auth.UserNameAlreadyExists": return T("AuthUserNameAlreadyExists");
-                case "Auth.InvalidCredentials": return T("AuthInvalidCredentials");
-                case "Auth.ThrottleWait":
-                    return string.Format(T("AuthThrottleWaitFmt"),
-                                                        m.TryGetValue("seconds", out var s) ? s : "45");
-                case "Auth.CodeNotRequested": return T("AuthCodeNotRequested");
-                case "Auth.CodeExpired": return T("AuthCodeExpired");
-                case "Auth.CodeInvalid": return T("AuthCodeInvalid");
-                case "Auth.EmailSendFailed": return T("AuthEmailSendFailed");
-                default: return T("AuthServerError");
+                case AUTH_CODE_OK:
+                    return T("AuthOk");
+
+                case AUTH_CODE_EMAIL_REQUIRED:
+                    return T("AuthEmailRequired");
+
+                case AUTH_CODE_EMAIL_ALREADY_EXISTS:
+                    return T("AuthEmailAlreadyExists");
+
+                case AUTH_CODE_USERNAME_ALREADY_EXISTS:
+                    return T("AuthUserNameAlreadyExists");
+
+                case AUTH_CODE_INVALID_CREDENTIALS:
+                    return T("AuthInvalidCredentials");
+
+                case AUTH_CODE_THROTTLE_WAIT:
+                    return string.Format(
+                        T("AuthThrottleWaitFmt"),
+                        metaDictionary.TryGetValue(META_KEY_SECONDS, out string secondsText)
+                            ? secondsText
+                            : "45");
+
+                case AUTH_CODE_NOT_REQUESTED:
+                    return T("AuthCodeNotRequested");
+
+                case AUTH_CODE_EXPIRED:
+                    return T("AuthCodeExpired");
+
+                case AUTH_CODE_INVALID:
+                    return T("AuthCodeInvalid");
+
+                case AUTH_CODE_EMAIL_SEND_FAILED:
+                    return T("AuthEmailSendFailed");
+
+                default:
+                    return T("AuthServerError");
             }
         }
     }

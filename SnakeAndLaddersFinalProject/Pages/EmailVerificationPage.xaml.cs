@@ -4,51 +4,74 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using SnakeAndLaddersFinalProject.AuthService;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class EmailVerificationPage : Page
     {
+        private const int DEFAULT_RESEND_COOLDOWN_SECONDS = 45;
+        private const int MIN_RESEND_SECONDS = 1;
+
+        private const string AUTH_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IAuthService";
+        private const string AUTH_CODE_THROTTLE_WAIT = "Auth.ThrottleWait";
+
+        private const string META_KEY_SECONDS = "seconds";
+
+        private const string KEY_BTN_RESEND_CODE_TEXT = "btnResendCodeText";
+        private const string KEY_AUTH_THROTTLE_WAIT_FMT = "AuthThrottleWaitFmt";
+        private const string KEY_UI_VERIFICATION_CODE_REQUIRED = "UiVerificationCodeRequired";
+        private const string KEY_UI_ENDPOINT_NOT_FOUND = "UiEndpointNotFound";
+        private const string KEY_UI_GENERIC_ERROR = "UiGenericError";
+        private const string KEY_UI_ACCOUNT_CREATED_FMT = "UiAccountCreatedFmt";
+
         private readonly AuthService.RegistrationDto _pendingDto;
+
         private DispatcherTimer _resendTimer;
         private int _remainingSeconds;
-        private const int DefaultResendCooldown = 45; 
 
-        public EmailVerificationPage() : this(new AuthService.RegistrationDto
+        public EmailVerificationPage()
+            : this(new AuthService.RegistrationDto
+            {
+                Email = string.Empty,
+                FirstName = string.Empty,
+                LastName = string.Empty,
+                Password = string.Empty,
+                UserName = string.Empty
+            })
         {
-            Email = "",
-            FirstName = "",
-            LastName = "",
-            Password = "",
-            UserName = ""
-        })
-        { }
+        }
 
         public EmailVerificationPage(AuthService.RegistrationDto pendingDto)
         {
             InitializeComponent();
+
             _pendingDto = pendingDto ?? throw new ArgumentNullException(nameof(pendingDto));
 
             btnVerificateCode.Click += VerificateCode;
             btnResendCode.Click += ResendCode;
-            StartResendCooldown(DefaultResendCooldown);
+
+            StartResendCooldown(DEFAULT_RESEND_COOLDOWN_SECONDS);
         }
 
         private async void VerificateCode(object sender, RoutedEventArgs e)
         {
-            var code = (txtCodeSended.Text ?? string.Empty).Trim();
+            string code = (txtCodeSended.Text ?? string.Empty).Trim();
             if (string.IsNullOrWhiteSpace(code))
             {
-                ShowWarn(T("UiVerificationCodeRequired"));
+                ShowWarn(T(KEY_UI_VERIFICATION_CODE_REQUIRED));
                 return;
             }
 
-            var client = new AuthService.AuthServiceClient("BasicHttpBinding_IAuthService");
+            var client = new AuthService.AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
+
             try
             {
-                var normalizedEmail = (_pendingDto.Email ?? string.Empty).Trim().ToLowerInvariant();
+                string normalizedEmail = (_pendingDto.Email ?? string.Empty).Trim().ToLowerInvariant();
 
-                var confirm = await Task.Run(() => client.ConfirmEmailVerification(normalizedEmail, code));
+                AuthResult confirm = await Task.Run(() =>
+                    client.ConfirmEmailVerification(normalizedEmail, code));
+
                 if (!confirm.Success)
                 {
                     ShowWarn(MapAuth(confirm.Code, confirm.Meta));
@@ -57,7 +80,10 @@ namespace SnakeAndLaddersFinalProject.Pages
                 }
 
                 _pendingDto.Email = normalizedEmail;
-                var register = await Task.Run(() => client.Register(_pendingDto));
+
+                AuthResult register = await Task.Run(() =>
+                    client.Register(_pendingDto));
+
                 if (!register.Success)
                 {
                     ShowWarn(MapAuth(register.Code, register.Meta));
@@ -65,79 +91,87 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                ShowInfo(string.Format(T("UiAccountCreatedFmt"), register.DisplayName));
+                ShowInfo(string.Format(T(KEY_UI_ACCOUNT_CREATED_FMT), register.DisplayName));
                 NavigationService?.Navigate(new LoginPage());
                 client.Close();
             }
             catch (System.ServiceModel.EndpointNotFoundException)
             {
-                ShowError(T("UiEndpointNotFound"));
+                ShowError(T(KEY_UI_ENDPOINT_NOT_FOUND));
                 client.Abort();
             }
             catch (Exception ex)
             {
-                ShowError(string.Format("{0} {1}", T("UiGenericError"), ex.Message));
+                ShowError(string.Format("{0} {1}", T(KEY_UI_GENERIC_ERROR), ex.Message));
                 client.Abort();
             }
         }
 
         private async void ResendCode(object sender, RoutedEventArgs e)
         {
-            var email = (_pendingDto.Email ?? string.Empty).Trim().ToLowerInvariant();
-            var client = new AuthService.AuthServiceClient("BasicHttpBinding_IAuthService");
+            string email = (_pendingDto.Email ?? string.Empty).Trim().ToLowerInvariant();
+            var client = new AuthService.AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
 
             try
             {
-                var res = await Task.Run(() => client.RequestEmailVerification(email));
+                AuthResult result = await Task.Run(() =>
+                    client.RequestEmailVerification(email));
+
                 client.Close();
 
-                if (res.Success)
+                if (result.Success)
                 {
                     ShowInfo(string.Format(T("UiVerificationSentFmt"), email));
-                    StartResendCooldown(DefaultResendCooldown);
+                    StartResendCooldown(DEFAULT_RESEND_COOLDOWN_SECONDS);
                     return;
                 }
 
-                if (res.Code == "Auth.ThrottleWait")
+                if (result.Code == AUTH_CODE_THROTTLE_WAIT)
                 {
-                    int seconds = DefaultResendCooldown;
-                    if (res.Meta != null)
+                    int seconds = DEFAULT_RESEND_COOLDOWN_SECONDS;
+
+                    if (result.Meta != null &&
+                        result.Meta.TryGetValue(META_KEY_SECONDS, out string secondsText))
                     {
-                        string s;
-                        if (res.Meta.TryGetValue("seconds", out s))
+                        if (int.TryParse(secondsText, out int parsedSeconds))
                         {
-                            int n;
-                            if (int.TryParse(s, out n)) seconds = n;
+                            seconds = parsedSeconds;
                         }
                     }
 
-                    ShowWarn(string.Format(T("AuthThrottleWaitFmt"), seconds));
+                    ShowWarn(string.Format(T(KEY_AUTH_THROTTLE_WAIT_FMT), seconds));
                     StartResendCooldown(seconds);
                     return;
                 }
 
-                ShowWarn(MapAuth(res.Code, res.Meta));
+                ShowWarn(MapAuth(result.Code, result.Meta));
             }
             catch (System.ServiceModel.EndpointNotFoundException)
             {
-                ShowError(T("UiEndpointNotFound"));
+                ShowError(T(KEY_UI_ENDPOINT_NOT_FOUND));
                 client.Abort();
             }
             catch (Exception ex)
             {
-                ShowError(string.Format("{0} {1}", T("UiGenericError"), ex.Message));
+                ShowError(string.Format("{0} {1}", T(KEY_UI_GENERIC_ERROR), ex.Message));
                 client.Abort();
             }
         }
+
         private void StartResendCooldown(int seconds)
         {
-            _remainingSeconds = Math.Max(1, seconds);
+            _remainingSeconds = Math.Max(MIN_RESEND_SECONDS, seconds);
 
             btnResendCode.IsEnabled = false;
             UpdateResendButtonContent();
 
             if (_resendTimer == null)
-                _resendTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+            {
+                _resendTimer = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromSeconds(1)
+                };
+            }
 
             _resendTimer.Tick -= ResendTimerTick;
             _resendTimer.Tick += ResendTimerTick;
@@ -152,7 +186,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             {
                 _resendTimer.Stop();
                 btnResendCode.IsEnabled = true;
-                btnResendCode.Content = T("btnResendCodeText");
+                btnResendCode.Content = T(KEY_BTN_RESEND_CODE_TEXT);
             }
             else
             {
@@ -162,39 +196,63 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void UpdateResendButtonContent()
         {
-            btnResendCode.Content = string.Format(T("btnResendCodeText"), _remainingSeconds);
+            btnResendCode.Content = string.Format(T(KEY_BTN_RESEND_CODE_TEXT), _remainingSeconds);
         }
 
         private static string T(string key) =>
             Globalization.LocalizationManager.Current[key];
 
-        private static void ShowWarn(string msg) =>
-            MessageBox.Show(msg, T("UiTitleWarning"), MessageBoxButton.OK, MessageBoxImage.Warning);
+        private static void ShowWarn(string message) =>
+            MessageBox.Show(message, T("UiTitleWarning"), MessageBoxButton.OK, MessageBoxImage.Warning);
 
-        private static void ShowInfo(string msg) =>
-            MessageBox.Show(msg, T("UiTitleInfo"), MessageBoxButton.OK, MessageBoxImage.Information);
+        private static void ShowInfo(string message) =>
+            MessageBox.Show(message, T("UiTitleInfo"), MessageBoxButton.OK, MessageBoxImage.Information);
 
-        private static void ShowError(string msg) =>
-            MessageBox.Show(msg, T("UiTitleError"), MessageBoxButton.OK, MessageBoxImage.Error);
+        private static void ShowError(string message) =>
+            MessageBox.Show(message, T("UiTitleError"), MessageBoxButton.OK, MessageBoxImage.Error);
 
         private static string MapAuth(string code, Dictionary<string, string> meta)
         {
-            var m = meta ?? new Dictionary<string, string>();
+            Dictionary<string, string> metaDictionary = meta ?? new Dictionary<string, string>();
+
             switch (code)
             {
-                case "Auth.Ok": return T("AuthOk");
-                case "Auth.EmailRequired": return T("AuthEmailRequired");
-                case "Auth.EmailAlreadyExists": return T("AuthEmailAlreadyExists");
-                case "Auth.UserNameAlreadyExists": return T("AuthUserNameAlreadyExists");
-                case "Auth.InvalidCredentials": return T("AuthInvalidCredentials");
+                case "Auth.Ok":
+                    return T("AuthOk");
+
+                case "Auth.EmailRequired":
+                    return T("AuthEmailRequired");
+
+                case "Auth.EmailAlreadyExists":
+                    return T("AuthEmailAlreadyExists");
+
+                case "Auth.UserNameAlreadyExists":
+                    return T("AuthUserNameAlreadyExists");
+
+                case "Auth.InvalidCredentials":
+                    return T("AuthInvalidCredentials");
+
                 case "Auth.ThrottleWait":
-                    return string.Format(T("AuthThrottleWaitFmt"),
-                                                                       m.ContainsKey("seconds") ? m["seconds"] : "45");
-                case "Auth.CodeNotRequested": return T("AuthCodeNotRequested");
-                case "Auth.CodeExpired": return T("AuthCodeExpired");
-                case "Auth.CodeInvalid": return T("AuthCodeInvalid");
-                case "Auth.EmailSendFailed": return T("AuthEmailSendFailed");
-                default: return T("AuthServerError");
+                    return string.Format(
+                        T(KEY_AUTH_THROTTLE_WAIT_FMT),
+                        metaDictionary.ContainsKey(META_KEY_SECONDS)
+                            ? metaDictionary[META_KEY_SECONDS]
+                            : DEFAULT_RESEND_COOLDOWN_SECONDS.ToString());
+
+                case "Auth.CodeNotRequested":
+                    return T("AuthCodeNotRequested");
+
+                case "Auth.CodeExpired":
+                    return T("AuthCodeExpired");
+
+                case "Auth.CodeInvalid":
+                    return T("AuthCodeInvalid");
+
+                case "Auth.EmailSendFailed":
+                    return T("AuthEmailSendFailed");
+
+                default:
+                    return T("AuthServerError");
             }
         }
     }

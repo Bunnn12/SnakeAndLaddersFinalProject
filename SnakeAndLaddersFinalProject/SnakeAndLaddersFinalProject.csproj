@@ -90,7 +90,6 @@
     <Compile Include="BasicWindow.xaml.cs">
       <DependentUpon>BasicWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ChatMessageVm.cs" />
     <Compile Include="Connected Services\AuthService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -241,6 +240,7 @@
     <Compile Include="Utilities\TextBoxCharCounterHelper.cs" />
     <Compile Include="Utilities\WidthToBoolConverter.cs" />
     <Compile Include="ViewModels\ChatClientCallback.cs" />
+    <Compile Include="ViewModels\ChatMessageVm.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\CornerPlayersViewModel.cs" />
     <Compile Include="ViewModels\CreateMatchViewModel.cs" />
@@ -771,6 +771,42 @@
     <Resource Include="Assets\Images\Dice\05Dice.png" />
     <Resource Include="Assets\Images\Dice\06Dice.png" />
     <Resource Include="Assets\Images\Dice\DiceSpriteSheet.png" />
+    <Resource Include="Assets\Images\Avatars\A0014.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0015.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0016.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0017.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0018.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0019.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0020.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0021.jpg" />
+    <Resource Include="Assets\Images\Avatars\A0022.jpg" />
+    <Resource Include="Assets\Images\Stickers\ST000.png" />
+    <Resource Include="Assets\Images\Stickers\ST001.png" />
+    <Resource Include="Assets\Images\Stickers\ST0015.png" />
+    <Resource Include="Assets\Images\Stickers\ST0016.png" />
+    <Resource Include="Assets\Images\Stickers\ST002.png" />
+    <Resource Include="Assets\Images\Stickers\ST003.png" />
+    <Resource Include="Assets\Images\Stickers\ST004.png" />
+    <Resource Include="Assets\Images\Stickers\ST005.png" />
+    <Resource Include="Assets\Images\Stickers\ST006.png" />
+    <Resource Include="Assets\Images\Stickers\ST007.png" />
+    <Resource Include="Assets\Images\Stickers\ST008.png" />
+    <Resource Include="Assets\Images\Stickers\ST009.png" />
+    <Resource Include="Assets\Images\Stickers\ST010.png" />
+    <Resource Include="Assets\Images\Stickers\ST011.png" />
+    <Resource Include="Assets\Images\Stickers\ST012.png" />
+    <Resource Include="Assets\Images\Stickers\ST013.png" />
+    <Resource Include="Assets\Images\Stickers\ST014.png" />
+    <Resource Include="Assets\Images\Stickers\ST017.png" />
+    <Resource Include="Assets\Images\Stickers\ST018.png" />
+    <Resource Include="Assets\Images\Stickers\ST019.png" />
+    <Resource Include="Assets\Images\Stickers\ST020.png" />
+    <Resource Include="Assets\Images\Stickers\ST021.png" />
+    <Resource Include="Assets\Images\Stickers\ST022.png" />
+    <Resource Include="Assets\Images\Stickers\ST023.png" />
+    <Resource Include="Assets\Images\Stickers\ST024.png" />
+    <Resource Include="Assets\Images\Stickers\ST025.png" />
+    <Resource Include="Assets\Images\Stickers\ST026.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

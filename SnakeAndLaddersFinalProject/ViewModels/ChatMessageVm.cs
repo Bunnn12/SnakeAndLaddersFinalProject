@@ -6,13 +6,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     public sealed class ChatMessageVm
     {
         public string Sender { get; }
+
         public string Text { get; }
+
         public DateTime TimestampUtc { get; }
 
         public bool IsMine { get; }
+
         public string Header => $"{Sender}";
+
         public DateTime SentAt => TimestampUtc.ToLocalTime();
+
         public string AvatarId { get; }
+
         public bool HasAvatar => !string.IsNullOrWhiteSpace(AvatarId);
 
         public ChatMessageVm(ChatMessageDto dto, string currentUserName)
@@ -25,8 +31,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             Sender = dto.Sender ?? string.Empty;
             Text = dto.Text ?? string.Empty;
             TimestampUtc = dto.TimestampUtc;
-
-            AvatarId = dto.SenderAvatarId;  
+            AvatarId = dto.SenderAvatarId;
 
             IsMine =
                 !string.IsNullOrWhiteSpace(currentUserName) &&

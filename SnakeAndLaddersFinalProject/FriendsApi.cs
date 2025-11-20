@@ -9,85 +9,139 @@ namespace SnakeAndLaddersFinalProject.Services
     public sealed class FriendsApi : IDisposable
     {
         private const int DEFAULT_MAX_RESULTS = 20;
-        private readonly IFriendsService _client;
+
+        private readonly IFriendsService friendsServiceClient;
 
         public FriendsApi()
         {
-            _client = new FriendsServiceClient("NetTcpBinding_IFriendsService");
+            friendsServiceClient = new FriendsServiceClient("NetTcpBinding_IFriendsService");
         }
 
-        private static string TokenOrNull()
-            => SessionContext.Current?.AuthToken;
+        private static string GetTokenOrNull()
+        {
+            return SessionContext.Current?.AuthToken;
+        }
 
         public List<FriendListItemDto> GetFriends()
         {
-            var t = TokenOrNull();
-            if (string.IsNullOrWhiteSpace(t)) return new List<FriendListItemDto>();
-            return new List<FriendListItemDto>(_client.GetFriends(t));
+            string token = GetTokenOrNull();
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return new List<FriendListItemDto>();
+            }
+
+            return new List<FriendListItemDto>(friendsServiceClient.GetFriends(token));
         }
 
         public List<FriendRequestItemDto> GetIncoming()
         {
-            var t = TokenOrNull();
-            if (string.IsNullOrWhiteSpace(t)) return new List<FriendRequestItemDto>();
-            return new List<FriendRequestItemDto>(_client.GetIncomingRequests(t));
+            string token = GetTokenOrNull();
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return new List<FriendRequestItemDto>();
+            }
+
+            return new List<FriendRequestItemDto>(friendsServiceClient.GetIncomingRequests(token));
         }
 
         public List<FriendRequestItemDto> GetOutgoing()
         {
-            var t = TokenOrNull();
-            if (string.IsNullOrWhiteSpace(t)) return new List<FriendRequestItemDto>();
-            return new List<FriendRequestItemDto>(_client.GetOutgoingRequests(t));
+            string token = GetTokenOrNull();
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return new List<FriendRequestItemDto>();
+            }
+
+            return new List<FriendRequestItemDto>(friendsServiceClient.GetOutgoingRequests(token));
         }
 
         public List<UserBriefDto> SearchUsers(string term, int max = DEFAULT_MAX_RESULTS)
         {
-            var t = TokenOrNull();
-            if (string.IsNullOrWhiteSpace(t)) return new List<UserBriefDto>();
-            return new List<UserBriefDto>(_client.SearchUsers(t, term ?? string.Empty, max));
+            string token = GetTokenOrNull();
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return new List<UserBriefDto>();
+            }
+
+            string searchTerm = term ?? string.Empty;
+
+            return new List<UserBriefDto>(friendsServiceClient.SearchUsers(token, searchTerm, max));
         }
 
         public FriendLinkDto SendFriendRequest(int targetUserId)
         {
-            var t = TokenOrNull();
-            if (string.IsNullOrWhiteSpace(t)) return null;
-            return _client.SendFriendRequest(t, targetUserId);
+            string token = GetTokenOrNull();
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return null;
+            }
+
+            return friendsServiceClient.SendFriendRequest(token, targetUserId);
         }
 
         public void Accept(int linkId)
         {
-            var t = TokenOrNull();
-            if (string.IsNullOrWhiteSpace(t)) return;
-            _client.AcceptFriendRequest(t, linkId);
+            string token = GetTokenOrNull();
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return;
+            }
+
+            friendsServiceClient.AcceptFriendRequest(token, linkId);
         }
 
         public void Reject(int linkId)
         {
-            var t = TokenOrNull();
-            if (string.IsNullOrWhiteSpace(t)) return;
-            _client.RejectFriendRequest(t, linkId);
+            string token = GetTokenOrNull();
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return;
+            }
+
+            friendsServiceClient.RejectFriendRequest(token, linkId);
         }
 
         public void Cancel(int linkId)
         {
-            var t = TokenOrNull();
-            if (string.IsNullOrWhiteSpace(t)) return;
-            _client.CancelFriendRequest(t, linkId);
+            string token = GetTokenOrNull();
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return;
+            }
+
+            friendsServiceClient.CancelFriendRequest(token, linkId);
         }
 
         public void Remove(int linkId)
         {
-            var t = TokenOrNull();
-            if (string.IsNullOrWhiteSpace(t)) return;
-            _client.RemoveFriend(t, linkId);
+            string token = GetTokenOrNull();
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return;
+            }
+
+            friendsServiceClient.RemoveFriend(token, linkId);
         }
 
         public void Dispose()
         {
-            if (_client is IClientChannel ch)
+            if (friendsServiceClient is IClientChannel clientChannel)
             {
-                try { if (ch.State == CommunicationState.Faulted) ch.Abort(); else ch.Close(); }
-                catch { ch.Abort(); }
+                try
+                {
+                    if (clientChannel.State == CommunicationState.Faulted)
+                    {
+                        clientChannel.Abort();
+                    }
+                    else
+                    {
+                        clientChannel.Close();
+                    }
+                }
+                catch
+                {
+                    clientChannel.Abort();
+                }
             }
         }
     }

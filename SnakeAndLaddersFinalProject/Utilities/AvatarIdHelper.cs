@@ -5,14 +5,15 @@ namespace SnakeAndLaddersFinalProject.Utilities
 {
     public static class AvatarIdHelper
     {
-        public const string DefaultId = "A0013";
+        public const string DEFAULT_AVATAR_ID = "A0013";
 
-        private const int MaxLength = 5;
+        private const int MAX_LENGTH = 5;
+        private const int REGEX_TIMEOUT_MILLISECONDS = 100;
 
-        private static readonly Regex Pattern = new Regex(
+        private static readonly Regex AVATAR_ID_PATTERN = new Regex(
             @"^A\d{4}$",
             RegexOptions.Compiled | RegexOptions.CultureInvariant,
-            TimeSpan.FromMilliseconds(100));
+            TimeSpan.FromMilliseconds(REGEX_TIMEOUT_MILLISECONDS));
 
         public static string Normalize(string avatarId)
         {
@@ -21,37 +22,37 @@ namespace SnakeAndLaddersFinalProject.Utilities
                 return null;
             }
 
-            string trimmed = avatarId.Trim();
+            string trimmedAvatarId = avatarId.Trim();
 
-            if (trimmed.Length > MaxLength)
+            if (trimmedAvatarId.Length > MAX_LENGTH)
             {
                 return null;
             }
 
-            return trimmed.ToUpperInvariant();
+            return trimmedAvatarId.ToUpperInvariant();
         }
 
         public static bool IsValid(string avatarId)
         {
-            string normalizedId = Normalize(avatarId);
-            if (normalizedId == null)
+            string normalizedAvatarId = Normalize(avatarId);
+            if (normalizedAvatarId == null)
             {
                 return false;
             }
 
-            return Pattern.IsMatch(normalizedId);
+            return AVATAR_ID_PATTERN.IsMatch(normalizedAvatarId);
         }
 
         public static string NormalizeOrDefault(string avatarId)
         {
-            string normalizedId = Normalize(avatarId);
-            return IsValid(normalizedId) ? normalizedId : DefaultId;
+            string normalizedAvatarId = Normalize(avatarId);
+            return IsValid(normalizedAvatarId) ? normalizedAvatarId : DEFAULT_AVATAR_ID;
         }
 
         public static string MapFromDb(string dbValue)
         {
             string normalizedDbValue = Normalize(dbValue);
-            return IsValid(normalizedDbValue) ? normalizedDbValue : DefaultId;
+            return IsValid(normalizedDbValue) ? normalizedDbValue : DEFAULT_AVATAR_ID;
         }
 
         public static string MapToDb(string appValue)

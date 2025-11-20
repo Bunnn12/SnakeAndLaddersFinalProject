@@ -1,127 +1,139 @@
-﻿using SnakeAndLaddersFinalProject.Authentication;
-using SnakeAndLaddersFinalProject.Navigation;
-using SnakeAndLaddersFinalProject.Pages;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-
+using SnakeAndLaddersFinalProject.Authentication;
+using SnakeAndLaddersFinalProject.Navigation;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class MainPage : Page
     {
+        private const string MESSAGE_JOIN_CODE_REQUIRED = "Escribe el código de la partida.";
+        private const string TITLE_JOIN_MATCH = "Unirse";
 
         public string AvatarId { get; }
+
         public bool HasAvatar => !string.IsNullOrWhiteSpace(AvatarId);
+
         public MainPage()
         {
             InitializeComponent();
 
             AvatarId = SessionContext.Current?.ProfilePhotoId;
 
-            
             DataContext = this;
-
         }
 
-        // Ir a la pantalla de ajustes antes de crear
         private void CreateMatch(object sender, RoutedEventArgs e)
         {
-            var page = new CreateMatchPage();
+            var createMatchPage = new CreateMatchPage();
 
             if (NavigationService != null)
             {
-                NavigationService.Navigate(page);
+                NavigationService.Navigate(createMatchPage);
                 return;
             }
 
-            var window = Application.Current.MainWindow as NavigationWindow;
-            if (window != null)
+            var navigationWindow = Application.Current.MainWindow as NavigationWindow;
+            if (navigationWindow != null)
             {
-                window.Navigate(page);
+                navigationWindow.Navigate(createMatchPage);
             }
             else
             {
-                Application.Current.MainWindow.Content = page;
+                Application.Current.MainWindow.Content = createMatchPage;
             }
         }
 
-        private void NavigateToLobby(LobbyNavigationArgs args)
+        private void NavigateToLobby(LobbyNavigationArgs navigationArgs)
         {
-            var page = new LobbyPage(args);
+            var lobbyPage = new LobbyPage(navigationArgs);
 
             if (NavigationService != null)
             {
-                NavigationService.Navigate(page);
+                NavigationService.Navigate(lobbyPage);
                 return;
             }
 
-            var window = Application.Current.MainWindow as NavigationWindow;
-            if (window != null)
-                window.Navigate(page);
+            var navigationWindow = Application.Current.MainWindow as NavigationWindow;
+            if (navigationWindow != null)
+            {
+                navigationWindow.Navigate(lobbyPage);
+            }
             else
-                Application.Current.MainWindow.Content = page;
+            {
+                Application.Current.MainWindow.Content = lobbyPage;
+            }
         }
 
         private void JoinMatch(object sender, RoutedEventArgs e)
         {
-            var code = txtJoinCode.Text?.Trim();
-            if (string.IsNullOrWhiteSpace(code))
+            string joinCode = txtJoinCode.Text?.Trim();
+            if (string.IsNullOrWhiteSpace(joinCode))
             {
-                MessageBox.Show("Escribe el código de la partida.", "Unirse",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(
+                    MESSAGE_JOIN_CODE_REQUIRED,
+                    TITLE_JOIN_MATCH,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
                 return;
             }
 
-            NavigateToLobby(new LobbyNavigationArgs { Mode = LobbyEntryMode.Join, JoinCode = code });
+            NavigateToLobby(
+                new LobbyNavigationArgs
+                {
+                    Mode = LobbyEntryMode.Join,
+                    JoinCode = joinCode
+                });
         }
 
         private void BtnRanking_Click(object sender, RoutedEventArgs e)
         {
-            var page = new RankingPage();
+            var rankingPage = new RankingPage();
 
             if (NavigationService != null)
             {
-                NavigationService.Navigate(page);
+                NavigationService.Navigate(rankingPage);
                 return;
             }
 
-            var window = Application.Current.MainWindow as NavigationWindow;
-            if (window != null)
+            var navigationWindow = Application.Current.MainWindow as NavigationWindow;
+            if (navigationWindow != null)
             {
-                window.Navigate(page);
+                navigationWindow.Navigate(rankingPage);
             }
             else
             {
-                Application.Current.MainWindow.Content = page;
+                Application.Current.MainWindow.Content = rankingPage;
             }
         }
 
-        private void btnFriends_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
+        private void BtnFriends_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
         {
             return;
         }
+
         private void BtnFriends_Click(object sender, RoutedEventArgs e)
         {
-            var page = new FriendsListPage();
+            var friendsListPage = new FriendsListPage();
 
             if (NavigationService != null)
             {
-                NavigationService.Navigate(page);
+                NavigationService.Navigate(friendsListPage);
                 return;
             }
 
-            var window = Application.Current.MainWindow as NavigationWindow;
-            if (window != null)
+            var navigationWindow = Application.Current.MainWindow as NavigationWindow;
+            if (navigationWindow != null)
             {
-                window.Navigate(page);
+                navigationWindow.Navigate(friendsListPage);
             }
             else
             {
-                Application.Current.MainWindow.Content = page;
+                Application.Current.MainWindow.Content = friendsListPage;
             }
         }
-
     }
 }

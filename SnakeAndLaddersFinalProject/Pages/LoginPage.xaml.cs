@@ -10,9 +10,6 @@ using System.Windows.Navigation;
 using SnakeAndLaddersFinalProject.Authentication;
 using SnakeAndLaddersFinalProject.Utilities;
 
-
-
-
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class LoginPage : Page
@@ -21,11 +18,29 @@ namespace SnakeAndLaddersFinalProject.Pages
         private const int GUEST_SUFFIX_MAX_EXCLUSIVE = 100;
 
         private const int GUEST_ID_MIN_VALUE = 1;
-        private const int GUEST_ID_MAX_EXCLUSIVE = 1000000;
+        private const int GUEST_ID_MAX_EXCLUSIVE = 1_000_000;
 
-        private const string BAN_DATE_DISPLAY_FORMAT = "dd/MM/yyyy HH:mm";
+        private const string GUEST_NAME_PREFIX = "Guest";
+        private const string GUEST_TOKEN_PREFIX = "GUEST-";
+
+        private const string DEFAULT_GUEST_SKIN_ID = "001";
+
+        private const string AUTH_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IAuthService";
+        private const string AUTH_CODE_THROTTLE_WAIT = "Auth.ThrottleWait";
+
+        private const string META_KEY_SECONDS = "seconds";
         private const string META_KEY_SANCTION_TYPE = "sanctionType";
         private const string META_KEY_BAN_ENDS_AT_UTC = "banEndsAtUtc";
+
+        private const string BAN_DATE_DISPLAY_FORMAT = "dd/MM/yyyy HH:mm";
+
+        private const string ICON_KIND_WARNING = "warning";
+        private const string ICON_KIND_INFO = "info";
+        private const string ICON_KIND_ERROR = "error";
+
+        private const string ICON_URI_WARNING = "pack://application:,,,/Assets/Icons/warning.png";
+        private const string ICON_URI_INFO = "pack://application:,,,/Assets/Icons/info.png";
+        private const string ICON_URI_ERROR = "pack://application:,,,/Assets/Icons/error.png";
 
         public LoginPage()
         {
@@ -34,108 +49,173 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void PageLoaded(object sender, RoutedEventArgs e)
         {
-            
-            if (btnNavLogin != null) btnNavLogin.IsChecked = true;
-            if (btnSignUp != null) btnSignUp.IsChecked = false;
-        }
-        private void TextBoxTextChanged(object sender, TextChangedEventArgs e) { }
+            if (btnNavLogin != null)
+            {
+                btnNavLogin.IsChecked = true;
+            }
 
-        private string[] ValidateLogin(string identifier, string pwd)
+            if (btnSignUp != null)
+            {
+                btnSignUp.IsChecked = false;
+            }
+        }
+
+        private void TextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
-            var errs = new List<string>();
-            if (string.IsNullOrWhiteSpace(identifier)) errs.Add(T("UiIdentifierRequired"));
-            else if (identifier.Contains("@") && !Regex.IsMatch(identifier, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
-                errs.Add(T("UiEmailInvalid"));
-            if (string.IsNullOrWhiteSpace(pwd)) errs.Add(T("UiPasswordRequired"));
-            return errs.ToArray();
+        }
+
+        private string[] ValidateLogin(string identifier, string password)
+        {
+            var errors = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(identifier))
+            {
+                errors.Add(T("UiIdentifierRequired"));
+            }
+            else if (identifier.Contains("@") &&
+                     !Regex.IsMatch(identifier, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            {
+                errors.Add(T("UiEmailInvalid"));
+            }
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                errors.Add(T("UiPasswordRequired"));
+            }
+
+            return errors.ToArray();
         }
 
         private void PwdPasswordKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter) Login(btnLogin, new RoutedEventArgs());
+            if (e.Key == Key.Enter)
+            {
+                Login(btnLogin, new RoutedEventArgs());
+            }
         }
 
         private void SignUp(object sender, RoutedEventArgs e)
         {
             btnNavLogin.IsChecked = false;
-            btnSignUp.IsChecked = false; 
+            btnSignUp.IsChecked = false;
             NavigationService?.Navigate(new SignUpPage());
         }
 
         private async void Login(object sender, RoutedEventArgs e)
         {
-            var identifier = txtUsername.Text.Trim();
-            var password = pwdPassword.Password;
+            string identifier = txtUsername.Text.Trim();
+            string password = pwdPassword.Password;
 
-            var errs = ValidateLogin(identifier, password);
-            if (errs.Any())
+            string[] errors = ValidateLogin(identifier, password);
+            if (errors.Any())
             {
-                ShowWarn(string.Join("\n", errs));
+                ShowWarn(string.Join("\n", errors));
                 return;
             }
 
-            var dto = new AuthService.LoginDto { Email = identifier, Password = password };
-            var client = new AuthService.AuthServiceClient("BasicHttpBinding_IAuthService");
+            var loginDto = new AuthService.LoginDto
+            {
+                Email = identifier,
+                Password = password
+            };
 
-            dynamic res = null;
-            var owner = Window.GetWindow(this);
+            var authClient = new AuthService.AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
+
+            dynamic response = null;
+            Window owner = Window.GetWindow(this);
 
             try
             {
                 owner?.Dispatcher.Invoke(() =>
                 {
                     var frame = owner.FindName("MainFrame") as Frame;
-                    frame?.Navigate(new SnakeAndLaddersFinalProject.Pages.LoadingPage());
+                    frame?.Navigate(new LoadingPage());
                 });
 
                 await Task.Delay(500);
 
-                res = await Task.Run(() => client.Login(dto));
+                response = await Task.Run(() => authClient.Login(loginDto));
 
-                bool success = false;
-                try { success = (bool)res?.Success; } catch { success = false; }
-
-                if (success)
+                bool isSuccess;
+                try
                 {
-                    int userId = 0;
-                    try { userId = (int)(res?.UserId ?? 0); } catch { userId = 0; }
+                    isSuccess = (bool)(response?.Success ?? false);
+                }
+                catch
+                {
+                    isSuccess = false;
+                }
 
-                    string displayName = null;
-                    try { displayName = (string)res?.DisplayName; } catch { displayName = null; }
-
-                    string profilePhotoId = null;
-                    try { profilePhotoId = (string)res?.ProfilePhotoId; } catch { profilePhotoId = null; }
-
-                    string token = TryGetToken(res);
-
-                    // 🔹 NUEVO: leer skin del resultado de login
-                    string currentSkinId = null;
-                    int? currentSkinUnlockedId = null;
-
-                    try { currentSkinId = (string)res?.CurrentSkinId; } catch { currentSkinId = null; }
+                if (isSuccess)
+                {
+                    int userId;
                     try
                     {
-                        // si viene como int
-                        currentSkinUnlockedId = (int?)res?.CurrentSkinUnlockedId;
+                        userId = (int)(response?.UserId ?? 0);
+                    }
+                    catch
+                    {
+                        userId = 0;
+                    }
+
+                    string displayName;
+                    try
+                    {
+                        displayName = (string)response?.DisplayName;
+                    }
+                    catch
+                    {
+                        displayName = null;
+                    }
+
+                    string profilePhotoId;
+                    try
+                    {
+                        profilePhotoId = (string)response?.ProfilePhotoId;
+                    }
+                    catch
+                    {
+                        profilePhotoId = null;
+                    }
+
+                    string token = TryGetToken(response);
+
+                    string currentSkinId;
+                    int? currentSkinUnlockedId;
+
+                    try
+                    {
+                        currentSkinId = (string)response?.CurrentSkinId;
+                    }
+                    catch
+                    {
+                        currentSkinId = null;
+                    }
+
+                    try
+                    {
+                        currentSkinUnlockedId = (int?)response?.CurrentSkinUnlockedId;
                     }
                     catch
                     {
                         currentSkinUnlockedId = null;
                     }
 
-                    // 🔹 Guardar todo en SessionContext
                     SessionContext.Current.UserId = userId;
-                    SessionContext.Current.UserName = string.IsNullOrWhiteSpace(displayName) ? identifier : displayName;
+                    SessionContext.Current.UserName =
+                        string.IsNullOrWhiteSpace(displayName) ? identifier : displayName;
                     SessionContext.Current.Email = identifier.Contains("@") ? identifier : string.Empty;
-                    SessionContext.Current.ProfilePhotoId = AvatarIdHelper.NormalizeOrDefault(profilePhotoId);
+                    SessionContext.Current.ProfilePhotoId =
+                        AvatarIdHelper.NormalizeOrDefault(profilePhotoId);
                     SessionContext.Current.AuthToken = token ?? string.Empty;
 
-                    SessionContext.Current.CurrentSkinId = currentSkinId;                  // puede ser null → luego haces fallback
-                    SessionContext.Current.CurrentSkinUnlockedId = currentSkinUnlockedId;  // FK o null
+                    SessionContext.Current.CurrentSkinId = currentSkinId;
+                    SessionContext.Current.CurrentSkinUnlockedId = currentSkinUnlockedId;
 
                     if (string.IsNullOrWhiteSpace(SessionContext.Current.AuthToken))
                     {
-                        ShowWarn("Sesión iniciada, pero el servicio no devolvió token. Algunas funciones pueden no estar disponibles.");
+                        ShowWarn(
+                            "Sesión iniciada, pero el servicio no devolvió token. Algunas funciones pueden no estar disponibles.");
                     }
 
                     owner?.Dispatcher.Invoke(() =>
@@ -152,15 +232,31 @@ namespace SnakeAndLaddersFinalProject.Pages
                         frame?.Navigate(new LoginPage());
                     });
 
-                    string code = null;
-                    Dictionary<string, string> meta = null;
-                    try { code = (string)res?.Code; } catch { code = null; }
-                    try { meta = res?.Meta as Dictionary<string, string>; } catch { meta = null; }
+                    string code;
+                    Dictionary<string, string> meta;
+
+                    try
+                    {
+                        code = (string)response?.Code;
+                    }
+                    catch
+                    {
+                        code = null;
+                    }
+
+                    try
+                    {
+                        meta = response?.Meta as Dictionary<string, string>;
+                    }
+                    catch
+                    {
+                        meta = null;
+                    }
 
                     ShowWarn(MapAuth(code, meta));
                 }
 
-                client.Close();
+                authClient.Close();
             }
             catch (System.ServiceModel.EndpointNotFoundException)
             {
@@ -169,8 +265,9 @@ namespace SnakeAndLaddersFinalProject.Pages
                     var frame = owner.FindName("MainFrame") as Frame;
                     frame?.Navigate(new LoginPage());
                 });
+
                 ShowError(T("UiEndpointNotFound"));
-                client.Abort();
+                authClient.Abort();
             }
             catch (Exception ex)
             {
@@ -179,40 +276,42 @@ namespace SnakeAndLaddersFinalProject.Pages
                     var frame = owner.FindName("MainFrame") as Frame;
                     frame?.Navigate(new LoginPage());
                 });
+
                 ShowError($"{T("UiGenericError")} {ex.Message}");
-                client.Abort();
+                authClient.Abort();
             }
         }
 
-        private static string TryGetToken(dynamic res)
+        private static string TryGetToken(dynamic response)
         {
             try
             {
-                
-                return (string)(res?.Token
-                                ?? res?.AuthToken
-                                ?? res?.SessionToken
-                                ?? res?.AccessToken);
+                return (string)(response?.Token
+                                ?? response?.AuthToken
+                                ?? response?.SessionToken
+                                ?? response?.AccessToken);
             }
-            catch { return null; }
+            catch
+            {
+                return null;
+            }
         }
-
 
         private static string T(string key) =>
             Globalization.LocalizationManager.Current[key];
 
-        private void ShowWarn(string msg) =>
-            ShowDialog(T("UiTitleWarning"), msg, DialogButtons.Ok, GetIcon("warning"));
+        private void ShowWarn(string message) =>
+            ShowDialog(T("UiTitleWarning"), message, DialogButtons.Ok, GetIcon(ICON_KIND_WARNING));
 
-        private void ShowInfo(string msg) =>
-            ShowDialog(T("UiTitleInfo"), msg, DialogButtons.Ok, GetIcon("info"));
+        private void ShowInfo(string message) =>
+            ShowDialog(T("UiTitleInfo"), message, DialogButtons.Ok, GetIcon(ICON_KIND_INFO));
 
-        private void ShowError(string msg) =>
-            ShowDialog(T("UiTitleError"), msg, DialogButtons.Ok, GetIcon("error"));
+        private void ShowError(string message) =>
+            ShowDialog(T("UiTitleError"), message, DialogButtons.Ok, GetIcon(ICON_KIND_ERROR));
 
         private void ShowDialog(string title, string message, DialogButtons buttons, string iconPackUri = null)
         {
-            var owner = Window.GetWindow(this);
+            Window owner = Window.GetWindow(this);
             _ = DialogBasicWindow.Show(owner, title, message, buttons, iconPackUri);
         }
 
@@ -220,45 +319,78 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             switch (kind)
             {
-                case "warning": return "pack://application:,,,/Assets/Icons/warning.png";
-                case "info": return "pack://application:,,,/Assets/Icons/info.png";
-                case "error": return "pack://application:,,,/Assets/Icons/error.png";
-                default: return null;
+                case ICON_KIND_WARNING:
+                    return ICON_URI_WARNING;
+
+                case ICON_KIND_INFO:
+                    return ICON_URI_INFO;
+
+                case ICON_KIND_ERROR:
+                    return ICON_URI_ERROR;
+
+                default:
+                    return null;
             }
         }
 
         private static string MapAuth(string code, Dictionary<string, string> meta)
         {
-            var m = meta ?? new Dictionary<string, string>();
+            var metaDictionary = meta ?? new Dictionary<string, string>();
+
             switch (code)
             {
-                case "Auth.Ok": return T("AuthOk");
-                case "Auth.EmailRequired": return T("AuthEmailRequired");
-                case "Auth.EmailAlreadyExists": return T("AuthEmailAlreadyExists");
-                case "Auth.UserNameAlreadyExists": return T("AuthUserNameAlreadyExists");
-                case "Auth.InvalidCredentials": return T("AuthInvalidCredentials");
-                case "Auth.ThrottleWait":
-                    return string.Format(T("Auth_ThrottleWaitFmt"),
-                        m.TryGetValue("seconds", out var s) ? s : "45");
-                case "Auth.CodeNotRequested": return T("AuthCodeNotRequested");
-                case "Auth.CodeExpired": return T("AuthCodeExpired");
-                case "Auth.CodeInvalid": return T("AuthCodeInvalid");
-                case "Auth.EmailSendFailed": return T("AuthEmailSendFailed");
+                case "Auth.Ok":
+                    return T("AuthOk");
+
+                case "Auth.EmailRequired":
+                    return T("AuthEmailRequired");
+
+                case "Auth.EmailAlreadyExists":
+                    return T("AuthEmailAlreadyExists");
+
+                case "Auth.UserNameAlreadyExists":
+                    return T("AuthUserNameAlreadyExists");
+
+                case "Auth.InvalidCredentials":
+                    return T("AuthInvalidCredentials");
+
+                case AUTH_CODE_THROTTLE_WAIT:
+                    return string.Format(
+                        T("Auth_ThrottleWaitFmt"),
+                        metaDictionary.TryGetValue(META_KEY_SECONDS, out string secondsText)
+                            ? secondsText
+                            : "45");
+
+                case "Auth.CodeNotRequested":
+                    return T("AuthCodeNotRequested");
+
+                case "Auth.CodeExpired":
+                    return T("AuthCodeExpired");
+
+                case "Auth.CodeInvalid":
+                    return T("AuthCodeInvalid");
+
+                case "Auth.EmailSendFailed":
+                    return T("AuthEmailSendFailed");
+
                 case "Auth.Banned":
-                    if (m.TryGetValue(META_KEY_SANCTION_TYPE, out var sanctionType) &&
+                    if (metaDictionary.TryGetValue(META_KEY_SANCTION_TYPE, out string sanctionType) &&
                         string.Equals(sanctionType, "S4", StringComparison.OrdinalIgnoreCase))
                     {
                         return T("AuthBannedPermanent");
                     }
-                    if (m.TryGetValue(META_KEY_BAN_ENDS_AT_UTC, out var rawDate) &&
-                        DateTime.TryParse(rawDate, out var banEndsUtc))
+
+                    if (metaDictionary.TryGetValue(META_KEY_BAN_ENDS_AT_UTC, out string rawDate) &&
+                        DateTime.TryParse(rawDate, out DateTime banEndsUtc))
                     {
-                        var local = banEndsUtc.ToLocalTime();
+                        DateTime local = banEndsUtc.ToLocalTime();
                         return string.Format(
                             T("AuthBannedUntilFmt"),
                             local.ToString(BAN_DATE_DISPLAY_FORMAT));
                     }
+
                     return T("AuthBannedGeneric");
+
                 default:
                     return T("AuthServerError");
             }
@@ -270,29 +402,26 @@ namespace SnakeAndLaddersFinalProject.Pages
             btnSignUp.IsChecked = false;
         }
 
-
-
         private void PlayAsGuest(object sender, RoutedEventArgs e)
         {
             try
             {
                 var random = new Random();
 
-                int suffix = random.Next(0, 100);
-                string guestName = $"Guest{suffix:D2}";
+                int suffix = random.Next(GUEST_SUFFIX_MIN_VALUE, GUEST_SUFFIX_MAX_EXCLUSIVE);
+                string guestName = $"{GUEST_NAME_PREFIX}{suffix:D2}";
 
-                int guestRandomId = random.Next(1, 1000000);
+                int guestRandomId = random.Next(GUEST_ID_MIN_VALUE, GUEST_ID_MAX_EXCLUSIVE);
                 int guestUserId = guestRandomId * -1;
 
                 SessionContext.Current.UserId = guestUserId;
                 SessionContext.Current.UserName = guestName;
                 SessionContext.Current.Email = string.Empty;
-                SessionContext.Current.ProfilePhotoId = AvatarIdHelper.DefaultId;
+                SessionContext.Current.ProfilePhotoId = AvatarIdHelper.DEFAULT_AVATAR_ID;
 
-                SessionContext.Current.AuthToken = $"GUEST-{Guid.NewGuid():N}";
+                SessionContext.Current.AuthToken = $"{GUEST_TOKEN_PREFIX}{Guid.NewGuid():N}";
 
-                
-                SessionContext.Current.CurrentSkinId = "001";
+                SessionContext.Current.CurrentSkinId = DEFAULT_GUEST_SKIN_ID;
                 SessionContext.Current.CurrentSkinUnlockedId = null;
 
                 if (NavigationService != null)
@@ -301,7 +430,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                var currentWindow = Window.GetWindow(this);
+                Window currentWindow = Window.GetWindow(this);
                 var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
                 if (mainFrame != null)
                 {
@@ -315,15 +444,11 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-
-
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
-            var currentWindow = Window.GetWindow(this);
+            Window currentWindow = Window.GetWindow(this);
             var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
-            mainFrame.Navigate(new SnakeAndLaddersFinalProject.Pages.SettingsPage());
-
-
+            mainFrame?.Navigate(new SettingsPage());
         }
     }
 }

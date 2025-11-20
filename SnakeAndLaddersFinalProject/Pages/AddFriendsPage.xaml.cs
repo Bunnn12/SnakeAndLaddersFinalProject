@@ -17,11 +17,40 @@ namespace SnakeAndLaddersFinalProject.Pages
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(AddFriendsPage));
 
-        private readonly ObservableCollection<UserBriefDto> results = new ObservableCollection<UserBriefDto>();
-        private readonly DispatcherTimer debounce;
-
         private const int DEBOUNCE_MS = 250;
         private const int SEARCH_MAX_RESULTS = 20;
+        private const int MIN_SEARCH_TERM_LENGTH = 2;
+
+        private const string AUTO_ACCEPTED_FRIEND_MESSAGE =
+            "This user had already sended a friend request to you, both now are friends";
+
+        private readonly ObservableCollection<UserBriefDto> _searchResults =
+            new ObservableCollection<UserBriefDto>();
+
+        private readonly DispatcherTimer _searchDebounceTimer;
+
+        public AddFriendsPage()
+        {
+            InitializeComponent();
+
+            tvSearchResults.ItemsSource = _searchResults;
+
+            if (!SessionGuard.HasValidSession())
+            {
+                return;
+            }
+
+            _searchDebounceTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(DEBOUNCE_MS)
+            };
+            _searchDebounceTimer.Tick += (_, __) =>
+            {
+                _searchDebounceTimer.Stop();
+                RunSearch(txtFindFriend.Text);
+            };
+        }
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             txtFindFriend.Focus();
@@ -29,42 +58,41 @@ namespace SnakeAndLaddersFinalProject.Pages
             txtFindFriend.CaretIndex = txtFindFriend.Text?.Length ?? 0;
         }
 
-        public AddFriendsPage()
-        {
-            InitializeComponent();
-            tvSearchResults.ItemsSource = results;
-
-            if (!SessionGuard.HasValidSession()) return;
-
-            debounce = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(DEBOUNCE_MS) };
-            debounce.Tick += (s, e) => { debounce.Stop(); RunSearch(txtFindFriend.Text); };
-        }
-
         private void TxtFindFriend_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!SessionGuard.HasValidSession()) return;
-            debounce.Stop();
-            debounce.Start();
+            if (!SessionGuard.HasValidSession())
+            {
+                return;
+            }
+
+            _searchDebounceTimer.Stop();
+            _searchDebounceTimer.Start();
         }
 
         private void RunSearch(string term)
         {
-            if (!SessionGuard.HasValidSession()) return;
+            if (!SessionGuard.HasValidSession())
+            {
+                return;
+            }
 
             term = (term ?? string.Empty).Trim();
-            if (term.Length < 2)
+            if (term.Length < MIN_SEARCH_TERM_LENGTH)
             {
-                results.Clear();
+                _searchResults.Clear();
                 return;
             }
 
             try
             {
-                using (var api = new FriendsApi())
+                using (var friendsApi = new FriendsApi())
                 {
-                    results.Clear();
-                    foreach (var u in api.SearchUsers(term, SEARCH_MAX_RESULTS))
-                        results.Add(u);
+                    _searchResults.Clear();
+
+                    foreach (UserBriefDto user in friendsApi.SearchUsers(term, SEARCH_MAX_RESULTS))
+                    {
+                        _searchResults.Add(user);
+                    }
                 }
             }
             catch (Exception ex)
@@ -76,37 +104,50 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void BtnAddFriend_Click(object sender, RoutedEventArgs e)
         {
-            if (!SessionGuard.HasValidSession()) return;
-
-            if (((FrameworkElement)sender).DataContext is UserBriefDto user)
+            if (!SessionGuard.HasValidSession())
             {
-                try
-                {
-                    using (var api = new FriendsApi())
-                    {
-                        var link = api.SendFriendRequest(user.UserId);
-                        results.Remove(user);
+                return;
+            }
 
-                        if (link != null && link.Status == FriendRequestStatus.Accepted)
-                        {
-                            MessageBox.Show("This user had already sended a friend request to you, both now are friends", Lang.infoTitle);
-                        }
-                        else
-                        {
-                            MessageBox.Show(Lang.friendRequestSentText, Lang.infoTitle);
-                        }
+            if (!(((FrameworkElement)sender).DataContext is UserBriefDto user))
+            {
+                return;
+            }
+
+            try
+            {
+                using (var friendsApi = new FriendsApi())
+                {
+                    FriendLinkDto link = friendsApi.SendFriendRequest(user.UserId);
+                    _searchResults.Remove(user);
+
+                    if (link != null && link.Status == FriendRequestStatus.Accepted)
+                    {
+                        MessageBox.Show(
+                            AUTO_ACCEPTED_FRIEND_MESSAGE,
+                            Lang.infoTitle);
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            Lang.friendRequestSentText,
+                            Lang.infoTitle);
                     }
                 }
-                catch (FaultException ex)
-                {
-                    Logger.WarnFormat("SendFriendRequest fault: {0} - {1}", ex.Code, ex.Message);
-                    MessageBox.Show(ex.Message, Lang.errorTitle);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error("Error sending friend request.", ex);
-                    MessageBox.Show(Lang.errorSendingRequestText, Lang.errorTitle);
-                }
+            }
+            catch (FaultException ex)
+            {
+                Logger.WarnFormat(
+                    "SendFriendRequest fault: {0} - {1}",
+                    ex.Code,
+                    ex.Message);
+
+                MessageBox.Show(ex.Message, Lang.errorTitle);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error sending friend request.", ex);
+                MessageBox.Show(Lang.errorSendingRequestText, Lang.errorTitle);
             }
         }
 
