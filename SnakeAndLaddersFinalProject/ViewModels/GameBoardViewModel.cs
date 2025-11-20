@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
-using log4net;
+﻿using log4net;
 using SnakeAndLaddersFinalProject.Animation;
 using SnakeAndLaddersFinalProject.Game;
+using SnakeAndLaddersFinalProject.Game.Board;
+using SnakeAndLaddersFinalProject.Game.Gameplay;
+using SnakeAndLaddersFinalProject.Game.State;
 using SnakeAndLaddersFinalProject.GameBoardService;
 using SnakeAndLaddersFinalProject.GameplayService;
 using SnakeAndLaddersFinalProject.Infrastructure;
 using SnakeAndLaddersFinalProject.Services;
 using SnakeAndLaddersFinalProject.ViewModels.Models;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
@@ -23,41 +24,37 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(GameBoardViewModel));
 
-        private const int MIN_INDEX = 1;
-        private const double CELL_CENTER_VERTICAL_ADJUST = -0.18;
         private const int STATE_POLL_INTERVAL_SECONDS = 1;
+
+        private const string UNKNOWN_ERROR_MESSAGE = "Unknown error.";
+        private const string GAME_WINDOW_TITLE = "Juego";
+        private const string ROLL_DICE_FAILURE_MESSAGE_PREFIX = "No se pudo tirar el dado: ";
+        private const string ROLL_DICE_UNEXPECTED_ERROR_MESSAGE = "Ocurrió un error inesperado al tirar el dado.";
+        private const string GAMEPLAY_CALLBACK_ERROR_LOG_MESSAGE = "Error al registrarse para callbacks de gameplay.";
+        private const string GAME_STATE_SYNC_ERROR_LOG_MESSAGE = "Error al sincronizar el estado de la partida.";
 
         private const string DICE_ROLL_SPRITE_PATH = "pack://application:,,,/Assets/Images/Dice/DiceSpriteSheet.png";
         private const string DICE_FACE_BASE_PATH = "pack://application:,,,/Assets/Images/Dice/";
 
-        // ================================================================
-        // CAMPOS PRIVADOS
-        // ================================================================
+        private readonly int _gameId;
+        private readonly int _localUserId;
 
-        private IGameplayClient gameplayClient;
-        private readonly int gameId;
-        private readonly int localUserId;
+        private readonly Dictionary<int, Point> _cellCentersByIndex;
+        private readonly Dictionary<int, BoardLinkDto> _linksByStartIndex;
 
-        private readonly DispatcherTimer statePollTimer;
+        private readonly PlayerTokenManager _tokenManager;
+        private readonly GameBoardAnimationService _animationService;
+        private readonly DiceSpriteAnimator _diceAnimator;
+        private readonly AsyncCommand _rollDiceCommand;
+        private readonly GameBoardStatePoller _statePoller;
+        private readonly GameplayEventsHandler _eventsHandler;
 
-        private readonly Dictionary<int, Point> cellCentersByIndex;
-        private readonly Dictionary<int, BoardLinkDto> linksByStartIndex;
+        private IGameplayClient _gameplayClient;
 
-        private readonly PlayerTokenManager tokenManager;
-        private readonly GameBoardAnimationService animationService;
-        private readonly DiceSpriteAnimator diceAnimator;
-        private readonly AsyncCommand rollDiceCommand;
-
-        private readonly int startCellIndex = MIN_INDEX;
-
-        private int currentTurnUserId;
-        private bool isMyTurn;
-        
-
-
-        // ================================================================
-        // PROPIEDADES PUBLICAS
-        // ================================================================
+        private int _startCellIndex;
+        private int _currentTurnUserId;
+        private bool _isMyTurn;
+        private bool _isRollRequestInProgress;
 
         public int Rows { get; }
         public int Columns { get; }
@@ -66,89 +63,98 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public ObservableCollection<GameBoardConnectionViewModel> Connections { get; }
         public CornerPlayersViewModel CornerPlayers { get; }
 
-        public ObservableCollection<PlayerTokenViewModel> PlayerTokens => tokenManager.PlayerTokens;
+        public ObservableCollection<PlayerTokenViewModel> PlayerTokens
+        {
+            get { return _tokenManager.PlayerTokens; }
+        }
 
-        public ICommand RollDiceCommand => rollDiceCommand;
+        public ICommand RollDiceCommand
+        {
+            get { return _rollDiceCommand; }
+        }
 
-        public DiceSpriteAnimator DiceAnimator => diceAnimator;
+        public DiceSpriteAnimator DiceAnimator
+        {
+            get { return _diceAnimator; }
+        }
 
         public bool IsMyTurn
         {
-            get => isMyTurn;
+            get { return _isMyTurn; }
             private set
             {
-                if (isMyTurn == value)
-                    return;
-
-                Application.Current.Dispatcher.Invoke(() =>
+                if (_isMyTurn == value)
                 {
-                    isMyTurn = value;
-                    OnPropertyChanged();
-                    rollDiceCommand?.RaiseCanExecuteChanged();
-                });
+                    return;
+                }
+
+                Application.Current.Dispatcher.Invoke(
+                    () =>
+                    {
+                        _isMyTurn = value;
+                        OnPropertyChanged();
+                        _rollDiceCommand.RaiseCanExecuteChanged();
+                    });
             }
         }
 
-        // ================================================================
-        // CONSTRUCTOR
-        // ================================================================
-
         public GameBoardViewModel(
-    BoardDefinitionDto boardDefinition,
-    int gameId,
-    int localUserId,
-    string currentUserName)
+            BoardDefinitionDto boardDefinition,
+            int gameId,
+            int localUserId,
+            string currentUserName)
         {
-            ValidateConstructorArguments(boardDefinition, gameId, localUserId, currentUserName);
+            ValidateConstructorArguments(boardDefinition, gameId, localUserId);
 
-            this.gameId = gameId;
-            this.localUserId = localUserId;
+            _gameId = gameId;
+            _localUserId = localUserId;
 
             Rows = boardDefinition.Rows;
             Columns = boardDefinition.Columns;
 
-            Cells = new ObservableCollection<GameBoardCellViewModel>();
-            Connections = new ObservableCollection<GameBoardConnectionViewModel>();
+            BoardBuildResult boardBuildResult = BoardBuilder.Build(boardDefinition);
+
+            Cells = boardBuildResult.Cells;
+            Connections = boardBuildResult.Connections;
+            _cellCentersByIndex = boardBuildResult.CellCentersByIndex;
+            _linksByStartIndex = boardBuildResult.LinksByStartIndex;
+            _startCellIndex = boardBuildResult.StartCellIndex;
+
             CornerPlayers = new CornerPlayersViewModel();
 
-            cellCentersByIndex = new Dictionary<int, Point>();
-            linksByStartIndex = new Dictionary<int, BoardLinkDto>();
+            ObservableCollection<PlayerTokenViewModel> playerTokens = new ObservableCollection<PlayerTokenViewModel>();
+            _tokenManager = new PlayerTokenManager(
+                playerTokens,
+                _cellCentersByIndex);
 
-            BuildCells(boardDefinition.Cells);
-            BuildConnections(boardDefinition.Links);
-
-            var startCell = Cells.FirstOrDefault(c => c.IsStart);
-            if (startCell != null)
-            {
-                startCellIndex = startCell.Index;
-            }
-
-            tokenManager = new PlayerTokenManager(
-                new ObservableCollection<PlayerTokenViewModel>(),
-                cellCentersByIndex);
-
-            animationService = new GameBoardAnimationService(
-                tokenManager,
-                linksByStartIndex,
-                cellCentersByIndex,
+            _animationService = new GameBoardAnimationService(
+                _tokenManager,
+                _linksByStartIndex,
+                _cellCentersByIndex,
                 MapServerIndexToVisual);
 
-            diceAnimator = new DiceSpriteAnimator(
+            _diceAnimator = new DiceSpriteAnimator(
                 DICE_ROLL_SPRITE_PATH,
                 DICE_FACE_BASE_PATH);
 
-            rollDiceCommand = new AsyncCommand(
+            _rollDiceCommand = new AsyncCommand(
                 RollDiceForLocalPlayerAsync,
                 CanRollDice);
 
-            statePollTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(STATE_POLL_INTERVAL_SECONDS)
-            };
-            statePollTimer.Tick += async (_, __) => await SyncGameStateAsync();
+            _eventsHandler = new GameplayEventsHandler(
+                _animationService,
+                _diceAnimator,
+                _rollDiceCommand,
+                Logger,
+                _localUserId,
+                UpdateTurnFromState);
+
+            TimeSpan pollInterval = TimeSpan.FromSeconds(STATE_POLL_INTERVAL_SECONDS);
+            _statePoller = new GameBoardStatePoller(
+                pollInterval,
+                SyncGameStateAsync,
+                Logger);
         }
-
-
 
         public async Task InitializeGameplayAsync(IGameplayClient client, string currentUserName)
         {
@@ -157,29 +163,22 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 throw new ArgumentNullException(nameof(client));
             }
 
-            gameplayClient = client;
+            _gameplayClient = client;
 
-            statePollTimer.Start();
+            _statePoller.Start();
 
             string safeUserName = string.IsNullOrWhiteSpace(currentUserName)
-                ? $"User {localUserId}"
+                ? string.Format("User {0}", _localUserId)
                 : currentUserName.Trim();
 
-            await JoinGameplayAsync(safeUserName);
-            await SyncGameStateAsync();
+            await JoinGameplayAsync(safeUserName).ConfigureAwait(false);
+            await SyncGameStateAsync().ConfigureAwait(false);
         }
 
-
-
-        // ================================================================
-        // VALIDACIONES
-        // ================================================================
-
         private static void ValidateConstructorArguments(
-    BoardDefinitionDto boardDefinition,
-    int gameId,
-    int localUserId,
-    string currentUserName)
+            BoardDefinitionDto boardDefinition,
+            int gameId,
+            int localUserId)
         {
             if (boardDefinition == null)
             {
@@ -195,17 +194,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 throw new ArgumentOutOfRangeException(nameof(localUserId));
             }
-
-            if (string.IsNullOrWhiteSpace(currentUserName))
-            {
-                
-            }
         }
-
-
-        // ================================================================
-        // INICIALIZACION DE JUGADORES Y TOKENS
-        // ================================================================
 
         public void InitializeCornerPlayers(IList<LobbyMemberViewModel> lobbyMembers)
         {
@@ -214,336 +203,240 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public void InitializeTokensFromLobbyMembers(IList<LobbyMemberViewModel> lobbyMembers)
         {
-            tokenManager.PlayerTokens.Clear();
+            _tokenManager.PlayerTokens.Clear();
 
             if (lobbyMembers == null || lobbyMembers.Count == 0)
+            {
                 return;
+            }
 
-            foreach (var member in lobbyMembers)
-                tokenManager.CreateFromLobbyMember(member, startCellIndex);
+            foreach (LobbyMemberViewModel lobbyMember in lobbyMembers)
+            {
+                _tokenManager.CreateFromLobbyMember(lobbyMember, _startCellIndex);
+            }
 
-            tokenManager.ResetAllTokensToCell(startCellIndex);
+            _tokenManager.ResetAllTokensToCell(_startCellIndex);
         }
 
         private async Task JoinGameplayAsync(string currentUserName)
         {
             try
             {
-                await gameplayClient.JoinGameAsync(gameId, localUserId, currentUserName);
+                await _gameplayClient
+                    .JoinGameAsync(_gameId, _localUserId, currentUserName)
+                    .ConfigureAwait(false);
+
                 Logger.InfoFormat(
                     "JoinGame OK. GameId={0}, UserId={1}, UserName={2}",
-                    gameId,
-                    localUserId,
+                    _gameId,
+                    _localUserId,
                     currentUserName);
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al registrarse para callbacks de gameplay.", ex);
-            }
-        }
-
-
-        // ================================================================
-        // CONSTRUCCION DEL TABLERO
-        // ================================================================
-
-        private void BuildCells(IList<BoardCellDto> cellDtos)
-        {
-            if (cellDtos == null)
-                throw new ArgumentNullException(nameof(cellDtos));
-
-            var cellsByIndex = cellDtos.ToDictionary(c => c.Index);
-
-            for (int rowFromTop = 0; rowFromTop < Rows; rowFromTop++)
-            {
-                int rowFromBottom = (Rows - 1) - rowFromTop;
-
-                for (int columnFromLeft = 0; columnFromLeft < Columns; columnFromLeft++)
-                {
-                    int zeroBasedIndex = (rowFromBottom * Columns) + columnFromLeft;
-                    int index = zeroBasedIndex + MIN_INDEX;
-
-                    if (!cellsByIndex.TryGetValue(index, out var cellDto))
-                        throw new InvalidOperationException($"No se encontró la celda con índice {index}.");
-
-                    Cells.Add(new GameBoardCellViewModel(cellDto));
-
-                    double centerX = columnFromLeft + 0.5;
-                    double centerY = rowFromTop + 0.5 + CELL_CENTER_VERTICAL_ADJUST;
-                    cellCentersByIndex[index] = new Point(centerX, centerY);
-                }
-            }
-        }
-
-        private void BuildConnections(IList<BoardLinkDto> links)
-        {
-            if (links == null)
-                return;
-
-            foreach (var link in links)
-            {
-                if (!linksByStartIndex.ContainsKey(link.StartIndex))
-                    linksByStartIndex[link.StartIndex] = link;
-
-                var connectionViewModel = new GameBoardConnectionViewModel(
-                    link,
-                    Rows,
-                    Columns,
-                    Cells);
-
-                Connections.Add(connectionViewModel);
+                Logger.Error(GAMEPLAY_CALLBACK_ERROR_LOG_MESSAGE, ex);
             }
         }
 
         private int MapServerIndexToVisual(int serverIndex)
         {
-            return serverIndex == 0 ? startCellIndex : serverIndex;
-        }
+            if (serverIndex == 0)
+            {
+                return _startCellIndex;
+            }
 
-        // ================================================================
-        // DADO
-        // ================================================================
+            return serverIndex;
+        }
 
         private bool CanRollDice()
         {
             Logger.InfoFormat(
-                "CanRollDice: isMyTurn={0}, isAnimating={1}, isRolling={2}",
+                "CanRollDice: gameId={0}, localUserId={1}, currentTurnUserId={2}, isMyTurn={3}, isAnimating={4}, isRollRequestInProgress={5}",
+                _gameId,
+                _localUserId,
+                _currentTurnUserId,
                 IsMyTurn,
-                animationService.IsAnimating,
-                diceAnimator.IsRolling);
+                _animationService.IsAnimating,
+                _isRollRequestInProgress);
 
             if (!IsMyTurn)
+            {
                 return false;
+            }
 
-            if (animationService.IsAnimating)
+            if (_animationService.IsAnimating)
+            {
                 return false;
+            }
 
-            if (diceAnimator.IsRolling)
+            if (_isRollRequestInProgress)
+            {
                 return false;
+            }
 
             return true;
         }
 
-
-
         private async Task RollDiceForLocalPlayerAsync()
         {
+            if (_isRollRequestInProgress)
+            {
+                return;
+            }
+
+            _isRollRequestInProgress = true;
+            _rollDiceCommand.RaiseCanExecuteChanged();
+
             try
             {
-                var response = await gameplayClient
-                    .GetRollDiceAsync(gameId, localUserId)
+                var response = await _gameplayClient
+                    .GetRollDiceAsync(_gameId, _localUserId)
                     .ConfigureAwait(false);
 
                 if (response == null || !response.Success)
                 {
-                    string failureReason = response?.FailureReason ?? "Unknown error.";
+                    string failureReason = response != null && !string.IsNullOrWhiteSpace(response.FailureReason)
+                        ? response.FailureReason
+                        : UNKNOWN_ERROR_MESSAGE;
 
                     Logger.Warn("RollDice failed: " + failureReason);
 
-                    await Application.Current.Dispatcher.InvokeAsync(() =>
-                    {
-                        MessageBox.Show(
-                            "No se pudo tirar el dado: " + failureReason,
-                            "Juego",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Warning);
-                    });
+                    await Application.Current.Dispatcher.InvokeAsync(
+                        () =>
+                        {
+                            MessageBox.Show(
+                                ROLL_DICE_FAILURE_MESSAGE_PREFIX + failureReason,
+                                GAME_WINDOW_TITLE,
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
+                        });
 
                     return;
                 }
 
                 Logger.InfoFormat(
                     "RollDice request accepted. UserId={0}, From={1}, To={2}, Dice={3}",
-                    localUserId,
+                    _localUserId,
                     response.FromCellIndex,
                     response.ToCellIndex,
                     response.DiceValue);
-
-                // La animación real llega por callback: HandleServerPlayerMovedAsync
             }
             catch (Exception ex)
             {
-                Logger.Error("Error inesperado al tirar el dado.", ex);
+                Logger.Error(ROLL_DICE_UNEXPECTED_ERROR_MESSAGE, ex);
 
-                await Application.Current.Dispatcher.InvokeAsync(() =>
-                {
-                    MessageBox.Show(
-                        "Ocurrió un error inesperado al tirar el dado.",
-                        "Juego",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-                });
+                await Application.Current.Dispatcher.InvokeAsync(
+                    () =>
+                    {
+                        MessageBox.Show(
+                            ROLL_DICE_UNEXPECTED_ERROR_MESSAGE,
+                            GAME_WINDOW_TITLE,
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    });
+            }
+            finally
+            {
+                await Application.Current.Dispatcher.InvokeAsync(
+                    () =>
+                    {
+                        _isRollRequestInProgress = false;
+                        _rollDiceCommand.RaiseCanExecuteChanged();
+                    });
             }
         }
-
-        // ================================================================
-        // SINCRONIZACION DE ESTADO
-        // ================================================================
 
         private async Task SyncGameStateAsync()
         {
             try
             {
-                if (animationService.IsAnimating)
-                    return;
-
-                var stateResponse = await gameplayClient
-                    .GetGameStateAsync(gameId)
+                var stateResponse = await _gameplayClient
+                    .GetGameStateAsync(_gameId)
                     .ConfigureAwait(false);
 
                 if (stateResponse == null)
+                {
                     return;
+                }
 
                 UpdateTurnFromState(stateResponse.CurrentTurnUserId);
 
                 if (stateResponse.Tokens == null)
-                    return;
-
-                await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    foreach (var tokenState in stateResponse.Tokens)
+                    return;
+                }
+
+                await Application.Current.Dispatcher.InvokeAsync(
+                    () =>
                     {
-                        int userId = tokenState.UserId;
-                        int cellIndexVisual = MapServerIndexToVisual(tokenState.CellIndex);
+                        foreach (var tokenState in stateResponse.Tokens)
+                        {
+                            int userId = tokenState.UserId;
+                            int cellIndexVisual = MapServerIndexToVisual(tokenState.CellIndex);
 
-                        var token = tokenManager.GetOrCreateTokenForUser(
-                            userId,
-                            cellIndexVisual);
+                            PlayerTokenViewModel playerToken = _tokenManager.GetOrCreateTokenForUser(
+                                userId,
+                                cellIndexVisual);
 
-                        tokenManager.UpdateTokenPositionFromCell(
-                            token,
-                            cellIndexVisual);
-                    }
-                });
+                            _tokenManager.UpdateTokenPositionFromCell(
+                                playerToken,
+                                cellIndexVisual);
+                        }
+                    });
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al sincronizar el estado de la partida.", ex);
+                Logger.Error(GAME_STATE_SYNC_ERROR_LOG_MESSAGE, ex);
             }
         }
 
         private void UpdateTurnFromState(int currentTurnUserIdFromServer)
         {
-            currentTurnUserId = currentTurnUserIdFromServer;
+            _currentTurnUserId = currentTurnUserIdFromServer;
 
-            bool isMyTurnNow = (currentTurnUserId == localUserId);
+            bool isMyTurnNow = _currentTurnUserId == _localUserId;
 
             Logger.InfoFormat(
                 "UpdateTurnFromState: gameId={0}, localUserId={1}, currentTurnUserId={2}, isMyTurn={3}",
-                gameId,
-                localUserId,
-                currentTurnUserId,
+                _gameId,
+                _localUserId,
+                _currentTurnUserId,
                 isMyTurnNow);
 
             IsMyTurn = isMyTurnNow;
         }
 
-
-        // ================================================================
-        // EVENTOS DESDE SERVIDOR (CALLBACKS)
-        // ================================================================
-
-        public async Task HandleServerPlayerMovedAsync(PlayerMoveResultDto move)
+        public Task HandleServerPlayerMovedAsync(PlayerMoveResultDto move)
         {
-            if (move == null)
-                return;
-
-            try
-            {
-                int userId = move.UserId;
-                int fromIndex = move.FromCellIndex;
-                int toIndex = move.ToCellIndex;
-                int diceValue = move.DiceValue;
-
-                await Application.Current.Dispatcher.InvokeAsync(async () =>
-                {
-                    await diceAnimator.RollAsync(diceValue);
-
-                    await animationService.AnimateMoveForLocalPlayerAsync(
-                        userId,
-                        fromIndex,
-                        toIndex,
-                        diceValue);
-
-                    // ⬇️ Forzar reevaluación del botón cuando terminó la animación
-                    rollDiceCommand?.RaiseCanExecuteChanged();
-
-                    if (userId == localUserId)
-                    {
-                        MessageBox.Show(
-                            $"Sacaste {diceValue} y avanzaste de {fromIndex} a {toIndex}.",
-                            "Resultado del dado",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
-                    }
-                });
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Error al procesar movimiento desde el servidor.", ex);
-            }
+            Task handlerTask = _eventsHandler.HandleServerPlayerMovedAsync(move);
+            return handlerTask;
         }
-
 
         public Task HandleServerTurnChangedAsync(TurnChangedDto turnInfo)
         {
-            if (turnInfo == null)
-                return Task.CompletedTask;
-
-            try
-            {
-                UpdateTurnFromState(turnInfo.CurrentTurnUserId);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Error al procesar cambio de turno.", ex);
-            }
-
-            return Task.CompletedTask;
+            Task handlerTask = _eventsHandler.HandleServerTurnChangedAsync(turnInfo);
+            return handlerTask;
         }
 
         public Task HandleServerPlayerLeftAsync(PlayerLeftDto playerLeftInfo)
         {
-            if (playerLeftInfo == null)
-                return Task.CompletedTask;
-
-            try
-            {
-                if (playerLeftInfo.UserId != localUserId)
-                {
-                    string userName = string.IsNullOrWhiteSpace(playerLeftInfo.UserName)
-                        ? $"Jugador {playerLeftInfo.UserId}"
-                        : playerLeftInfo.UserName;
-
-                    MessageBox.Show(
-                        $"{userName} abandonó la partida.",
-                        "Jugador salió",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information);
-                }
-
-                if (playerLeftInfo.NewCurrentTurnUserId.HasValue)
-                    UpdateTurnFromState(playerLeftInfo.NewCurrentTurnUserId.Value);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Error al procesar PlayerLeft.", ex);
-            }
-
-            return Task.CompletedTask;
+            Task handlerTask = _eventsHandler.HandleServerPlayerLeftAsync(playerLeftInfo);
+            return handlerTask;
         }
-
-        // ================================================================
-        // NOTIFICACIÓN DE CAMBIOS WPF
-        // ================================================================
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(
-                this,
-                new PropertyChangedEventArgs(propertyName));
+            PropertyChangedEventHandler handler = PropertyChanged;
+
+            if (handler == null)
+            {
+                return;
+            }
+
+            PropertyChangedEventArgs args = new PropertyChangedEventArgs(propertyName);
+            handler(this, args);
         }
     }
 }

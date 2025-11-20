@@ -149,13 +149,13 @@
       <DependentUpon>DialogBasicWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="FriendsApi.cs" />
-    <Compile Include="Game\BoardCell.cs" />
-    <Compile Include="Game\BoardDefinition.cs" />
-    <Compile Include="Game\BoardFactory.cs" />
     <Compile Include="Animation\GameBoardAnimationService.cs" />
-    <Compile Include="Game\GameBoardPathHelper.cs" />
+    <Compile Include="Game\Board\BoardBuilder.cs" />
+    <Compile Include="Game\Board\BoardBuildResult.cs" />
+    <Compile Include="Game\Gameplay\GameplayEventsHandler.cs" />
     <Compile Include="Game\PlayerTokenManager.cs" />
     <Compile Include="Game\SpecialCellType.cs" />
+    <Compile Include="Game\State\GameBoardStatePoller.cs" />
     <Compile Include="Globalization\LocalizationManager.cs" />
     <Compile Include="Infrastructure\AsyncCommand.cs" />
     <Compile Include="Infrastructure\CollectionSyncExtensions.cs" />
