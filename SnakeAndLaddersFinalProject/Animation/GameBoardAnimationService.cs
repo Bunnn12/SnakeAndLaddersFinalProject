@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using SnakeAndLaddersFinalProject.GameBoardService;
 using SnakeAndLaddersFinalProject.ViewModels.Models;
+using SnakeAndLaddersFinalProject.Game;
 
-namespace SnakeAndLaddersFinalProject.Game
+namespace SnakeAndLaddersFinalProject.Animation
 {
     public sealed class GameBoardAnimationService
     {
@@ -272,9 +273,11 @@ namespace SnakeAndLaddersFinalProject.Game
 
             double y =
                 (oneMinusT * oneMinusT * p0.Y) +
-                (2 * oneMinusT * t * p2.Y);
+                (2 * oneMinusT * t * p1.Y) +   
+                (t * t * p2.Y);
 
             return new Point(x, y);
         }
+
     }
 }

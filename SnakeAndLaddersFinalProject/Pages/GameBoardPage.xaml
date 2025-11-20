@@ -29,7 +29,24 @@
 
         <Thickness x:Key="CellMargin">2</Thickness>
 
-        <!-- Fondos -->
+        <!-- PALETA / TARJETA DEL TABLERO -->
+        <LinearGradientBrush x:Key="BrushBoardCardBackground"
+                             StartPoint="0,0"
+                             EndPoint="0,1">
+            <GradientStop Color="#B0221810" Offset="0.0" />
+            <GradientStop Color="#E03B2313" Offset="1.0" />
+        </LinearGradientBrush>
+
+        <SolidColorBrush x:Key="BrushBoardCardBorder"
+                         Color="#FFD9A066" />
+
+        <SolidColorBrush x:Key="BrushFooterBackground"
+                         Color="#80131313" />
+
+        <SolidColorBrush x:Key="BrushFooterBorder"
+                         Color="#FFEBE0C8" />
+
+        <!-- Fondos celdas -->
         <LinearGradientBrush x:Key="BrushBoardCellBackgroundLight"
                              StartPoint="0,0"
                              EndPoint="1,1">
@@ -123,6 +140,90 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+        <!-- Slot de inventario jugadores -->
+        <Style x:Key="InventorySlotStyle"
+               TargetType="Border">
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderThickness" Value="1.5" />
+            <Setter Property="BorderBrush" Value="#FFE3C08C" />
+            <Setter Property="Background" Value="#33000000" />
+            <Setter Property="Margin" Value="4,0" />
+        </Style>
+
+        <!-- Botón de dado para jugadores -->
+        <!-- Botón de dado para jugadores (usa DiceAnimator.CurrentFrame) -->
+        <Style x:Key="CornerPlayerDiceButtonStyle"
+       TargetType="Button">
+            <Setter Property="Width" Value="72" />
+            <Setter Property="Height" Value="72" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="12"
+                        Background="#33000000">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="2"
+                                          BlurRadius="6"
+                                          Opacity="0.6" />
+                            </Border.Effect>
+
+                            <Grid>
+                                <!-- Dado animado -->
+                                <Image x:Name="DiceImage"
+                               Stretch="Uniform"
+                               RenderOptions.BitmapScalingMode="NearestNeighbor"
+                               Source="{Binding DataContext.DiceAnimator.CurrentFrame,
+                                        RelativeSource={RelativeSource AncestorType=Page}}">
+                                    <Image.LayoutTransform>
+                                        <!-- escala base -->
+                                        <ScaleTransform ScaleX="1"
+                                                ScaleY="1" />
+                                    </Image.LayoutTransform>
+                                </Image>
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <!-- Hover: un poco más grande -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="DiceImage"
+                                Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.05"
+                                                ScaleY="1.05" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                            <!-- Click: un poco más pequeño -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="DiceImage"
+                                Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.95"
+                                                ScaleY="0.95" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                            <!-- Deshabilitado -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
 
         <!-- Plantilla de casilla (sin tokens dentro) -->
         <DataTemplate x:Key="BoardCellTemplate">
@@ -235,46 +336,44 @@
             </Border>
         </DataTemplate>
 
-        <!-- Template para jugador en esquina -->
+        <!-- Template para jugador en esquina (con aro de color, botón y slots) -->
         <DataTemplate x:Key="CornerPlayerTemplate"
                       DataType="{x:Type vmModels:LobbyMemberViewModel}">
             <StackPanel Orientation="Vertical"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
 
+                <!-- Avatar grande -->
                 <Grid Width="112"
-      Height="112"
-      Margin="4">
+                      Height="112"
+                      Margin="4">
                     <Border CornerRadius="12"
-            Background="#22000000">
+                            Background="#22000000">
                         <Image Source="{Binding SkinImagePath}"
-               Stretch="Uniform"
-               Margin="4" />
+                               Stretch="Uniform"
+                               Margin="4" />
                     </Border>
 
-                    <!-- Aro de color + avatar -->
-                    <Grid Width="56"
-          Height="56"
-          HorizontalAlignment="Right"
-          VerticalAlignment="Bottom"
-          Margin="0,0,-4,-4">
-                        <!-- Aro de color (mismo que el token) -->
+                    <!-- Aro de color alrededor del avatar -->
+                    <Grid Width="44"
+                          Height="44"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Margin="0,0,-4,-4">
                         <Ellipse Stroke="{Binding UserId,
-                                  Converter={StaticResource PlayerColorConverter}}"
-                 StrokeThickness="4" />
-
-                        <!-- Foto de perfil un poco más pequeña para que se vea el aro -->
-                        <Ellipse Margin="4">
+                                                  Converter={StaticResource PlayerColorConverter}}"
+                                 StrokeThickness="3" />
+                        <Ellipse Margin="3">
                             <Ellipse.Fill>
                                 <ImageBrush ImageSource="{Binding AvatarId,
-                                          Converter={StaticResource AvatarIdToPathConverter}}"
-                            Stretch="UniformToFill" />
+                                              Converter={StaticResource AvatarIdToPathConverter}}"
+                                            Stretch="UniformToFill" />
                             </Ellipse.Fill>
                         </Ellipse>
                     </Grid>
                 </Grid>
 
-
+                <!-- Nombre -->
                 <TextBlock Text="{Binding UserName}"
                            Margin="0,4,0,0"
                            HorizontalAlignment="Center"
@@ -282,6 +381,24 @@
                            FontSize="14"
                            FontWeight="Bold"
                            TextTrimming="CharacterEllipsis" />
+
+                
+                <!-- Botón Roll dice (usa el dado animado del estilo) -->
+                <Button Style="{StaticResource CornerPlayerDiceButtonStyle}"
+        Margin="0,6,0,6"
+        Command="{Binding DataContext.RollDiceCommand,
+                          RelativeSource={RelativeSource AncestorType=Page}}" />
+
+
+                <!-- Inventario: 4 slots -->
+                <UniformGrid Rows="1"
+                             Columns="4"
+                             HorizontalAlignment="Center">
+                    <Border Style="{StaticResource InventorySlotStyle}" />
+                    <Border Style="{StaticResource InventorySlotStyle}" />
+                    <Border Style="{StaticResource InventorySlotStyle}" />
+                    <Border Style="{StaticResource InventorySlotStyle}" />
+                </UniformGrid>
             </StackPanel>
         </DataTemplate>
 
@@ -291,6 +408,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Barra superior -->
@@ -317,202 +435,227 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center">
-                <Button Width="120"
-                        Height="32"
-                        Padding="8,2"
-                        Content="Roll dice"
-                        Command="{Binding RollDiceCommand}" />
+                <Button Style="{StaticResource CornerPlayerDiceButtonStyle}"
+        Command="{Binding RollDiceCommand}" />
+
             </StackPanel>
         </Grid>
 
-        <!-- Tablero -->
+        <!-- Tablero dentro de tarjeta decorativa -->
         <Viewbox Grid.Row="1"
                  Margin="16"
                  Stretch="Uniform"
                  HorizontalAlignment="Center"
                  VerticalAlignment="Center">
-            <Grid>
+            <Border Background="{StaticResource BrushBoardCardBackground}"
+                    BorderBrush="{StaticResource BrushBoardCardBorder}"
+                    BorderThickness="2"
+                    CornerRadius="22"
+                    Padding="18">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="4"
+                                      BlurRadius="16"
+                                      Opacity="0.7" />
+                </Border.Effect>
 
-                <!-- Celdas -->
-                <ItemsControl ItemsSource="{Binding Cells}"
-                              ItemTemplate="{StaticResource BoardCellTemplate}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Rows="{Binding Rows}"
-                                         Columns="{Binding Columns}" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
+                <Grid>
 
-                <!-- Serpientes y escaleras -->
-                <ItemsControl ItemsSource="{Binding Connections}"
-                              IsHitTestVisible="False"
-                              Panel.ZIndex="10">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <Canvas Width="{Binding Columns}"
-                                    Height="{Binding Rows}">
-                                <Canvas.LayoutTransform>
-                                    <ScaleTransform ScaleX="64"
-                                                    ScaleY="64" />
-                                </Canvas.LayoutTransform>
-                            </Canvas>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
+                    <!-- Celdas -->
+                    <ItemsControl ItemsSource="{Binding Cells}"
+                                  ItemTemplate="{StaticResource BoardCellTemplate}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Rows="{Binding Rows}"
+                                             Columns="{Binding Columns}" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
 
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Canvas>
+                    <!-- Serpientes y escaleras -->
+                    <ItemsControl ItemsSource="{Binding Connections}"
+                                  IsHitTestVisible="False"
+                                  Panel.ZIndex="10">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas Width="{Binding Columns}"
+                                        Height="{Binding Rows}">
+                                    <Canvas.LayoutTransform>
+                                        <ScaleTransform ScaleX="64"
+                                                        ScaleY="64" />
+                                    </Canvas.LayoutTransform>
+                                </Canvas>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-                                <!-- Serpientes -->
-                                <Path StrokeThickness="0.15"
-                                      Stroke="{Binding IsLadder,
-                                                       Converter={StaticResource IsSnakeToColorConverter}}"
-                                      StrokeDashArray="{Binding IsLadder,
-                                                                Converter={StaticResource IsSnakeToStyleConverter}}"
-                                      StrokeStartLineCap="Round"
-                                      StrokeEndLineCap="Round"
-                                      StrokeLineJoin="Round"
-                                      Opacity="0.95">
-                                    <Path.Effect>
-                                        <DropShadowEffect ShadowDepth="0"
-                                                          BlurRadius="0.18"
-                                                          Opacity="0.6" />
-                                    </Path.Effect>
-                                    <Path.Style>
-                                        <Style TargetType="Path">
-                                            <Setter Property="Visibility" Value="Collapsed" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsLadder}" Value="False">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Path.Style>
-                                    <Path.Data>
-                                        <MultiBinding Converter="{StaticResource SnakeCurveGeometryConverter}">
-                                            <Binding Path="StartX" />
-                                            <Binding Path="StartY" />
-                                            <Binding Path="EndX" />
-                                            <Binding Path="EndY" />
-                                            <Binding Path="IsLadder" />
-                                        </MultiBinding>
-                                    </Path.Data>
-                                </Path>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Canvas>
 
-                                <!-- Escaleras -->
-                                <Path StrokeThickness="0.11"
-                                      Stroke="#85462D"
-                                      StrokeStartLineCap="Round"
-                                      StrokeEndLineCap="Round"
-                                      StrokeLineJoin="Round"
-                                      Opacity="0.95">
-                                    <Path.Effect>
-                                        <DropShadowEffect ShadowDepth="0"
-                                                          BlurRadius="0.20"
-                                                          Opacity="0.5" />
-                                    </Path.Effect>
-                                    <Path.Style>
-                                        <Style TargetType="Path">
-                                            <Setter Property="Visibility" Value="Collapsed" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsLadder}" Value="True">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Path.Style>
-                                    <Path.Data>
-                                        <MultiBinding Converter="{StaticResource LadderGeometryConverter}">
-                                            <Binding Path="StartX" />
-                                            <Binding Path="StartY" />
-                                            <Binding Path="EndX" />
-                                            <Binding Path="EndY" />
-                                        </MultiBinding>
-                                    </Path.Data>
-                                </Path>
+                                    <!-- Serpientes -->
+                                    <Path StrokeThickness="0.15"
+                                          Stroke="{Binding IsLadder,
+                                                           Converter={StaticResource IsSnakeToColorConverter}}"
+                                          StrokeDashArray="{Binding IsLadder,
+                                                                    Converter={StaticResource IsSnakeToStyleConverter}}"
+                                          StrokeStartLineCap="Round"
+                                          StrokeEndLineCap="Round"
+                                          StrokeLineJoin="Round"
+                                          Opacity="0.95">
+                                        <Path.Effect>
+                                            <DropShadowEffect ShadowDepth="0"
+                                                              BlurRadius="0.18"
+                                                              Opacity="0.6" />
+                                        </Path.Effect>
+                                        <Path.Style>
+                                            <Style TargetType="Path">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsLadder}" Value="False">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Path.Style>
+                                        <Path.Data>
+                                            <MultiBinding Converter="{StaticResource SnakeCurveGeometryConverter}">
+                                                <Binding Path="StartX" />
+                                                <Binding Path="StartY" />
+                                                <Binding Path="EndX" />
+                                                <Binding Path="EndY" />
+                                                <Binding Path="IsLadder" />
+                                            </MultiBinding>
+                                        </Path.Data>
+                                    </Path>
 
-                                <!-- Cabeza serpiente -->
-                                <Ellipse Width="0.40"
-                                         Height="0.40"
-                                         Fill="#49a067"
-                                         Stroke="#49a067"
-                                         StrokeThickness="0.04"
-                                         Canvas.Left="{Binding StartX,
-                                                               Converter={StaticResource SnakeHeadOffsetConverter}}"
-                                         Canvas.Top="{Binding StartY,
-                                                              Converter={StaticResource SnakeHeadOffsetConverter}}">
-                                    <Ellipse.Style>
-                                        <Style TargetType="Ellipse">
-                                            <Setter Property="Visibility" Value="Collapsed" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsLadder}" Value="False">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Ellipse.Style>
-                                </Ellipse>
+                                    <!-- Escaleras -->
+                                    <Path StrokeThickness="0.11"
+                                          Stroke="#85462D"
+                                          StrokeStartLineCap="Round"
+                                          StrokeEndLineCap="Round"
+                                          StrokeLineJoin="Round"
+                                          Opacity="0.95">
+                                        <Path.Effect>
+                                            <DropShadowEffect ShadowDepth="0"
+                                                              BlurRadius="0.20"
+                                                              Opacity="0.5" />
+                                        </Path.Effect>
+                                        <Path.Style>
+                                            <Style TargetType="Path">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsLadder}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Path.Style>
+                                        <Path.Data>
+                                            <MultiBinding Converter="{StaticResource LadderGeometryConverter}">
+                                                <Binding Path="StartX" />
+                                                <Binding Path="StartY" />
+                                                <Binding Path="EndX" />
+                                                <Binding Path="EndY" />
+                                            </MultiBinding>
+                                        </Path.Data>
+                                    </Path>
 
-                            </Canvas>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                                    <!-- Cabeza serpiente -->
+                                    <Ellipse Width="0.40"
+                                             Height="0.40"
+                                             Fill="#49a067"
+                                             Stroke="#49a067"
+                                             StrokeThickness="0.04"
+                                             Canvas.Left="{Binding StartX,
+                                                                   Converter={StaticResource SnakeHeadOffsetConverter}}"
+                                             Canvas.Top="{Binding StartY,
+                                                                Converter={StaticResource SnakeHeadOffsetConverter}}">
+                                        <Ellipse.Style>
+                                            <Style TargetType="Ellipse">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsLadder}" Value="False">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
 
-                <!-- TOKENS en canvas global -->
-                <ItemsControl ItemsSource="{Binding PlayerTokens}"
-                              Panel.ZIndex="30">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <Canvas Width="{Binding Columns}"
-                                    Height="{Binding Rows}">
-                                <Canvas.LayoutTransform>
-                                    <ScaleTransform ScaleX="64"
-                                                    ScaleY="64" />
-                                </Canvas.LayoutTransform>
-                            </Canvas>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
+                                </Canvas>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
-                    <!-- Posición en Canvas -->
-                    <ItemsControl.ItemContainerStyle>
-                        <Style TargetType="ContentPresenter">
-                            <Setter Property="Canvas.Left"
-                                    Value="{Binding X}" />
-                            <Setter Property="Canvas.Top"
-                                    Value="{Binding Y}" />
-                        </Style>
-                    </ItemsControl.ItemContainerStyle>
+                    <!-- TOKENS en canvas global -->
+                    <ItemsControl ItemsSource="{Binding PlayerTokens}"
+                                  Panel.ZIndex="30">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas Width="{Binding Columns}"
+                                        Height="{Binding Rows}">
+                                    <Canvas.LayoutTransform>
+                                        <ScaleTransform ScaleX="64"
+                                                        ScaleY="64" />
+                                    </Canvas.LayoutTransform>
+                                </Canvas>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type vmModels:PlayerTokenViewModel}">
-                            <Grid Width="0.7"
-                                  Height="0.7">
-                                <Grid.RenderTransform>
-                                    <TranslateTransform Y="{Binding VerticalOffset}" />
-                                </Grid.RenderTransform>
+                        <!-- Canvas.Left/Top -->
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Canvas.Left"
+                                        Value="{Binding X}" />
+                                <Setter Property="Canvas.Top"
+                                        Value="{Binding Y}" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
 
-                                <Border CornerRadius="0.15"
-                                        BorderThickness="0.06"
-                                        BorderBrush="{Binding UserId,
-                                                              Converter={StaticResource PlayerColorConverter}}">
-                                    <Border.Background>
-                                        <ImageBrush ImageSource="{Binding TokenImagePath}"
-                                                    Stretch="UniformToFill" />
-                                    </Border.Background>
-                                </Border>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type vmModels:PlayerTokenViewModel}">
+                                <Grid Width="0.7"
+                                      Height="0.7">
+                                    <Grid.RenderTransform>
+                                        <TranslateTransform Y="{Binding VerticalOffset}" />
+                                    </Grid.RenderTransform>
 
-            </Grid>
+                                    <Border CornerRadius="0.15"
+                                            BorderThickness="0.06"
+                                            BorderBrush="{Binding UserId,
+                                                                  Converter={StaticResource PlayerColorConverter}}">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="{Binding TokenImagePath}"
+                                                        Stretch="UniformToFill" />
+                                        </Border.Background>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </Grid>
+            </Border>
         </Viewbox>
+
+        <!-- Footer -->
+        <Grid Grid.Row="2"
+              Margin="16,0,16,16">
+            <Border Background="{StaticResource BrushFooterBackground}"
+                    BorderBrush="{StaticResource BrushFooterBorder}"
+                    CornerRadius="14"
+                    BorderThickness="1"
+                    Padding="10,6">
+                <TextBlock Text="Game in progress – roll the dice to move your token."
+                           Foreground="#FFEFE2C4"
+                           FontSize="14"
+                           HorizontalAlignment="Center" />
+            </Border>
+        </Grid>
 
         <!-- Esquinas jugadores -->
         <ContentControl Content="{Binding CornerPlayers.TopLeftPlayer}"
                         ContentTemplate="{StaticResource CornerPlayerTemplate}"
-                        Grid.RowSpan="2"
+                        Grid.RowSpan="3"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Margin="16"
@@ -520,7 +663,7 @@
 
         <ContentControl Content="{Binding CornerPlayers.TopRightPlayer}"
                         ContentTemplate="{StaticResource CornerPlayerTemplate}"
-                        Grid.RowSpan="2"
+                        Grid.RowSpan="3"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Margin="16"
@@ -528,7 +671,7 @@
 
         <ContentControl Content="{Binding CornerPlayers.BottomLeftPlayer}"
                         ContentTemplate="{StaticResource CornerPlayerTemplate}"
-                        Grid.RowSpan="2"
+                        Grid.RowSpan="3"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Bottom"
                         Margin="16"
@@ -536,7 +679,7 @@
 
         <ContentControl Content="{Binding CornerPlayers.BottomRightPlayer}"
                         ContentTemplate="{StaticResource CornerPlayerTemplate}"
-                        Grid.RowSpan="2"
+                        Grid.RowSpan="3"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Margin="16"

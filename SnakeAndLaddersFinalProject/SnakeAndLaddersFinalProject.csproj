@@ -84,6 +84,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Animation\DiceSpriteAnimator.cs" />
     <Compile Include="AppConstants.cs" />
     <Compile Include="Authentication\SesionContext.cs" />
     <Compile Include="BasicWindow.xaml.cs">
@@ -151,7 +152,7 @@
     <Compile Include="Game\BoardCell.cs" />
     <Compile Include="Game\BoardDefinition.cs" />
     <Compile Include="Game\BoardFactory.cs" />
-    <Compile Include="Game\GameBoardAnimationService.cs" />
+    <Compile Include="Animation\GameBoardAnimationService.cs" />
     <Compile Include="Game\GameBoardPathHelper.cs" />
     <Compile Include="Game\PlayerTokenManager.cs" />
     <Compile Include="Game\SpecialCellType.cs" />
@@ -763,6 +764,13 @@
     <Resource Include="Assets\Images\Skins\Tokens\T009.png" />
     <Resource Include="Assets\Images\Skins\011.png" />
     <Resource Include="Assets\Images\Skins\Tokens\T011.png" />
+    <Resource Include="Assets\Images\Dice\01Dice.png" />
+    <Resource Include="Assets\Images\Dice\02Dice.png" />
+    <Resource Include="Assets\Images\Dice\03Dice.png" />
+    <Resource Include="Assets\Images\Dice\04Dice.png" />
+    <Resource Include="Assets\Images\Dice\05Dice.png" />
+    <Resource Include="Assets\Images\Dice\06Dice.png" />
+    <Resource Include="Assets\Images\Dice\DiceSpriteSheet.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

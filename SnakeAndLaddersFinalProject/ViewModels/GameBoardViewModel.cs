@@ -1,10 +1,4 @@
-﻿using log4net;
-using SnakeAndLaddersFinalProject.Game;
-using SnakeAndLaddersFinalProject.GameBoardService;
-using SnakeAndLaddersFinalProject.Infrastructure;
-using SnakeAndLaddersFinalProject.Services;
-using SnakeAndLaddersFinalProject.ViewModels.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,6 +6,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using log4net;
+using SnakeAndLaddersFinalProject.Animation;
+using SnakeAndLaddersFinalProject.Game;
+using SnakeAndLaddersFinalProject.GameBoardService;
+using SnakeAndLaddersFinalProject.Infrastructure;
+using SnakeAndLaddersFinalProject.Services;
+using SnakeAndLaddersFinalProject.ViewModels.Models;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
@@ -21,6 +22,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private const int MIN_INDEX = 1;
         private const double CELL_CENTER_VERTICAL_ADJUST = -0.18;
+        private const int STATE_POLL_INTERVAL_SECONDS = 1;
+
+        private const string DICE_ROLL_SPRITE_PATH = "pack://application:,,,/Assets/Images/Dice/DiceSpriteSheet.png";
+        private const string DICE_FACE_BASE_PATH = "pack://application:,,,/Assets/Images/Dice/";
 
         private readonly IGameplayClient gameplayClient;
         private readonly int gameId;
@@ -32,6 +37,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private readonly PlayerTokenManager tokenManager;
         private readonly GameBoardAnimationService animationService;
+        private readonly DiceSpriteAnimator diceAnimator;
 
         private readonly int startCellIndex = MIN_INDEX;
 
@@ -41,6 +47,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public ObservableCollection<GameBoardCellViewModel> Cells { get; }
         public ObservableCollection<GameBoardConnectionViewModel> Connections { get; }
         public CornerPlayersViewModel CornerPlayers { get; }
+
         public ObservableCollection<PlayerTokenViewModel> PlayerTokens
         {
             get { return tokenManager.PlayerTokens; }
@@ -48,7 +55,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public ICommand RollDiceCommand { get; }
 
-        private const int STATE_POLL_INTERVAL_SECONDS = 1;
+        public DiceSpriteAnimator DiceAnimator
+        {
+            get { return diceAnimator; }
+        }
 
         public GameBoardViewModel(
             BoardDefinitionDto boardDefinition,
@@ -91,6 +101,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 cellCentersByIndex,
                 MapServerIndexToVisual);
 
+            diceAnimator = new DiceSpriteAnimator(
+                DICE_ROLL_SPRITE_PATH,
+                DICE_FACE_BASE_PATH);
 
             RollDiceCommand = new AsyncCommand(RollDiceForLocalPlayerAsync);
 
@@ -101,6 +114,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             statePollTimer.Tick += async (_, __) => await SyncGameStateAsync();
             statePollTimer.Start();
         }
+
         private static void ValidateConstructorArguments(
             BoardDefinitionDto boardDefinition,
             IGameplayClient gameplayClient,
@@ -127,6 +141,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 throw new ArgumentOutOfRangeException(nameof(localUserId));
             }
         }
+
         public void InitializeCornerPlayers(
             IList<LobbyMemberViewModel> lobbyMembers)
         {
@@ -150,6 +165,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             tokenManager.ResetAllTokensToCell(startCellIndex);
         }
+
         private void BuildCells(IList<BoardCellDto> cellDtos)
         {
             if (cellDtos == null)
@@ -255,6 +271,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 await Application.Current.Dispatcher.InvokeAsync(
                     async () =>
                     {
+                        await diceAnimator.RollAsync(diceValue);
+
                         await animationService.AnimateMoveForLocalPlayerAsync(
                             userId,
                             fromIndex,
