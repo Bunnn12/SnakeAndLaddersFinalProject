@@ -1,69 +1,127 @@
-﻿using System;
+﻿using SnakeAndLaddersFinalProject.Game;
+using SnakeAndLaddersFinalProject.GameplayService;
+using SnakeAndLaddersFinalProject.Infrastructure;
+using System;
 using System.ServiceModel;
 using System.Threading.Tasks;
-using SnakeAndLaddersFinalProject.GameplayService;
 
 namespace SnakeAndLaddersFinalProject.Services
 {
-    public sealed class GameplayClient : IGameplayClient
+    internal sealed class GameplayClient : IGameplayClient, IDisposable
     {
-        private const string ENDPOINT_NAME = "NetTcpBinding_IGameplayService";
+        private readonly IGameplayService gameplayProxy;
+        private readonly DuplexChannelFactory<IGameplayService> channelFactory;
 
-        public async Task<RollDiceResponseDto> GetRollDiceAsync(int gameId, int playerUserId)
+        public GameplayClient(IGameplayEventsHandler eventsHandler)
         {
-            var client = new GameplayServiceClient(ENDPOINT_NAME);
-
-            try
+            if (eventsHandler == null)
             {
-                var request = new RollDiceRequestDto
-                {
-                    GameId = gameId,
-                    PlayerUserId = playerUserId
-                };
+                throw new ArgumentNullException(nameof(eventsHandler));
+            }
 
-                return await client.RollDiceAsync(request).ConfigureAwait(false);
-            }
-            finally
-            {
-                CloseSafely(client);
-            }
+            var callback = new GameplayClientCallback(eventsHandler);
+            var instanceContext = new InstanceContext(callback);
+
+            // Usa el endpoint duplex definido en App.config
+            // <endpoint name="NetTcpBinding_IGameplayService" ... />
+            channelFactory = new DuplexChannelFactory<IGameplayService>(
+                instanceContext,
+                "NetTcpBinding_IGameplayService");
+
+            gameplayProxy = channelFactory.CreateChannel();
         }
 
-        public async Task<GetGameStateResponseDto> GetGameStateAsync(int gameId)
+        public Task<RollDiceResponseDto> GetRollDiceAsync(int gameId, int userId)
         {
-            var client = new GameplayServiceClient(ENDPOINT_NAME);
-
-            try
-            {
-                var request = new GetGameStateRequestDto
+            return Task.Run(
+                () =>
                 {
-                    GameId = gameId
-                };
+                    var request = new RollDiceRequestDto
+                    {
+                        GameId = gameId,
+                        PlayerUserId = userId
+                    };
 
-                return await client.GetGameStateAsync(request).ConfigureAwait(false);
-            }
-            finally
-            {
-                CloseSafely(client);
-            }
+                    return gameplayProxy.RollDice(request);
+                });
         }
 
-        private static void CloseSafely(ICommunicationObject client)
+        public Task<GetGameStateResponseDto> GetGameStateAsync(int gameId)
+        {
+            return Task.Run(
+                () =>
+                {
+                    var request = new GetGameStateRequestDto
+                    {
+                        GameId = gameId
+                    };
+
+                    return gameplayProxy.GetGameState(request);
+                });
+        }
+
+        public Task JoinGameAsync(int gameId, int userId, string userName)
+        {
+            return Task.Run(
+                () =>
+                {
+                    gameplayProxy.JoinGame(gameId, userId, userName);
+                });
+        }
+
+        public Task LeaveGameAsync(int gameId, int userId, string reason)
+        {
+            return Task.Run(
+                () =>
+                {
+                    gameplayProxy.LeaveGame(gameId, userId, reason);
+                });
+        }
+
+        public void Dispose()
         {
             try
             {
-                if (client.State == CommunicationState.Faulted)
+                if (gameplayProxy is ICommunicationObject communicationObject)
                 {
-                    client.Abort();
-                }
-                else
-                {
-                    client.Close();
+                    if (communicationObject.State == CommunicationState.Faulted)
+                    {
+                        communicationObject.Abort();
+                    }
+                    else
+                    {
+                        communicationObject.Close();
+                    }
                 }
             }
             catch
             {
-                client.Abort();
+                if (gameplayProxy is ICommunicationObject communicationObject)
+                {
+                    communicationObject.Abort();
+                }
+            }
+
+            try
+            {
+                if (channelFactory != null)
+                {
+                    if (channelFactory.State == CommunicationState.Faulted)
+                    {
+                        channelFactory.Abort();
+                    }
+                    else
+                    {
+                        channelFactory.Close();
+                    }
+                }
+            }
+            catch
+            {
+                if (channelFactory != null)
+                {
+                    channelFactory.Abort();
+                }
             }
         }
     }

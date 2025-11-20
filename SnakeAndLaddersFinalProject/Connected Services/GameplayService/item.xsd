@@ -51,4 +51,38 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="GetGameStateResponseDto" nillable="true" type="tns:GetGameStateResponseDto" />
+  <xs:complexType name="PlayerMoveResultDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DiceValue" type="xs:int" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" minOccurs="0" name="EffectType" type="q2:MoveEffectType" />
+      <xs:element minOccurs="0" name="FromCellIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="HasExtraTurn" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HasWon" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ToCellIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PlayerMoveResultDto" nillable="true" type="tns:PlayerMoveResultDto" />
+  <xs:complexType name="TurnChangedDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GameId" type="xs:int" />
+      <xs:element minOccurs="0" name="PreviousTurnUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="CurrentTurnUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="IsExtraTurn" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Reason" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TurnChangedDto" nillable="true" type="tns:TurnChangedDto" />
+  <xs:complexType name="PlayerLeftDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GameId" type="xs:int" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WasCurrentTurnPlayer" type="xs:boolean" />
+      <xs:element minOccurs="0" name="NewCurrentTurnUserId" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Reason" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PlayerLeftDto" nillable="true" type="tns:PlayerLeftDto" />
 </xs:schema>

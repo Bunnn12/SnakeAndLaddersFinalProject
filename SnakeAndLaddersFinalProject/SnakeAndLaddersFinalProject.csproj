@@ -85,6 +85,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Animation\DiceSpriteAnimator.cs" />
+    <Compile Include="Animation\SpriteSheetAnimator.cs" />
     <Compile Include="AppConstants.cs" />
     <Compile Include="Authentication\SesionContext.cs" />
     <Compile Include="BasicWindow.xaml.cs">
@@ -158,6 +159,7 @@
     <Compile Include="Globalization\LocalizationManager.cs" />
     <Compile Include="Infrastructure\AsyncCommand.cs" />
     <Compile Include="Infrastructure\CollectionSyncExtensions.cs" />
+    <Compile Include="Infrastructure\IGameplayEventsHandler.cs" />
     <Compile Include="Infrastructure\RelayCommand.cs" />
     <Compile Include="Mappers\PlayerReportErrorMapper.cs" />
     <Compile Include="Pages\FriendRequestsPage.xaml.cs">
@@ -225,6 +227,7 @@
       <DependentUpon>StorePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="Services\GameplayClientCallback.cs" />
     <Compile Include="Services\IGameplayClient.cs" />
     <Compile Include="SkinsWindow.xaml.cs">
       <DependentUpon>SkinsWindow.xaml</DependentUpon>

@@ -414,7 +414,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                             out enableBonusCells,
                             out enableTrapCells,
                             out enableTeleportCells);
-                        
+
                         var playerUserIds = Members
                             .Where(m => m != null && m.UserId > 0)
                             .Select(m => m.UserId)
@@ -437,26 +437,27 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                             options.Difficulty.ToString(),
                             playerUserIds);
 
-
-                        Debug.WriteLine("LobbyID:" + LobbyId);
-                        Debug.WriteLine("BoardID:" + boardDto);
-
-                        IGameplayClient gameplayClient = new GameplayClient();
-
                         int localUserId = ResolveLocalUserIdForBoard();
 
                         var boardViewModel = new GameBoardViewModel(
                             boardDto,
-                            gameplayClient,
                             LobbyId,
-                            localUserId);
+                            localUserId,
+                            CurrentUserName);
 
                         boardViewModel.InitializeCornerPlayers(Members);
                         boardViewModel.InitializeTokensFromLobbyMembers(Members);
 
+                        var gameplayClient = new GameplayClient(boardViewModel);
+
+                        await boardViewModel.InitializeGameplayAsync(
+                            gameplayClient,
+                            CurrentUserName);
+
                         hasNavigatedToBoard = true;
                         NavigateToBoardRequested?.Invoke(boardViewModel);
                     }
+
 
                     await Task.CompletedTask;
                 });
@@ -620,23 +621,28 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 if (boardDto == null)
                 {
-                    Logger.Warn($"El servidor no devolvió el tablero para LobbyId {LobbyId}. Intentaremos más tarde.");
+                    Logger.Warn(
+                        $"El servidor no devolvió el tablero para LobbyId {LobbyId}. Intentaremos más tarde.");
                     hasNavigatedToBoard = false;
                     return;
                 }
-
-                IGameplayClient gameplayClient = new GameplayClient();
 
                 int localUserId = ResolveLocalUserIdForBoard();
 
                 var boardViewModel = new GameBoardViewModel(
                     boardDto,
-                    gameplayClient,
                     LobbyId,
-                    localUserId);
+                    localUserId,
+                    CurrentUserName);
 
                 boardViewModel.InitializeCornerPlayers(Members);
                 boardViewModel.InitializeTokensFromLobbyMembers(Members);
+
+                var gameplayClient = new GameplayClient(boardViewModel);
+
+                _ = boardViewModel.InitializeGameplayAsync(
+                    gameplayClient,
+                    CurrentUserName);
 
                 NavigateToBoardRequested?.Invoke(boardViewModel);
             }
@@ -647,6 +653,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
+
         private int ResolveLocalUserIdForBoard()
         {
             if (CurrentUserId > 0)
@@ -654,32 +661,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return CurrentUserId;
             }
 
-            LobbyMemberViewModel self = null;
-
-            if (!string.IsNullOrWhiteSpace(CurrentUserName))
-            {
-                self = Members
-                    .FirstOrDefault(m =>
-                        !string.IsNullOrWhiteSpace(m.UserName) &&
-                        string.Equals(
-                            m.UserName,
-                            CurrentUserName,
-                            StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (self == null)
-            {
-                self = Members.FirstOrDefault(m => m.UserId > 0);
-            }
-
-            if (self != null && self.UserId > 0)
-            {
-                return self.UserId;
-            }
-
-            Logger.Warn("ResolveLocalUserIdForBoard no pudo determinar un UserId válido. Se usará un valor de respaldo.");
+            Logger.Warn("ResolveLocalUserIdForBoard: CurrentUserId no es válido, se usará FALLBACK_LOCAL_USER_ID.");
             return FALLBACK_LOCAL_USER_ID;
         }
+
 
         private void ApplyCreatedLobby(CreateGameResponse response)
         {
