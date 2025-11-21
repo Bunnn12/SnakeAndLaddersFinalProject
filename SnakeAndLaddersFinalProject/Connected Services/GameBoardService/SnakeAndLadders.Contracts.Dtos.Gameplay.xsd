@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" />
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="CreateBoardRequestDto">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" minOccurs="0" name="BoardSize" type="q1:BoardSizeOption" />
+      <xs:element minOccurs="0" name="Difficulty" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EnableBonusCells" type="xs:boolean" />
+      <xs:element minOccurs="0" name="EnableTeleportCells" type="xs:boolean" />
+      <xs:element minOccurs="0" name="EnableTrapCells" type="xs:boolean" />
+      <xs:element minOccurs="0" name="GameId" type="xs:int" />
+      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="PlayerUserIds" nillable="true" type="q2:ArrayOfint" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateBoardRequestDto" nillable="true" type="tns:CreateBoardRequestDto" />
+  <xs:complexType name="CreateBoardResponseDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Board" nillable="true" type="tns:BoardDefinitionDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateBoardResponseDto" nillable="true" type="tns:CreateBoardResponseDto" />
+  <xs:complexType name="BoardDefinitionDto">
+    <xs:sequence>
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" minOccurs="0" name="BoardSize" type="q3:BoardSizeOption" />
+      <xs:element minOccurs="0" name="Cells" nillable="true" type="tns:ArrayOfBoardCellDto" />
+      <xs:element minOccurs="0" name="Columns" type="xs:int" />
+      <xs:element minOccurs="0" name="Links" nillable="true" type="tns:ArrayOfBoardLinkDto" />
+      <xs:element minOccurs="0" name="Rows" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BoardDefinitionDto" nillable="true" type="tns:BoardDefinitionDto" />
+  <xs:complexType name="ArrayOfBoardCellDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BoardCellDto" nillable="true" type="tns:BoardCellDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBoardCellDto" nillable="true" type="tns:ArrayOfBoardCellDto" />
+  <xs:complexType name="BoardCellDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Column" type="xs:int" />
+      <xs:element minOccurs="0" name="Index" type="xs:int" />
+      <xs:element minOccurs="0" name="IsDark" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsFinal" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsStart" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Row" type="xs:int" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" minOccurs="0" name="SpecialType" type="q4:SpecialCellType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BoardCellDto" nillable="true" type="tns:BoardCellDto" />
+  <xs:complexType name="ArrayOfBoardLinkDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BoardLinkDto" nillable="true" type="tns:BoardLinkDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBoardLinkDto" nillable="true" type="tns:ArrayOfBoardLinkDto" />
+  <xs:complexType name="BoardLinkDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EndIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="IsLadder" type="xs:boolean" />
+      <xs:element minOccurs="0" name="StartIndex" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BoardLinkDto" nillable="true" type="tns:BoardLinkDto" />
+</xs:schema>

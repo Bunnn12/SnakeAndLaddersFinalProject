@@ -359,9 +359,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     return;
                 }
 
+                // Siempre actualizamos de quién es el turno
                 UpdateTurnFromState(stateResponse.CurrentTurnUserId);
 
                 if (stateResponse.Tokens == null)
+                {
+                    return;
+                }
+
+                if (PlayerTokens.Count > 0)
                 {
                     return;
                 }
@@ -389,6 +395,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 Logger.Error(GAME_STATE_SYNC_ERROR_LOG_MESSAGE, ex);
             }
         }
+
 
         private void UpdateTurnFromState(int currentTurnUserIdFromServer)
         {

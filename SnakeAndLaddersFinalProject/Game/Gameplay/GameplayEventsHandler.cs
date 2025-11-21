@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using log4net;
 using SnakeAndLaddersFinalProject.Animation;
 using SnakeAndLaddersFinalProject.GameplayService;
@@ -84,15 +85,20 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
                 int toIndex = move.ToCellIndex;
                 int diceValue = move.DiceValue;
 
+                // 1) Animar dado (fuera del Dispatcher, internamente ya usará el hilo de UI si lo necesita)
+                await _diceSpriteAnimator
+                    .RollAsync(diceValue)
+                    .ConfigureAwait(false);
+
+                // 2) Animar movimiento del jugador
+                await _animationService
+                    .AnimateMoveForLocalPlayerAsync(userId, fromIndex, toIndex, diceValue)
+                    .ConfigureAwait(false);
+
+                // 3) Actualizar command y mostrar mensaje en el hilo de UI
                 await Application.Current.Dispatcher.InvokeAsync(
-                    async () =>
+                    () =>
                     {
-                        await _diceSpriteAnimator.RollAsync(diceValue).ConfigureAwait(false);
-
-                        await _animationService
-                            .AnimateMoveForLocalPlayerAsync(userId, fromIndex, toIndex, diceValue)
-                            .ConfigureAwait(false);
-
                         _rollDiceCommand.RaiseCanExecuteChanged();
 
                         if (userId == _localUserId)
@@ -109,7 +115,8 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Information);
                         }
-                    });
+                    },
+                    DispatcherPriority.Normal);
             }
             catch (Exception ex)
             {

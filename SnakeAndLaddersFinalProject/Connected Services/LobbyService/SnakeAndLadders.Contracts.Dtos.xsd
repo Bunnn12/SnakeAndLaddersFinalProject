@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="CreateGameRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BoardSide" type="xs:int" />
+      <xs:element minOccurs="0" name="CurrentSkinId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentSkinUnlockedId" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Dificultad" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="HostAvatarId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="HostUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="MaxPlayers" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="PlayersRequested" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="SpecialTiles" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TtlMinutes" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateGameRequest" nillable="true" type="tns:CreateGameRequest" />
+  <xs:complexType name="CreateGameResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CodigoPartida" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ExpiresAtUtc" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="PartidaId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateGameResponse" nillable="true" type="tns:CreateGameResponse" />
+  <xs:complexType name="JoinLobbyRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AvatarId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodigoPartida" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentSkinId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentSkinUnlockedId" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="JoinLobbyRequest" nillable="true" type="tns:JoinLobbyRequest" />
+  <xs:complexType name="JoinLobbyResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FailureReason" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Lobby" nillable="true" type="tns:LobbyInfo" />
+      <xs:element minOccurs="0" name="Success" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="JoinLobbyResponse" nillable="true" type="tns:JoinLobbyResponse" />
+  <xs:complexType name="LobbyInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BoardSide" type="xs:int" />
+      <xs:element minOccurs="0" name="CodigoPartida" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Difficulty" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ExpiresAtUtc" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="HostUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="HostUserName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MaxPlayers" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="PartidaId" type="xs:int" />
+      <xs:element minOccurs="0" name="Players" nillable="true" type="tns:ArrayOfLobbyMember" />
+      <xs:element minOccurs="0" name="PlayersRequested" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="SpecialTiles" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Status" type="tns:LobbyStatus" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LobbyInfo" nillable="true" type="tns:LobbyInfo" />
+  <xs:complexType name="ArrayOfLobbyMember">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="LobbyMember" nillable="true" type="tns:LobbyMember" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfLobbyMember" nillable="true" type="tns:ArrayOfLobbyMember" />
+  <xs:complexType name="LobbyMember">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AvatarId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentSkinId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentSkinUnlockedId" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="IsHost" type="xs:boolean" />
+      <xs:element minOccurs="0" name="JoinedAtUtc" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LobbyMember" nillable="true" type="tns:LobbyMember" />
+  <xs:simpleType name="LobbyStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Waiting" />
+      <xs:enumeration value="Starting" />
+      <xs:enumeration value="InMatch" />
+      <xs:enumeration value="Closed" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="LobbyStatus" nillable="true" type="tns:LobbyStatus" />
+  <xs:complexType name="LeaveLobbyRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="PartidaId" type="xs:int" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LeaveLobbyRequest" nillable="true" type="tns:LeaveLobbyRequest" />
+  <xs:complexType name="OperationResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Success" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OperationResult" nillable="true" type="tns:OperationResult" />
+  <xs:complexType name="StartMatchRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="HostUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="PartidaId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StartMatchRequest" nillable="true" type="tns:StartMatchRequest" />
+  <xs:complexType name="GetLobbyInfoRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="PartidaId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetLobbyInfoRequest" nillable="true" type="tns:GetLobbyInfoRequest" />
+</xs:schema>
