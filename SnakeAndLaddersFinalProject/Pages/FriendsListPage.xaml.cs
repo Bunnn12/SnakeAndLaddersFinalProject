@@ -38,21 +38,6 @@ namespace SnakeAndLaddersFinalProject.Pages
             LoadFriends();
         }
 
-        private void tvFriends_ContextMenuOpening(object sender, ContextMenuEventArgs e)
-        {
-            DependencyObject element = Mouse.DirectlyOver as DependencyObject;
-
-            while (element != null && !(element is DataGridRow))
-            {
-                element = VisualTreeHelper.GetParent(element);
-            }
-
-            if (element is DataGridRow row)
-            {
-                row.IsSelected = true;
-            }
-        }
-
         private void TvFriends_RowDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (!SessionGuard.HasValidSession())
@@ -90,8 +75,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            string title = TryGetLangOr(CONFIRM_UNFRIEND_TITLE, language: Lang.btnUnfriendText);
-            string message = TryGetLangOr(CONFIRM_UNFRIEND_MESSAGE, "language: Lang.confirmUnfriendText");
+            string title = TryGetLangOr(CONFIRM_UNFRIEND_TITLE, Lang.btnUnfriendText);
+            string message = TryGetLangOr(CONFIRM_UNFRIEND_MESSAGE, "Lang.confirmUnfriendText");
 
             MessageBoxResult result = MessageBox.Show(
                 message,
@@ -125,6 +110,32 @@ namespace SnakeAndLaddersFinalProject.Pages
                 MessageBox.Show(Lang.errorRemovingFriendText ?? GENERIC_ERROR_TITLE, Lang.errorTitle);
             }
         }
+
+        private void BtnFriendMenu_Click(object sender, RoutedEventArgs e)
+        {
+            if (!SessionGuard.HasValidSession())
+            {
+                return;
+            }
+
+            if (!(sender is FrameworkElement element))
+            {
+                return;
+            }
+
+            if (element.DataContext is FriendListItemDto friendItem)
+            {
+                tvFriends.SelectedItem = friendItem;
+            }
+
+            ContextMenu contextMenu = element.ContextMenu;
+            if (contextMenu != null)
+            {
+                contextMenu.PlacementTarget = element;
+                contextMenu.IsOpen = true;
+            }
+        }
+
 
         private void LoadFriends()
         {

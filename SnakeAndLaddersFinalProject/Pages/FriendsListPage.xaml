@@ -24,7 +24,12 @@
                     RenderOptions.BitmapScalingMode="NearestNeighbor" />
 
         <!-- Shadow -->
-        <DropShadowEffect x:Key="ShadowSoft" BlurRadius="10" ShadowDepth="0" Direction="270" Opacity="0.6" Color="#22000000" />
+        <DropShadowEffect x:Key="ShadowSoft"
+                          BlurRadius="10"
+                          ShadowDepth="0"
+                          Direction="270"
+                          Opacity="0.6"
+                          Color="#22000000" />
 
         <!-- Wood palette -->
         <SolidColorBrush x:Key="BrushBoardBackground" Color="#F7C76B" />
@@ -75,8 +80,11 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsPressed" Value="True">
@@ -100,7 +108,9 @@
                     <ControlTemplate TargetType="ScrollBar">
                         <Grid Background="Transparent">
                             <Border Background="#F7C76B" CornerRadius="4">
-                                <Track x:Name="PART_Track" Orientation="{TemplateBinding Orientation}" IsDirectionReversed="true">
+                                <Track x:Name="PART_Track"
+                                       Orientation="{TemplateBinding Orientation}"
+                                       IsDirectionReversed="true">
                                     <Track.DecreaseRepeatButton>
                                         <RepeatButton Visibility="Collapsed" />
                                     </Track.DecreaseRepeatButton>
@@ -108,10 +118,15 @@
                                         <RepeatButton Visibility="Collapsed" />
                                     </Track.IncreaseRepeatButton>
                                     <Track.Thumb>
-                                        <Thumb Background="#B56524" BorderBrush="#7A3A12" BorderThickness="1">
+                                        <Thumb Background="#B56524"
+                                               BorderBrush="#7A3A12"
+                                               BorderThickness="1">
                                             <Thumb.Template>
                                                 <ControlTemplate TargetType="Thumb">
-                                                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" />
+                                                    <Border Background="{TemplateBinding Background}"
+                                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                                            CornerRadius="4" />
                                                 </ControlTemplate>
                                             </Thumb.Template>
                                         </Thumb>
@@ -199,6 +214,7 @@
 
         <!-- Buttons -->
         <FontFamily x:Key="Font.RankingMain">Bahnschrift SemiBold</FontFamily>
+
         <Style x:Key="PrimaryActionButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="260" />
             <Setter Property="Height" Value="52" />
@@ -213,16 +229,13 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
-        <Style x:Key="SecondaryActionButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryActionButtonStyle}">
+
+        <Style x:Key="SecondaryActionButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource PrimaryActionButtonStyle}">
             <Setter Property="Background" Value="#FBD9A0" />
             <Setter Property="BorderBrush" Value="#D0893A" />
         </Style>
-
-        <!-- === ContextMenu COMO RECURSO (fuera de Columns) === -->
-        <ContextMenu x:Key="FriendRowMenu">
-            <MenuItem Header="{x:Static language:Lang.btnUnfriendText}"
-                      Click="ContextUnfriend_Click"/>
-        </ContextMenu>
 
     </Page.Resources>
 
@@ -244,33 +257,66 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="btnBack" Grid.Column="0" Style="{StaticResource BtnBackRanking}"
-                            ToolTip="{x:Static language:Lang.btnBackText}" Click="Back">
-                        <Image Source="/Assets/Images/Icons/BackIcon.png" Width="48" Height="48" Stretch="Fill"
+                    <Button x:Name="btnBack"
+                            Grid.Column="0"
+                            Style="{StaticResource BtnBackRanking}"
+                            ToolTip="{x:Static language:Lang.btnBackText}"
+                            Click="Back">
+                        <Image Source="/Assets/Images/Icons/BackIcon.png"
+                               Width="48"
+                               Height="48"
+                               Stretch="Fill"
                                RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                     </Button>
 
-                    <Border Grid.Column="1" CornerRadius="10" BorderBrush="{StaticResource BrushWoodDark}" BorderThickness="4"
-                            Padding="40,8" HorizontalAlignment="Center" Effect="{StaticResource ShadowSoft}" Background="#FF59320B">
-                        <TextBlock Text="{x:Static language:Lang.lblFriendsListTitle}" d:Text="Friends list"
-                                   Style="{StaticResource LblRankingTitle}" HorizontalAlignment="Center"
-                                   FontFamily="{StaticResource Font.M04B}" FontWeight="Bold" FontSize="36"/>
+                    <Border Grid.Column="1"
+                            CornerRadius="10"
+                            BorderBrush="{StaticResource BrushWoodDark}"
+                            BorderThickness="4"
+                            Padding="40,8"
+                            HorizontalAlignment="Center"
+                            Effect="{StaticResource ShadowSoft}"
+                            Background="#FF59320B">
+                        <TextBlock Text="{x:Static language:Lang.lblFriendsListTitle}"
+                                   d:Text="Friends list"
+                                   Style="{StaticResource LblRankingTitle}"
+                                   HorizontalAlignment="Center"
+                                   FontFamily="{StaticResource Font.M04B}"
+                                   FontWeight="Bold"
+                                   FontSize="36"/>
                     </Border>
 
-                    <Button x:Name="btnSettings" Grid.Column="1" Grid.ColumnSpan="2" Margin="1088,0,0,-24"
-                            Style="{StaticResource BtnIcon}" ToolTip="{x:Static language:Lang.btnSettingsText}">
-                        <Image Width="56" Height="52" Source="/Assets/Images/Icons/SettingsIcon.png" Stretch="Fill"
+                    <Button x:Name="btnSettings"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Margin="1088,0,0,-24"
+                            Style="{StaticResource BtnIcon}"
+                            ToolTip="{x:Static language:Lang.btnSettingsText}">
+                        <Image Width="56"
+                               Height="52"
+                               Source="/Assets/Images/Icons/SettingsIcon.png"
+                               Stretch="Fill"
                                RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                     </Button>
                 </Grid>
 
                 <!-- Content -->
-                <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Border CornerRadius="0" Width="1000" Height="520"
-                            Background="{StaticResource BrushBoardBackground}" BorderBrush="{StaticResource BrushBoardBorder}"
-                            BorderThickness="10" Padding="10" Effect="{StaticResource ShadowSoft}">
-                        <Border CornerRadius="0" Background="{StaticResource BrushBoardInner}"
-                                BorderBrush="{StaticResource BrushBoardInnerBorder}" BorderThickness="4" Padding="12">
+                <Grid Grid.Row="1"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center">
+                    <Border CornerRadius="0"
+                            Width="1000"
+                            Height="520"
+                            Background="{StaticResource BrushBoardBackground}"
+                            BorderBrush="{StaticResource BrushBoardBorder}"
+                            BorderThickness="10"
+                            Padding="10"
+                            Effect="{StaticResource ShadowSoft}">
+                        <Border CornerRadius="0"
+                                Background="{StaticResource BrushBoardInner}"
+                                BorderBrush="{StaticResource BrushBoardInnerBorder}"
+                                BorderThickness="4"
+                                Padding="12">
 
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -286,14 +332,12 @@
                                           MinRowHeight="52"
                                           SelectionMode="Single"
                                           SelectionUnit="FullRow"
-                                          ContextMenuOpening="tvFriends_ContextMenuOpening"
                                           PreviewKeyDown="TvFriends_PreviewKeyDown">
 
-                                    <!-- RowStyle con menú desde recursos -->
                                     <DataGrid.RowStyle>
                                         <Style TargetType="DataGridRow">
-                                            <EventSetter Event="MouseDoubleClick" Handler="TvFriends_RowDoubleClick"/>
-                                            <Setter Property="ContextMenu" Value="{StaticResource FriendRowMenu}"/>
+                                            <EventSetter Event="MouseDoubleClick"
+                                                         Handler="TvFriends_RowDoubleClick"/>
                                         </Style>
                                     </DataGrid.RowStyle>
 
@@ -302,16 +346,48 @@
                                                             Binding="{Binding FriendUserName}"
                                                             Width="*"
                                                             ElementStyle="{StaticResource CenterCellStyle}" />
+
+                                        <!-- Columna de opciones (tres puntitos) -->
+                                        <DataGridTemplateColumn Width="60"
+                                                                IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button x:Name="btnFriendMenu"
+                                                            Style="{StaticResource BtnIcon}"
+                                                            Click="BtnFriendMenu_Click"
+                                                            ToolTip="poner el binding">
+                                                        <Button.ContextMenu>
+                                                            <ContextMenu>
+                                                                <MenuItem Header="{x:Static language:Lang.btnUnfriendText}"
+                                                                          Click="ContextUnfriend_Click" />
+                                                            </ContextMenu>
+                                                        </Button.ContextMenu>
+                                                        <TextBlock Text="⋮"
+                                                                   FontSize="26"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"/>
+                                                    </Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
                                     </DataGrid.Columns>
                                 </DataGrid>
 
                                 <!-- Bottom actions -->
-                                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
-                                    <Button x:Name="btnAddFriends" Content="{x:Static language:Lang.btnAddFriendText}"
-                                            Style="{StaticResource PrimaryActionButtonStyle}" Margin="6"
+                                <StackPanel Grid.Row="2"
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            Margin="0,8,0,0">
+                                    <Button x:Name="btnAddFriends"
+                                            Content="{x:Static language:Lang.btnAddFriendText}"
+                                            Style="{StaticResource PrimaryActionButtonStyle}"
+                                            Margin="6"
                                             Click="BtnAddFriends_Click"/>
-                                    <Button x:Name="btnFriendRequests" Content="{x:Static language:Lang.btnFriendRequestsText}"
-                                            Style="{StaticResource SecondaryActionButtonStyle}" Margin="6"
+                                    <Button x:Name="btnFriendRequests"
+                                            Content="{x:Static language:Lang.btnFriendRequestsText}"
+                                            Style="{StaticResource SecondaryActionButtonStyle}"
+                                            Margin="6"
                                             Click="BtnFriendRequests_Click"/>
                                 </StackPanel>
                             </Grid>
@@ -335,24 +411,45 @@
                         <ColumnDefinition Width="246*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="btnFriends" Grid.Column="0" Margin="0,0,8,0"
+                    <Button x:Name="btnFriends"
+                            Grid.Column="0"
+                            Margin="0,0,8,0"
                             Content="{x:Static language:Lang.lblFriendsListTitle}"/>
 
-                    <Button x:Name="btnShop" Grid.Column="1" Margin="8,-24,8,0"
-                            Style="{StaticResource BtnIcon}" ToolTip="{x:Static language:Lang.btnShopText}">
-                        <Image Width="96" Height="76" Source="/Assets/Images/Icons/StoreIcon.png" Stretch="Uniform"
+                    <Button x:Name="btnShop"
+                            Grid.Column="1"
+                            Margin="8,-24,8,0"
+                            Style="{StaticResource BtnIcon}"
+                            ToolTip="{x:Static language:Lang.btnShopText}">
+                        <Image Width="96"
+                               Height="76"
+                               Source="/Assets/Images/Icons/StoreIcon.png"
+                               Stretch="Uniform"
                                RenderOptions.BitmapScalingMode="NearestNeighbor" />
                     </Button>
 
-                    <Button x:Name="btnInventory" Grid.Column="4" Margin="57,-23,39,0"
-                            Style="{StaticResource BtnIcon}" ToolTip="{x:Static language:Lang.btnInventoryText}">
-                        <Image Width="177" Height="80" Source="/Assets/Images/Icons/InventoryIcon.png" Stretch="Uniform"
+                    <Button x:Name="btnInventory"
+                            Grid.Column="4"
+                            Margin="57,-23,39,0"
+                            Style="{StaticResource BtnIcon}"
+                            ToolTip="{x:Static language:Lang.btnInventoryText}">
+                        <Image Width="177"
+                               Height="80"
+                               Source="/Assets/Images/Icons/InventoryIcon.png"
+                               Stretch="Uniform"
                                RenderOptions.BitmapScalingMode="NearestNeighbor" />
                     </Button>
 
-                    <Button x:Name="btnSkins" Grid.Column="7" Grid.ColumnSpan="2" Margin="10,-24,0,0"
-                            Style="{StaticResource BtnIcon}" ToolTip="{x:Static language:Lang.btnSkinsText}">
-                        <Image Width="122" Height="78" Source="/Assets/Images/Icons/SkinIcon.png" Stretch="Uniform"
+                    <Button x:Name="btnSkins"
+                            Grid.Column="7"
+                            Grid.ColumnSpan="2"
+                            Margin="10,-24,0,0"
+                            Style="{StaticResource BtnIcon}"
+                            ToolTip="{x:Static language:Lang.btnSkinsText}">
+                        <Image Width="122"
+                               Height="78"
+                               Source="/Assets/Images/Icons/SkinIcon.png"
+                               Stretch="Uniform"
                                RenderOptions.BitmapScalingMode="NearestNeighbor" />
                     </Button>
                 </Grid>
