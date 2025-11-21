@@ -90,6 +90,147 @@ namespace SnakeAndLaddersFinalProject.StatsService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PlayerStatsDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class PlayerStatsDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int CoinsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int MatchesPlayedField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int MatchesWonField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> RankingPositionField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string UsernameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private decimal WinPercentageField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Coins {
+            get {
+                return this.CoinsField;
+            }
+            set {
+                if ((this.CoinsField.Equals(value) != true)) {
+                    this.CoinsField = value;
+                    this.RaisePropertyChanged("Coins");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int MatchesPlayed {
+            get {
+                return this.MatchesPlayedField;
+            }
+            set {
+                if ((this.MatchesPlayedField.Equals(value) != true)) {
+                    this.MatchesPlayedField = value;
+                    this.RaisePropertyChanged("MatchesPlayed");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int MatchesWon {
+            get {
+                return this.MatchesWonField;
+            }
+            set {
+                if ((this.MatchesWonField.Equals(value) != true)) {
+                    this.MatchesWonField = value;
+                    this.RaisePropertyChanged("MatchesWon");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> RankingPosition {
+            get {
+                return this.RankingPositionField;
+            }
+            set {
+                if ((this.RankingPositionField.Equals(value) != true)) {
+                    this.RankingPositionField = value;
+                    this.RaisePropertyChanged("RankingPosition");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserId {
+            get {
+                return this.UserIdField;
+            }
+            set {
+                if ((this.UserIdField.Equals(value) != true)) {
+                    this.UserIdField = value;
+                    this.RaisePropertyChanged("UserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Username {
+            get {
+                return this.UsernameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UsernameField, value) != true)) {
+                    this.UsernameField = value;
+                    this.RaisePropertyChanged("Username");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public decimal WinPercentage {
+            get {
+                return this.WinPercentageField;
+            }
+            set {
+                if ((this.WinPercentageField.Equals(value) != true)) {
+                    this.WinPercentageField = value;
+                    this.RaisePropertyChanged("WinPercentage");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="StatsService.IStatsService")]
     public interface IStatsService {
@@ -99,6 +240,12 @@ namespace SnakeAndLaddersFinalProject.StatsService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStatsService/GetTopPlayersByCoins", ReplyAction="http://tempuri.org/IStatsService/GetTopPlayersByCoinsResponse")]
         System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.StatsService.PlayerRankingItemDto[]> GetTopPlayersByCoinsAsync(int maxResults);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStatsService/GetPlayerStatsByUserId", ReplyAction="http://tempuri.org/IStatsService/GetPlayerStatsByUserIdResponse")]
+        SnakeAndLaddersFinalProject.StatsService.PlayerStatsDto GetPlayerStatsByUserId(int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStatsService/GetPlayerStatsByUserId", ReplyAction="http://tempuri.org/IStatsService/GetPlayerStatsByUserIdResponse")]
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.StatsService.PlayerStatsDto> GetPlayerStatsByUserIdAsync(int userId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -134,6 +281,14 @@ namespace SnakeAndLaddersFinalProject.StatsService {
         
         public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.StatsService.PlayerRankingItemDto[]> GetTopPlayersByCoinsAsync(int maxResults) {
             return base.Channel.GetTopPlayersByCoinsAsync(maxResults);
+        }
+        
+        public SnakeAndLaddersFinalProject.StatsService.PlayerStatsDto GetPlayerStatsByUserId(int userId) {
+            return base.Channel.GetPlayerStatsByUserId(userId);
+        }
+        
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.StatsService.PlayerStatsDto> GetPlayerStatsByUserIdAsync(int userId) {
+            return base.Channel.GetPlayerStatsByUserIdAsync(userId);
         }
     }
 }

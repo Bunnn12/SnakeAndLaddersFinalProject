@@ -349,27 +349,33 @@
 
                                         <!-- Columna de opciones (tres puntitos) -->
                                         <DataGridTemplateColumn Width="60"
-                                                                IsReadOnly="True">
+                        IsReadOnly="True">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <Button x:Name="btnFriendMenu"
-                                                            Style="{StaticResource BtnIcon}"
-                                                            Click="BtnFriendMenu_Click"
-                                                            ToolTip="poner el binding">
+                    Style="{StaticResource BtnIcon}"
+                    Click="BtnFriendMenu_Click"
+                    ToolTip="poner tooltip, opciones amigos">
                                                         <Button.ContextMenu>
                                                             <ContextMenu>
+                                                                <MenuItem Header="{x:Static language:Lang.lblProfileStatsTitle}"
+                  Click="ContextViewStats_Click" />
                                                                 <MenuItem Header="{x:Static language:Lang.btnUnfriendText}"
-                                                                          Click="ContextUnfriend_Click" />
+                  Click="ContextUnfriend_Click" />
                                                             </ContextMenu>
                                                         </Button.ContextMenu>
-                                                        <TextBlock Text="⋮"
-                                                                   FontSize="26"
-                                                                   HorizontalAlignment="Center"
-                                                                   VerticalAlignment="Center"/>
+
+
+                                                        <!-- Tres puntos HORIZONTALES -->
+                                                        <TextBlock Text="⋯"
+                           FontSize="26"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
                                                     </Button>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
+
 
                                     </DataGrid.Columns>
                                 </DataGrid>

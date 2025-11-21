@@ -14,4 +14,16 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="PlayerRankingItemDto" nillable="true" type="tns:PlayerRankingItemDto" />
+  <xs:complexType name="PlayerStatsDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Coins" type="xs:int" />
+      <xs:element minOccurs="0" name="MatchesPlayed" type="xs:int" />
+      <xs:element minOccurs="0" name="MatchesWon" type="xs:int" />
+      <xs:element minOccurs="0" name="RankingPosition" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+      <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WinPercentage" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PlayerStatsDto" nillable="true" type="tns:PlayerStatsDto" />
 </xs:schema>

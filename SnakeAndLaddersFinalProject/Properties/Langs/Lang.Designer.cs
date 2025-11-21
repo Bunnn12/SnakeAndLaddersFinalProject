@@ -628,6 +628,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Current Coins.
+        /// </summary>
+        public static string lblCurrentCoins {
+            get {
+                return ResourceManager.GetString("lblCurrentCoins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Difficulty.
         /// </summary>
         public static string lblDifficultyText {
@@ -727,6 +736,33 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Matches Lost.
+        /// </summary>
+        public static string lblMatchesLost {
+            get {
+                return ResourceManager.GetString("lblMatchesLost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Matches Played.
+        /// </summary>
+        public static string lblMatchesPlayed {
+            get {
+                return ResourceManager.GetString("lblMatchesPlayed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Matches Won.
+        /// </summary>
+        public static string lblMatchesWon {
+            get {
+                return ResourceManager.GetString("lblMatchesWon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Match List.
         /// </summary>
         public static string lblMatchListTitle {
@@ -741,6 +777,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string lblMatchSettingsText {
             get {
                 return ResourceManager.GetString("lblMatchSettingsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Highest Coin Count Achieved.
+        /// </summary>
+        public static string lblMaxCoinsEver {
+            get {
+                return ResourceManager.GetString("lblMaxCoinsEver", resourceCulture);
             }
         }
         
@@ -808,6 +853,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Statistics Profile.
+        /// </summary>
+        public static string lblProfileStatsTitle {
+            get {
+                return ResourceManager.GetString("lblProfileStatsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a My profile.
         /// </summary>
         public static string lblProfileTitle {
@@ -840,6 +894,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string lblRankingTitleText {
             get {
                 return ResourceManager.GetString("lblRankingTitleText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Top-50 Ranking Position.
+        /// </summary>
+        public static string lblRankingTop50Position {
+            get {
+                return ResourceManager.GetString("lblRankingTop50Position", resourceCulture);
             }
         }
         
@@ -889,6 +952,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Game Statistics.
+        /// </summary>
+        public static string lblStatsSectionTitle {
+            get {
+                return ResourceManager.GetString("lblStatsSectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Stickers.
         /// </summary>
         public static string lblStickersText {
@@ -921,6 +993,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string lblWelcomeText {
             get {
                 return ResourceManager.GetString("lblWelcomeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Win Rate.
+        /// </summary>
+        public static string lblWinPercentage {
+            get {
+                return ResourceManager.GetString("lblWinPercentage", resourceCulture);
             }
         }
         

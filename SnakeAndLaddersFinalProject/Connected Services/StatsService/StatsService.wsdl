@@ -42,10 +42,20 @@
   <wsdl:message name="IStatsService_GetTopPlayersByCoins_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetTopPlayersByCoinsResponse" />
   </wsdl:message>
+  <wsdl:message name="IStatsService_GetPlayerStatsByUserId_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPlayerStatsByUserId" />
+  </wsdl:message>
+  <wsdl:message name="IStatsService_GetPlayerStatsByUserId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPlayerStatsByUserIdResponse" />
+  </wsdl:message>
   <wsdl:portType name="IStatsService">
     <wsdl:operation name="GetTopPlayersByCoins">
       <wsdl:input wsaw:Action="http://tempuri.org/IStatsService/GetTopPlayersByCoins" message="tns:IStatsService_GetTopPlayersByCoins_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IStatsService/GetTopPlayersByCoinsResponse" message="tns:IStatsService_GetTopPlayersByCoins_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPlayerStatsByUserId">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStatsService/GetPlayerStatsByUserId" message="tns:IStatsService_GetPlayerStatsByUserId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStatsService/GetPlayerStatsByUserIdResponse" message="tns:IStatsService_GetPlayerStatsByUserId_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IStatsService" type="tns:IStatsService">
@@ -59,12 +69,30 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetPlayerStatsByUserId">
+      <soap:operation soapAction="http://tempuri.org/IStatsService/GetPlayerStatsByUserId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="NetTcpBinding_IStatsService" type="tns:IStatsService">
     <wsp:PolicyReference URI="#NetTcpBinding_IStatsService_policy" />
     <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
     <wsdl:operation name="GetTopPlayersByCoins">
       <soap12:operation soapAction="http://tempuri.org/IStatsService/GetTopPlayersByCoins" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPlayerStatsByUserId">
+      <soap12:operation soapAction="http://tempuri.org/IStatsService/GetPlayerStatsByUserId" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

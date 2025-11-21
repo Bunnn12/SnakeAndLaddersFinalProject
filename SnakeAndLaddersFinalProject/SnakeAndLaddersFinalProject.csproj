@@ -586,6 +586,9 @@
     <None Include="Connected Services\StatsService\SnakeAndLaddersFinalProject.StatsService.PlayerRankingItemDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\StatsService\SnakeAndLaddersFinalProject.StatsService.PlayerStatsDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\StatsService\StatsService.wsdl" />
     <None Include="Connected Services\UserService\service.wsdl" />
     <None Include="Connected Services\UserService\service.xsd">

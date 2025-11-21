@@ -205,6 +205,39 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
+        private void ContextViewStats_Click(object sender, RoutedEventArgs e)
+        {
+            if (!SessionGuard.HasValidSession())
+            {
+                return;
+            }
+
+            FriendListItemDto friendItem = null;
+
+            if (sender is FrameworkElement element &&
+                element.DataContext is FriendListItemDto ctxItem)
+            {
+                friendItem = ctxItem;
+            }
+            else if (tvFriends.SelectedItem is FriendListItemDto selectedItem)
+            {
+                friendItem = selectedItem;
+            }
+
+            if (friendItem == null || friendItem.FriendUserId <= 0)
+            {
+                return;
+            }
+
+            var statsPage = new ProfileStatsPage(
+                friendItem.FriendUserId,
+                friendItem.FriendUserName,
+                friendItem.ProfilePhotoId);
+
+            NavigationService?.Navigate(statsPage);
+        }
+
+
         private void BtnAddFriends_Click(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new AddFriendsPage());

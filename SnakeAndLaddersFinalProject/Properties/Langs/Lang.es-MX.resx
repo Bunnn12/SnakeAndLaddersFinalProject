@@ -510,4 +510,31 @@
   <data name="lblSelectAvatarTitleText" xml:space="preserve">
     <value>Selecciona tu avatar</value>
   </data>
+  <data name="lblProfileStatsTitle" xml:space="preserve">
+    <value>Perfil estadístico</value>
+  </data>
+  <data name="lblStatsSectionTitle" xml:space="preserve">
+    <value>Estadísticas del juego</value>
+  </data>
+  <data name="lblMatchesPlayed" xml:space="preserve">
+    <value>Partidos jugados</value>
+  </data>
+  <data name="lblMatchesWon" xml:space="preserve">
+    <value>Partidos ganados</value>
+  </data>
+  <data name="lblMatchesLost" xml:space="preserve">
+    <value>Partidos perdidos</value>
+  </data>
+  <data name="lblWinPercentage" xml:space="preserve">
+    <value>Tasa de victorias</value>
+  </data>
+  <data name="lblCurrentCoins" xml:space="preserve">
+    <value>Monedas actuales</value>
+  </data>
+  <data name="lblMaxCoinsEver" xml:space="preserve">
+    <value>Mayor recuento de monedas logrado</value>
+  </data>
+  <data name="lblRankingTop50Position" xml:space="preserve">
+    <value>Posición entre los primeros 50</value>
+  </data>
 </root>

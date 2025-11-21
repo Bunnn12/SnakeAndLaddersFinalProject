@@ -510,4 +510,31 @@
   <data name="lblSelectAvatarTitleText" xml:space="preserve">
     <value>选择您的头像</value>
   </data>
+  <data name="lblProfileStatsTitle" xml:space="preserve">
+    <value>统计概况</value>
+  </data>
+  <data name="lblStatsSectionTitle" xml:space="preserve">
+    <value>游戏统计</value>
+  </data>
+  <data name="lblMatchesPlayed" xml:space="preserve">
+    <value>已踢比赛</value>
+  </data>
+  <data name="lblMatchesWon" xml:space="preserve">
+    <value>赢得比赛</value>
+  </data>
+  <data name="lblMatchesLost" xml:space="preserve">
+    <value>输掉的比赛</value>
+  </data>
+  <data name="lblWinPercentage" xml:space="preserve">
+    <value>胜率</value>
+  </data>
+  <data name="lblCurrentCoins" xml:space="preserve">
+    <value>当前硬币</value>
+  </data>
+  <data name="lblMaxCoinsEver" xml:space="preserve">
+    <value>达到最高硬币数</value>
+  </data>
+  <data name="lblRankingTop50Position" xml:space="preserve">
+    <value>前50名排名位置</value>
+  </data>
 </root>
