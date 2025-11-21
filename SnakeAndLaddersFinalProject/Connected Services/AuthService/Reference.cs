@@ -377,10 +377,10 @@ namespace SnakeAndLaddersFinalProject.AuthService {
     public interface IAuthService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/Register", ReplyAction="http://tempuri.org/IAuthService/RegisterResponse")]
-        SnakeAndLaddersFinalProject.AuthService.AuthResult Register(SnakeAndLaddersFinalProject.AuthService.RegistrationDto request);
+        SnakeAndLaddersFinalProject.AuthService.AuthResult Register(SnakeAndLaddersFinalProject.AuthService.RegistrationDto registration);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/Register", ReplyAction="http://tempuri.org/IAuthService/RegisterResponse")]
-        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> RegisterAsync(SnakeAndLaddersFinalProject.AuthService.RegistrationDto request);
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> RegisterAsync(SnakeAndLaddersFinalProject.AuthService.RegistrationDto registration);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/Login", ReplyAction="http://tempuri.org/IAuthService/LoginResponse")]
         SnakeAndLaddersFinalProject.AuthService.AuthResult Login(SnakeAndLaddersFinalProject.AuthService.LoginDto request);
@@ -428,12 +428,12 @@ namespace SnakeAndLaddersFinalProject.AuthService {
                 base(binding, remoteAddress) {
         }
         
-        public SnakeAndLaddersFinalProject.AuthService.AuthResult Register(SnakeAndLaddersFinalProject.AuthService.RegistrationDto request) {
-            return base.Channel.Register(request);
+        public SnakeAndLaddersFinalProject.AuthService.AuthResult Register(SnakeAndLaddersFinalProject.AuthService.RegistrationDto registration) {
+            return base.Channel.Register(registration);
         }
         
-        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> RegisterAsync(SnakeAndLaddersFinalProject.AuthService.RegistrationDto request) {
-            return base.Channel.RegisterAsync(request);
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> RegisterAsync(SnakeAndLaddersFinalProject.AuthService.RegistrationDto registration) {
+            return base.Channel.RegisterAsync(registration);
         }
         
         public SnakeAndLaddersFinalProject.AuthService.AuthResult Login(SnakeAndLaddersFinalProject.AuthService.LoginDto request) {

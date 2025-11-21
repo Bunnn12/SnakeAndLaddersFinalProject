@@ -54,6 +54,12 @@
   <wsdl:message name="IUserService_UpdateProfile_OutputMessage">
     <wsdl:part name="parameters" element="tns:UpdateProfileResponse" />
   </wsdl:message>
+  <wsdl:message name="IUserService_DeactivateAccount_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeactivateAccount" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_DeactivateAccount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeactivateAccountResponse" />
+  </wsdl:message>
   <wsdl:portType name="IUserService">
     <wsdl:operation name="GetProfileByUsername">
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetProfileByUsername" message="tns:IUserService_GetProfileByUsername_InputMessage" />
@@ -66,6 +72,10 @@
     <wsdl:operation name="UpdateProfile">
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/UpdateProfile" message="tns:IUserService_UpdateProfile_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IUserService/UpdateProfileResponse" message="tns:IUserService_UpdateProfile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeactivateAccount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/DeactivateAccount" message="tns:IUserService_DeactivateAccount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/DeactivateAccountResponse" message="tns:IUserService_DeactivateAccount_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IUserService" type="tns:IUserService">
@@ -97,6 +107,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="DeactivateAccount">
+      <soap:operation soapAction="http://tempuri.org/IUserService/DeactivateAccount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="NetTcpBinding_IUserService" type="tns:IUserService">
     <wsp:PolicyReference URI="#NetTcpBinding_IUserService_policy" />
@@ -121,6 +140,15 @@
     </wsdl:operation>
     <wsdl:operation name="UpdateProfile">
       <soap12:operation soapAction="http://tempuri.org/IUserService/UpdateProfile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeactivateAccount">
+      <soap12:operation soapAction="http://tempuri.org/IUserService/DeactivateAccount" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

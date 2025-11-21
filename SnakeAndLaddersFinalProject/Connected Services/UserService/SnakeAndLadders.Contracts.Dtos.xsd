@@ -3,6 +3,8 @@
   <xs:complexType name="AccountDto">
     <xs:sequence>
       <xs:element minOccurs="0" name="Coins" type="xs:int" />
+      <xs:element minOccurs="0" name="CurrentSkinId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentSkinUnlockedId" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="HasProfilePhoto" type="xs:boolean" />
       <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string" />

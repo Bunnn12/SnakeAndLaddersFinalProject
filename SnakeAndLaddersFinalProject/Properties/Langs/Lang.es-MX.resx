@@ -348,21 +348,20 @@
   <data name="UiPasswordRequired" xml:space="preserve">
     <value>Se requiere contraseña.</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lblMatchSettingsText" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="lblMatchSettingsText" xml:space="preserve">
+    <value>Configuración del partido</value>
   </data>
-  <data name="lblDifficultyText" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="lblDifficultyText" xml:space="preserve">
+    <value>Dificultad</value>
   </data>
-  <data name="lblBoardSizeText" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="lblBoardSizeText" xml:space="preserve">
+    <value>Tamaño del tablero</value>
   </data>
-  <data name="lblPlayersText" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="lblPlayersText" xml:space="preserve">
+    <value>Jugadores</value>
   </data>
-  <data name="lblSpecialTilesText" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="lblSpecialTilesText" xml:space="preserve">
+    <value>Azulejos especiales</value>
   </data>
   <data name="ReasonForReportText" xml:space="preserve">
     <value>Razón del informe</value>
@@ -412,33 +411,6 @@
   <data name="btnInviteFriendsText" xml:space="preserve">
     <value>invitar amigos</value>
   </data>
-  <data name="btnRejectText" xml:space="preserve">
-    <value>Rechazar</value>
-  </data>
-  <data name="btnFriendRequestsText" xml:space="preserve">
-    <value>Solicitudes de amistad</value>
-  </data>
-  <data name="errorTitle" xml:space="preserve">
-    <value>Error</value>
-  </data>
-  <data name="infoTitle" xml:space="preserve">
-    <value>Información</value>
-  </data>
-  <data name="lblMatchSettingsText" xml:space="preserve">
-    <value>Configuración del partido</value>
-  </data>
-  <data name="lblDifficultyText" xml:space="preserve">
-    <value>Dificultad</value>
-  </data>
-  <data name="lblBoardSizeText" xml:space="preserve">
-    <value>Tamaño del tablero</value>
-  </data>
-  <data name="lblPlayersText" xml:space="preserve">
-    <value>Jugadores</value>
-  </data>
-  <data name="lblSpecialTilesText" xml:space="preserve">
-    <value>Azulejos especiales</value>
-  </data>
   <data name="friendAcceptedText" xml:space="preserve">
     <value>Solicitud de amistad aceptada</value>
   </data>
@@ -486,5 +458,56 @@
   </data>
   <data name="errorRemovingFriendText" xml:space="preserve">
     <value>No se pudo eliminar amigo</value>
+  </data>
+  <data name="errorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="infoTitle" xml:space="preserve">
+    <value>Información</value>
+  </data>
+  <data name="btnRejectText" xml:space="preserve">
+    <value>Rechazar</value>
+  </data>
+  <data name="btnFriendRequestsText" xml:space="preserve">
+    <value>Solicitudes de amistad</value>
+  </data>
+  <data name="lblProfileTitle" xml:space="preserve">
+    <value>Mi perfil</value>
+  </data>
+  <data name="menuEditAccountText" xml:space="preserve">
+    <value>Editar cuenta</value>
+  </data>
+  <data name="menuDeleteAccountText" xml:space="preserve">
+    <value>Eliminar cuenta</value>
+  </data>
+  <data name="menuViewStatsText" xml:space="preserve">
+    <value>Ver mis estadísticas</value>
+  </data>
+  <data name="lblProfileEditModeText" xml:space="preserve">
+    <value>Modo de edición de perfil</value>
+  </data>
+  <data name="btnChangeAvatarText" xml:space="preserve">
+    <value>Cambiar avatar</value>
+  </data>
+  <data name="lblProfileUserNameCaptionText" xml:space="preserve">
+    <value>Usuario</value>
+  </data>
+  <data name="lblProfileFirstNameText" xml:space="preserve">
+    <value>Nombre de pila</value>
+  </data>
+  <data name="lblProfileLastNameText" xml:space="preserve">
+    <value>Apellido</value>
+  </data>
+  <data name="lblProfileDescriptionText" xml:space="preserve">
+    <value>Descripción</value>
+  </data>
+  <data name="btnProfileEditText" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="btnProfileSaveText" xml:space="preserve">
+    <value>Ahorrar</value>
+  </data>
+  <data name="lblSelectAvatarTitleText" xml:space="preserve">
+    <value>Selecciona tu avatar</value>
   </data>
 </root>

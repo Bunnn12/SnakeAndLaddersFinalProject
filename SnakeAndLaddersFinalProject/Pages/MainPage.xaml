@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
       xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
       xmlns:util="clr-namespace:SnakeAndLaddersFinalProject.Utilities"
+      xmlns:auth="clr-namespace:SnakeAndLaddersFinalProject.Authentication"
       mc:Ignorable="d"
       Title="MainPage"
       d:DesignWidth="1280"
@@ -303,9 +304,23 @@
                         </Button>
 
                         <Label x:Name="lblCoins"
-                               Grid.Column="1"
-                               Style="{StaticResource LblHud}"
-                               Content="{x:Static language:Lang.lblCoinsText}" />
+       Grid.Column="1"
+       Style="{StaticResource LblHud}">
+                            <StackPanel Orientation="Horizontal"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+                                <Image Source="/Assets/Images/Icons/CoinsIcon.png"
+               Width="32"
+               Height="32"
+               Stretch="Uniform"
+               RenderOptions.BitmapScalingMode="NearestNeighbor"
+               Margin="0,0,8,0" />
+                                <TextBlock Text="{Binding Coins}"
+                   FontFamily="{StaticResource Font.M04}"
+                   FontSize="20"
+                   VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Label>
 
                         <Button x:Name="btnSettings"
                                 Grid.Column="2"
@@ -368,10 +383,18 @@
                         </Grid.ColumnDefinitions>
 
                         <Button x:Name="btnFriends"
-                                Grid.Column="0"
-                                Margin="0,0,8,0"
-                                Content="{x:Static language:Lang.lblFriendsListTitle}"
-                                 Click="BtnFriends_Click"/>
+                        Grid.Column="0"
+                        Margin="0,-24,8,0"
+                        Style="{StaticResource BtnIcon}"
+                        ToolTip="{x:Static language:Lang.lblFriendsListTitle}"
+                        Click="BtnFriends_Click">
+                        <Image Width="120"
+                           Height="80"
+                           Source="/Assets/Images/Icons/FriendsIcon.png"
+                           Stretch="Uniform"
+                           RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                        </Button>
+
 
                         <Button x:Name="btnShop"
                                 Grid.Column="1"
@@ -410,26 +433,30 @@
                                    RenderOptions.BitmapScalingMode="NearestNeighbor" />
                         </Button>
 
+
                         <Button x:Name="btnProfile"
-                                Grid.Column="9"
-                                Margin="8,-24,8,0"
-                                Style="{StaticResource BtnIcon}"
-                                ToolTip="{x:Static language:Lang.btnProfileText}">
+                            Grid.Column="9"
+                            Margin="8,-24,8,0"
+                            Style="{StaticResource BtnIcon}"
+                            ToolTip="{x:Static language:Lang.btnProfileText}"
+                            Click="BtnProfile_Click">
                             <Ellipse Width="88"
-                                    Height="88"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Stroke="#FFFFFFFF"
-                                    StrokeThickness="2">
+                             Height="88"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Stroke="#FFFFFFFF"
+                             StrokeThickness="2">
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{Binding AvatarId,
+                                    <ImageBrush ImageSource="{Binding Source={x:Static auth:SessionContext.Current},
+                                              Path=ProfilePhotoId,
                                               Converter={StaticResource AvatarIdToPathConverter},
                                               FallbackValue=/Assets/Images/Icons/A0013.jpg,
                                               TargetNullValue=/Assets/Images/Icons/A0013.jpg}"
-                                              Stretch="UniformToFill" />
+                                 Stretch="UniformToFill" />
                                 </Ellipse.Fill>
                             </Ellipse>
                         </Button>
+
 
                     </Grid>
                 </Grid>

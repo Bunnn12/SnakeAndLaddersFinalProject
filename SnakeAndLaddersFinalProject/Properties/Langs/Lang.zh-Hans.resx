@@ -348,21 +348,20 @@
   <data name="UiPasswordRequired" xml:space="preserve">
     <value>需要密码。</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lblMatchSettingsText" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="lblMatchSettingsText" xml:space="preserve">
+    <value>比赛设置</value>
   </data>
-  <data name="lblDifficultyText" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="lblDifficultyText" xml:space="preserve">
+    <value>困难</value>
   </data>
-  <data name="lblBoardSizeText" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="lblBoardSizeText" xml:space="preserve">
+    <value>板尺寸</value>
   </data>
-  <data name="lblPlayersText" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="lblPlayersText" xml:space="preserve">
+    <value>玩家</value>
   </data>
-  <data name="lblSpecialTilesText" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="lblSpecialTilesText" xml:space="preserve">
+    <value>特种瓷砖</value>
   </data>
   <data name="ReasonForReportText" xml:space="preserve">
     <value>报告原因</value>
@@ -412,33 +411,6 @@
   <data name="btnInviteFriendsText" xml:space="preserve">
     <value>邀请朋友</value>
   </data>
-  <data name="btnRejectText" xml:space="preserve">
-    <value>拒绝</value>
-  </data>
-  <data name="btnFriendRequestsText" xml:space="preserve">
-    <value>好友请求</value>
-  </data>
-  <data name="errorTitle" xml:space="preserve">
-    <value>错误</value>
-  </data>
-  <data name="infoTitle" xml:space="preserve">
-    <value>信息</value>
-  </data>
-  <data name="lblMatchSettingsText" xml:space="preserve">
-    <value>比赛设置</value>
-  </data>
-  <data name="lblDifficultyText" xml:space="preserve">
-    <value>困难</value>
-  </data>
-  <data name="lblBoardSizeText" xml:space="preserve">
-    <value>板尺寸</value>
-  </data>
-  <data name="lblPlayersText" xml:space="preserve">
-    <value>玩家</value>
-  </data>
-  <data name="lblSpecialTilesText" xml:space="preserve">
-    <value>特种瓷砖</value>
-  </data>
   <data name="friendAcceptedText" xml:space="preserve">
     <value>已接受好友请求</value>
   </data>
@@ -486,5 +458,56 @@
   </data>
   <data name="errorRemovingFriendText" xml:space="preserve">
     <value>无法删除好友</value>
+  </data>
+  <data name="errorTitle" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="infoTitle" xml:space="preserve">
+    <value>信息</value>
+  </data>
+  <data name="btnRejectText" xml:space="preserve">
+    <value>拒绝</value>
+  </data>
+  <data name="btnFriendRequestsText" xml:space="preserve">
+    <value>好友请求</value>
+  </data>
+  <data name="lblProfileTitle" xml:space="preserve">
+    <value>我的个人资料</value>
+  </data>
+  <data name="menuEditAccountText" xml:space="preserve">
+    <value>编辑帐户</value>
+  </data>
+  <data name="menuDeleteAccountText" xml:space="preserve">
+    <value>删除帐户</value>
+  </data>
+  <data name="menuViewStatsText" xml:space="preserve">
+    <value>查看我的统计数据</value>
+  </data>
+  <data name="lblProfileEditModeText" xml:space="preserve">
+    <value>个人资料编辑模式</value>
+  </data>
+  <data name="btnChangeAvatarText" xml:space="preserve">
+    <value>更改头像</value>
+  </data>
+  <data name="lblProfileUserNameCaptionText" xml:space="preserve">
+    <value>用户名</value>
+  </data>
+  <data name="lblProfileFirstNameText" xml:space="preserve">
+    <value>名</value>
+  </data>
+  <data name="lblProfileLastNameText" xml:space="preserve">
+    <value>姓</value>
+  </data>
+  <data name="lblProfileDescriptionText" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="btnProfileEditText" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="btnProfileSaveText" xml:space="preserve">
+    <value>节省</value>
+  </data>
+  <data name="lblSelectAvatarTitleText" xml:space="preserve">
+    <value>选择您的头像</value>
   </data>
 </root>

@@ -124,6 +124,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Change avatar.
+        /// </summary>
+        public static string btnChangeAvatarText {
+            get {
+                return ResourceManager.GetString("btnChangeAvatarText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Create Match.
         /// </summary>
         public static string btnCreateMatchText {
@@ -255,6 +264,24 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string btnPlayAsGuestText {
             get {
                 return ResourceManager.GetString("btnPlayAsGuestText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Edit.
+        /// </summary>
+        public static string btnProfileEditText {
+            get {
+                return ResourceManager.GetString("btnProfileEditText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Save.
+        /// </summary>
+        public static string btnProfileSaveText {
+            get {
+                return ResourceManager.GetString("btnProfileSaveText", resourceCulture);
             }
         }
         
@@ -745,6 +772,60 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Description.
+        /// </summary>
+        public static string lblProfileDescriptionText {
+            get {
+                return ResourceManager.GetString("lblProfileDescriptionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Profile edit mode.
+        /// </summary>
+        public static string lblProfileEditModeText {
+            get {
+                return ResourceManager.GetString("lblProfileEditModeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a First name.
+        /// </summary>
+        public static string lblProfileFirstNameText {
+            get {
+                return ResourceManager.GetString("lblProfileFirstNameText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Last name.
+        /// </summary>
+        public static string lblProfileLastNameText {
+            get {
+                return ResourceManager.GetString("lblProfileLastNameText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a My profile.
+        /// </summary>
+        public static string lblProfileTitle {
+            get {
+                return ResourceManager.GetString("lblProfileTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Username.
+        /// </summary>
+        public static string lblProfileUserNameCaptionText {
+            get {
+                return ResourceManager.GetString("lblProfileUserNameCaptionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Players are sorted by their coin count.
         /// </summary>
         public static string lblRankingFooterText {
@@ -777,6 +858,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string lblReportDetailText {
             get {
                 return ResourceManager.GetString("lblReportDetailText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Select your avatar.
+        /// </summary>
+        public static string lblSelectAvatarTitleText {
+            get {
+                return ResourceManager.GetString("lblSelectAvatarTitleText", resourceCulture);
             }
         }
         
@@ -840,6 +930,33 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string listOfGamesTittle {
             get {
                 return ResourceManager.GetString("listOfGamesTittle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Delete account.
+        /// </summary>
+        public static string menuDeleteAccountText {
+            get {
+                return ResourceManager.GetString("menuDeleteAccountText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Edit account.
+        /// </summary>
+        public static string menuEditAccountText {
+            get {
+                return ResourceManager.GetString("menuEditAccountText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a View my stats.
+        /// </summary>
+        public static string menuViewStatsText {
+            get {
+                return ResourceManager.GetString("menuViewStatsText", resourceCulture);
             }
         }
         

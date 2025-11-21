@@ -28,7 +28,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 _mediaPlayer = new MediaPlayer { Volume = 0.0, IsMuted = true };
 
                 var baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                var videoPath = IOPath.Combine(baseDir, "Assets", "Videos", "loadingPageVideo.mp4");
+                var videoPath = IOPath.Combine(baseDir, "Assets", "Videos", "LoadingPageVideo.mp4");
                 var videoUri = new Uri(videoPath, UriKind.Absolute);
 
                 _mediaPlayer.Open(videoUri);

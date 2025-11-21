@@ -42,6 +42,13 @@ namespace SnakeAndLaddersFinalProject.Pages
         private const string ICON_URI_INFO = "pack://application:,,,/Assets/Icons/info.png";
         private const string ICON_URI_ERROR = "pack://application:,,,/Assets/Icons/error.png";
 
+        private const int LOGIN_LOADING_DELAY_MILLISECONDS = 500;
+
+        private static readonly Regex EMAIL_REGEX =
+            new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
+        private static readonly Random GUEST_RANDOM = new Random();
+
         public LoginPage()
         {
             InitializeComponent();
@@ -72,8 +79,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             {
                 errors.Add(T("UiIdentifierRequired"));
             }
-            else if (identifier.Contains("@") &&
-                     !Regex.IsMatch(identifier, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            else if (identifier.Contains("@") && !EMAIL_REGEX.IsMatch(identifier))
             {
                 errors.Add(T("UiEmailInvalid"));
             }
@@ -96,15 +102,23 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void SignUp(object sender, RoutedEventArgs e)
         {
-            btnNavLogin.IsChecked = false;
-            btnSignUp.IsChecked = false;
+            if (btnNavLogin != null)
+            {
+                btnNavLogin.IsChecked = false;
+            }
+
+            if (btnSignUp != null)
+            {
+                btnSignUp.IsChecked = false;
+            }
+
             NavigationService?.Navigate(new SignUpPage());
         }
 
         private async void Login(object sender, RoutedEventArgs e)
         {
-            string identifier = txtUsername.Text.Trim();
-            string password = pwdPassword.Password;
+            string identifier = txtUsername.Text?.Trim() ?? string.Empty;
+            string password = pwdPassword.Password ?? string.Empty;
 
             string[] errors = ValidateLogin(identifier, password);
             if (errors.Any())
@@ -120,26 +134,25 @@ namespace SnakeAndLaddersFinalProject.Pages
             };
 
             var authClient = new AuthService.AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
-
             dynamic response = null;
-            Window owner = Window.GetWindow(this);
 
             try
             {
-                owner?.Dispatcher.Invoke(() =>
+                Dispatcher.Invoke(() =>
                 {
-                    var frame = owner.FindName("MainFrame") as Frame;
-                    frame?.Navigate(new LoadingPage());
+                    Frame mainFrame = GetMainFrame();
+                    mainFrame?.Navigate(new LoadingPage());
                 });
 
-                await Task.Delay(500);
+                await Task.Delay(LOGIN_LOADING_DELAY_MILLISECONDS).ConfigureAwait(true);
 
-                response = await Task.Run(() => authClient.Login(loginDto));
+                response = await Task.Run(() => authClient.Login(loginDto)).ConfigureAwait(true);
 
                 bool isSuccess;
+
                 try
                 {
-                    isSuccess = (bool)(response?.Success ?? false);
+                    isSuccess = response?.Success == true;
                 }
                 catch
                 {
@@ -201,6 +214,13 @@ namespace SnakeAndLaddersFinalProject.Pages
                         currentSkinUnlockedId = null;
                     }
 
+                    if (SessionContext.Current == null)
+                    {
+                        ShowError(T("UiGenericError"));
+                        authClient.Close();
+                        return;
+                    }
+
                     SessionContext.Current.UserId = userId;
                     SessionContext.Current.UserName =
                         string.IsNullOrWhiteSpace(displayName) ? identifier : displayName;
@@ -218,18 +238,32 @@ namespace SnakeAndLaddersFinalProject.Pages
                             "Sesión iniciada, pero el servicio no devolvió token. Algunas funciones pueden no estar disponibles.");
                     }
 
-                    owner?.Dispatcher.Invoke(() =>
+                    Dispatcher.Invoke(() =>
                     {
-                        var frame = owner.FindName("MainFrame") as Frame;
-                        frame?.Navigate(new MainPage());
+                        Frame mainFrame = GetMainFrame();
+                        if (mainFrame != null)
+                        {
+                            mainFrame.Navigate(new MainPage());
+                            return;
+                        }
+
+                        NavigationService?.Navigate(new MainPage());
                     });
+
+                    authClient.Close();
                 }
                 else
                 {
-                    owner?.Dispatcher.Invoke(() =>
+                    Dispatcher.Invoke(() =>
                     {
-                        var frame = owner.FindName("MainFrame") as Frame;
-                        frame?.Navigate(new LoginPage());
+                        Frame mainFrame = GetMainFrame();
+                        if (mainFrame != null)
+                        {
+                            mainFrame.Navigate(new LoginPage());
+                            return;
+                        }
+
+                        NavigationService?.Navigate(new LoginPage());
                     });
 
                     string code;
@@ -254,32 +288,50 @@ namespace SnakeAndLaddersFinalProject.Pages
                     }
 
                     ShowWarn(MapAuth(code, meta));
+                    authClient.Close();
                 }
-
-                authClient.Close();
             }
             catch (System.ServiceModel.EndpointNotFoundException)
             {
-                owner?.Dispatcher.Invoke(() =>
+                Dispatcher.Invoke(() =>
                 {
-                    var frame = owner.FindName("MainFrame") as Frame;
-                    frame?.Navigate(new LoginPage());
+                    Frame mainFrame = GetMainFrame();
+                    if (mainFrame != null)
+                    {
+                        mainFrame.Navigate(new LoginPage());
+                        return;
+                    }
+
+                    NavigationService?.Navigate(new LoginPage());
                 });
 
                 ShowError(T("UiEndpointNotFound"));
                 authClient.Abort();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                owner?.Dispatcher.Invoke(() =>
+                Dispatcher.Invoke(() =>
                 {
-                    var frame = owner.FindName("MainFrame") as Frame;
-                    frame?.Navigate(new LoginPage());
+                    Frame mainFrame = GetMainFrame();
+                    if (mainFrame != null)
+                    {
+                        mainFrame.Navigate(new LoginPage());
+                        return;
+                    }
+
+                    NavigationService?.Navigate(new LoginPage());
                 });
 
-                ShowError($"{T("UiGenericError")} {ex.Message}");
+                // No exponemos detalles técnicos al usuario
+                ShowError(T("UiGenericError"));
                 authClient.Abort();
             }
+        }
+
+        private Frame GetMainFrame()
+        {
+            Window owner = Window.GetWindow(this) ?? Application.Current?.MainWindow;
+            return owner?.FindName("MainFrame") as Frame;
         }
 
         private static string TryGetToken(dynamic response)
@@ -311,7 +363,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void ShowDialog(string title, string message, DialogButtons buttons, string iconPackUri = null)
         {
-            Window owner = Window.GetWindow(this);
+            Window owner = Window.GetWindow(this) ?? Application.Current?.MainWindow;
             _ = DialogBasicWindow.Show(owner, title, message, buttons, iconPackUri);
         }
 
@@ -398,20 +450,31 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void NavLogin(object sender, RoutedEventArgs e)
         {
-            btnNavLogin.IsChecked = true;
-            btnSignUp.IsChecked = false;
+            if (btnNavLogin != null)
+            {
+                btnNavLogin.IsChecked = true;
+            }
+
+            if (btnSignUp != null)
+            {
+                btnSignUp.IsChecked = false;
+            }
         }
 
         private void PlayAsGuest(object sender, RoutedEventArgs e)
         {
             try
             {
-                var random = new Random();
+                if (SessionContext.Current == null)
+                {
+                    ShowError(T("UiGenericError"));
+                    return;
+                }
 
-                int suffix = random.Next(GUEST_SUFFIX_MIN_VALUE, GUEST_SUFFIX_MAX_EXCLUSIVE);
+                int suffix = GUEST_RANDOM.Next(GUEST_SUFFIX_MIN_VALUE, GUEST_SUFFIX_MAX_EXCLUSIVE);
                 string guestName = $"{GUEST_NAME_PREFIX}{suffix:D2}";
 
-                int guestRandomId = random.Next(GUEST_ID_MIN_VALUE, GUEST_ID_MAX_EXCLUSIVE);
+                int guestRandomId = GUEST_RANDOM.Next(GUEST_ID_MIN_VALUE, GUEST_ID_MAX_EXCLUSIVE);
                 int guestUserId = guestRandomId * -1;
 
                 SessionContext.Current.UserId = guestUserId;
@@ -424,18 +487,16 @@ namespace SnakeAndLaddersFinalProject.Pages
                 SessionContext.Current.CurrentSkinId = DEFAULT_GUEST_SKIN_ID;
                 SessionContext.Current.CurrentSkinUnlockedId = null;
 
-                if (NavigationService != null)
-                {
-                    NavigationService.Navigate(new MainPage());
-                    return;
-                }
-
-                Window currentWindow = Window.GetWindow(this);
-                var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
+                Frame mainFrame = GetMainFrame();
                 if (mainFrame != null)
                 {
                     mainFrame.Navigate(new MainPage());
                     return;
+                }
+
+                if (NavigationService != null)
+                {
+                    NavigationService.Navigate(new MainPage());
                 }
             }
             catch
@@ -446,9 +507,14 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
-            Window currentWindow = Window.GetWindow(this);
-            var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
-            mainFrame?.Navigate(new SettingsPage());
+            Frame mainFrame = GetMainFrame();
+            if (mainFrame != null)
+            {
+                mainFrame.Navigate(new SettingsPage());
+                return;
+            }
+
+            NavigationService?.Navigate(new SettingsPage());
         }
     }
 }

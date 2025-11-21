@@ -26,6 +26,12 @@ namespace SnakeAndLaddersFinalProject.UserService {
         private int CoinsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CurrentSkinIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> CurrentSkinUnlockedIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string FirstNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -65,6 +71,32 @@ namespace SnakeAndLaddersFinalProject.UserService {
                 if ((this.CoinsField.Equals(value) != true)) {
                     this.CoinsField = value;
                     this.RaisePropertyChanged("Coins");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CurrentSkinId {
+            get {
+                return this.CurrentSkinIdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CurrentSkinIdField, value) != true)) {
+                    this.CurrentSkinIdField = value;
+                    this.RaisePropertyChanged("CurrentSkinId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> CurrentSkinUnlockedId {
+            get {
+                return this.CurrentSkinUnlockedIdField;
+            }
+            set {
+                if ((this.CurrentSkinUnlockedIdField.Equals(value) != true)) {
+                    this.CurrentSkinUnlockedIdField = value;
+                    this.RaisePropertyChanged("CurrentSkinUnlockedId");
                 }
             }
         }
@@ -361,6 +393,12 @@ namespace SnakeAndLaddersFinalProject.UserService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/UpdateProfile", ReplyAction="http://tempuri.org/IUserService/UpdateProfileResponse")]
         System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.UserService.AccountDto> UpdateProfileAsync(SnakeAndLaddersFinalProject.UserService.UpdateProfileRequestDto request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/DeactivateAccount", ReplyAction="http://tempuri.org/IUserService/DeactivateAccountResponse")]
+        void DeactivateAccount(int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/DeactivateAccount", ReplyAction="http://tempuri.org/IUserService/DeactivateAccountResponse")]
+        System.Threading.Tasks.Task DeactivateAccountAsync(int userId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -412,6 +450,14 @@ namespace SnakeAndLaddersFinalProject.UserService {
         
         public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.UserService.AccountDto> UpdateProfileAsync(SnakeAndLaddersFinalProject.UserService.UpdateProfileRequestDto request) {
             return base.Channel.UpdateProfileAsync(request);
+        }
+        
+        public void DeactivateAccount(int userId) {
+            base.Channel.DeactivateAccount(userId);
+        }
+        
+        public System.Threading.Tasks.Task DeactivateAccountAsync(int userId) {
+            return base.Channel.DeactivateAccountAsync(userId);
         }
     }
 }

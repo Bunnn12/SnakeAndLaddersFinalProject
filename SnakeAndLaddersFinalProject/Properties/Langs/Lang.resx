@@ -471,4 +471,43 @@
   <data name="btnFriendRequestsText" xml:space="preserve">
     <value>Friend requests</value>
   </data>
+  <data name="lblProfileTitle" xml:space="preserve">
+    <value>My profile</value>
+  </data>
+  <data name="menuEditAccountText" xml:space="preserve">
+    <value>Edit account</value>
+  </data>
+  <data name="menuDeleteAccountText" xml:space="preserve">
+    <value>Delete account</value>
+  </data>
+  <data name="menuViewStatsText" xml:space="preserve">
+    <value>View my stats</value>
+  </data>
+  <data name="lblProfileEditModeText" xml:space="preserve">
+    <value>Profile edit mode</value>
+  </data>
+  <data name="btnChangeAvatarText" xml:space="preserve">
+    <value>Change avatar</value>
+  </data>
+  <data name="lblProfileUserNameCaptionText" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="lblProfileFirstNameText" xml:space="preserve">
+    <value>First name</value>
+  </data>
+  <data name="lblProfileLastNameText" xml:space="preserve">
+    <value>Last name</value>
+  </data>
+  <data name="lblProfileDescriptionText" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="btnProfileEditText" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="btnProfileSaveText" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="lblSelectAvatarTitleText" xml:space="preserve">
+    <value>Select your avatar</value>
+  </data>
 </root>

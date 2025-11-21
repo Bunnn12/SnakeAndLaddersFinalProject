@@ -165,6 +165,9 @@
     <Compile Include="Pages\FriendRequestsPage.xaml.cs">
       <DependentUpon>FriendRequestsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ProfileStatsPage.xaml.cs">
+      <DependentUpon>ProfileStatsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\RankingPage.xaml.cs">
       <DependentUpon>RankingPage.xaml</DependentUpon>
     </Compile>
@@ -325,6 +328,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\ProfilePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ProfileStatsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -810,6 +817,7 @@
     <Resource Include="Assets\Images\Stickers\ST024.png" />
     <Resource Include="Assets\Images\Stickers\ST025.png" />
     <Resource Include="Assets\Images\Stickers\ST026.png" />
+    <Resource Include="Assets\Images\Icons\CoinsIcon.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
