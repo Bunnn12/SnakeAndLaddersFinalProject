@@ -5,7 +5,6 @@ using System.ServiceModel;
 using log4net;
 using SnakeAndLaddersFinalProject.GameBoardService;
 
-
 using ClientBoardSizeOption = SnakeAndLaddersFinalProject.BoardSizeOption;
 using ServiceBoardSizeOption = SnakeAndLaddersFinalProject.GameBoardService.BoardSizeOption;
 
@@ -14,6 +13,7 @@ namespace SnakeAndLaddersFinalProject.Services
     public sealed class GameBoardClient
     {
         private const string ENDPOINT_NAME = "NetTcpBinding_IGameBoardService";
+        private const int INVALID_USER_ID = 0;
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(GameBoardClient));
 
@@ -31,8 +31,8 @@ namespace SnakeAndLaddersFinalProject.Services
                 throw new ArgumentOutOfRangeException(nameof(gameId));
             }
 
-            var normalizedPlayers = (playerUserIds ?? Enumerable.Empty<int>())
-                .Where(id => id > 0)
+            int[] normalizedPlayers = (playerUserIds ?? Enumerable.Empty<int>())
+                .Where(id => id != INVALID_USER_ID) // ⬅ invitado negativo pasa, solo bloquea 0
                 .Distinct()
                 .ToArray();
 
@@ -42,7 +42,6 @@ namespace SnakeAndLaddersFinalProject.Services
                 throw new InvalidOperationException("No hay jugadores válidos para crear el tablero.");
             }
 
-            // Map del enum del cliente al enum del servicio (por nombre, no por número)
             ServiceBoardSizeOption serviceBoardSize = MapBoardSize(boardSize);
 
             var client = new GameBoardServiceClient(ENDPOINT_NAME);

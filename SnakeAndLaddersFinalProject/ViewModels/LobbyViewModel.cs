@@ -27,6 +27,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const int POLL_INTERVAL_SECONDS = 2;
         private const int LOBBY_ID_NOT_SET = 0;
         private const int FALLBACK_LOCAL_USER_ID = 1;
+        private const int INVALID_USER_ID = 0;
 
         private const string STATUS_LOBBY_READY = "Lobby listo.";
         private const string STATUS_NO_LOBBY = "Sin lobby";
@@ -39,6 +40,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string STATUS_START_ERROR_PREFIX = "Error al iniciar: ";
         private const string STATUS_LEAVE_ERROR_PREFIX = "Error al salir: ";
         private const string STATUS_LEAVE_DEFAULT = "Saliste del lobby.";
+        private const string STATUS_NO_VALID_PLAYERS = "No hay jugadores válidos para crear el tablero.";
 
         private const string LOBBY_STATUS_WAITING = "Waiting";
         private const string LOBBY_STATUS_IN_MATCH = "InMatch";
@@ -53,11 +55,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public event Action CurrentUserKickedFromLobby;
 
         private readonly DispatcherTimer pollTimer =
-        new DispatcherTimer { Interval = TimeSpan.FromSeconds(POLL_INTERVAL_SECONDS) };
+            new DispatcherTimer { Interval = TimeSpan.FromSeconds(POLL_INTERVAL_SECONDS) };
 
         private readonly GameBoardClient gameBoardClient;
-
-
 
         private string statusText = STATUS_LOBBY_READY;
         private string codigoInput = string.Empty;
@@ -70,7 +70,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             InitializeCurrentUser();
 
-            gameBoardClient = new GameBoardClient();   
+            gameBoardClient = new GameBoardClient();
 
             CreateLobbyCommand = new AsyncCommand(CreateLobbyAsync);
             JoinLobbyCommand = new AsyncCommand(
@@ -85,7 +85,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             Members.CollectionChanged += OnMembersChanged;
         }
-
 
         public string StatusText
         {
@@ -179,7 +178,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private void InitializeCurrentUser()
         {
             var sessionContext = SessionContext.Current;
-            if (sessionContext != null && sessionContext.UserId != 0)
+            if (sessionContext != null && sessionContext.UserId != INVALID_USER_ID)
             {
                 CurrentUserId = sessionContext.UserId;
                 CurrentUserName = string.IsNullOrWhiteSpace(sessionContext.UserName)
@@ -416,7 +415,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                             out enableTeleportCells);
 
                         var playerUserIds = Members
-                            .Where(m => m != null && m.UserId > 0)
+                            .Where(m => m != null && m.UserId != INVALID_USER_ID)
                             .Select(m => m.UserId)
                             .Distinct()
                             .ToList();
@@ -424,7 +423,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                         if (playerUserIds.Count == 0)
                         {
                             Logger.Error("StartMatchAsync: no valid player IDs to create the board.");
-                            StatusText = "No hay jugadores válidos para crear el tablero.";
+                            StatusText = STATUS_NO_VALID_PLAYERS;
                             return;
                         }
 
@@ -457,7 +456,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                         hasNavigatedToBoard = true;
                         NavigateToBoardRequested?.Invoke(boardViewModel);
                     }
-
 
                     await Task.CompletedTask;
                 });
@@ -653,18 +651,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-
         private int ResolveLocalUserIdForBoard()
         {
-            if (CurrentUserId > 0)
+            if (CurrentUserId != INVALID_USER_ID)
             {
                 return CurrentUserId;
             }
 
-            Logger.Warn("ResolveLocalUserIdForBoard: CurrentUserId no es válido, se usará FALLBACK_LOCAL_USER_ID.");
+            Logger.Warn("ResolveLocalUserIdForBoard: CurrentUserId no está establecido, se usará FALLBACK_LOCAL_USER_ID.");
             return FALLBACK_LOCAL_USER_ID;
         }
-
 
         private void ApplyCreatedLobby(CreateGameResponse response)
         {
@@ -744,7 +740,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             Members.Clear();
 
             LobbyId = LOBBY_ID_NOT_SET;
-            HostUserId = 0;
+            HostUserId = INVALID_USER_ID;
             HostUserName = string.Empty;
             CodigoPartida = string.Empty;
             LobbyStatus = string.Empty;

@@ -190,7 +190,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 throw new ArgumentOutOfRangeException(nameof(gameId));
             }
 
-            if (localUserId <= 0)
+            if (localUserId == 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(localUserId));
             }
