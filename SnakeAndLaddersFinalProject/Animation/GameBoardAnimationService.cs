@@ -66,15 +66,12 @@ namespace SnakeAndLaddersFinalProject.Animation
                 {
                     int landingVisual = mapServerIndexToVisual(landingIndexServer);
 
-                    // Caminar hasta la casilla donde cae el dado
                     await AnimateWalkAsync(token, fromVisual, landingVisual).ConfigureAwait(false);
 
-                    // Deslizar por serpiente/escalera
                     await AnimateLinkSlideAsync(token, usedLink).ConfigureAwait(false);
                 }
                 else
                 {
-                    // Movimiento normal sin link
                     await AnimateWalkAsync(token, fromVisual, toVisual).ConfigureAwait(false);
                 }
             }
@@ -201,10 +198,6 @@ namespace SnakeAndLaddersFinalProject.Animation
 
             await Task.Delay(BOB_STEP_MS).ConfigureAwait(false);
         }
-
-        // ============================
-        // Paths de escalera/serpiente
-        // ============================
 
         private static IEnumerable<Point> GetStraightPathPoints(
             Point start,

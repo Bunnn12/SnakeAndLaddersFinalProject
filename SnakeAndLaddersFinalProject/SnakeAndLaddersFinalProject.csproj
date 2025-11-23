@@ -821,6 +821,53 @@
     <Resource Include="Assets\Images\Stickers\ST025.png" />
     <Resource Include="Assets\Images\Stickers\ST026.png" />
     <Resource Include="Assets\Images\Icons\CoinsIcon.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\002\002-Angry.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\002\002-Celebrating.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\002\002-Idle.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\002\002-Jumping.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\002\002-Walking.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\004\004-Angry.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\004\004-Celebrating.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\004\004-Idle.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\004\004-Jumping.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\004\004-Sad.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\004\004-Walking.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\005\005-Angry.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\005\005-Celebrating.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\005\005-Idle.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\005\005-Jumping.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\005\005-Sad.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\005\005-Walking.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\006\006-Angry.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\006\006-Celebrating.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\006\006-Idle.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\006\006-Jumping.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\006\006-Sad.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\006\006-Walking.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\007\007-Angry.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\007\007-Celebrating.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\007\007-Idle.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\007\007-Jumping.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\007\007-Sad.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\007\007-Walking.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\009\009-Celebrating.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\009\009-Idle.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\009\009-Jumping.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\009\009-Sad.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\009\009-Walking.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\009\009-Angry.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\010\010-Angry.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\010\010-Celebrating.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\010\010-Idle.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\010\010-Jumping.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\010\010-Sad.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\010\010-Walking.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\011\011-Angry.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\011\011-Celebrating.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\011\011-Idle.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\011\011-Jumping.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\011\011-Sad.png" />
+    <Resource Include="Assets\Images\Skins\SpriteSheets\011\011-Walking.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -841,6 +888,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Assets\Images\Skins\SpriteSheets\001\" />
+    <Folder Include="Assets\Images\Skins\SpriteSheets\003\" />
+    <Folder Include="Assets\Images\Skins\SpriteSheets\008\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

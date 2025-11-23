@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using log4net;
+using System.Diagnostics;
+using System.Globalization;
 
 namespace SnakeAndLaddersFinalProject.Utilities
 {
@@ -20,7 +22,9 @@ namespace SnakeAndLaddersFinalProject.Utilities
 
     public static class SkinAssetHelper
     {
-        private const string DEFAULT_SKIN_KEY = "003";
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(SkinAssetHelper));
+
+        private const string DEFAULT_SKIN_KEY = "004";
         private const int SKIN_CODE_DIGITS = 3;
 
         private const string TOKEN_PREFIX = "T";
@@ -30,24 +34,41 @@ namespace SnakeAndLaddersFinalProject.Utilities
         private const string BASE_SKINS_FOLDER = "/Assets/Images/Skins/";
         private const string TOKENS_SUBFOLDER = "Tokens/";
 
-       
-
         public static string NormalizeSkinKey(int skinId)
         {
             if (skinId <= 0)
             {
+                Logger.InfoFormat(
+                    "NormalizeSkinKey(int): skinId={0} inválido, usando default {1}.",
+                    skinId,
+                    DEFAULT_SKIN_KEY);
+
                 return DEFAULT_SKIN_KEY;
             }
 
-            return skinId.ToString(
+            string normalized = skinId.ToString(
                 "D" + SKIN_CODE_DIGITS.ToString(CultureInfo.InvariantCulture),
                 CultureInfo.InvariantCulture);
+
+            Logger.InfoFormat(
+                "NormalizeSkinKey(int): skinId={0} -> {1}.",
+                skinId,
+                normalized);
+
+            return normalized;
         }
 
         public static string NormalizeSkinKey(int? skinId)
         {
             if (!skinId.HasValue || skinId.Value <= 0)
             {
+                var stackTrace = new StackTrace();
+
+                Logger.WarnFormat(
+                    "NormalizeSkinKey(int?) llamado con NULL o <= 0. Usando default {0}. StackTrace:\n{1}",
+                    DEFAULT_SKIN_KEY,
+                    stackTrace);
+
                 return DEFAULT_SKIN_KEY;
             }
 
@@ -58,79 +79,103 @@ namespace SnakeAndLaddersFinalProject.Utilities
         {
             if (string.IsNullOrWhiteSpace(skinId))
             {
+                Logger.InfoFormat(
+                    "NormalizeSkinKey(string): skinId vacío o nulo, usando default {0}.",
+                    DEFAULT_SKIN_KEY);
+
                 return DEFAULT_SKIN_KEY;
             }
 
-            skinId = skinId.Trim();
+            string trimmed = skinId.Trim();
 
-            if (int.TryParse(skinId, NumberStyles.Integer, CultureInfo.InvariantCulture, out int numericId))
+            if (int.TryParse(trimmed, NumberStyles.Integer, CultureInfo.InvariantCulture, out int numericId))
             {
-                return NormalizeSkinKey(numericId); // "3" -> "003"
+                string normalizedFromInt = NormalizeSkinKey(numericId);
+
+                Logger.InfoFormat(
+                    "NormalizeSkinKey(string): raw='{0}' (num={1}) -> {2}.",
+                    skinId,
+                    numericId,
+                    normalizedFromInt);
+
+                return normalizedFromInt;
             }
 
-            // Si ya viene "003" o "012" se deja tal cual
-            return skinId;
+            Logger.InfoFormat(
+                "NormalizeSkinKey(string): raw='{0}' no numérico, se usa tal cual -> '{1}'.",
+                skinId,
+                trimmed);
+
+            return trimmed;
         }
 
         // ================= DESCRIPTOR LÓGICO =================
 
         public static SkinAssetDescriptor ResolveAssets(int? skinId)
         {
-            var skinKey = NormalizeSkinKey(skinId);
-            var tokenKey = TOKEN_PREFIX + skinKey; // T003
-            var idleKey = skinKey + IDLE_SUFFIX;   // 003-idle
-            var sadKey = skinKey + SAD_SUFFIX;     // 003-sad
+            string skinKey = NormalizeSkinKey(skinId);
+
+            Logger.InfoFormat(
+                "ResolveAssets(int?): skinId={0} -> skinKey='{1}'.",
+                skinId,
+                skinKey);
+
+            string tokenKey = TOKEN_PREFIX + skinKey; // T003
+            string idleKey = skinKey + IDLE_SUFFIX;   // 003-idle
+            string sadKey = skinKey + SAD_SUFFIX;     // 003-sad
 
             return new SkinAssetDescriptor(skinKey, tokenKey, idleKey, sadKey);
         }
 
         public static SkinAssetDescriptor ResolveAssets(string skinId)
         {
-            var skinKey = NormalizeSkinKey(skinId);
-            var tokenKey = TOKEN_PREFIX + skinKey;
-            var idleKey = skinKey + IDLE_SUFFIX;
-            var sadKey = skinKey + SAD_SUFFIX;
+            string skinKey = NormalizeSkinKey(skinId);
+
+            Logger.InfoFormat(
+                "ResolveAssets(string): skinId='{0}' -> skinKey='{1}'.",
+                skinId,
+                skinKey);
+
+            string tokenKey = TOKEN_PREFIX + skinKey;
+            string idleKey = skinKey + IDLE_SUFFIX;
+            string sadKey = skinKey + SAD_SUFFIX;
 
             return new SkinAssetDescriptor(skinKey, tokenKey, idleKey, sadKey);
         }
 
         // ================= RUTAS =================
 
-        // /Assets/Images/Skins/003.png
         public static string GetSkinRelativePath(string skinKey)
         {
             return $"{BASE_SKINS_FOLDER}{skinKey}.png";
         }
 
-        // /Assets/Images/Skins/Tokens/T003.png
         public static string GetTokenRelativePath(string skinKey)
         {
             return $"{BASE_SKINS_FOLDER}{TOKENS_SUBFOLDER}{TOKEN_PREFIX}{skinKey}.png";
         }
 
-        // Helpers desde IDs que vienen del server
-
         public static string GetSkinPathFromSkinId(string skinId)
         {
-            var skinKey = NormalizeSkinKey(skinId);
+            string skinKey = NormalizeSkinKey(skinId);
             return GetSkinRelativePath(skinKey);
         }
 
         public static string GetSkinPathFromSkinId(int? skinId)
         {
-            var skinKey = NormalizeSkinKey(skinId);
+            string skinKey = NormalizeSkinKey(skinId);
             return GetSkinRelativePath(skinKey);
         }
 
         public static string GetTokenPathFromSkinId(string skinId)
         {
-            var skinKey = NormalizeSkinKey(skinId);
+            string skinKey = NormalizeSkinKey(skinId);
             return GetTokenRelativePath(skinKey);
         }
 
         public static string GetTokenPathFromSkinId(int? skinId)
         {
-            var skinKey = NormalizeSkinKey(skinId);
+            string skinKey = NormalizeSkinKey(skinId);
             return GetTokenRelativePath(skinKey);
         }
     }

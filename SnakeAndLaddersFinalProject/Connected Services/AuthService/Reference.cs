@@ -135,6 +135,12 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         private string CodeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CurrentSkinIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> CurrentSkinUnlockedIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DisplayNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -180,6 +186,32 @@ namespace SnakeAndLaddersFinalProject.AuthService {
                 if ((object.ReferenceEquals(this.CodeField, value) != true)) {
                     this.CodeField = value;
                     this.RaisePropertyChanged("Code");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CurrentSkinId {
+            get {
+                return this.CurrentSkinIdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CurrentSkinIdField, value) != true)) {
+                    this.CurrentSkinIdField = value;
+                    this.RaisePropertyChanged("CurrentSkinId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> CurrentSkinUnlockedId {
+            get {
+                return this.CurrentSkinUnlockedIdField;
+            }
+            set {
+                if ((this.CurrentSkinUnlockedIdField.Equals(value) != true)) {
+                    this.CurrentSkinUnlockedIdField = value;
+                    this.RaisePropertyChanged("CurrentSkinUnlockedId");
                 }
             }
         }
