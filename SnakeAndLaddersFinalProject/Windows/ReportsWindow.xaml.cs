@@ -22,6 +22,7 @@ namespace SnakeAndLaddersFinalProject.Windows
 
         private const string REPORT_INVALID_CONTEXT_MESSAGE_TEXT_KEY = "Lang.ReportInvalidContextMessage";
         private const string REPORT_UNKNOWN_USER_DISPLAY_NAME_TEXT_KEY = "Lang.ReportUnknownUserDisplayName";
+        private const string REPORT_CONFIRM_MESSAGE_FORMAT_TEXT_KEY = "Lang.ReportConfirmMessageFormat"; 
         private const string REPORT_SENT_SUCCESSFULLY_MESSAGE_TEXT_KEY = "Lang.ReportSentSuccessfullyMessage";
         private const string REPORT_ENDPOINT_NOT_FOUND_MESSAGE_TEXT_KEY = "Lang.ReportEndpointNotFoundMessage";
         private const string REPORT_GENERIC_ERROR_MESSAGE_TEXT_KEY = "Lang.ReportGenericErrorMessage";
@@ -170,11 +171,7 @@ namespace SnakeAndLaddersFinalProject.Windows
             string targetName = string.IsNullOrWhiteSpace(ReportedUserName)
                 ? REPORT_UNKNOWN_USER_DISPLAY_NAME_TEXT_KEY
                 : ReportedUserName;
-
-            string message = string.Format(
-                "Estas seguro de que quieres reportar al usuario? -- Usar langs",
-                targetName,
-                reasonText);
+            string message = $"¿Confirma que desea reportar a **{targetName}** por el siguiente motivo: **{reasonText}**? ({"Lang.ReportConfirmMessageFormat"})";
 
             MessageBoxResult result = MessageBox.Show(
                 message,
