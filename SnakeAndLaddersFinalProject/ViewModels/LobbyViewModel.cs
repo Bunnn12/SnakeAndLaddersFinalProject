@@ -231,7 +231,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             (StartMatchCommand as AsyncCommand)?.RaiseCanExecuteChanged();
         }
 
-        private async Task UseLobbyClientAsync(Func<LobbyServiceClient, Task> action)
+        private static async Task UseLobbyClientAsync(Func<LobbyServiceClient, Task> action)
         {
             using (var client = new LobbyServiceClient(LOBBY_ENDPOINT))
             {
