@@ -22,6 +22,7 @@ namespace SnakeAndLaddersFinalProject.Authentication
         private string profilePhotoId;
         private string currentSkinId;
         private int? currentSkinUnlockedId;
+        private int coins;
 
         private SessionContext()
         {
@@ -43,6 +44,20 @@ namespace SnakeAndLaddersFinalProject.Authentication
             }
         }
 
+        public int Coins
+        {
+            get => coins;
+            set
+            {
+                if (coins == value)
+                {
+                    return;
+                }
+
+                coins = value;
+                OnPropertyChanged(nameof(Coins));
+            }
+        }
         public string UserName
         {
             get => userName;

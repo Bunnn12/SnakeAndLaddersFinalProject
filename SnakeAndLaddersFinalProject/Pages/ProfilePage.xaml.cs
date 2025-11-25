@@ -21,10 +21,9 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private const string NAME_ALLOWED_PATTERN = @"^[\p{L}\p{M}0-9 .,'\-]*$";
 
-        // Rango de IDs de avatares (A0001, A0002, ..., A0020)
         private const string AVATAR_ID_PREFIX = "A";
         private const int AVATAR_FIRST_INDEX = 1;
-        private const int AVATAR_LAST_INDEX = 20;
+        private const int AVATAR_LAST_INDEX = 23;
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(ProfilePage));
 

@@ -1,0 +1,731 @@
+﻿<Page x:Class="SnakeAndLaddersFinalProject.Pages.ShopPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
+      xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
+      mc:Ignorable="d"
+      d:DesignHeight="720"
+      d:DesignWidth="1280"
+      Title="ShopPage"
+      Background="Transparent"
+      Loaded="PageLoaded">
+
+    <Page.Resources>
+
+        <!-- Video fondo -->
+        <Storyboard x:Key="MainPageVideoStoryboard"
+                    RepeatBehavior="Forever">
+            <MediaTimeline
+                Source="pack://siteoforigin:,,,/Assets/Videos/MainPageVideo.mp4"
+                Storyboard.TargetName="VideoBg" />
+        </Storyboard>
+
+        <!-- Sombra -->
+        <DropShadowEffect x:Key="ShadowSoft"
+                          BlurRadius="18"
+                          ShadowDepth="0"
+                          Opacity="0.55" />
+
+        <!-- Botón icono (settings) -->
+        <Style x:Key="BtnIcon" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Effect" Value="{StaticResource ShadowSoft}" />
+            <Setter Property="ToolTipService.ShowDuration" Value="6000" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Opacity" Value="0.9" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Botón Back -->
+        <Style x:Key="BtnBackShop" TargetType="Button">
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Height" Value="80" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Effect" Value="{StaticResource ShadowSoft}" />
+        </Style>
+
+        <!-- Botón de tres puntitos -->
+        <Style x:Key="InfoDotsButton" TargetType="Button">
+            <Setter Property="Width" Value="26" />
+            <Setter Property="Height" Value="26" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Content" Value="..." />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+
+    </Page.Resources>
+
+    <!-- ROOT -->
+    <Grid Background="Transparent">
+
+        <!-- VIDEO DE FONDO -->
+        <MediaElement x:Name="VideoBg"
+                      IsMuted="True"
+                      Stretch="UniformToFill"
+                      IsHitTestVisible="False"
+                      Panel.ZIndex="-1"
+                      LoadedBehavior="Manual"
+                      UnloadedBehavior="Manual">
+            <MediaElement.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <BeginStoryboard Storyboard="{StaticResource MainPageVideoStoryboard}" />
+                </EventTrigger>
+            </MediaElement.Triggers>
+        </MediaElement>
+
+        <!-- VIEWBOX RESPONSIVO -->
+        <Viewbox Stretch="Uniform"
+                 StretchDirection="Both">
+            <Grid Width="1280"
+                  Height="720"
+                  Background="Transparent">
+
+                <!-- TARJETA NEGRA GRANDE -->
+                <Border Margin="32"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        CornerRadius="16"
+                        Padding="24">
+                    <Border.Background>
+                        <SolidColorBrush Color="#000000" Opacity="0.55" />
+                    </Border.Background>
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="18"
+                                          ShadowDepth="0"
+                                          Opacity="0.55" />
+                    </Border.Effect>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <!-- HEADER: Back + Título + Monedas + Settings -->
+                        <Grid Grid.Row="0" Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Back -->
+                            <Button x:Name="btnBack"
+                                    Grid.Column="0"
+                                    Style="{StaticResource BtnBackShop}"
+                                    ToolTip="{x:Static language:Lang.btnBackText}"
+                                    Click="Back">
+                                <Image Source="/Assets/Images/Icons/BackIcon.png"
+                                       Width="48"
+                                       Height="48"
+                                       Stretch="Fill"
+                                       RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                            </Button>
+
+                            <!-- Título STORE -->
+                            <TextBlock x:Name="lblStoreTitle"
+                                       Grid.Column="1"
+                                       Text="{x:Static language:Lang.lblStore}"
+                                       FontSize="34"
+                                       FontWeight="Bold"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="White" />
+
+                            <!-- Monedas + Settings -->
+                            <StackPanel Grid.Column="2"
+                                        Orientation="Horizontal"
+                                        VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0,0,12,0"
+                                            VerticalAlignment="Center">
+                                    <TextBlock x:Name="lblCoinsCaption"
+                                               Text="{x:Static language:Lang.lblCoinsQuantity}"
+                                               Foreground="White"
+                                               FontSize="16"
+                                               Margin="0,0,4,0"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock x:Name="lblCoinsValue"
+                                               Text="0"
+                                               FontWeight="Bold"
+                                               FontSize="18"
+                                               Foreground="White"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+
+                                <Button x:Name="btnSettings"
+                                        Style="{StaticResource BtnIcon}"
+                                        Width="60"
+                                        Height="60"
+                                        Click="btnSettings_Click"
+                                        ToolTip="{x:Static language:Lang.btnSettingsText}">
+                                    <Image Source="/Assets/Images/Icons/SettingsIcon.png"
+                                           Width="36"
+                                           Height="32"
+                                           Stretch="Fill"
+                                           RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- BODY SCROLLABLE -->
+                        <ScrollViewer Grid.Row="1"
+                                      VerticalScrollBarVisibility="Auto">
+                            <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+
+                                <!-- AVATAR CHESTS -->
+                                <StackPanel Margin="0,0,0,15">
+                                    <TextBlock x:Name="lblAvatarSectionTitleHeader"
+                                               Text="{x:Static language:Lang.lblAvatarSectionTitle}"
+                                               FontSize="22"
+                                               FontWeight="Bold"
+                                               Margin="0,0,0,5"
+                                               Foreground="White" />
+
+                                    <UniformGrid Columns="3" Margin="0,0,0,5">
+                                        <!-- Common -->
+                                        <Border BorderThickness="1"
+                                                BorderBrush="Gray"
+                                                Padding="8"
+                                                Margin="8"
+                                                Width="220"
+                                                Height="240"
+                                                Background="#66000000"
+                                                CornerRadius="10">
+                                            <Grid>
+                                                <Button x:Name="btnAvatarCommonInfo"
+                                                        Style="{StaticResource InfoDotsButton}"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Top"
+                                                        Margin="0,0,0,4"
+                                                        Click="btnAvatarCommonInfo_Click" />
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <Image x:Name="imgAvatarCommonChest"
+                                                           Height="80"
+                                                           Width="80"
+                                                           Stretch="Uniform"
+                                                           HorizontalAlignment="Center"
+                                                           Source="/Pages/Captura de pantalla 2024-12-02 215634.png" />
+                                                    <TextBlock x:Name="lblShopAvatarCommonTitleHeader"
+                                                               Text="{x:Static language:Lang.lblShopAvatarCommonTitle}"
+                                                               FontWeight="SemiBold"
+                                                               FontSize="20"
+                                                               Margin="0,8,0,2"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <TextBlock x:Name="lblAvatarCommonPriceHeader"
+                                                               Text="{x:Static language:Lang.lblAvatarCommonPrice}"
+                                                               FontSize="18"
+                                                               Margin="0,0,0,8"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <Button x:Name="btnAvatarCommonBuy"
+                                                            Content="{x:Static language:Lang.btnBuy}"
+                                                            Width="100"
+                                                            HorizontalAlignment="Center"
+                                                            Padding="6,2"
+                                                            FontSize="18"
+                                                            Click="btnAvatarCommonBuy_Click" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- Epic -->
+                                        <Border BorderThickness="1"
+                                                BorderBrush="Gray"
+                                                Padding="8"
+                                                Margin="8"
+                                                Width="220"
+                                                Height="240"
+                                                Background="#66000000"
+                                                CornerRadius="10">
+                                            <Grid>
+                                                <Button x:Name="btnAvatarEpicInfo"
+                                                        Style="{StaticResource InfoDotsButton}"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Top"
+                                                        Margin="0,0,0,4"
+                                                        Click="btnAvatarEpicInfo_Click" />
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <Image x:Name="imgAvatarEpicChest"
+                                                           Height="80"
+                                                           Width="80"
+                                                           Stretch="Uniform"
+                                                           HorizontalAlignment="Center"
+                                                           Source="/Pages/Captura de pantalla 2024-12-02 215634.png" />
+                                                    <TextBlock x:Name="lblShopAvatarEpicTitleHeader"
+                                                               Text="{x:Static language:Lang.lblShopAvatarEpicTitle}"
+                                                               FontWeight="SemiBold"
+                                                               FontSize="20"
+                                                               Margin="0,8,0,2"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <TextBlock x:Name="lblAvatarEpicPriceHeader"
+                                                               Text="{x:Static language:Lang.lblAvatarEpicPrice}"
+                                                               FontSize="18"
+                                                               Margin="0,0,0,8"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <Button x:Name="btnAvatarEpicBuy"
+                                                            Content="{x:Static language:Lang.btnBuy}"
+                                                            Width="100"
+                                                            HorizontalAlignment="Center"
+                                                            Padding="6,2"
+                                                            FontSize="18"
+                                                            Click="btnAvatarEpicBuy_Click" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- Legendary -->
+                                        <Border BorderThickness="1"
+                                                BorderBrush="Gray"
+                                                Padding="8"
+                                                Margin="8"
+                                                Width="220"
+                                                Height="240"
+                                                Background="#66000000"
+                                                CornerRadius="10">
+                                            <Grid>
+                                                <Button x:Name="btnAvatarLegendaryInfo"
+                                                        Style="{StaticResource InfoDotsButton}"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Top"
+                                                        Margin="0,0,0,4"
+                                                        Click="btnAvatarLegendaryInfo_Click" />
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <Image x:Name="imgAvatarLegendaryChest"
+                                                           Height="80"
+                                                           Width="80"
+                                                           Stretch="Uniform"
+                                                           HorizontalAlignment="Center"
+                                                           Source="/Pages/Captura de pantalla 2024-12-02 215634.png" />
+                                                    <TextBlock x:Name="lblAvatarLegendaryTitleHeader"
+                                                               Text="{x:Static language:Lang.lblAvatarLegendaryTitle}"
+                                                               FontWeight="SemiBold"
+                                                               FontSize="20"
+                                                               Margin="0,8,0,2"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <TextBlock x:Name="lblAvatarLegendaryPriceHeader"
+                                                               Text="{x:Static language:Lang.lblAvatarLegendaryPrice}"
+                                                               FontSize="18"
+                                                               Margin="0,0,0,8"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <Button x:Name="btnAvatarLegendaryBuy"
+                                                            Content="{x:Static language:Lang.btnBuy}"
+                                                            Width="100"
+                                                            HorizontalAlignment="Center"
+                                                            Padding="6,2"
+                                                            FontSize="18"
+                                                            Click="btnAvatarLegendaryBuy_Click" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </UniformGrid>
+                                </StackPanel>
+
+                                <!-- STICKER CHESTS -->
+                                <StackPanel Margin="0,0,0,15">
+                                    <TextBlock x:Name="lblStickerSectionTitleHeader"
+                                               Text="{x:Static language:Lang.StickerSectionTitle}"
+                                               FontSize="22"
+                                               FontWeight="Bold"
+                                               Margin="0,0,0,5"
+                                               Foreground="White" />
+
+                                    <UniformGrid Columns="3" Margin="0,0,0,5">
+                                        <!-- Common -->
+                                        <Border BorderThickness="1"
+                                                BorderBrush="Gray"
+                                                Padding="8"
+                                                Margin="8"
+                                                Width="220"
+                                                Height="240"
+                                                Background="#66000000"
+                                                CornerRadius="10">
+                                            <Grid>
+                                                <Button x:Name="btnStickerCommonInfo"
+                                                        Style="{StaticResource InfoDotsButton}"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Top"
+                                                        Margin="0,0,0,4"
+                                                        Click="btnStickerCommonInfo_Click" />
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <Image x:Name="imgStickerCommonChest"
+                                                           Height="80"
+                                                           Width="80"
+                                                           Stretch="Uniform"
+                                                           HorizontalAlignment="Center"
+                                                           Source="/Pages/Captura de pantalla 2024-12-02 215634.png" />
+                                                    <TextBlock x:Name="lblStickerCommonTitleHeader"
+                                                               Text="{x:Static language:Lang.stickerCommonTitle}"
+                                                               FontWeight="SemiBold"
+                                                               FontSize="20"
+                                                               Margin="0,8,0,2"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <TextBlock x:Name="lblStickerCommonPriceHeader"
+                                                               Text="{x:Static language:Lang.lblStickerCommonPrice}"
+                                                               FontSize="18"
+                                                               Margin="0,0,0,8"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <Button x:Name="btnStickerCommonBuy"
+                                                            Content="{x:Static language:Lang.btnBuy}"
+                                                            Width="100"
+                                                            HorizontalAlignment="Center"
+                                                            Padding="6,2"
+                                                            FontSize="18"
+                                                            Click="btnStickerCommonBuy_Click" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- Epic -->
+                                        <Border BorderThickness="1"
+                                                BorderBrush="Gray"
+                                                Padding="8"
+                                                Margin="8"
+                                                Width="220"
+                                                Height="240"
+                                                Background="#66000000"
+                                                CornerRadius="10">
+                                            <Grid>
+                                                <Button x:Name="btnStickerEpicInfo"
+                                                        Style="{StaticResource InfoDotsButton}"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Top"
+                                                        Margin="0,0,0,4"
+                                                        Click="btnStickerEpicInfo_Click" />
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <Image x:Name="imgStickerEpicChest"
+                                                           Height="80"
+                                                           Width="80"
+                                                           Stretch="Uniform"
+                                                           HorizontalAlignment="Center"
+                                                           Source="/Pages/Captura de pantalla 2024-12-02 215634.png" />
+                                                    <TextBlock x:Name="lblStickerEpicTitleHeader"
+                                                               Text="{x:Static language:Lang.lblStickerEpicText}"
+                                                               FontWeight="SemiBold"
+                                                               FontSize="20"
+                                                               Margin="0,8,0,2"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <TextBlock x:Name="lblStickerEpicPriceHeader"
+                                                               Text="{x:Static language:Lang.lblStickerEpicPrice}"
+                                                               FontSize="18"
+                                                               Margin="0,0,0,8"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <Button x:Name="btnStickerEpicBuy"
+                                                            Content="{x:Static language:Lang.btnBuy}"
+                                                            Width="100"
+                                                            HorizontalAlignment="Center"
+                                                            Padding="6,2"
+                                                            FontSize="18"
+                                                            Click="btnStickerEpicBuy_Click" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- Legendary -->
+                                        <Border BorderThickness="1"
+                                                BorderBrush="Gray"
+                                                Padding="8"
+                                                Margin="8"
+                                                Width="220"
+                                                Height="240"
+                                                Background="#66000000"
+                                                CornerRadius="10">
+                                            <Grid>
+                                                <Button x:Name="btnStickerLegendaryInfo"
+                                                        Style="{StaticResource InfoDotsButton}"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Top"
+                                                        Margin="0,0,0,4"
+                                                        Click="btnStickerLegendaryInfo_Click" />
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <Image x:Name="imgStickerLegendaryChest"
+                                                           Height="80"
+                                                           Width="80"
+                                                           Stretch="Uniform"
+                                                           HorizontalAlignment="Center"
+                                                           Source="/Pages/Captura de pantalla 2024-12-02 215634.png" />
+                                                    <TextBlock x:Name="lblStickerLegendaryTitleHeader"
+                                                               Text="{x:Static language:Lang.StickerLegendaryText}"
+                                                               FontWeight="SemiBold"
+                                                               FontSize="20"
+                                                               Margin="0,8,0,2"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <TextBlock x:Name="lblStickerLegendaryPriceHeader"
+                                                               Text="{x:Static language:Lang.StickerLegendaryPrice}"
+                                                               FontSize="18"
+                                                               Margin="0,0,0,8"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <Button x:Name="btnStickerLegendaryBuy"
+                                                            Content="{x:Static language:Lang.btnBuy}"
+                                                            Width="100"
+                                                            HorizontalAlignment="Center"
+                                                            Padding="6,2"
+                                                            FontSize="18"
+                                                            Click="btnStickerLegendaryBuy_Click" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </UniformGrid>
+                                </StackPanel>
+
+                                <!-- DICE -->
+                                <StackPanel Margin="0,0,0,15">
+                                    <TextBlock x:Name="lblDiceSectionTitleHeader"
+                                               Text="{x:Static language:Lang.lblDiceSectionTitle}"
+                                               FontSize="22"
+                                               FontWeight="Bold"
+                                               Margin="0,0,0,5"
+                                               Foreground="White" />
+
+                                    <UniformGrid Columns="3" Margin="0,0,0,5">
+                                        <!-- Negative -->
+                                        <Border BorderThickness="1"
+                                                BorderBrush="Gray"
+                                                Padding="8"
+                                                Margin="8"
+                                                Width="220"
+                                                Height="240"
+                                                Background="#66000000"
+                                                CornerRadius="10">
+                                            <Grid>
+                                                <Button x:Name="btnDiceNegativeInfo"
+                                                        Style="{StaticResource InfoDotsButton}"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Top"
+                                                        Margin="0,0,0,4"
+                                                        Click="btnDiceNegativeInfo_Click" />
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <Image x:Name="imgDiceNegative"
+                                                           Height="80"
+                                                           Width="80"
+                                                           Stretch="Uniform"
+                                                           HorizontalAlignment="Center"
+                                                           Source="/Pages/Captura de pantalla 2024-12-02 215634.png" />
+                                                    <TextBlock x:Name="lblDiceNegativeTitleHeader"
+                                                               Text="{x:Static language:Lang.lblDiceNegativeTitle}"
+                                                               FontWeight="SemiBold"
+                                                               FontSize="20"
+                                                               Margin="0,8,0,2"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <TextBlock x:Name="lblDiceNegativePriceHeader"
+                                                               Text="{x:Static language:Lang.lblDiceNegativePrice}"
+                                                               FontSize="18"
+                                                               Margin="0,0,0,8"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <Button x:Name="btnDiceNegativeBuy"
+                                                            Content="{x:Static language:Lang.btnBuy}"
+                                                            Width="100"
+                                                            HorizontalAlignment="Center"
+                                                            Padding="6,2"
+                                                            FontSize="18"
+                                                            Click="btnDiceNegativeBuy_Click" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- Dice 1-3 -->
+                                        <Border BorderThickness="1"
+                                                BorderBrush="Gray"
+                                                Padding="8"
+                                                Margin="8"
+                                                Width="220"
+                                                Height="240"
+                                                Background="#66000000"
+                                                CornerRadius="10">
+                                            <Grid>
+                                                <Button x:Name="btnDice123Info"
+                                                        Style="{StaticResource InfoDotsButton}"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Top"
+                                                        Margin="0,0,0,4"
+                                                        Click="btnDice123Info_Click" />
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <Image x:Name="imgDice123"
+                                                           Height="80"
+                                                           Width="80"
+                                                           Stretch="Uniform"
+                                                           HorizontalAlignment="Center"
+                                                           Source="/Pages/Captura de pantalla 2024-12-02 215634.png" />
+                                                    <TextBlock x:Name="lblDice123TitleHeader"
+                                                               Text="{x:Static language:Lang.lblDice123Title}"
+                                                               FontWeight="SemiBold"
+                                                               FontSize="20"
+                                                               Margin="0,8,0,2"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <TextBlock x:Name="lblDice123PriceHeader"
+                                                               Text="{x:Static language:Lang.lblDice123Price}"
+                                                               FontSize="18"
+                                                               Margin="0,0,0,8"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <Button x:Name="btnDice123Buy"
+                                                            Content="{x:Static language:Lang.btnBuy}"
+                                                            Width="100"
+                                                            HorizontalAlignment="Center"
+                                                            Padding="6,2"
+                                                            FontSize="18"
+                                                            Click="btnDice123Buy_Click" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- Dice 4-6 -->
+                                        <Border BorderThickness="1"
+                                                BorderBrush="Gray"
+                                                Padding="8"
+                                                Margin="8"
+                                                Width="220"
+                                                Height="240"
+                                                Background="#66000000"
+                                                CornerRadius="10">
+                                            <Grid>
+                                                <Button x:Name="btnDice456Info"
+                                                        Style="{StaticResource InfoDotsButton}"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Top"
+                                                        Margin="0,0,0,4"
+                                                        Click="btnDice456Info_Click" />
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <Image x:Name="imgDice456"
+                                                           Height="80"
+                                                           Width="80"
+                                                           Stretch="Uniform"
+                                                           HorizontalAlignment="Center"
+                                                           Source="/Pages/Captura de pantalla 2024-12-02 215634.png" />
+                                                    <TextBlock x:Name="lblDice456TitleHeader"
+                                                               Text="{x:Static language:Lang.lblDice456Title}"
+                                                               FontWeight="SemiBold"
+                                                               FontSize="20"
+                                                               Margin="0,8,0,2"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <TextBlock x:Name="lblDice456PriceHeader"
+                                                               Text="{x:Static language:Lang.lblDice456Price}"
+                                                               FontSize="18"
+                                                               Margin="0,0,0,8"
+                                                               TextAlignment="Center"
+                                                               Foreground="White" />
+                                                    <Button x:Name="btnDice456Buy"
+                                                            Content="{x:Static language:Lang.btnBuy}"
+                                                            Width="100"
+                                                            HorizontalAlignment="Center"
+                                                            Padding="6,2"
+                                                            FontSize="18"
+                                                            Click="btnDice456Buy_Click" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </UniformGrid>
+                                </StackPanel>
+
+                                <!-- ITEM CHEST -->
+                                <StackPanel Margin="0,0,0,15">
+                                    <TextBlock x:Name="lblItemSectionTitleHeader"
+                                               Text="{x:Static language:Lang.lblItemSectionTitle}"
+                                               FontSize="22"
+                                               FontWeight="Bold"
+                                               Margin="0,0,0,5"
+                                               Foreground="White" />
+
+                                    <Border BorderThickness="1"
+                                            BorderBrush="Gray"
+                                            Padding="8"
+                                            Margin="8"
+                                            Width="220"
+                                            Height="240"
+                                            Background="#66000000"
+                                            CornerRadius="10">
+                                        <Grid>
+                                            <Button x:Name="btnItemChestInfo"
+                                                    Style="{StaticResource InfoDotsButton}"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,0,0,4"
+                                                    Click="btnItemChestInfo_Click" />
+                                            <StackPanel VerticalAlignment="Center">
+                                                <Image x:Name="imgItemChest"
+                                                       Height="80"
+                                                       Width="80"
+                                                       Stretch="Uniform"
+                                                       HorizontalAlignment="Center"
+                                                       Source="/Pages/Captura de pantalla 2024-12-02 215634.png" />
+                                                <TextBlock x:Name="lblItemChestTitleHeader"
+                                                           Text="{x:Static language:Lang.lblItemChestTitle}"
+                                                           FontWeight="SemiBold"
+                                                           FontSize="20"
+                                                           Margin="0,8,0,2"
+                                                           TextAlignment="Center"
+                                                           Foreground="White" />
+                                                <TextBlock x:Name="lblItemChestPriceHeader"
+                                                           Text="{x:Static language:Lang.ItemChestPrice}"
+                                                           FontSize="18"
+                                                           Margin="0,0,0,8"
+                                                           TextAlignment="Center"
+                                                           Foreground="White" />
+                                                <Button x:Name="btnItemChestBuy"
+                                                        Content="{x:Static language:Lang.btnBuy}"
+                                                        Width="100"
+                                                        HorizontalAlignment="Center"
+                                                        Padding="6,2"
+                                                        FontSize="18"
+                                                        Click="btnItemChestBuy_Click" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+
+                            </StackPanel>
+                        </ScrollViewer>
+
+                    </Grid>
+                </Border>
+
+            </Grid>
+        </Viewbox>
+
+    </Grid>
+</Page>

@@ -537,4 +537,136 @@
   <data name="lblRankingTop50Position" xml:space="preserve">
     <value>Top-50 Ranking Position</value>
   </data>
+  <data name="lblAvatarSectionTitle" xml:space="preserve">
+    <value>Skins</value>
+  </data>
+  <data name="StickerSectionTitle" xml:space="preserve">
+    <value>Stickers</value>
+  </data>
+  <data name="lblDiceSectionTitle" xml:space="preserve">
+    <value>Dice</value>
+  </data>
+  <data name="lblItemSectionTitle" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="lblShopAvatarCommonTitle" xml:space="preserve">
+    <value>Common skin chest</value>
+  </data>
+  <data name="lblShopAvatarEpicTitle" xml:space="preserve">
+    <value>Epic skin chest</value>
+  </data>
+  <data name="lblAvatarLegendaryTitle" xml:space="preserve">
+    <value>Legendary skin chest</value>
+  </data>
+  <data name="lblAvatarCommonPrice" xml:space="preserve">
+    <value>Price: 200 coins</value>
+  </data>
+  <data name="lblAvatarEpicPrice" xml:space="preserve">
+    <value>Price: 400 coins</value>
+  </data>
+  <data name="lblAvatarLegendaryPrice" xml:space="preserve">
+    <value>Price: 800 coins</value>
+  </data>
+  <data name="stickerCommonTitle" xml:space="preserve">
+    <value>Common sticker chest</value>
+  </data>
+  <data name="lblStickerEpicText" xml:space="preserve">
+    <value>Epic sticker chest</value>
+  </data>
+  <data name="StickerLegendaryText" xml:space="preserve">
+    <value>Legendary sticker chest</value>
+  </data>
+  <data name="lblStickerCommonPrice" xml:space="preserve">
+    <value>Price: 150 coins</value>
+  </data>
+  <data name="lblStickerEpicPrice" xml:space="preserve">
+    <value>Price: 300 coins</value>
+  </data>
+  <data name="StickerLegendaryPrice" xml:space="preserve">
+    <value>Price: 600 coins</value>
+  </data>
+  <data name="lblDiceNegativeTitle" xml:space="preserve">
+    <value>Negative dice</value>
+  </data>
+  <data name="lblDice123Title" xml:space="preserve">
+    <value>1–3 dice</value>
+  </data>
+  <data name="lblDice456Title" xml:space="preserve">
+    <value>4–6 dice</value>
+  </data>
+  <data name="lblDiceNegativePrice" xml:space="preserve">
+    <value>Price: 300 coins</value>
+  </data>
+  <data name="lblDice123Price" xml:space="preserve">
+    <value>Price: 300 coins</value>
+  </data>
+  <data name="lblDice456Price" xml:space="preserve">
+    <value>Price: 300 coins</value>
+  </data>
+  <data name="lblItemChestTitle" xml:space="preserve">
+    <value>Item chest</value>
+  </data>
+  <data name="ItemChestPrice" xml:space="preserve">
+    <value>Price: 500 coins</value>
+  </data>
+  <data name="UiShopRequiresLogin" xml:space="preserve">
+    <value>You must sign in to use the shop</value>
+  </data>
+  <data name="UiShopRequiresRegisteredUser" xml:space="preserve">
+    <value>The shop is only available for registered accounts.</value>
+  </data>
+  <data name="UiShopRequiresToken" xml:space="preserve">
+    <value>Session token is missing. Please sign in again</value>
+  </data>
+  <data name="UiShopPurchaseSuccessFmt" xml:space="preserve">
+    <value>You obtained: {0}. Current coins: {1}</value>
+  </data>
+  <data name="ShopInvalidSessionError" xml:space="preserve">
+    <value>Invalid session. Please sign in again</value>
+  </data>
+  <data name="ShopInvalidUserIdError" xml:space="preserve">
+    <value>Invalid user</value>
+  </data>
+  <data name="ShopUserNotFoundError" xml:space="preserve">
+    <value>User not found</value>
+  </data>
+  <data name="ShopInsufficientCoinsWarn" xml:space="preserve">
+    <value>You do not have enough coins for this purchase</value>
+  </data>
+  <data name="ShopNoAvatarsForRarityWarn" xml:space="preserve">
+    <value>There are no skins available for that rarity</value>
+  </data>
+  <data name="ShopNoStickerPacksWarn" xml:space="preserve">
+    <value>There are no sticker packs available</value>
+  </data>
+  <data name="ShopInvalidDiceError" xml:space="preserve">
+    <value>Invalid dice</value>
+  </data>
+  <data name="ShopDiceNotFoundWarn" xml:space="preserve">
+    <value>Requested dice was not found</value>
+  </data>
+  <data name="ShopItemNotFoundWarn" xml:space="preserve">
+    <value>Requested item was not found</value>
+  </data>
+  <data name="ShopServerError" xml:space="preserve">
+    <value>A server error occurred in the shop</value>
+  </data>
+  <data name="ShopUnknownError" xml:space="preserve">
+    <value>An unknown error occurred in the shop</value>
+  </data>
+  <data name="ShopDice123Info" xml:space="preserve">
+    <value>Dice 1–3: Only rolls values from 1 to 3</value>
+  </data>
+  <data name="ShopDice456Info" xml:space="preserve">
+    <value>Dice 4–6: Only rolls values from 4 to 6</value>
+  </data>
+  <data name="ShopDiceNegativeInfo" xml:space="preserve">
+    <value>Negative dice: Increases chance of going backwards</value>
+  </data>
+  <data name="ShopItemChestInfo" xml:space="preserve">
+    <value>Item chest: Random mix of power-ups, you have chance of shields, boosts and traps</value>
+  </data>
+  <data name="UiShopChestInfoTitle" xml:space="preserve">
+    <value>Chest details</value>
+  </data>
 </root>

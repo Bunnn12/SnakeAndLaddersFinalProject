@@ -400,13 +400,15 @@
                                 Grid.Column="1"
                                 Margin="8,-24,8,0"
                                 Style="{StaticResource BtnIcon}"
-                                ToolTip="{x:Static language:Lang.btnShopText}">
+                                ToolTip="{x:Static language:Lang.btnShopText}"
+                                Click="BtnShop_Click">
                             <Image Width="96"
                                    Height="76"
                                    Source="/Assets/Images/Icons/StoreIcon.png"
                                    Stretch="Uniform"
                                    RenderOptions.BitmapScalingMode="NearestNeighbor" />
                         </Button>
+
 
                         <Button x:Name="btnInventory"
                                 Grid.Column="4"

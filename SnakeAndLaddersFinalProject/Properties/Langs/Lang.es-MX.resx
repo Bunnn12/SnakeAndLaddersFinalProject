@@ -537,4 +537,121 @@
   <data name="lblRankingTop50Position" xml:space="preserve">
     <value>Posición entre los primeros 50</value>
   </data>
+  <data name="lblAvatarSectionTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="StickerSectionTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblDiceSectionTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblItemSectionTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblShopAvatarCommonTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblShopAvatarEpicTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblAvatarLegendaryTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblAvatarCommonPrice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblAvatarEpicPrice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblAvatarLegendaryPrice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="stickerCommonTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblStickerEpicText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="StickerLegendaryText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblStickerCommonPrice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblStickerEpicPrice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="StickerLegendaryPrice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblDiceNegativeTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblDice123Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblDice456Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblDiceNegativePrice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblDice123Price" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblDice456Price" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblItemChestTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ItemChestPrice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UiShopRequiresLogin" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UiShopRequiresRegisteredUser" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UiShopRequiresToken" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UiShopPurchaseSuccessFmt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopInvalidSessionError" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopInvalidUserIdError" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopUserNotFoundError" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopInsufficientCoinsWarn" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopNoAvatarsForRarityWarn" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopNoStickerPacksWarn" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopInvalidDiceError" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopDiceNotFoundWarn" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopItemNotFoundWarn" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopServerError" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShopUnknownError" xml:space="preserve">
+    <value />
+  </data>
 </root>

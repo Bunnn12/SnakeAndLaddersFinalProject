@@ -35,12 +35,12 @@ namespace SnakeAndLaddersFinalProject.Pages
             AvatarId = SessionContext.Current?.ProfilePhotoId;
             InitializeCoins();
 
-            DataContext = this;
+            DataContext = SessionContext.Current;
         }
 
         private void InitializeCoins()
         {
-            Coins = DEFAULT_COINS;
+            SessionContext.Current.Coins = DEFAULT_COINS;
 
             var session = SessionContext.Current;
             string userName = session?.UserName;
@@ -57,7 +57,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 var account = client.GetProfileByUsername(userName);
                 if (account != null)
                 {
-                    Coins = account.Coins;
+                    SessionContext.Current.Coins = account.Coins; 
                 }
 
                 client.Close();
@@ -192,6 +192,12 @@ namespace SnakeAndLaddersFinalProject.Pages
                 var profilePage = new ProfilePage();
                 NavigateToPage(profilePage);
             }
+        }
+
+        private void BtnShop_Click(object sender, RoutedEventArgs e)
+        {
+            var shopPage = new ShopPage();
+            NavigateToPage(shopPage);
         }
     }
 }

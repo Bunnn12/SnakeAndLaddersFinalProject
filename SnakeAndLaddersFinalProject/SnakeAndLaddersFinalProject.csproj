@@ -126,6 +126,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Connected Services\ShopService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\StatsService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -171,6 +176,9 @@
     <Compile Include="Pages\RankingPage.xaml.cs">
       <DependentUpon>RankingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ShopPage.xaml.cs">
+      <DependentUpon>ShopPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Policies\PlayerReportPolicy.cs" />
     <Compile Include="Services\GameBoardClient.cs" />
     <Compile Include="Services\GameplayClient.cs" />
@@ -211,9 +219,6 @@
     <Compile Include="Pages\ProfilePage.xaml.cs">
       <DependentUpon>ProfilePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ReportsPage.xaml.cs">
-      <DependentUpon>ReportsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -225,9 +230,6 @@
     </Compile>
     <Compile Include="Pages\StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\StorePage.xaml.cs">
-      <DependentUpon>StorePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Services\GameplayClientCallback.cs" />
@@ -339,11 +341,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\ReportsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Pages\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ShopPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -356,10 +358,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\StartPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\StorePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -412,6 +410,7 @@
     <EmbeddedResource Include="Properties\Langs\Lang.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Lang.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Langs\Lang.zh-Hans.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -574,6 +573,22 @@
     <None Include="Connected Services\PlayerReportService\SnakeAndLaddersFinalProject.PlayerReportService.SanctionDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\ShopService\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ShopService\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ShopService\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ShopService\item3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ShopService\ShopService.wsdl" />
+    <None Include="Connected Services\ShopService\SnakeAndLaddersFinalProject.ShopService.ShopRewardDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\StatsService\item.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -641,6 +656,7 @@
     <WCFMetadataStorage Include="Connected Services\GameplayService\" />
     <WCFMetadataStorage Include="Connected Services\LobbyService\" />
     <WCFMetadataStorage Include="Connected Services\PlayerReportService\" />
+    <WCFMetadataStorage Include="Connected Services\ShopService\" />
     <WCFMetadataStorage Include="Connected Services\StatsService\" />
     <WCFMetadataStorage Include="Connected Services\UserService\" />
   </ItemGroup>
@@ -657,6 +673,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\ShopService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\ShopService\configuration.svcinfo" />
+    <None Include="Connected Services\ShopService\configuration91.svcinfo" />
+    <None Include="Connected Services\ShopService\item.disco" />
     <None Include="Connected Services\GameplayService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -713,7 +736,6 @@
     <None Include="Connected Services\LobbyService\configuration.svcinfo" />
     <None Include="Connected Services\LobbyService\configuration91.svcinfo" />
     <None Include="Connected Services\LobbyService\item.disco" />
-    <Resource Include="Pages\littleBackground.png" />
     <Resource Include="Assets\Images\BackgroundMainWindow.png" />
     <Resource Include="Assets\Images\BotonImg.png" />
     <Resource Include="Assets\Images\Icons\FriendsIcon.png" />
@@ -868,6 +890,26 @@
     <Resource Include="Assets\Images\Skins\SpriteSheets\011\011-Jumping.png" />
     <Resource Include="Assets\Images\Skins\SpriteSheets\011\011-Sad.png" />
     <Resource Include="Assets\Images\Skins\SpriteSheets\011\011-Walking.png" />
+    <Resource Include="Assets\Images\Stickers\ST027.png" />
+    <Resource Include="Assets\Images\Stickers\ST028.png" />
+    <Resource Include="Assets\Images\Stickers\ST029.png" />
+    <Resource Include="Assets\Images\Stickers\ST030.png" />
+    <Resource Include="Assets\Images\Stickers\ST031.png" />
+    <Resource Include="Assets\Images\Stickers\ST032.png" />
+    <Resource Include="Assets\Images\Stickers\ST033.png" />
+    <Resource Include="Assets\Images\Stickers\ST034.png" />
+    <Resource Include="Assets\Images\Stickers\ST035.png" />
+    <Resource Include="Assets\Images\Stickers\ST036.png" />
+    <Resource Include="Assets\Images\Stickers\ST037.png" />
+    <Resource Include="Assets\Images\Stickers\ST038.png" />
+    <Resource Include="Assets\Images\Stickers\ST039.png" />
+    <Resource Include="Assets\Images\Stickers\ST040.png" />
+    <Resource Include="Assets\Images\Stickers\ST041.png" />
+    <Resource Include="Assets\Images\Stickers\ST042.png" />
+    <Resource Include="Assets\Images\Stickers\ST043.png" />
+    <Resource Include="Assets\Images\Stickers\ST044.png" />
+    <Resource Include="Assets\Images\Stickers\ST045.png" />
+    <Resource Include="Assets\Images\Stickers\ST046.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

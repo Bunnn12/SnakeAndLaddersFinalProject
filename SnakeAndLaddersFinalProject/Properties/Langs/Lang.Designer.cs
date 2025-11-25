@@ -583,11 +583,65 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Price: 500 coins.
+        /// </summary>
+        public static string ItemChestPrice {
+            get {
+                return ResourceManager.GetString("ItemChestPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Add friends.
         /// </summary>
         public static string lblAddFriends {
             get {
                 return ResourceManager.GetString("lblAddFriends", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Price: 200 coins.
+        /// </summary>
+        public static string lblAvatarCommonPrice {
+            get {
+                return ResourceManager.GetString("lblAvatarCommonPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Price: 400 coins.
+        /// </summary>
+        public static string lblAvatarEpicPrice {
+            get {
+                return ResourceManager.GetString("lblAvatarEpicPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Price: 800 coins.
+        /// </summary>
+        public static string lblAvatarLegendaryPrice {
+            get {
+                return ResourceManager.GetString("lblAvatarLegendaryPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Legendary skin chest.
+        /// </summary>
+        public static string lblAvatarLegendaryTitle {
+            get {
+                return ResourceManager.GetString("lblAvatarLegendaryTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Skins.
+        /// </summary>
+        public static string lblAvatarSectionTitle {
+            get {
+                return ResourceManager.GetString("lblAvatarSectionTitle", resourceCulture);
             }
         }
         
@@ -633,6 +687,69 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string lblCurrentCoins {
             get {
                 return ResourceManager.GetString("lblCurrentCoins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Price: 300 coins.
+        /// </summary>
+        public static string lblDice123Price {
+            get {
+                return ResourceManager.GetString("lblDice123Price", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a 1–3 dice.
+        /// </summary>
+        public static string lblDice123Title {
+            get {
+                return ResourceManager.GetString("lblDice123Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Price: 300 coins.
+        /// </summary>
+        public static string lblDice456Price {
+            get {
+                return ResourceManager.GetString("lblDice456Price", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a 4–6 dice.
+        /// </summary>
+        public static string lblDice456Title {
+            get {
+                return ResourceManager.GetString("lblDice456Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Price: 300 coins.
+        /// </summary>
+        public static string lblDiceNegativePrice {
+            get {
+                return ResourceManager.GetString("lblDiceNegativePrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Negative dice.
+        /// </summary>
+        public static string lblDiceNegativeTitle {
+            get {
+                return ResourceManager.GetString("lblDiceNegativeTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Dice.
+        /// </summary>
+        public static string lblDiceSectionTitle {
+            get {
+                return ResourceManager.GetString("lblDiceSectionTitle", resourceCulture);
             }
         }
         
@@ -709,11 +826,29 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Item chest.
+        /// </summary>
+        public static string lblItemChestTitle {
+            get {
+                return ResourceManager.GetString("lblItemChestTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a items.
         /// </summary>
         public static string lblItems {
             get {
                 return ResourceManager.GetString("lblItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Items.
+        /// </summary>
+        public static string lblItemSectionTitle {
+            get {
+                return ResourceManager.GetString("lblItemSectionTitle", resourceCulture);
             }
         }
         
@@ -934,6 +1069,24 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Common skin chest.
+        /// </summary>
+        public static string lblShopAvatarCommonTitle {
+            get {
+                return ResourceManager.GetString("lblShopAvatarCommonTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Epic skin chest.
+        /// </summary>
+        public static string lblShopAvatarEpicTitle {
+            get {
+                return ResourceManager.GetString("lblShopAvatarEpicTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Sound.
         /// </summary>
         public static string lblSound {
@@ -957,6 +1110,33 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string lblStatsSectionTitle {
             get {
                 return ResourceManager.GetString("lblStatsSectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Price: 150 coins.
+        /// </summary>
+        public static string lblStickerCommonPrice {
+            get {
+                return ResourceManager.GetString("lblStickerCommonPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Price: 300 coins.
+        /// </summary>
+        public static string lblStickerEpicPrice {
+            get {
+                return ResourceManager.GetString("lblStickerEpicPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Epic sticker chest.
+        /// </summary>
+        public static string lblStickerEpicText {
+            get {
+                return ResourceManager.GetString("lblStickerEpicText", resourceCulture);
             }
         }
         
@@ -1132,6 +1312,177 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Dice 1–3: Only rolls values from 1 to 3.
+        /// </summary>
+        public static string ShopDice123Info {
+            get {
+                return ResourceManager.GetString("ShopDice123Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Dice 4–6: Only rolls values from 4 to 6.
+        /// </summary>
+        public static string ShopDice456Info {
+            get {
+                return ResourceManager.GetString("ShopDice456Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Negative dice: Increases chance of going backwards.
+        /// </summary>
+        public static string ShopDiceNegativeInfo {
+            get {
+                return ResourceManager.GetString("ShopDiceNegativeInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Requested dice was not found.
+        /// </summary>
+        public static string ShopDiceNotFoundWarn {
+            get {
+                return ResourceManager.GetString("ShopDiceNotFoundWarn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You do not have enough coins for this purchase.
+        /// </summary>
+        public static string ShopInsufficientCoinsWarn {
+            get {
+                return ResourceManager.GetString("ShopInsufficientCoinsWarn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Invalid dice.
+        /// </summary>
+        public static string ShopInvalidDiceError {
+            get {
+                return ResourceManager.GetString("ShopInvalidDiceError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Invalid session. Please sign in again.
+        /// </summary>
+        public static string ShopInvalidSessionError {
+            get {
+                return ResourceManager.GetString("ShopInvalidSessionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Invalid user.
+        /// </summary>
+        public static string ShopInvalidUserIdError {
+            get {
+                return ResourceManager.GetString("ShopInvalidUserIdError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Item chest: Random mix of power-ups, you have chance of shields, boosts and traps.
+        /// </summary>
+        public static string ShopItemChestInfo {
+            get {
+                return ResourceManager.GetString("ShopItemChestInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Requested item was not found.
+        /// </summary>
+        public static string ShopItemNotFoundWarn {
+            get {
+                return ResourceManager.GetString("ShopItemNotFoundWarn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a There are no skins available for that rarity.
+        /// </summary>
+        public static string ShopNoAvatarsForRarityWarn {
+            get {
+                return ResourceManager.GetString("ShopNoAvatarsForRarityWarn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a There are no sticker packs available.
+        /// </summary>
+        public static string ShopNoStickerPacksWarn {
+            get {
+                return ResourceManager.GetString("ShopNoStickerPacksWarn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a A server error occurred in the shop.
+        /// </summary>
+        public static string ShopServerError {
+            get {
+                return ResourceManager.GetString("ShopServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An unknown error occurred in the shop.
+        /// </summary>
+        public static string ShopUnknownError {
+            get {
+                return ResourceManager.GetString("ShopUnknownError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a User not found.
+        /// </summary>
+        public static string ShopUserNotFoundError {
+            get {
+                return ResourceManager.GetString("ShopUserNotFoundError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Common sticker chest.
+        /// </summary>
+        public static string stickerCommonTitle {
+            get {
+                return ResourceManager.GetString("stickerCommonTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Price: 600 coins.
+        /// </summary>
+        public static string StickerLegendaryPrice {
+            get {
+                return ResourceManager.GetString("StickerLegendaryPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Legendary sticker chest.
+        /// </summary>
+        public static string StickerLegendaryText {
+            get {
+                return ResourceManager.GetString("StickerLegendaryText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Stickers.
+        /// </summary>
+        public static string StickerSectionTitle {
+            get {
+                return ResourceManager.GetString("StickerSectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Friends list.
         /// </summary>
         public static string tvFriendsListText {
@@ -1281,6 +1632,51 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string UiResendCodeInFmt {
             get {
                 return ResourceManager.GetString("UiResendCodeInFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Chest details.
+        /// </summary>
+        public static string UiShopChestInfoTitle {
+            get {
+                return ResourceManager.GetString("UiShopChestInfoTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You obtained: {0}. Current coins: {1}.
+        /// </summary>
+        public static string UiShopPurchaseSuccessFmt {
+            get {
+                return ResourceManager.GetString("UiShopPurchaseSuccessFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You must sign in to use the shop.
+        /// </summary>
+        public static string UiShopRequiresLogin {
+            get {
+                return ResourceManager.GetString("UiShopRequiresLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The shop is only available for registered accounts..
+        /// </summary>
+        public static string UiShopRequiresRegisteredUser {
+            get {
+                return ResourceManager.GetString("UiShopRequiresRegisteredUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Session token is missing. Please sign in again.
+        /// </summary>
+        public static string UiShopRequiresToken {
+            get {
+                return ResourceManager.GetString("UiShopRequiresToken", resourceCulture);
             }
         }
         

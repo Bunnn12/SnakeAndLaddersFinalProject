@@ -27,6 +27,8 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
+                <!-- Nuevo: columna para el botón Editar cuenta -->
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <!-- Botón back -->
@@ -52,15 +54,28 @@
                        FontWeight="SemiBold"
                        VerticalAlignment="Center" />
 
+            <!-- Botón EDITAR CUENTA visible en el header -->
+            <Button x:Name="btnEditAccount"
+                    Grid.Column="2"
+                    Margin="8,0,8,40"
+                    Padding="12,8"
+                    Background="#FFD0E9DA"
+                    BorderBrush="#FFB0D9C4"
+                    Cursor="Hand"
+                    Click="BtnEditar_Click">
+                <TextBlock Text="{x:Static language:Lang.menuEditAccountText}"
+                           FontWeight="SemiBold" />
+            </Button>
+
             <!-- Botón menú (3 rayitas) -->
             <Button x:Name="btnMenu"
-                    Grid.Column="2"
+                    Grid.Column="3"
                     Width="36"
                     Height="32"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     Click="BtnMenu_Click"
-                    Cursor="Hand">
+                    Cursor="Hand" Margin="0,4,0,44">
                 <StackPanel Orientation="Vertical"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
@@ -71,9 +86,7 @@
 
                 <Button.ContextMenu>
                     <ContextMenu x:Name="cmAccountMenu">
-                        <MenuItem x:Name="miEditAccount"
-                                  Header="{x:Static language:Lang.menuEditAccountText}"
-                                  Click="MenuEditAccount_Click" />
+                        <!-- Quitado EditAccount del menú -->
                         <MenuItem x:Name="miDeleteAccount"
                                   Header="{x:Static language:Lang.menuDeleteAccountText}"
                                   Click="MenuDeleteAccount_Click" />

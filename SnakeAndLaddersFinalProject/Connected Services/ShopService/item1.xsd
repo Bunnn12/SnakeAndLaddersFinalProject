@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8085/shop/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" />
+  <xs:complexType name="ShopRewardDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CoinsAfter" type="xs:int" />
+      <xs:element minOccurs="0" name="CoinsBefore" type="xs:int" />
+      <xs:element minOccurs="0" name="IsNewForUser" type="xs:boolean" />
+      <xs:element minOccurs="0" name="RewardCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RewardId" type="xs:int" />
+      <xs:element minOccurs="0" name="RewardName" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" minOccurs="0" name="RewardType" type="q1:ShopRewardType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ShopRewardDto" nillable="true" type="tns:ShopRewardDto" />
+</xs:schema>
