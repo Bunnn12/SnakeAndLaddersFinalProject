@@ -129,8 +129,6 @@ namespace SnakeAndLaddersFinalProject.Pages
             btnCancelar.IsEnabled = enabled;
 
             borderEditBanner.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
-            borderProfileCard.BorderBrush = enabled ? EDIT_CARD_BORDER_BRUSH : NORMAL_CARD_BORDER_BRUSH;
-            borderProfileCard.Background = enabled ? EDIT_CARD_BACKGROUND_BRUSH : NORMAL_CARD_BACKGROUND_BRUSH;
         }
 
         private void BtnEditar_Click(object sender, RoutedEventArgs e)

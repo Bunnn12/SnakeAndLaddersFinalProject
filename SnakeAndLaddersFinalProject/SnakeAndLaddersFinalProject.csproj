@@ -910,6 +910,7 @@
     <Resource Include="Assets\Images\Stickers\ST044.png" />
     <Resource Include="Assets\Images\Stickers\ST045.png" />
     <Resource Include="Assets\Images\Stickers\ST046.png" />
+    <Resource Include="Assets\Images\Avatars\A0023.jpg" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
