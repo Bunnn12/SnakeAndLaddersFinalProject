@@ -41,6 +41,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string STATUS_LEAVE_ERROR_PREFIX = "Error al salir: ";
         private const string STATUS_LEAVE_DEFAULT = "Saliste del lobby.";
         private const string STATUS_NO_VALID_PLAYERS = "No hay jugadores válidos para crear el tablero.";
+        private const string LOG_BOARD_NOT_RETURNED_TEMPLATE = "El servidor no devolvió el tablero para LobbyId {0}. Intentaremos más tarde.";
 
         private const string LOBBY_STATUS_WAITING = "Waiting";
         private const string LOBBY_STATUS_IN_MATCH = "InMatch";
@@ -619,8 +620,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 if (boardDto == null)
                 {
-                    Logger.Warn(
-                        $"El servidor no devolvió el tablero para LobbyId {LobbyId}. Intentaremos más tarde.");
+                    Logger.Warn(LOG_BOARD_NOT_RETURNED_TEMPLATE);
                     hasNavigatedToBoard = false;
                     return;
                 }
