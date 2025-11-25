@@ -424,6 +424,8 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 case "Auth.EmailSendFailed":
                     return T("AuthEmailSendFailed");
+                case "Auth.AccountDeleted":
+                    return T("AuthAccountDeleted");
 
                 case "Auth.Banned":
                     if (metaDictionary.TryGetValue(META_KEY_SANCTION_TYPE, out string sanctionType) &&
