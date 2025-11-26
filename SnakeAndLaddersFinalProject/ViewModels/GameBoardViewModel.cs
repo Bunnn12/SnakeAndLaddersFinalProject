@@ -3,7 +3,6 @@ using SnakeAndLaddersFinalProject.Animation;
 using SnakeAndLaddersFinalProject.Game;
 using SnakeAndLaddersFinalProject.Game.Board;
 using SnakeAndLaddersFinalProject.Game.Gameplay;
-using SnakeAndLaddersFinalProject.Game.State;
 using SnakeAndLaddersFinalProject.GameBoardService;
 using SnakeAndLaddersFinalProject.GameplayService;
 using SnakeAndLaddersFinalProject.Infrastructure;
@@ -23,8 +22,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     public sealed class GameBoardViewModel : INotifyPropertyChanged, IGameplayEventsHandler
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(GameBoardViewModel));
-
-        private const int STATE_POLL_INTERVAL_SECONDS = 1;
 
         private const string UNKNOWN_ERROR_MESSAGE = "Unknown error.";
         private const string GAME_WINDOW_TITLE = "Juego";
@@ -46,12 +43,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private readonly GameBoardAnimationService _animationService;
         private readonly DiceSpriteAnimator _diceAnimator;
         private readonly AsyncCommand _rollDiceCommand;
-        private readonly GameBoardStatePoller _statePoller;
         private readonly GameplayEventsHandler _eventsHandler;
 
         private IGameplayClient _gameplayClient;
 
-        private int _startCellIndex;
+        private readonly int _startCellIndex;
         private int _currentTurnUserId;
         private bool _isMyTurn;
         private bool _isRollRequestInProgress;
@@ -122,7 +118,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             CornerPlayers = new CornerPlayersViewModel();
 
-            ObservableCollection<PlayerTokenViewModel> playerTokens = new ObservableCollection<PlayerTokenViewModel>();
+            ObservableCollection<PlayerTokenViewModel> playerTokens =
+                new ObservableCollection<PlayerTokenViewModel>();
+
             _tokenManager = new PlayerTokenManager(
                 playerTokens,
                 _cellCentersByIndex);
@@ -148,12 +146,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 Logger,
                 _localUserId,
                 UpdateTurnFromState);
-
-            TimeSpan pollInterval = TimeSpan.FromSeconds(STATE_POLL_INTERVAL_SECONDS);
-            _statePoller = new GameBoardStatePoller(
-                pollInterval,
-                SyncGameStateAsync,
-                Logger);
         }
 
         public async Task InitializeGameplayAsync(IGameplayClient client, string currentUserName)
@@ -165,13 +157,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             _gameplayClient = client;
 
-            _statePoller.Start();
-
             string safeUserName = string.IsNullOrWhiteSpace(currentUserName)
                 ? string.Format("User {0}", _localUserId)
                 : currentUserName.Trim();
 
             await JoinGameplayAsync(safeUserName).ConfigureAwait(false);
+
+            // Sync inicial ÚNICA para turno y fichas
             await SyncGameStateAsync().ConfigureAwait(false);
         }
 
@@ -289,7 +281,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                var response = await _gameplayClient
+                RollDiceResponseDto response = await _gameplayClient
                     .GetRollDiceAsync(_gameId, _localUserId)
                     .ConfigureAwait(false);
 
@@ -350,7 +342,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             try
             {
-                var stateResponse = await _gameplayClient
+                GetGameStateResponseDto stateResponse = await _gameplayClient
                     .GetGameStateAsync(_gameId)
                     .ConfigureAwait(false);
 
@@ -369,13 +361,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 if (PlayerTokens.Count > 0)
                 {
+                    // Ya hay fichas inicializadas, no duplicar
                     return;
                 }
 
                 await Application.Current.Dispatcher.InvokeAsync(
                     () =>
                     {
-                        foreach (var tokenState in stateResponse.Tokens)
+                        foreach (TokenStateDto tokenState in stateResponse.Tokens)
                         {
                             int userId = tokenState.UserId;
                             int cellIndexVisual = MapServerIndexToVisual(tokenState.CellIndex);
@@ -395,7 +388,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 Logger.Error(GAME_STATE_SYNC_ERROR_LOG_MESSAGE, ex);
             }
         }
-
 
         private void UpdateTurnFromState(int currentTurnUserIdFromServer)
         {

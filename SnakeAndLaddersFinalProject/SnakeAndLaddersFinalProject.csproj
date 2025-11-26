@@ -160,7 +160,6 @@
     <Compile Include="Game\Gameplay\GameplayEventsHandler.cs" />
     <Compile Include="Game\PlayerTokenManager.cs" />
     <Compile Include="Game\SpecialCellType.cs" />
-    <Compile Include="Game\State\GameBoardStatePoller.cs" />
     <Compile Include="Globalization\LocalizationManager.cs" />
     <Compile Include="Infrastructure\AsyncCommand.cs" />
     <Compile Include="Infrastructure\CollectionSyncExtensions.cs" />
