@@ -71,4 +71,48 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="SubscribePublicLobbies">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UnsubscribePublicLobbies">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OnLobbyUpdated">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" minOccurs="0" name="lobby" nillable="true" type="q11:LobbyInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OnLobbyClosed">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="partidaId" type="xs:int" />
+        <xs:element minOccurs="0" name="reason" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OnKickedFromLobby">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="partidaId" type="xs:int" />
+        <xs:element minOccurs="0" name="reason" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OnPublicLobbiesChanged">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" minOccurs="0" name="lobbies" nillable="true" type="q12:ArrayOfLobbySummary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

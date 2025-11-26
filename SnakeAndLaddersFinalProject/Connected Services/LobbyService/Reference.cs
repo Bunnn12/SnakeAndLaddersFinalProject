@@ -41,6 +41,9 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         private int HostUserIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsPrivateField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private byte MaxPlayersField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -136,6 +139,19 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
                 if ((this.HostUserIdField.Equals(value) != true)) {
                     this.HostUserIdField = value;
                     this.RaisePropertyChanged("HostUserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsPrivate {
+            get {
+                return this.IsPrivateField;
+            }
+            set {
+                if ((this.IsPrivateField.Equals(value) != true)) {
+                    this.IsPrivateField = value;
+                    this.RaisePropertyChanged("IsPrivate");
                 }
             }
         }
@@ -586,6 +602,9 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         private string HostUserNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsPrivateField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private byte MaxPlayersField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -687,6 +706,19 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
                 if ((object.ReferenceEquals(this.HostUserNameField, value) != true)) {
                     this.HostUserNameField = value;
                     this.RaisePropertyChanged("HostUserName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsPrivate {
+            get {
+                return this.IsPrivateField;
+            }
+            set {
+                if ((this.IsPrivateField.Equals(value) != true)) {
+                    this.IsPrivateField = value;
+                    this.RaisePropertyChanged("IsPrivate");
                 }
             }
         }
@@ -1165,8 +1197,149 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="LobbySummary", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class LobbySummary : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CodigoPartidaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int CurrentPlayersField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string DifficultyField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string HostUserNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsPrivateField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private byte MaxPlayersField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int PartidaIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CodigoPartida {
+            get {
+                return this.CodigoPartidaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CodigoPartidaField, value) != true)) {
+                    this.CodigoPartidaField = value;
+                    this.RaisePropertyChanged("CodigoPartida");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int CurrentPlayers {
+            get {
+                return this.CurrentPlayersField;
+            }
+            set {
+                if ((this.CurrentPlayersField.Equals(value) != true)) {
+                    this.CurrentPlayersField = value;
+                    this.RaisePropertyChanged("CurrentPlayers");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Difficulty {
+            get {
+                return this.DifficultyField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DifficultyField, value) != true)) {
+                    this.DifficultyField = value;
+                    this.RaisePropertyChanged("Difficulty");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string HostUserName {
+            get {
+                return this.HostUserNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.HostUserNameField, value) != true)) {
+                    this.HostUserNameField = value;
+                    this.RaisePropertyChanged("HostUserName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsPrivate {
+            get {
+                return this.IsPrivateField;
+            }
+            set {
+                if ((this.IsPrivateField.Equals(value) != true)) {
+                    this.IsPrivateField = value;
+                    this.RaisePropertyChanged("IsPrivate");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public byte MaxPlayers {
+            get {
+                return this.MaxPlayersField;
+            }
+            set {
+                if ((this.MaxPlayersField.Equals(value) != true)) {
+                    this.MaxPlayersField = value;
+                    this.RaisePropertyChanged("MaxPlayers");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int PartidaId {
+            get {
+                return this.PartidaIdField;
+            }
+            set {
+                if ((this.PartidaIdField.Equals(value) != true)) {
+                    this.PartidaIdField = value;
+                    this.RaisePropertyChanged("PartidaId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="LobbyService.ILobbyService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="LobbyService.ILobbyService", CallbackContract=typeof(SnakeAndLaddersFinalProject.LobbyService.ILobbyServiceCallback))]
     public interface ILobbyService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/CreateGame", ReplyAction="http://tempuri.org/ILobbyService/CreateGameResponse")]
@@ -1203,6 +1376,34 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/GetLobbyInfo", ReplyAction="http://tempuri.org/ILobbyService/GetLobbyInfoResponse")]
         System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.LobbyService.LobbyInfo> GetLobbyInfoAsync(SnakeAndLaddersFinalProject.LobbyService.GetLobbyInfoRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/SubscribePublicLobbies")]
+        void SubscribePublicLobbies(int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/SubscribePublicLobbies")]
+        System.Threading.Tasks.Task SubscribePublicLobbiesAsync(int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/UnsubscribePublicLobbies")]
+        void UnsubscribePublicLobbies(int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/UnsubscribePublicLobbies")]
+        System.Threading.Tasks.Task UnsubscribePublicLobbiesAsync(int userId);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface ILobbyServiceCallback {
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/OnLobbyUpdated")]
+        void OnLobbyUpdated(SnakeAndLaddersFinalProject.LobbyService.LobbyInfo lobby);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/OnLobbyClosed")]
+        void OnLobbyClosed(int partidaId, string reason);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/OnKickedFromLobby")]
+        void OnKickedFromLobby(int partidaId, string reason);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/OnPublicLobbiesChanged")]
+        void OnPublicLobbiesChanged(SnakeAndLaddersFinalProject.LobbyService.LobbySummary[] lobbies);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1211,25 +1412,26 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class LobbyServiceClient : System.ServiceModel.ClientBase<SnakeAndLaddersFinalProject.LobbyService.ILobbyService>, SnakeAndLaddersFinalProject.LobbyService.ILobbyService {
+    public partial class LobbyServiceClient : System.ServiceModel.DuplexClientBase<SnakeAndLaddersFinalProject.LobbyService.ILobbyService>, SnakeAndLaddersFinalProject.LobbyService.ILobbyService {
         
-        public LobbyServiceClient() {
+        public LobbyServiceClient(System.ServiceModel.InstanceContext callbackInstance) : 
+                base(callbackInstance) {
         }
         
-        public LobbyServiceClient(string endpointConfigurationName) : 
-                base(endpointConfigurationName) {
+        public LobbyServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) : 
+                base(callbackInstance, endpointConfigurationName) {
         }
         
-        public LobbyServiceClient(string endpointConfigurationName, string remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public LobbyServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public LobbyServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public LobbyServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public LobbyServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(binding, remoteAddress) {
+        public LobbyServiceClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, binding, remoteAddress) {
         }
         
         public SnakeAndLaddersFinalProject.LobbyService.CreateGameResponse CreateGame(SnakeAndLaddersFinalProject.LobbyService.CreateGameRequest request) {
@@ -1270,6 +1472,22 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         
         public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.LobbyService.LobbyInfo> GetLobbyInfoAsync(SnakeAndLaddersFinalProject.LobbyService.GetLobbyInfoRequest request) {
             return base.Channel.GetLobbyInfoAsync(request);
+        }
+        
+        public void SubscribePublicLobbies(int userId) {
+            base.Channel.SubscribePublicLobbies(userId);
+        }
+        
+        public System.Threading.Tasks.Task SubscribePublicLobbiesAsync(int userId) {
+            return base.Channel.SubscribePublicLobbiesAsync(userId);
+        }
+        
+        public void UnsubscribePublicLobbies(int userId) {
+            base.Channel.UnsubscribePublicLobbies(userId);
+        }
+        
+        public System.Threading.Tasks.Task UnsubscribePublicLobbiesAsync(int userId) {
+            return base.Channel.UnsubscribePublicLobbiesAsync(userId);
         }
     }
 }

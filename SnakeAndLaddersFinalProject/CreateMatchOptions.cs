@@ -16,11 +16,11 @@ namespace SnakeAndLaddersFinalProject
 
     public sealed class CreateMatchOptions
     {
-        public BoardSizeOption BoardSize { get; set; } = BoardSizeOption.TenByTen;
-        public DifficultyOption Difficulty { get; set; } = DifficultyOption.Medium;
-        public SpecialTileOptions SpecialTiles { get; set; } = SpecialTileOptions.None;
+        public BoardSizeOption BoardSize { get; set; }
+        public DifficultyOption Difficulty { get; set; }
+        public SpecialTileOptions SpecialTiles { get; set; }
         public bool IsPrivate { get; set; }
-        public string RoomKey { get; set; } = string.Empty;
-        public int Players { get; set; } = AppConstants.MIN_PLAYERS_TO_START;
+        public int Players { get; set; }
+        public string RoomKey { get; set; }
     }
 }

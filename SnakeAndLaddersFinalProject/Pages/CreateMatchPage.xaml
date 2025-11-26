@@ -93,7 +93,7 @@
                         <UniformGrid Columns="3"
                                      HorizontalAlignment="Stretch"
                                      Margin="0,0,0,4">
-                            <RadioButton x:Name="rdbSize7x7"
+                            <RadioButton x:Name="rdbSize8x8"
                                          GroupName="BoardSize"
                                          IsChecked="True"
                                          Height="172">

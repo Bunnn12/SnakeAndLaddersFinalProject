@@ -122,40 +122,13 @@ namespace SnakeAndLaddersFinalProject.Pages
             NavigateToPage(createMatchPage);
         }
 
-        private void NavigateToLobby(LobbyNavigationArgs navigationArgs)
-        {
-            if (navigationArgs == null)
-            {
-                throw new ArgumentNullException(nameof(navigationArgs));
-            }
-
-            var lobbyPage = new LobbyPage(navigationArgs);
-            NavigateToPage(lobbyPage);
-        }
 
         private void JoinMatch(object sender, RoutedEventArgs e)
         {
-            string joinCode = txtJoinCode.Text?.Trim();
-
-            if (string.IsNullOrWhiteSpace(joinCode))
-            {
-                MessageBox.Show(
-                    MESSAGE_JOIN_CODE_REQUIRED,
-                    TITLE_JOIN_MATCH,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-            }
-            else
-            {
-                var navigationArgs = new LobbyNavigationArgs
-                {
-                    Mode = LobbyEntryMode.Join,
-                    JoinCode = joinCode
-                };
-
-                NavigateToLobby(navigationArgs);
-            }
+            var matchListPage = new MatchListPage();
+            NavigateToPage(matchListPage);
         }
+
 
         private void BtnRanking_Click(object sender, RoutedEventArgs e)
         {

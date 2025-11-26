@@ -3,26 +3,133 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
       xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MatchListPage">
 
-    <Grid>
-        <Button x:Name="btnSettings" Content="{x:Static language:Lang.btnSettingsText}" HorizontalAlignment="Left" Margin="636,33,0,0" VerticalAlignment="Top" Height="30" Width="121"/>
-        <Button x:Name="btnBack" Content="{x:Static language:Lang.btnBackText}" HorizontalAlignment="Left" Margin="39,33,0,0" VerticalAlignment="Top" Height="30" Width="127"/>
-        <Button x:Name="btnFriends" Content="{x:Static language:Lang.btnFriendsText}" HorizontalAlignment="Left" Margin="39,370,0,0" VerticalAlignment="Top" Height="30" Width="115"/>
-        <Button x:Name="btnShop" Content="{x:Static language:Lang.btnShopText}" HorizontalAlignment="Center" Margin="0,370,0,0" VerticalAlignment="Top" Height="30" Width="106"/>
-        <Button x:Name="btnInventory" Content="{x:Static language:Lang.btnInventoryText}" HorizontalAlignment="Left" Margin="197,370,0,0" VerticalAlignment="Top" Height="30" Width="107"/>
-        <Button x:Name="btnSkins" Content="{x:Static language:Lang.btnSkinsText}" HorizontalAlignment="Left" Margin="503,370,0,0" VerticalAlignment="Top" Height="30" Width="105"/>
-        <Button x:Name="btnProfile" Content="{x:Static language:Lang.btnProfileText}" HorizontalAlignment="Left" Margin="654,370,0,0" VerticalAlignment="Top" Height="30" Width="103"/>
-        <Label x:Name="lblMatchList" Content="{x:Static language:Lang.lblMatchListTitle}" HorizontalAlignment="Left" Margin="250,33,0,0" VerticalAlignment="Top" Height="42" Width="328"/>
-        <Label x:Name="lblFindMatch" Content="{x:Static language:Lang.lblFindMatchText}" HorizontalAlignment="Center" Margin="0,110,0,0" VerticalAlignment="Top" Height="35" Width="382"/>
-        <TextBox x:Name="txtFindMatch" HorizontalAlignment="Left" Margin="209,145,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="347" Height="39"/>
-        <Grid Margin="240,189,276,94">
-            <DataGrid x:Name="tvMatchList" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- barra superior -->
+            <RowDefinition Height="Auto"/>
+            <!-- buscar por código -->
+            <RowDefinition Height="*"/>
+            <!-- lista -->
+            <RowDefinition Height="Auto"/>
+            <!-- barra inferior -->
+        </Grid.RowDefinitions>
+
+        <!-- Barra superior: título + botones -->
+        <Grid Grid.Row="0" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="btnBack"
+                    Grid.Column="0"
+                    Content="{x:Static language:Lang.btnBackText}"
+                    Width="127"
+                    Height="30"
+                    Margin="0,0,8,0"
+                    Click="BtnBack_Click"/>
+
+            <Label x:Name="lblMatchList"
+                   Grid.Column="1"
+                   Content="{x:Static language:Lang.lblMatchListTitle}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+
+            <Button x:Name="btnSettings"
+                    Grid.Column="2"
+                    Content="{x:Static language:Lang.btnSettingsText}"
+                    Width="121"
+                    Height="30"
+                    Click="BtnSettings_Click"/>
         </Grid>
 
+        <!-- Buscar por código -->
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,12">
+            <Label x:Name="lblFindMatch"
+                   Content="{x:Static language:Lang.lblFindMatchText}"
+                   VerticalAlignment="Center"
+                   Margin="0,0,8,0"/>
+            <TextBox x:Name="txtFindMatch"
+                     Width="220"
+                     Height="28"
+                     VerticalAlignment="Center"
+                     Margin="0,0,8,0"/>
+            <Button x:Name="btnJoinByCode"
+                    Content="{x:Static language:Lang.btnJoinMatchText}"
+                    Width="140"
+                    Height="30"
+                    Click="BtnJoinByCode_Click"/>
+        </StackPanel>
+
+        <!-- Lista de partidas públicas -->
+        <Grid Grid.Row="2" Margin="0,0,0,12">
+            <DataGrid x:Name="tvMatchList"
+          AutoGenerateColumns="False"
+          IsReadOnly="True"
+          SelectionMode="Single"
+          ItemsSource="{Binding PublicLobbies}"
+          MouseDoubleClick="TvMatchListMouseDoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Código"
+                            Binding="{Binding CodigoPartida}"
+                            Width="*" />
+                    <DataGridTextColumn Header="Host"
+                            Binding="{Binding HostUserName}"
+                            Width="*" />
+                    <DataGridTextColumn Header="Jugadores"
+                            Binding="{Binding CurrentPlayers}"  />
+                    <DataGridTextColumn Header="Dificultad"
+                            Binding="{Binding Difficulty}"
+                            Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </Grid>
+
+        <!-- Barra inferior: navegación secundaria -->
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,0">
+            <Button x:Name="btnFriends"
+                    Content="{x:Static language:Lang.btnFriendsText}"
+                    Width="115"
+                    Height="30"
+                    Margin="0,0,8,0"
+                    Click="BtnFriends_Click"/>
+            <Button x:Name="btnShop"
+                    Content="{x:Static language:Lang.btnShopText}"
+                    Width="106"
+                    Height="30"
+                    Margin="0,0,8,0"
+                    Click="BtnShop_Click"/>
+            <Button x:Name="btnInventory"
+                    Content="{x:Static language:Lang.btnInventoryText}"
+                    Width="107"
+                    Height="30"
+                    Margin="0,0,8,0"
+                    Click="BtnInventory_Click"/>
+            <Button x:Name="btnSkins"
+                    Content="{x:Static language:Lang.btnSkinsText}"
+                    Width="105"
+                    Height="30"
+                    Margin="0,0,8,0"
+                    Click="BtnSkins_Click"/>
+            <Button x:Name="btnProfile"
+                    Content="{x:Static language:Lang.btnProfileText}"
+                    Width="103"
+                    Height="30"
+                    Click="BtnProfile_Click"/>
+        </StackPanel>
     </Grid>
 </Page>

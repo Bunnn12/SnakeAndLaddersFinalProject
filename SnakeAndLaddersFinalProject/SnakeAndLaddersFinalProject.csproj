@@ -164,6 +164,7 @@
     <Compile Include="Infrastructure\AsyncCommand.cs" />
     <Compile Include="Infrastructure\CollectionSyncExtensions.cs" />
     <Compile Include="Infrastructure\IGameplayEventsHandler.cs" />
+    <Compile Include="Infrastructure\ILobbyEventsHandler.cs" />
     <Compile Include="Infrastructure\RelayCommand.cs" />
     <Compile Include="Mappers\PlayerReportErrorMapper.cs" />
     <Compile Include="Pages\FriendRequestsPage.xaml.cs">
@@ -233,6 +234,8 @@
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Services\GameplayClientCallback.cs" />
     <Compile Include="Services\IGameplayClient.cs" />
+    <Compile Include="Services\LobbyClient.cs" />
+    <Compile Include="Services\LobbyClientCallback.cs" />
     <Compile Include="SkinsWindow.xaml.cs">
       <DependentUpon>SkinsWindow.xaml</DependentUpon>
     </Compile>

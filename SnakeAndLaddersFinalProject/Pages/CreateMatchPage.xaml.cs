@@ -62,7 +62,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private BoardSizeOption GetSelectedBoardSize()
         {
-            if (rdbSize7x7.IsChecked == true)
+            if (rdbSize8x8.IsChecked == true)
             {
                 return BoardSizeOption.EightByEight;
             }

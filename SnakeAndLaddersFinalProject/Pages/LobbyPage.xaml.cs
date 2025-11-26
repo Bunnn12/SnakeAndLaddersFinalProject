@@ -146,13 +146,15 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                // 3) Último recurso: NavigationWindow independiente
+                // 3) Último recurso: crear un NavigationWindow para hospedar GameBoardPage
                 var navigationWindow = new NavigationWindow
                 {
-                    ShowsNavigationUI = true
+                    Owner = currentWindow,
+                    ShowsNavigationUI = false, // sin barra de navegación
+                    Content = boardPage,
+                    Title = "Snakes & Ladders - Game Board"
                 };
 
-                navigationWindow.Navigate(boardPage);
                 navigationWindow.Show();
             }
             catch (Exception ex)
@@ -166,6 +168,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                     MessageBoxImage.Error);
             }
         }
+
+
 
         private void OpenChat(object sender, RoutedEventArgs e)
         {
