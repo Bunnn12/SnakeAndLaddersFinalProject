@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace SnakeAndLaddersFinalProject.Infrastructure
 {
@@ -23,48 +24,47 @@ namespace SnakeAndLaddersFinalProject.Infrastructure
                 return;
             }
 
-            var sourceList = new List<TDto>(source);
+            var sourceList = source as IList<TDto> ?? source.ToList();
 
+            RemoveMissingItems(target, sourceList, match);
+            AddOrUpdateItems(target, sourceList, match, selector, update);
+        }
+
+        private static void RemoveMissingItems<TVm, TDto>(
+            ObservableCollection<TVm> target,
+            IList<TDto> sourceList,
+            Func<TVm, TDto, bool> match)
+        {
             for (int index = target.Count - 1; index >= 0; index--)
             {
                 var viewModelItem = target[index];
-                var exists = false;
 
-                foreach (var dto in sourceList)
-                {
-                    if (match(viewModelItem, dto))
-                    {
-                        exists = true;
-                        break;
-                    }
-                }
-
+                bool exists = sourceList.Any(dto => match(viewModelItem, dto));
                 if (!exists)
                 {
                     target.RemoveAt(index);
                 }
             }
+        }
 
+        private static void AddOrUpdateItems<TVm, TDto>(
+            ObservableCollection<TVm> target,
+            IList<TDto> sourceList,
+            Func<TVm, TDto, bool> match,
+            Func<TDto, TVm> selector,
+            Action<TVm, TDto> update)
+        {
             foreach (var dto in sourceList)
             {
-                TVm found = default(TVm);
+                TVm existingItem = target.FirstOrDefault(vm => match(vm, dto));
 
-                foreach (var viewModelItem in target)
-                {
-                    if (match(viewModelItem, dto))
-                    {
-                        found = viewModelItem;
-                        break;
-                    }
-                }
-
-                if (Equals(found, default(TVm)))
+                if (Equals(existingItem, default(TVm)))
                 {
                     target.Add(selector(dto));
                 }
                 else
                 {
-                    update(found, dto);
+                    update(existingItem, dto);
                 }
             }
         }

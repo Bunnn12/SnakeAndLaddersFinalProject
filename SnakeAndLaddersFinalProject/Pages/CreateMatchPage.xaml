@@ -358,7 +358,7 @@
                                 Content="Crear sala"
                                 Padding="16,8"
                                 Margin="0,8,0,0"
-                                Click="BtnCreateRoomClick"/>
+                                Click="CreateRoom"/>
                     </StackPanel>
                 </Grid>
 

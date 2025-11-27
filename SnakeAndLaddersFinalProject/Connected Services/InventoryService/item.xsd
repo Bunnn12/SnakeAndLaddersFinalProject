@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="InventorySnapshotDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Dice" nillable="true" type="tns:ArrayOfInventoryDiceDto" />
+      <xs:element minOccurs="0" name="Items" nillable="true" type="tns:ArrayOfInventoryItemDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InventorySnapshotDto" nillable="true" type="tns:InventorySnapshotDto" />
+  <xs:complexType name="ArrayOfInventoryDiceDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="InventoryDiceDto" nillable="true" type="tns:InventoryDiceDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfInventoryDiceDto" nillable="true" type="tns:ArrayOfInventoryDiceDto" />
+  <xs:complexType name="InventoryDiceDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DiceCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DiceId" type="xs:int" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Quantity" type="xs:int" />
+      <xs:element minOccurs="0" name="SlotNumber" nillable="true" type="xs:unsignedByte" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InventoryDiceDto" nillable="true" type="tns:InventoryDiceDto" />
+  <xs:complexType name="ArrayOfInventoryItemDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="InventoryItemDto" nillable="true" type="tns:InventoryItemDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfInventoryItemDto" nillable="true" type="tns:ArrayOfInventoryItemDto" />
+  <xs:complexType name="InventoryItemDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ObjectCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ObjectId" type="xs:int" />
+      <xs:element minOccurs="0" name="Quantity" type="xs:int" />
+      <xs:element minOccurs="0" name="SlotNumber" nillable="true" type="xs:unsignedByte" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InventoryItemDto" nillable="true" type="tns:InventoryItemDto" />
+</xs:schema>

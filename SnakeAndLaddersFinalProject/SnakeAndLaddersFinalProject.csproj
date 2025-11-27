@@ -116,6 +116,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Connected Services\InventoryService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\LobbyService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -158,6 +163,8 @@
     <Compile Include="Game\Board\BoardBuilder.cs" />
     <Compile Include="Game\Board\BoardBuildResult.cs" />
     <Compile Include="Game\Gameplay\GameplayEventsHandler.cs" />
+    <Compile Include="Game\Inventory\InventoryDiceSlotSelection.cs" />
+    <Compile Include="Game\Inventory\InventoryItemSlotSelection.cs" />
     <Compile Include="Game\PlayerTokenManager.cs" />
     <Compile Include="Game\SpecialCellType.cs" />
     <Compile Include="Globalization\LocalizationManager.cs" />
@@ -166,6 +173,8 @@
     <Compile Include="Infrastructure\IGameplayEventsHandler.cs" />
     <Compile Include="Infrastructure\ILobbyEventsHandler.cs" />
     <Compile Include="Infrastructure\RelayCommand.cs" />
+    <Compile Include="Mappers\InventoryIconMapper.cs" />
+    <Compile Include="Mappers\LobbyMapper.cs" />
     <Compile Include="Mappers\PlayerReportErrorMapper.cs" />
     <Compile Include="Pages\FriendRequestsPage.xaml.cs">
       <DependentUpon>FriendRequestsPage.xaml</DependentUpon>
@@ -179,6 +188,7 @@
     <Compile Include="Pages\ShopPage.xaml.cs">
       <DependentUpon>ShopPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Policies\LobbyMessages.cs" />
     <Compile Include="Policies\PlayerReportPolicy.cs" />
     <Compile Include="Services\GameBoardClient.cs" />
     <Compile Include="Services\GameplayClient.cs" />
@@ -234,8 +244,10 @@
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Services\GameplayClientCallback.cs" />
     <Compile Include="Services\IGameplayClient.cs" />
+    <Compile Include="Services\LobbyBoardService.cs" />
     <Compile Include="Services\LobbyClient.cs" />
     <Compile Include="Services\LobbyClientCallback.cs" />
+    <Compile Include="Services\LobbyMembershipService.cs" />
     <Compile Include="SkinsWindow.xaml.cs">
       <DependentUpon>SkinsWindow.xaml</DependentUpon>
     </Compile>
@@ -243,6 +255,7 @@
     <Compile Include="Utilities\AvatarIdToPathConverter.cs" />
     <Compile Include="Utilities\AvatarPathUtility.cs" />
     <Compile Include="Utilities\BanPlayerHelper.cs" />
+    <Compile Include="Utilities\ExceptionHandler.cs" />
     <Compile Include="Utilities\Loading.cs" />
     <Compile Include="Utilities\PageBackground.cs" />
     <Compile Include="Utilities\SessionGuard.cs" />
@@ -257,6 +270,9 @@
     <Compile Include="ViewModels\GameBoardCellViewModel.cs" />
     <Compile Include="ViewModels\GameBoardConnectionViewModel.cs" />
     <Compile Include="ViewModels\GameBoardViewModel.cs" />
+    <Compile Include="ViewModels\InventoryDiceViewModel.cs" />
+    <Compile Include="ViewModels\InventoryItemViewModel.cs" />
+    <Compile Include="ViewModels\InventoryViewModel.cs" />
     <Compile Include="ViewModels\LobbyViewModel.cs" />
     <Compile Include="ViewModels\Models\LobbyMemberViewModel.cs" />
     <Compile Include="ViewModels\PlayerRankingItemViewModel.cs" />
@@ -531,6 +547,19 @@
     <None Include="Connected Services\GameplayService\SnakeAndLaddersFinalProject.GameplayService.RollDiceResponseDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\InventoryService\InventoryService.wsdl" />
+    <None Include="Connected Services\InventoryService\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\InventoryService\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\InventoryService\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\InventoryService\SnakeAndLaddersFinalProject.InventoryService.InventorySnapshotDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\LobbyService\item.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -656,6 +685,7 @@
     <WCFMetadataStorage Include="Connected Services\FriendsService\" />
     <WCFMetadataStorage Include="Connected Services\GameBoardService\" />
     <WCFMetadataStorage Include="Connected Services\GameplayService\" />
+    <WCFMetadataStorage Include="Connected Services\InventoryService\" />
     <WCFMetadataStorage Include="Connected Services\LobbyService\" />
     <WCFMetadataStorage Include="Connected Services\PlayerReportService\" />
     <WCFMetadataStorage Include="Connected Services\ShopService\" />
@@ -675,6 +705,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\InventoryService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\InventoryService\configuration.svcinfo" />
+    <None Include="Connected Services\InventoryService\configuration91.svcinfo" />
+    <None Include="Connected Services\InventoryService\item.disco" />
     <None Include="Connected Services\ShopService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -803,8 +840,8 @@
     <Resource Include="Assets\Images\Skins\Tokens\T011.png" />
     <Resource Include="Assets\Images\Dice\01Dice.png" />
     <Resource Include="Assets\Images\Dice\02Dice.png" />
-    <Resource Include="Assets\Images\Dice\03Dice.png" />
     <Resource Include="Assets\Images\Dice\04Dice.png" />
+    <Resource Include="Assets\Images\Dice\03Dice.png" />
     <Resource Include="Assets\Images\Dice\05Dice.png" />
     <Resource Include="Assets\Images\Dice\06Dice.png" />
     <Resource Include="Assets\Images\Dice\DiceSpriteSheet.png" />
@@ -913,6 +950,15 @@
     <Resource Include="Assets\Images\Stickers\ST045.png" />
     <Resource Include="Assets\Images\Stickers\ST046.png" />
     <Resource Include="Assets\Images\Avatars\A0023.jpg" />
+    <Resource Include="Assets\Images\Icons\FreezeIcon.png" />
+    <Resource Include="Assets\Images\Icons\ShieldIcon.png" />
+    <Resource Include="Assets\Images\Icons\RocketIcon.png" />
+    <Resource Include="Assets\Images\Icons\AnchorIcon.png" />
+    <Resource Include="Assets\Images\Icons\SwapIcon.png" />
+    <Resource Include="Assets\Images\Icons\Dice456Icon.png" />
+    <Resource Include="Assets\Images\Icons\DiceNegIcon.png" />
+    <Resource Include="Assets\Images\Icons\DiceBaseIcon.png" />
+    <Resource Include="Assets\Images\Icons\Dice123Icon.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

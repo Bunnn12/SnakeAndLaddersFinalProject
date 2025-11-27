@@ -1,15 +1,21 @@
-﻿using System;
+﻿using log4net;
+using log4net.Repository.Hierarchy;
+using SnakeAndLaddersFinalProject.AuthService;
+using SnakeAndLaddersFinalProject.Properties.Langs;
+using SnakeAndLaddersFinalProject.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using SnakeAndLaddersFinalProject.AuthService;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class EmailVerificationPage : Page
     {
+
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(EmailVerificationPage)); 
         private const int DEFAULT_RESEND_COOLDOWN_SECONDS = 45;
         private const int MIN_RESEND_SECONDS = 1;
 
@@ -21,8 +27,6 @@ namespace SnakeAndLaddersFinalProject.Pages
         private const string KEY_BTN_RESEND_CODE_TEXT = "btnResendCodeText";
         private const string KEY_AUTH_THROTTLE_WAIT_FMT = "AuthThrottleWaitFmt";
         private const string KEY_UI_VERIFICATION_CODE_REQUIRED = "UiVerificationCodeRequired";
-        private const string KEY_UI_ENDPOINT_NOT_FOUND = "UiEndpointNotFound";
-        private const string KEY_UI_GENERIC_ERROR = "UiGenericError";
         private const string KEY_UI_ACCOUNT_CREATED_FMT = "UiAccountCreatedFmt";
 
         private readonly AuthService.RegistrationDto _pendingDto;
@@ -95,14 +99,20 @@ namespace SnakeAndLaddersFinalProject.Pages
                 NavigationService?.Navigate(new LoginPage());
                 client.Close();
             }
-            catch (System.ServiceModel.EndpointNotFoundException)
-            {
-                ShowError(T(KEY_UI_ENDPOINT_NOT_FOUND));
-                client.Abort();
-            }
+            
             catch (Exception ex)
             {
-                ShowError(string.Format("{0} {1}", T(KEY_UI_GENERIC_ERROR), ex.Message));
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    $"{nameof(EmailVerificationPage)}.{nameof(VerificateCode)}",
+                    Logger);
+
+                MessageBox.Show(
+                    userMessage,
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+
                 client.Abort();
             }
         }
@@ -146,15 +156,19 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 ShowWarn(MapAuth(result.Code, result.Meta));
             }
-            catch (System.ServiceModel.EndpointNotFoundException)
-            {
-                ShowError(T(KEY_UI_ENDPOINT_NOT_FOUND));
-                client.Abort();
-            }
+            
             catch (Exception ex)
             {
-                ShowError(string.Format("{0} {1}", T(KEY_UI_GENERIC_ERROR), ex.Message));
-                client.Abort();
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    $"{nameof(EmailVerificationPage)}.{nameof(ResendCode)}",
+                    Logger);
+
+                MessageBox.Show(
+                    userMessage,
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
 
@@ -207,9 +221,6 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private static void ShowInfo(string message) =>
             MessageBox.Show(message, T("UiTitleInfo"), MessageBoxButton.OK, MessageBoxImage.Information);
-
-        private static void ShowError(string message) =>
-            MessageBox.Show(message, T("UiTitleError"), MessageBoxButton.OK, MessageBoxImage.Error);
 
         private static string MapAuth(string code, Dictionary<string, string> meta)
         {

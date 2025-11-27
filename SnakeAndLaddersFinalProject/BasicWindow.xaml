@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="BasicWindow" Height="450" Width="800"
+        Closing="BasicWindow_Closing"
         Loaded="Window_Loaded">
 
     <Grid>

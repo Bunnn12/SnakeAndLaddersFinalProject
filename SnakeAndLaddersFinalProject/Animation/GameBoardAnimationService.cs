@@ -167,7 +167,7 @@ namespace SnakeAndLaddersFinalProject.Animation
                 });
         }
 
-        private async Task BobTokenAsync(PlayerTokenViewModel token)
+        private static async Task BobTokenAsync(PlayerTokenViewModel token)
         {
             if (token == null)
             {

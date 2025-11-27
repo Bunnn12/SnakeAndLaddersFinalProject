@@ -1,30 +1,302 @@
 ﻿<Page x:Class="SnakeAndLaddersFinalProject.Pages.InventoryPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
+      mc:Ignorable="d"
+      d:DesignWidth="400"
+      d:DesignHeight="700"
       Title="InventoryPage">
 
-    <Grid>
-        <Label Content="{x:Static language:Lang.btnInventoryText}" HorizontalAlignment="Left" Margin="364,60,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.361,0.612"/>
-        <Label Content="{x:Static language:Lang.lblItems}" HorizontalAlignment="Left" Margin="180,118,0,0" VerticalAlignment="Top"/>
-        <Label Content="{x:Static language:Lang.btnInventoryText}" HorizontalAlignment="Left" Margin="180,260,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.361,0.612"/>
-        <Rectangle HorizontalAlignment="Left" Height="40" Margin="180,291,0,0" Stroke="Black" VerticalAlignment="Top" Width="383"/>
-        <Button Content="{x:Static language:Lang.btnFriendsText}" HorizontalAlignment="Left" Margin="56,381,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.065,0.972" Width="85"/>
-        <Button Content="{x:Static language:Lang.btnInventoryText}" HorizontalAlignment="Left" Margin="190,381,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.065,0.972" Width="85"/>
-        <Button Content="{x:Static language:Lang.btnShopText}" HorizontalAlignment="Left" Margin="300,381,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.065,0.972" Width="85"/>
-        <Button Content="{x:Static language:Lang.btnMainWindowText}" HorizontalAlignment="Left" Margin="410,381,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.065,0.972" Width="85"/>
-        <Button Content="{x:Static language:Lang.btnSkinsText}" HorizontalAlignment="Left" Margin="535,381,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.065,0.972" Width="85"/>
-        <Button Content="{x:Static language:Lang.btnProfileText}" HorizontalAlignment="Left" Margin="675,381,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.065,0.972" Width="85"/>
-        <Image HorizontalAlignment="Left" Height="57" Margin="180,150,0,0" VerticalAlignment="Top" Width="59" Source="/Pages/Captura de pantalla 2024-12-02 215634.png"/>
-        <Image HorizontalAlignment="Left" Height="57" Margin="375,150,0,0" VerticalAlignment="Top" Width="59" Source="/Pages/Captura de pantalla 2024-12-02 215634.png"/>
-        <Button Content="{x:Static language:Lang.btnSettingsText}" HorizontalAlignment="Left" Margin="89,55,0,0" VerticalAlignment="Top"/>
+    <Grid Margin="16"
+          Background="#001A33">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!-- barra superior -->
+            <RowDefinition Height="Auto" />
+            <!-- título Items -->
+            <RowDefinition Height="*" />
+            <!-- grid Items -->
+            <RowDefinition Height="Auto" />
+            <!-- título Dados -->
+            <RowDefinition Height="*" />
+            <!-- grid Dados -->
+            <RowDefinition Height="Auto" />
+            <!-- Inventario Juicio label -->
+            <RowDefinition Height="Auto" />
+            <!-- slots items + dados -->
+        </Grid.RowDefinitions>
 
+        <!-- Barra superior con back -->
+        <Border Grid.Row="0"
+                BorderBrush="#F5F1C5"
+                BorderThickness="2"
+                Padding="8"
+                Margin="0,0,0,12">
+            <DockPanel>
+                <Button Content="⟵"
+                        Width="32"
+                        Height="24"
+                        Margin="0,0,8,0"
+                        BorderThickness="0"
+                        Background="Transparent"
+                        Foreground="#F5F1C5"
+                        FontSize="16"
+                        Click="OnMainMenuClick" />
+                <TextBlock Text="{x:Static language:Lang.btnInventoryText}"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Foreground="#F5F1C5"
+                           VerticalAlignment="Center" />
+            </DockPanel>
+        </Border>
 
+        <!-- Título Items -->
+        <TextBlock Grid.Row="1"
+                   Text="Items"
+                   Margin="4,0,0,8"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   Foreground="#F5F1C5" />
 
+        <!-- Items: ícono + cantidad -->
+        <Border Grid.Row="2"
+                BorderBrush="#F5F1C5"
+                BorderThickness="2"
+                Padding="8">
+            <ListBox x:Name="ItemsListView"
+                     ItemsSource="{Binding Items}"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     HorizontalContentAlignment="Center">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="2" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="8"
+                                    HorizontalAlignment="Center"
+                                    ToolTip="{Binding Name}">
+                            <Image Width="64"
+                                   Height="64"
+                                   Source="{Binding IconPath}"
+                                   Stretch="Uniform" />
+                            <TextBlock Text="{Binding Quantity, StringFormat=x{0}}"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,4,0,0"
+                                       Foreground="#F5F1C5"
+                                       FontSize="14"
+                                       FontWeight="Bold" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+
+        <!-- Título Dados -->
+        <TextBlock Grid.Row="3"
+                   Text="Dados"
+                   Margin="4,12,0,4"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   Foreground="#F5F1C5" />
+
+        <!-- Dados: ícono + cantidad -->
+        <Border Grid.Row="4"
+                BorderBrush="#F5F1C5"
+                BorderThickness="2"
+                Padding="8">
+            <ListBox x:Name="DiceListView"
+                     ItemsSource="{Binding Dice}"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     HorizontalContentAlignment="Center">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="2" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="8"
+                                    HorizontalAlignment="Center"
+                                    ToolTip="{Binding Name}">
+                            <Image Width="64"
+                                   Height="64"
+                                   Source="{Binding IconPath}"
+                                   Stretch="Uniform" />
+                            <TextBlock Text="{Binding Quantity, StringFormat=x{0}}"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,4,0,0"
+                                       Foreground="#F5F1C5"
+                                       FontSize="14"
+                                       FontWeight="Bold" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+
+        <!-- Label Inventario Juicio -->
+        <TextBlock Grid.Row="5"
+                   Text="Inventario Juicio"
+                   Margin="4,12,0,4"
+                   FontSize="16"
+                   FontWeight="Bold"
+                   Foreground="#F5F1C5" />
+
+        <!-- Slots items + dados -->
+        <Border Grid.Row="6"
+                BorderBrush="#F5F1C5"
+                BorderThickness="2"
+                Padding="6">
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+
+                <!-- Slots de ITEMS (1–3) -->
+                <StackPanel Orientation="Horizontal"
+                            Margin="0,0,24,0">
+
+                    <!-- SLOT 1 ITEM -->
+                    <Button Width="64"
+                            Height="48"
+                            Margin="4"
+                            Tag="1"
+                            Background="Transparent"
+                            BorderBrush="#F5F1C5"
+                            BorderThickness="2"
+                            Click="OnItemSlotClick"
+                            ToolTip="{Binding Slot1Item.Name}">
+                        <Button.Content>
+                            <Grid>
+                                <Image Source="{Binding Slot1Item.IconPath}"
+                                       Stretch="Uniform"
+                                       Margin="4" />
+                                <TextBlock Text="{Binding Slot1Item.Quantity, StringFormat=x{0}}"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Bottom"
+                                           Margin="2"
+                                           Foreground="#F5F1C5"
+                                           FontSize="12"
+                                           FontWeight="Bold" />
+                            </Grid>
+                        </Button.Content>
+                    </Button>
+
+                    <!-- SLOT 2 ITEM -->
+                    <Button Width="64"
+                            Height="48"
+                            Margin="4"
+                            Tag="2"
+                            Background="Transparent"
+                            BorderBrush="#F5F1C5"
+                            BorderThickness="2"
+                            Click="OnItemSlotClick"
+                            ToolTip="{Binding Slot2Item.Name}">
+                        <Button.Content>
+                            <Grid>
+                                <Image Source="{Binding Slot2Item.IconPath}"
+                                       Stretch="Uniform"
+                                       Margin="4" />
+                                <TextBlock Text="{Binding Slot2Item.Quantity, StringFormat=x{0}}"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Bottom"
+                                           Margin="2"
+                                           Foreground="#F5F1C5"
+                                           FontSize="12"
+                                           FontWeight="Bold" />
+                            </Grid>
+                        </Button.Content>
+                    </Button>
+
+                    <!-- SLOT 3 ITEM -->
+                    <Button Width="64"
+                            Height="48"
+                            Margin="4"
+                            Tag="3"
+                            Background="Transparent"
+                            BorderBrush="#F5F1C5"
+                            BorderThickness="2"
+                            Click="OnItemSlotClick"
+                            ToolTip="{Binding Slot3Item.Name}">
+                        <Button.Content>
+                            <Grid>
+                                <Image Source="{Binding Slot3Item.IconPath}"
+                                       Stretch="Uniform"
+                                       Margin="4" />
+                                <TextBlock Text="{Binding Slot3Item.Quantity, StringFormat=x{0}}"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Bottom"
+                                           Margin="2"
+                                           Foreground="#F5F1C5"
+                                           FontSize="12"
+                                           FontWeight="Bold" />
+                            </Grid>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+
+                <!-- Slots de DADOS (1–2) -->
+                <StackPanel Orientation="Horizontal">
+
+                    <!-- SLOT 1 DADO -->
+                    <Button Width="64"
+                            Height="48"
+                            Margin="4"
+                            Tag="1"
+                            Background="Transparent"
+                            BorderBrush="#F5F1C5"
+                            BorderThickness="2"
+                            Click="OnDiceSlotClick"
+                            ToolTip="{Binding Slot1Dice.Name}">
+                        <Button.Content>
+                            <Grid>
+                                <Image Source="{Binding Slot1Dice.IconPath}"
+                                       Stretch="Uniform"
+                                       Margin="4" />
+                                <TextBlock Text="{Binding Slot1Dice.Quantity, StringFormat=x{0}}"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Bottom"
+                                           Margin="2"
+                                           Foreground="#F5F1C5"
+                                           FontSize="12"
+                                           FontWeight="Bold" />
+                            </Grid>
+                        </Button.Content>
+                    </Button>
+
+                    <!-- SLOT 2 DADO -->
+                    <Button Width="64"
+                            Height="48"
+                            Margin="4"
+                            Tag="2"
+                            Background="Transparent"
+                            BorderBrush="#F5F1C5"
+                            BorderThickness="2"
+                            Click="OnDiceSlotClick"
+                            ToolTip="{Binding Slot2Dice.Name}">
+                        <Button.Content>
+                            <Grid>
+                                <Image Source="{Binding Slot2Dice.IconPath}"
+                                       Stretch="Uniform"
+                                       Margin="4" />
+                                <TextBlock Text="{Binding Slot2Dice.Quantity, StringFormat=x{0}}"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Bottom"
+                                           Margin="2"
+                                           Foreground="#F5F1C5"
+                                           FontSize="12"
+                                           FontWeight="Bold" />
+                            </Grid>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </Border>
     </Grid>
 </Page>

@@ -2,9 +2,6 @@
 
 namespace SnakeAndLaddersFinalProject.Authentication
 {
-    /// <summary>
-    /// Holds the current authenticated session data for the client application.
-    /// </summary>
     public sealed class SessionContext : INotifyPropertyChanged
     {
         private const int USER_ID_NOT_SET = 0;
@@ -148,10 +145,6 @@ namespace SnakeAndLaddersFinalProject.Authentication
                 OnPropertyChanged(nameof(CurrentSkinUnlockedId));
             }
         }
-
-        /// <summary>
-        /// Indicates whether the current session has a valid authenticated user.
-        /// </summary>
         public bool IsAuthenticated =>
             UserId > USER_ID_NOT_SET &&
             !string.IsNullOrWhiteSpace(UserName);

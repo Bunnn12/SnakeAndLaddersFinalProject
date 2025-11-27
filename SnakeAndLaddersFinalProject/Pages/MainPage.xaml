@@ -414,7 +414,8 @@
                                 Grid.Column="4"
                                 Margin="57,-23,39,0"
                                 Style="{StaticResource BtnIcon}"
-                                ToolTip="{x:Static language:Lang.btnInventoryText}">
+                                ToolTip="{x:Static language:Lang.btnInventoryText}"
+                                Click="OpenInventory">
                             <Image Width="177"
                                    Height="80"
                                    Source="/Assets/Images/Icons/InventoryIcon.png"

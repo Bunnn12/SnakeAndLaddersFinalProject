@@ -9,10 +9,10 @@ namespace SnakeAndLaddersFinalProject.Converters
     {
         private static readonly SolidColorBrush[] PLAYER_BRUSHES =
         {
-            new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEF476F")), // rojo/rosa
-            new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF06D6A0")), // verde
-            new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF118AB2")), // azul
-            new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFD166"))  // amarillo
+            new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEF476F")), 
+            new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF06D6A0")), 
+            new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF118AB2")), 
+            new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFD166"))  
         };
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

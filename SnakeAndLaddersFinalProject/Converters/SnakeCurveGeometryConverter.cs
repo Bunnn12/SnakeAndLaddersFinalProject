@@ -101,9 +101,13 @@ namespace SnakeAndLaddersFinalProject.Converters
 
         private static bool TryGetDouble(object value, out double result)
         {
+            bool doubleValueFound = false;
+
             if (value is double doubleValue)
             {
                 result = doubleValue;
+
+                doubleValueFound = true;
                 return true;
             }
 
@@ -115,11 +119,11 @@ namespace SnakeAndLaddersFinalProject.Converters
                     out double parsedValue))
             {
                 result = parsedValue;
-                return true;
+                doubleValueFound = true;
             }
 
             result = 0.0;
-            return false;
+            return doubleValueFound;
         }
     }
 }

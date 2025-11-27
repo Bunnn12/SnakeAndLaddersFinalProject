@@ -51,14 +51,14 @@ namespace SnakeAndLaddersFinalProject.Pages
             };
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private void PageLoaded(object sender, RoutedEventArgs e)
         {
             txtFindFriend.Focus();
             Keyboard.Focus(txtFindFriend);
             txtFindFriend.CaretIndex = txtFindFriend.Text?.Length ?? 0;
         }
 
-        private void TxtFindFriend_TextChanged(object sender, TextChangedEventArgs e)
+        private void FindFriendTextChanged(object sender, TextChangedEventArgs e)
         {
             if (!SessionGuard.HasValidSession())
             {
@@ -95,14 +95,24 @@ namespace SnakeAndLaddersFinalProject.Pages
                     }
                 }
             }
+            
             catch (Exception ex)
             {
-                Logger.Error("Error searching users.", ex);
-                MessageBox.Show(Lang.errorSearchingUsersText, Lang.errorTitle);
+                
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    $"{nameof(AddFriendsPage)}.{nameof(RunSearch)}",
+                    Logger);
+
+                MessageBox.Show(
+                    userMessage,
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
 
-        private void BtnAddFriend_Click(object sender, RoutedEventArgs e)
+        private void AddFriend(object sender, RoutedEventArgs e)
         {
             if (!SessionGuard.HasValidSession())
             {
@@ -135,19 +145,19 @@ namespace SnakeAndLaddersFinalProject.Pages
                     }
                 }
             }
-            catch (FaultException ex)
-            {
-                Logger.WarnFormat(
-                    "SendFriendRequest fault: {0} - {1}",
-                    ex.Code,
-                    ex.Message);
 
-                MessageBox.Show(ex.Message, Lang.errorTitle);
-            }
             catch (Exception ex)
             {
-                Logger.Error("Error sending friend request.", ex);
-                MessageBox.Show(Lang.errorSendingRequestText, Lang.errorTitle);
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    $"{nameof(AddFriendsPage)}.{nameof(AddFriend)}",
+                    Logger);
+
+                MessageBox.Show(
+                    userMessage,
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
 

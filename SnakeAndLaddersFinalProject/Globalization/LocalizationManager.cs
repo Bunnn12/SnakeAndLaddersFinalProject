@@ -26,7 +26,7 @@ namespace SnakeAndLaddersFinalProject.Globalization
                 {
                     Lang.Culture = value;
                     OnPropertyChanged(nameof(CurrentCulture));
-                    OnPropertyChanged("Item[]"); // refrescar indexer bindings
+                    OnPropertyChanged("Item[]"); 
                 }
             }
         }
@@ -44,16 +44,16 @@ namespace SnakeAndLaddersFinalProject.Globalization
 
         public void SetCulture(string code)
         {
-            var ci = new CultureInfo(code);
-            Lang.Culture = ci;                       // recursos .resx
-            Thread.CurrentThread.CurrentUICulture = ci; // textos
-            Thread.CurrentThread.CurrentCulture = ci; // formatos 12/34,00
+            var cultureInfo = new CultureInfo(code);
+            Lang.Culture = cultureInfo;                      
+            Thread.CurrentThread.CurrentUICulture = cultureInfo; 
+            Thread.CurrentThread.CurrentCulture = cultureInfo; 
 
             OnPropertyChanged(nameof(CurrentCulture));
-            OnPropertyChanged("Item[]");              // refresca bindings indexer
+            OnPropertyChanged("Item[]");              
         }
 
-        // Indexer que consulta Lang.resx
+        
         public string this[string resourceKey]
             => Lang.ResourceManager.GetString(resourceKey, Lang.Culture) ?? resourceKey;
 

@@ -1,19 +1,25 @@
-﻿using System;
+﻿using log4net;
+using log4net.Repository.Hierarchy;
+using SnakeAndLaddersFinalProject.Navigation;
+using SnakeAndLaddersFinalProject.Properties.Langs;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using SnakeAndLaddersFinalProject.Navigation;
+using SnakeAndLaddersFinalProject.Utilities;
 
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class CreateMatchPage : Page
     {
+
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(CreateMatchPage));
         public CreateMatchPage()
         {
             InitializeComponent();
         }
-        private void BtnCreateRoomClick(object sender, RoutedEventArgs e)
+        private void CreateRoom(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -55,8 +61,16 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ocurrió un error al crear la partida: {ex.Message}",
-                    "Crear partida", MessageBoxButton.OK, MessageBoxImage.Error);
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    $"{nameof(CreateMatchPage)}.{nameof(CreateRoom)}",
+                    Logger);
+
+                MessageBox.Show(
+                    userMessage,
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
 

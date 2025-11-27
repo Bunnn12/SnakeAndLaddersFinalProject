@@ -1,10 +1,13 @@
-﻿using System;
+﻿using SnakeAndLaddersFinalProject.Pages;
+using SnakeAndLaddersFinalProject.Utilities;
+using SnakeAndLaddersFinalProject.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using SnakeAndLaddersFinalProject.Utilities;
 
 namespace SnakeAndLaddersFinalProject
 {
@@ -25,6 +28,16 @@ namespace SnakeAndLaddersFinalProject
         public BasicWindow()
         {
             InitializeComponent();
+        }
+
+        private async void BasicWindow_Closing(object sender, CancelEventArgs e)
+        {
+            
+            if (MainFrame.Content is LobbyPage lobbyPage &&
+                lobbyPage.DataContext is LobbyViewModel vm)
+            {
+                await vm.TryLeaveLobbySilentlyAsync();
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

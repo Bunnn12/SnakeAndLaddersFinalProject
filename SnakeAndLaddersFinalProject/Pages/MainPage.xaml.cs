@@ -172,5 +172,11 @@ namespace SnakeAndLaddersFinalProject.Pages
             var shopPage = new ShopPage();
             NavigateToPage(shopPage);
         }
+
+        private void OpenInventory(object sender, RoutedEventArgs e)
+        {
+            var inventoryPage = new InventoryPage();
+            NavigateToPage(inventoryPage);
+        }
     }
 }

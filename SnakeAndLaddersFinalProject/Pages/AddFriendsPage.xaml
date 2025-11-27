@@ -259,7 +259,7 @@
                                     SnapsToDevicePixels="False"
                                     TextOptions.TextFormattingMode="Display"
          TextOptions.TextRenderingMode="ClearType"
-         TextChanged="TxtFindFriend_TextChanged"/>
+         TextChanged="FindFriendTextChanged"/>
 
                                     <!-- Resultados (headers arriba) -->
                                 <DataGrid x:Name="tvSearchResults"
@@ -278,7 +278,7 @@
                                                     <Button x:Name="btnAddFriend"
                                                             Content="{x:Static language:Lang.btnAddFriendText}"
                                                             Padding="8,4"
-                                                            Click="BtnAddFriend_Click"/>
+                                                            Click="AddFriend"/>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
