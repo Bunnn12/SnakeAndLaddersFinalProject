@@ -21,11 +21,16 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Restore
-        run: dotnet restore SnakeAndLaddersFinalProject.sln
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
 
+      # Restore usando MSBuild (para proyectos .NET Framework con packages.config)
+      - name: Restore with MSBuild
+        run: msbuild SnakeAndLaddersFinalProject.sln /t:Restore /p:Configuration=Debug
+
+      # Build con MSBuild (respeta .editorconfig y Roslyn analyzers)
       - name: Build (usa .editorconfig y analyzers)
-        run: dotnet build SnakeAndLaddersFinalProject.sln --no-restore
+        run: msbuild SnakeAndLaddersFinalProject.sln /p:Configuration=Debug
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
