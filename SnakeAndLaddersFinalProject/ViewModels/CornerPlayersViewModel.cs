@@ -112,5 +112,25 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void UpdateCurrentTurn(int currentTurnUserId)
+        {
+            SetCurrentTurnForPlayer(TopLeftPlayer, currentTurnUserId);
+            SetCurrentTurnForPlayer(TopRightPlayer, currentTurnUserId);
+            SetCurrentTurnForPlayer(BottomLeftPlayer, currentTurnUserId);
+            SetCurrentTurnForPlayer(BottomRightPlayer, currentTurnUserId);
+        }
+
+        private static void SetCurrentTurnForPlayer(
+            LobbyMemberViewModel player,
+            int currentTurnUserId)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.IsCurrentTurn = player.UserId == currentTurnUserId;
+        }
     }
 }

@@ -56,6 +56,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public int Rows { get; }
         public int Columns { get; }
+        public InventoryViewModel Inventory { get; }
+
 
         public ObservableCollection<GameBoardCellViewModel> Cells { get; }
         public ObservableCollection<GameBoardConnectionViewModel> Connections { get; }
@@ -117,6 +119,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             _cellCentersByIndex = boardBuildResult.CellCentersByIndex;
             _linksByStartIndex = boardBuildResult.LinksByStartIndex;
             _startCellIndex = boardBuildResult.StartCellIndex;
+            Inventory = new InventoryViewModel();
 
             CornerPlayers = new CornerPlayersViewModel();
 
@@ -149,6 +152,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 _localUserId,
                 UpdateTurnFromState);
         }
+
+        public Task InitializeInventoryAsync()
+        {
+            return Inventory.InitializeAsync();
+        }
+
 
         public async Task InitializeGameplayAsync(IGameplayClient client, string currentUserName)
         {
@@ -191,8 +200,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public void InitializeCornerPlayers(IList<LobbyMemberViewModel> lobbyMembers)
         {
+            if (lobbyMembers == null)
+            {
+                return;
+            }
+
+            foreach (LobbyMemberViewModel member in lobbyMembers)
+            {
+                member.IsLocalPlayer = member.UserId == _localUserId;
+            }
+
             CornerPlayers.InitializeFromLobbyMembers(lobbyMembers);
         }
+
 
         public void InitializeTokensFromLobbyMembers(IList<LobbyMemberViewModel> lobbyMembers)
         {
@@ -412,6 +432,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 isMyTurnNow);
 
             IsMyTurn = isMyTurnNow;
+
+            CornerPlayers.UpdateCurrentTurn(_currentTurnUserId);
         }
 
         public Task HandleServerPlayerMovedAsync(PlayerMoveResultDto move)

@@ -7,6 +7,7 @@
       xmlns:conv="clr-namespace:SnakeAndLaddersFinalProject.Converters"
       xmlns:vmModels="clr-namespace:SnakeAndLaddersFinalProject.ViewModels.Models"
       xmlns:utils="clr-namespace:SnakeAndLaddersFinalProject.Utilities"
+      xmlns:controls="clr-namespace:SnakeAndLaddersFinalProject.Controls"
       mc:Ignorable="d"
       d:DesignWidth="1280"
       d:DesignHeight="720"
@@ -142,7 +143,7 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Slot de inventario jugadores -->
+        <!-- Slot de inventario jugadores (por si lo reutilizas) -->
         <Style x:Key="InventorySlotStyle"
                TargetType="Border">
             <Setter Property="Width" Value="40" />
@@ -156,7 +157,7 @@
 
         <!-- Botón de dado para jugadores (usa DiceAnimator.CurrentFrame) -->
         <Style x:Key="CornerPlayerDiceButtonStyle"
-               TargetType="Button">
+       TargetType="Button">
             <Setter Property="Width" Value="72" />
             <Setter Property="Height" Value="72" />
             <Setter Property="Padding" Value="0" />
@@ -168,47 +169,93 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="12"
-                                Background="#33000000">
+                        Background="#33000000">
                             <Border.Effect>
                                 <DropShadowEffect ShadowDepth="2"
-                                                  BlurRadius="6"
-                                                  Opacity="0.6" />
+                                          BlurRadius="6"
+                                          Opacity="0.6" />
                             </Border.Effect>
 
                             <Grid>
-                                <!-- Dado animado -->
-                                <Image x:Name="DiceImage"
-                                       Stretch="Uniform"
-                                       RenderOptions.BitmapScalingMode="NearestNeighbor"
-                                       Source="{Binding DataContext.DiceAnimator.CurrentFrame,
-                                                        RelativeSource={RelativeSource AncestorType=Page}}">
+
+                                <!-- Dado estático (se ve cuando NO es su turno) -->
+                                <Image x:Name="StaticDiceImage"
+                               Stretch="Uniform"
+                               RenderOptions.BitmapScalingMode="NearestNeighbor"
+                               Source="{StaticResource DiceIconSource}">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Opacity" Value="1" />
+                                            <Style.Triggers>
+                                                <!-- Si es el jugador en turno, ocultamos el estático -->
+                                                <DataTrigger Binding="{Binding IsCurrentTurn}"
+                                                     Value="True">
+                                                    <Setter Property="Opacity" Value="0" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+
+                                <!-- Dado animado (se ve SOLO si IsCurrentTurn = true) -->
+                                <Image x:Name="AnimatedDiceImage"
+                               Stretch="Uniform"
+                               RenderOptions.BitmapScalingMode="NearestNeighbor"
+                               Source="{Binding DataContext.DiceAnimator.CurrentFrame,
+                                                RelativeSource={RelativeSource AncestorType=Page}}">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Opacity" Value="0" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCurrentTurn}"
+                                                     Value="True">
+                                                    <Setter Property="Opacity" Value="1" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
                                     <Image.LayoutTransform>
                                         <ScaleTransform ScaleX="1"
-                                                        ScaleY="1" />
+                                                ScaleY="1" />
                                     </Image.LayoutTransform>
                                 </Image>
+
                             </Grid>
                         </Border>
 
                         <ControlTemplate.Triggers>
-                            <!-- Hover: un poco más grande -->
+                            <!-- Hover -->
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="DiceImage"
-                                        Property="LayoutTransform">
+                                <Setter TargetName="AnimatedDiceImage"
+                                Property="LayoutTransform">
                                     <Setter.Value>
                                         <ScaleTransform ScaleX="1.05"
-                                                        ScaleY="1.05" />
+                                                ScaleY="1.05" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="StaticDiceImage"
+                                Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.05"
+                                                ScaleY="1.05" />
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
 
-                            <!-- Click: un poco más pequeño -->
+                            <!-- Click -->
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="DiceImage"
-                                        Property="LayoutTransform">
+                                <Setter TargetName="AnimatedDiceImage"
+                                Property="LayoutTransform">
                                     <Setter.Value>
                                         <ScaleTransform ScaleX="0.95"
-                                                        ScaleY="0.95" />
+                                                ScaleY="0.95" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="StaticDiceImage"
+                                Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.95"
+                                                ScaleY="0.95" />
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
@@ -223,7 +270,8 @@
             </Setter>
         </Style>
 
-        <!-- Plantilla de casilla (sin tokens dentro) -->
+
+        <!-- Plantilla de casilla -->
         <DataTemplate x:Key="BoardCellTemplate">
             <Border Style="{StaticResource BoardCellStyle}">
                 <Grid>
@@ -240,7 +288,7 @@
                                TextOptions.TextRenderingMode="Aliased"
                                TextOptions.TextFormattingMode="Display" />
 
-                    <!-- BONUS (verde) -->
+                    <!-- BONUS -->
                     <Image Width="60"
                            Height="60"
                            HorizontalAlignment="Center"
@@ -258,7 +306,7 @@
                         </Image.Style>
                     </Image>
 
-                    <!-- TRAMPA (rojo) -->
+                    <!-- TRAMPA -->
                     <Image Width="60"
                            Height="60"
                            HorizontalAlignment="Center"
@@ -276,7 +324,7 @@
                         </Image.Style>
                     </Image>
 
-                    <!-- TELEPORT (morado) -->
+                    <!-- TELEPORT -->
                     <Image Width="60"
                            Height="60"
                            HorizontalAlignment="Center"
@@ -334,7 +382,7 @@
             </Border>
         </DataTemplate>
 
-        <!-- Template para jugador en esquina (con aro de color, botón y slots) -->
+        <!-- Template jugador normal (sin inventario, dado deshabilitado) -->
         <DataTemplate x:Key="CornerPlayerTemplate"
                       DataType="{x:Type vmModels:LobbyMemberViewModel}">
             <StackPanel Orientation="Vertical"
@@ -352,7 +400,7 @@
                                Margin="4" />
                     </Border>
 
-                    <!-- Aro de color alrededor del avatar -->
+                    <!-- Aro de color -->
                     <Grid Width="44"
                           Height="44"
                           HorizontalAlignment="Right"
@@ -380,21 +428,70 @@
                            FontWeight="Bold"
                            TextTrimming="CharacterEllipsis" />
 
-                <!-- Botón Roll dice (cada jugador con su botón, usando el comando del Page) -->
+                <!-- Dado solo visual -->
+                <Button Style="{StaticResource CornerPlayerDiceButtonStyle}"
+                        Margin="0,6,0,6"
+                        IsEnabled="False" />
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- Template jugador LOCAL (con inventario y comando de dado) -->
+        <DataTemplate x:Key="LocalCornerPlayerTemplate"
+                      DataType="{x:Type vmModels:LobbyMemberViewModel}">
+            <StackPanel Orientation="Vertical"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+
+                <!-- Avatar grande -->
+                <Grid Width="112"
+                      Height="112"
+                      Margin="4">
+                    <Border CornerRadius="12"
+                            Background="#22000000">
+                        <Image Source="{Binding SkinImagePath}"
+                               Stretch="Uniform"
+                               Margin="4" />
+                    </Border>
+
+                    <!-- Aro de color -->
+                    <Grid Width="44"
+                          Height="44"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Margin="0,0,-4,-4">
+                        <Ellipse Stroke="{Binding UserId,
+                                                  Converter={StaticResource PlayerColorConverter}}"
+                                 StrokeThickness="3" />
+                        <Ellipse Margin="3">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{Binding AvatarId,
+                                              Converter={StaticResource AvatarIdToPathConverter}}"
+                                            Stretch="UniformToFill" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </Grid>
+                </Grid>
+
+                <!-- Nombre -->
+                <TextBlock Text="{Binding UserName}"
+                           Margin="0,4,0,0"
+                           HorizontalAlignment="Center"
+                           Foreground="White"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           TextTrimming="CharacterEllipsis" />
+
+                <!-- Dado clickeable del jugador local -->
                 <Button Style="{StaticResource CornerPlayerDiceButtonStyle}"
                         Margin="0,6,0,6"
                         Command="{Binding DataContext.RollDiceCommand,
                                           Source={x:Reference GameBoardPageRoot}}" />
 
-                <!-- Inventario: 4 slots -->
-                <UniformGrid Rows="1"
-                             Columns="4"
-                             HorizontalAlignment="Center">
-                    <Border Style="{StaticResource InventorySlotStyle}" />
-                    <Border Style="{StaticResource InventorySlotStyle}" />
-                    <Border Style="{StaticResource InventorySlotStyle}" />
-                    <Border Style="{StaticResource InventorySlotStyle}" />
-                </UniformGrid>
+                <!-- Inventario solo local -->
+                <controls:InventorySlotsControl
+                    Margin="0,8,0,0"
+                    DataContext="{Binding DataContext.Inventory,
+                                          Source={x:Reference GameBoardPageRoot}}" />
             </StackPanel>
         </DataTemplate>
 
@@ -433,7 +530,7 @@
                         VerticalAlignment="Center" />
         </Grid>
 
-        <!-- Tablero dentro de tarjeta decorativa -->
+        <!-- Tablero -->
         <Viewbox Grid.Row="1"
                  Margin="16"
                  Stretch="Uniform"
@@ -578,7 +675,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <!-- TOKENS en canvas global -->
+                    <!-- TOKENS -->
                     <ItemsControl ItemsSource="{Binding PlayerTokens}"
                                   Panel.ZIndex="30">
                         <ItemsControl.ItemsPanel>
@@ -593,7 +690,6 @@
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
 
-                        <!-- Canvas.Left/Top -->
                         <ItemsControl.ItemContainerStyle>
                             <Style TargetType="ContentPresenter">
                                 <Setter Property="Canvas.Left"
@@ -645,36 +741,98 @@
         </Grid>
 
         <!-- Esquinas jugadores -->
+
+        <!-- TopLeft -->
         <ContentControl Content="{Binding CornerPlayers.TopLeftPlayer}"
-                        ContentTemplate="{StaticResource CornerPlayerTemplate}"
                         Grid.RowSpan="3"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Margin="16"
-                        Panel.ZIndex="50" />
+                        Panel.ZIndex="50">
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Setter Property="ContentTemplate"
+                            Value="{StaticResource CornerPlayerTemplate}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Content.IsLocalPlayer,
+                                                       RelativeSource={RelativeSource Self}}"
+                                     Value="True">
+                            <Setter Property="ContentTemplate"
+                                    Value="{StaticResource LocalCornerPlayerTemplate}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
 
+        <!-- TopRight -->
         <ContentControl Content="{Binding CornerPlayers.TopRightPlayer}"
-                        ContentTemplate="{StaticResource CornerPlayerTemplate}"
                         Grid.RowSpan="3"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Margin="16"
-                        Panel.ZIndex="50" />
+                        Panel.ZIndex="50">
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Setter Property="ContentTemplate"
+                            Value="{StaticResource CornerPlayerTemplate}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Content.IsLocalPlayer,
+                                                       RelativeSource={RelativeSource Self}}"
+                                     Value="True">
+                            <Setter Property="ContentTemplate"
+                                    Value="{StaticResource LocalCornerPlayerTemplate}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
 
+        <!-- BottomLeft -->
         <ContentControl Content="{Binding CornerPlayers.BottomLeftPlayer}"
-                        ContentTemplate="{StaticResource CornerPlayerTemplate}"
                         Grid.RowSpan="3"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Bottom"
                         Margin="16"
-                        Panel.ZIndex="50" />
+                        Panel.ZIndex="50">
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Setter Property="ContentTemplate"
+                            Value="{StaticResource CornerPlayerTemplate}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Content.IsLocalPlayer,
+                                                       RelativeSource={RelativeSource Self}}"
+                                     Value="True">
+                            <Setter Property="ContentTemplate"
+                                    Value="{StaticResource LocalCornerPlayerTemplate}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
 
+        <!-- BottomRight -->
         <ContentControl Content="{Binding CornerPlayers.BottomRightPlayer}"
-                        ContentTemplate="{StaticResource CornerPlayerTemplate}"
                         Grid.RowSpan="3"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Margin="16"
-                        Panel.ZIndex="50" />
+                        Panel.ZIndex="50">
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Setter Property="ContentTemplate"
+                            Value="{StaticResource CornerPlayerTemplate}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Content.IsLocalPlayer,
+                                                       RelativeSource={RelativeSource Self}}"
+                                     Value="True">
+                            <Setter Property="ContentTemplate"
+                                    Value="{StaticResource LocalCornerPlayerTemplate}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
+
     </Grid>
 </Page>

@@ -32,6 +32,39 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
         public string TokenImagePath => SkinAssetHelper.GetTokenPathFromSkinId(CurrentSkinId);
 
         private bool _isHost;
+
+        private bool isLocalPlayer;
+
+        private bool isCurrentTurn;
+        public bool IsCurrentTurn
+        {
+            get => isCurrentTurn;
+            set
+            {
+                if (isCurrentTurn == value)
+                {
+                    return;
+                }
+
+                isCurrentTurn = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsLocalPlayer
+        {
+            get { return isLocalPlayer; }
+            set
+            {
+                if (isLocalPlayer == value)
+                {
+                    return;
+                }
+
+                isLocalPlayer = value;
+                OnPropertyChanged();
+            }
+        }
         public bool IsHost
         {
             get => _isHost;
