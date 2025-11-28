@@ -13,6 +13,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/Fonts.xaml"/>
                 <ResourceDictionary Source="Themes/Buttons.xaml"/>
+                <ResourceDictionary Source="Themes/BoardStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <util:AvatarIdToPathConverter x:Key="AvatarIdToPathConverter" />
         </ResourceDictionary>

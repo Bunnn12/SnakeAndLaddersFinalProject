@@ -1,39 +1,46 @@
-﻿using log4net;
-using SnakeAndLaddersFinalProject.Authentication;
-using SnakeAndLaddersFinalProject.Infrastructure;
-using SnakeAndLaddersFinalProject.InventoryService;
-using SnakeAndLaddersFinalProject.Mappers;
-using SnakeAndLaddersFinalProject.Utilities;
-using SnakeAndLaddersFinalProject.Game.Inventory;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using log4net;
+using SnakeAndLaddersFinalProject.Authentication;
+using SnakeAndLaddersFinalProject.Game.Inventory;
+using SnakeAndLaddersFinalProject.Infrastructure;
+using SnakeAndLaddersFinalProject.Mappers;
+using SnakeAndLaddersFinalProject.Utilities;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class InventoryViewModel : INotifyPropertyChanged
     {
-        private const string INVENTORY_SERVICE_ENDPOINT_NAME = "NetTcpBinding_IInventoryService";
         private const int MIN_VALID_USER_ID = 1;
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(InventoryViewModel));
+
+        private readonly IInventoryManager inventoryManager;
 
         private InventoryItemViewModel slot1Item;
         private InventoryItemViewModel slot2Item;
         private InventoryItemViewModel slot3Item;
 
+        private InventoryDiceViewModel slot1Dice;
+        private InventoryDiceViewModel slot2Dice;
+
+        private InventoryItemViewModel selectedItem;
+        private InventoryDiceViewModel selectedDice;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ObservableCollection<InventoryItemViewModel> Items { get; }
+
         public ObservableCollection<InventoryDiceViewModel> Dice { get; }
 
         public InventoryItemViewModel Slot1Item
         {
-            get => slot1Item;
+            get { return slot1Item; }
             private set
             {
                 if (slot1Item == value)
@@ -48,7 +55,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public InventoryItemViewModel Slot2Item
         {
-            get => slot2Item;
+            get { return slot2Item; }
             private set
             {
                 if (slot2Item == value)
@@ -63,7 +70,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public InventoryItemViewModel Slot3Item
         {
-            get => slot3Item;
+            get { return slot3Item; }
             private set
             {
                 if (slot3Item == value)
@@ -76,16 +83,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        public ICommand RefreshCommand { get; }
-        public ICommand SetItemSlotCommand { get; }
-        public ICommand SetDiceSlotCommand { get; }
-
-        private InventoryDiceViewModel slot1Dice;
-        private InventoryDiceViewModel slot2Dice;
-
         public InventoryDiceViewModel Slot1Dice
         {
-            get => slot1Dice;
+            get { return slot1Dice; }
             private set
             {
                 if (slot1Dice == value)
@@ -100,7 +100,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public InventoryDiceViewModel Slot2Dice
         {
-            get => slot2Dice;
+            get { return slot2Dice; }
             private set
             {
                 if (slot2Dice == value)
@@ -113,14 +113,68 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        public InventoryViewModel()
+        public InventoryItemViewModel SelectedItem
         {
+            get { return selectedItem; }
+            set
+            {
+                if (selectedItem == value)
+                {
+                    return;
+                }
+
+                selectedItem = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public InventoryDiceViewModel SelectedDice
+        {
+            get { return selectedDice; }
+            set
+            {
+                if (selectedDice == value)
+                {
+                    return;
+                }
+
+                selectedDice = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand RefreshCommand { get; }
+
+        // Un comando por slot de item
+        public ICommand SetItemSlot1Command { get; }
+        public ICommand SetItemSlot2Command { get; }
+        public ICommand SetItemSlot3Command { get; }
+
+        // Un comando por slot de dado
+        public ICommand SetDiceSlot1Command { get; }
+        public ICommand SetDiceSlot2Command { get; }
+
+        public InventoryViewModel()
+            : this(new InventoryManager())
+        {
+        }
+
+        public InventoryViewModel(IInventoryManager inventoryManager)
+        {
+            this.inventoryManager = inventoryManager ?? throw new ArgumentNullException(nameof(inventoryManager));
+
             Items = new ObservableCollection<InventoryItemViewModel>();
             Dice = new ObservableCollection<InventoryDiceViewModel>();
 
-            RefreshCommand = new RelayCommand(OnRefreshExecuted, CanAlwaysExecute);
-            SetItemSlotCommand = new RelayCommand(OnSetItemSlotExecuted, CanExecuteSetItemSlot);
-            SetDiceSlotCommand = new RelayCommand(OnSetDiceSlotExecuted, CanExecuteSetDiceSlot);
+            // Tu RelayCommand (versión actual) espera Action<object>
+            RefreshCommand = new RelayCommand(_ => OnRefreshExecuted());
+
+            SetItemSlot1Command = new RelayCommand(_ => OnSetItemSlot1Executed());
+            SetItemSlot2Command = new RelayCommand(_ => OnSetItemSlot2Executed());
+            SetItemSlot3Command = new RelayCommand(_ => OnSetItemSlot3Executed());
+
+            SetDiceSlot1Command = new RelayCommand(_ => OnSetDiceSlot1Executed());
+            SetDiceSlot2Command = new RelayCommand(_ => OnSetDiceSlot2Executed());
         }
 
         public Task InitializeAsync()
@@ -128,34 +182,34 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             return LoadInventoryAsync();
         }
 
-        private static bool CanAlwaysExecute(object parameter)
-        {
-            return true;
-        }
-
-        private static bool CanExecuteSetItemSlot(object parameter)
-        {
-            return parameter is InventoryItemSlotSelection;
-        }
-
-        private static bool CanExecuteSetDiceSlot(object parameter)
-        {
-            return parameter is InventoryDiceSlotSelection;
-        }
-
-        private async void OnRefreshExecuted(object parameter)
+        private async void OnRefreshExecuted()
         {
             await LoadInventoryAsync();
         }
 
-        private async void OnSetItemSlotExecuted(object parameter)
+        private async void OnSetItemSlot1Executed()
         {
-            await SetItemSlotAsync(parameter);
+            await SetItemSlotAsync(1);
         }
 
-        private async void OnSetDiceSlotExecuted(object parameter)
+        private async void OnSetItemSlot2Executed()
         {
-            await SetDiceSlotAsync(parameter);
+            await SetItemSlotAsync(2);
+        }
+
+        private async void OnSetItemSlot3Executed()
+        {
+            await SetItemSlotAsync(3);
+        }
+
+        private async void OnSetDiceSlot1Executed()
+        {
+            await SetDiceSlotAsync(1);
+        }
+
+        private async void OnSetDiceSlot2Executed()
+        {
+            await SetDiceSlotAsync(2);
         }
 
         private async Task LoadInventoryAsync()
@@ -169,50 +223,42 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                using (var client = CreateClient())
+                InventorySnapshot snapshot = await inventoryManager.GetInventoryAsync(userId);
+
+                Items.Clear();
+                Dice.Clear();
+
+                foreach (InventoryItemData item in snapshot.Items)
                 {
-                    var snapshot = await Task.Run(() => client.GetInventory(userId));
-
-                    Items.Clear();
-                    Dice.Clear();
-
-                    if (snapshot != null && snapshot.Items != null)
-                    {
-                        foreach (var dto in snapshot.Items)
+                    Items.Add(
+                        new InventoryItemViewModel
                         {
-                            Items.Add(new InventoryItemViewModel
-                            {
-                                ObjectId = dto.ObjectId,
-                                ObjectCode = dto.ObjectCode,
-                                Name = dto.Name,
-                                Quantity = dto.Quantity,
-                                SlotNumber = dto.SlotNumber,
-                                IconPath = InventoryIconMapper.GetItemIconPath(dto.ObjectCode)
-                            });
-                        }
-
-                        RefreshSlotItems();
-                    }
-
-                    if (snapshot != null && snapshot.Dice != null)
-                    {
-                        foreach (var dto in snapshot.Dice)
-                        {
-                            Dice.Add(new InventoryDiceViewModel
-                            {
-                                DiceId = dto.DiceId,
-                                DiceCode = dto.DiceCode,
-                                Name = dto.Name,
-                                Quantity = dto.Quantity,
-                                SlotNumber = dto.SlotNumber,
-                                IconPath = InventoryIconMapper.GetDiceIconPath(dto.DiceCode)
-                            });
-                        }
-
-                        RefreshDiceSlots();
-                    }
-
+                            ObjectId = item.ObjectId,
+                            ObjectCode = item.ObjectCode,
+                            Name = item.Name,
+                            Quantity = item.Quantity,
+                            SlotNumber = item.SlotNumber,
+                            IconPath = InventoryIconMapper.GetItemIconPath(item.ObjectCode)
+                        });
                 }
+
+                RefreshSlotItems();
+
+                foreach (InventoryDiceData diceData in snapshot.Dice)
+                {
+                    Dice.Add(
+                        new InventoryDiceViewModel
+                        {
+                            DiceId = diceData.DiceId,
+                            DiceCode = diceData.DiceCode,
+                            Name = diceData.Name,
+                            Quantity = diceData.Quantity,
+                            SlotNumber = diceData.SlotNumber,
+                            IconPath = InventoryIconMapper.GetDiceIconPath(diceData.DiceCode)
+                        });
+                }
+
+                RefreshDiceSlots();
             }
             catch (Exception ex)
             {
@@ -236,12 +282,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             Slot2Dice = Dice.FirstOrDefault(d => d.SlotNumber == 2);
         }
 
-
-        private async Task SetItemSlotAsync(object parameter)
+        private async Task SetItemSlotAsync(int slotNumber)
         {
-            var selection = parameter as InventoryItemSlotSelection;
-
-            if (selection == null)
+            // Si no hay item seleccionado, no hace nada
+            if (selectedItem == null)
             {
                 return;
             }
@@ -253,40 +297,34 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            if (selection.SlotNumber < 1 || selection.SlotNumber > 3)
+            if (slotNumber < 1 || slotNumber > 3)
             {
                 return;
             }
 
             try
             {
-                byte slot = selection.SlotNumber;
+                byte slot = (byte)slotNumber;
 
-                foreach (var item in Items)
+                foreach (InventoryItemViewModel item in Items)
                 {
-                    if (item.SlotNumber == slot && !ReferenceEquals(item, selection.Item))
+                    if (item.SlotNumber == slot && !ReferenceEquals(item, selectedItem))
                     {
                         item.SlotNumber = null;
                     }
                 }
 
-                if (selection.Item != null)
-                {
-                    selection.Item.SlotNumber = slot;
-                }
+                selectedItem.SlotNumber = slot;
 
                 int? slot1ObjectId = Items.FirstOrDefault(i => i.SlotNumber == 1)?.ObjectId;
                 int? slot2ObjectId = Items.FirstOrDefault(i => i.SlotNumber == 2)?.ObjectId;
                 int? slot3ObjectId = Items.FirstOrDefault(i => i.SlotNumber == 3)?.ObjectId;
 
-                using (var client = CreateClient())
-                {
-                    await Task.Run(() => client.UpdateSelectedItems(
-                        userId,
-                        slot1ObjectId,
-                        slot2ObjectId,
-                        slot3ObjectId));
-                }
+                await inventoryManager.UpdateSelectedItemsAsync(
+                    userId,
+                    slot1ObjectId,
+                    slot2ObjectId,
+                    slot3ObjectId);
 
                 RefreshSlotItems();
             }
@@ -299,11 +337,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        private async Task SetDiceSlotAsync(object parameter)
+        private async Task SetDiceSlotAsync(int slotNumber)
         {
-            var selection = parameter as InventoryDiceSlotSelection;
-
-            if (selection == null)
+            if (selectedDice == null)
             {
                 return;
             }
@@ -315,41 +351,34 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            if (selection.SlotNumber < 1 || selection.SlotNumber > 2)
+            if (slotNumber < 1 || slotNumber > 2)
             {
                 return;
             }
 
             try
             {
-                byte slot = selection.SlotNumber;
+                byte slot = (byte)slotNumber;
 
-                foreach (var dice in Dice)
+                foreach (InventoryDiceViewModel diceItem in Dice)
                 {
-                    if (dice.SlotNumber == slot && !ReferenceEquals(dice, selection.Dice))
+                    if (diceItem.SlotNumber == slot && !ReferenceEquals(diceItem, selectedDice))
                     {
-                        dice.SlotNumber = null;
+                        diceItem.SlotNumber = null;
                     }
                 }
 
-                if (selection.Dice != null)
-                {
-                    selection.Dice.SlotNumber = slot;
-                }
+                selectedDice.SlotNumber = slot;
 
                 int? slot1DiceId = Dice.FirstOrDefault(d => d.SlotNumber == 1)?.DiceId;
                 int? slot2DiceId = Dice.FirstOrDefault(d => d.SlotNumber == 2)?.DiceId;
 
-                using (var client = CreateClient())
-                {
-                    await Task.Run(() => client.UpdateSelectedDice(
-                        userId,
-                        slot1DiceId,
-                        slot2DiceId));
-                }
+                await inventoryManager.UpdateSelectedDiceAsync(
+                    userId,
+                    slot1DiceId,
+                    slot2DiceId);
 
                 RefreshDiceSlots();
-
             }
             catch (Exception ex)
             {
@@ -365,19 +394,17 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             return userId >= MIN_VALID_USER_ID;
         }
 
-        private static InventoryServiceClient CreateClient()
-        {
-            return new InventoryServiceClient(INVENTORY_SERVICE_ENDPOINT_NAME);
-        }
-
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
+            PropertyChangedEventHandler handler = PropertyChanged;
+
+            if (handler == null)
             {
-                handler(this, new PropertyChangedEventArgs(propertyName));
+                return;
             }
+
+            PropertyChangedEventArgs args = new PropertyChangedEventArgs(propertyName);
+            handler(this, args);
         }
     }
-    
 }

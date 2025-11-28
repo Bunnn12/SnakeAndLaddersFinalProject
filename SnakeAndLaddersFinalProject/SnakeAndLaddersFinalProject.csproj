@@ -146,6 +146,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Controls\InventorySlotsControl.xaml.cs">
+      <DependentUpon>InventorySlotsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\CellTokenVisibleConverter.cs" />
     <Compile Include="Converters\GameBoardConverters.cs" />
     <Compile Include="Converters\LadderGeometryConverter.cs" />
@@ -163,8 +166,13 @@
     <Compile Include="Game\Board\BoardBuilder.cs" />
     <Compile Include="Game\Board\BoardBuildResult.cs" />
     <Compile Include="Game\Gameplay\GameplayEventsHandler.cs" />
+    <Compile Include="Game\Inventory\IInventoryManager.cs" />
+    <Compile Include="Game\Inventory\InventoryDiceData.cs" />
     <Compile Include="Game\Inventory\InventoryDiceSlotSelection.cs" />
+    <Compile Include="Game\Inventory\InventoryItemData.cs" />
     <Compile Include="Game\Inventory\InventoryItemSlotSelection.cs" />
+    <Compile Include="Game\Inventory\InventoryManager.cs" />
+    <Compile Include="Game\Inventory\InventorySnapshot.cs" />
     <Compile Include="Game\PlayerTokenManager.cs" />
     <Compile Include="Game\SpecialCellType.cs" />
     <Compile Include="Globalization\LocalizationManager.cs" />
@@ -295,6 +303,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Controls\InventorySlotsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DialogBasicWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -380,6 +392,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SkinsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\BoardStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
