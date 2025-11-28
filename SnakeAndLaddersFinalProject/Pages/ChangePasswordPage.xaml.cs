@@ -86,7 +86,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             try
             {
-                Logger.Info("Requesting password change verification code (forgot password).");
+                Logger.Info("Requesting password change verification code (forgot password)."); //aaaaaaaaaaaaaaaaaaaaaa
 
                 AuthResult result = await System.Threading.Tasks.Task.Run(
                     () => client.RequestPasswordChangeCode(email));
@@ -114,7 +114,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 string userMessage = ExceptionHandler.Handle(
                     ex,
-                    $"{nameof(ChangePasswordPage)}.{nameof(BtnSendCode_Click)}.EndpointNotFound",
+                    $"{nameof(ChangePasswordPage)}.{nameof(BtnSendCode_Click)}.EndpointNotFound", 
                     Logger);
 
                 MessageBox.Show(
