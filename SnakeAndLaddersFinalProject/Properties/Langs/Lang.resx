@@ -669,4 +669,160 @@
   <data name="UiShopChestInfoTitle" xml:space="preserve">
     <value>Chest details</value>
   </data>
+  <data name="lblChangePasswordCurrentPasswordText" xml:space="preserve">
+    <value>Current password</value>
+  </data>
+  <data name="lblChangePasswordInstructionText" xml:space="preserve">
+    <value>Enter your current password and choose a new one</value>
+  </data>
+  <data name="lblChangePasswordNewPasswordText" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="lblChangePasswordTitleText" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="btnChangePasswordText" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="lblChangePasswordConfirmPasswordText" xml:space="preserve">
+    <value>Confirm new password</value>
+  </data>
+  <data name="lblChangePasswordFooterText" xml:space="preserve">
+    <value>Your new password must meet the security requirements</value>
+  </data>
+  <data name="UiChangePasswordGenericError" xml:space="preserve">
+    <value>An error occurred while changing your password</value>
+  </data>
+  <data name="UiChangePasswordInvalidCurrent" xml:space="preserve">
+    <value>The current password is incorrect</value>
+  </data>
+  <data name="UiChangePasswordPasswordsDoNotMatch" xml:space="preserve">
+    <value>New password and confirmation do not match</value>
+  </data>
+  <data name="UiChangePasswordReusedPassword" xml:space="preserve">
+    <value>The new password cannot be the same as your 3 previous passwords</value>
+  </data>
+  <data name="UiChangePasswordSuccess" xml:space="preserve">
+    <value>Your password has been updated successfully</value>
+  </data>
+  <data name="UiChangePasswordWeakPassword" xml:space="preserve">
+    <value>The new password does not meet the security requirements</value>
+  </data>
+  <data name="lblChangePasswordCodeText" xml:space="preserve">
+    <value>Verification code</value>
+  </data>
+  <data name="btnSendCodeText" xml:space="preserve">
+    <value>Send code</value>
+  </data>
+  <data name="UiChangePasswordCodeSent" xml:space="preserve">
+    <value>A verification code was sent to your email</value>
+  </data>
+  <data name="UiChangePasswordCodeNotRequested" xml:space="preserve">
+    <value>You must request a verification code before changing your password</value>
+  </data>
+  <data name="UiChangePasswordCodeExpired" xml:space="preserve">
+    <value>The verification code has expired. Please request a new one</value>
+  </data>
+  <data name="UiChangePasswordCodeInvalid" xml:space="preserve">
+    <value>The verification code is not valid</value>
+  </data>
+  <data name="AuthAccountDeleted" xml:space="preserve">
+    <value>This account has been deleted.</value>
+  </data>
+  <data name="AuthBannedGeneric" xml:space="preserve">
+    <value>This account is currently banned.</value>
+  </data>
+  <data name="AuthBannedPermanent" xml:space="preserve">
+    <value>This account has been permanently banned.</value>
+  </data>
+  <data name="AuthBannedUntilFmt" xml:space="preserve">
+    <value>This account is banned until {0}.</value>
+  </data>
+  <data name="AuthCodeExpired" xml:space="preserve">
+    <value>The verification code has expired. Please request a new one.</value>
+  </data>
+  <data name="AuthCodeInvalid" xml:space="preserve">
+    <value>The verification code is not valid.</value>
+  </data>
+  <data name="AuthCodeNotRequested" xml:space="preserve">
+    <value>You must request a verification code before continuing</value>
+  </data>
+  <data name="AuthEmailAlreadyExists" xml:space="preserve">
+    <value>This email address is already registered.</value>
+  </data>
+  <data name="AuthEmailRequired" xml:space="preserve">
+    <value>Email is required.</value>
+  </data>
+  <data name="AuthEmailSendFailed" xml:space="preserve">
+    <value>We could not send the email. Please try again later.</value>
+  </data>
+  <data name="AuthInvalidCredentials" xml:space="preserve">
+    <value>Invalid credentials, please verify them</value>
+  </data>
+  <data name="AuthServerError" xml:space="preserve">
+    <value>A server error occurred while processing your request.</value>
+  </data>
+  <data name="AuthThrottleWaitFmt" xml:space="preserve">
+    <value>Please wait {0} seconds before requesting a new code.</value>
+  </data>
+  <data name="AuthUserNameAlreadyExists" xml:space="preserve">
+    <value>The username is already taken.</value>
+  </data>
+  <data name="Auth_ThrottleWaitFmt" xml:space="preserve">
+    <value>Please wait {0} seconds before trying again.</value>
+  </data>
+  <data name="String1AuthOk" xml:space="preserve">
+    <value>Operation completed successfully.</value>
+  </data>
+  <data name="UiAccountCreatedFmt" xml:space="preserve">
+    <value>Your account "{0}" has been created successfully.</value>
+  </data>
+  <data name="UiEmailTooLong" xml:space="preserve">
+    <value>Email address cannot be longer than 200 characters.</value>
+  </data>
+  <data name="UiFirstNameLettersOnly" xml:space="preserve">
+    <value>First name can only contain letters.</value>
+  </data>
+  <data name="UiFirstNameRequired" xml:space="preserve">
+    <value>First name is required.</value>
+  </data>
+  <data name="UiFirstNameTooLong" xml:space="preserve">
+    <value>First name cannot be longer than 90 characters.</value>
+  </data>
+  <data name="UiIdentifierRequired" xml:space="preserve">
+    <value>Username or email is required.</value>
+  </data>
+  <data name="UiIdentifierTooLong" xml:space="preserve">
+    <value>The username or email is too long.</value>
+  </data>
+  <data name="UiIdentifierTooShort" xml:space="preserve">
+    <value>The username or email is too short.</value>
+  </data>
+  <data name="UiLastNameLettersOnly" xml:space="preserve">
+    <value>Last name can only contain letters.</value>
+  </data>
+  <data name="UiLastNameTooLong" xml:space="preserve">
+    <value>Last name cannot be longer than 90 characters.</value>
+  </data>
+  <data name="UiPasswordPolicyDescription" xml:space="preserve">
+    <value>The password must have at least 8 characters, one uppercase letter, one lowercase letter, and one special character.</value>
+  </data>
+  <data name="UiPasswordTooLong" xml:space="preserve">
+    <value>Password is too long</value>
+  </data>
+  <data name="UiSessionTokenMissingWarn" xml:space="preserve">
+    <value>Session started, but the service did not return a token. Some features may not be available.</value>
+  </data>
+  <data name="UiUnexpectedNavigationError" xml:space="preserve">
+    <value>An unexpected error occurred while navigating.</value>
+  </data>
+  <data name="UiUserNameTooLong" xml:space="preserve">
+    <value>Username cannot be longer than 90 characters.</value>
+  </data>
+  <data name="UiVerificationCodeRequired" xml:space="preserve">
+    <value>Verification code is required.</value>
+  </data>
+  <data name="UiVerificationSentFmt" xml:space="preserve">
+    <value>A verification email was sent to {0}.</value>
+  </data>
 </root>

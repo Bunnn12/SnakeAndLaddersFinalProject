@@ -61,6 +61,141 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Please wait {0} seconds before trying again..
+        /// </summary>
+        public static string Auth_ThrottleWaitFmt {
+            get {
+                return ResourceManager.GetString("Auth_ThrottleWaitFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a This account has been deleted..
+        /// </summary>
+        public static string AuthAccountDeleted {
+            get {
+                return ResourceManager.GetString("AuthAccountDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a This account is currently banned..
+        /// </summary>
+        public static string AuthBannedGeneric {
+            get {
+                return ResourceManager.GetString("AuthBannedGeneric", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a This account has been permanently banned..
+        /// </summary>
+        public static string AuthBannedPermanent {
+            get {
+                return ResourceManager.GetString("AuthBannedPermanent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a This account is banned until {0}..
+        /// </summary>
+        public static string AuthBannedUntilFmt {
+            get {
+                return ResourceManager.GetString("AuthBannedUntilFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The verification code has expired. Please request a new one..
+        /// </summary>
+        public static string AuthCodeExpired {
+            get {
+                return ResourceManager.GetString("AuthCodeExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The verification code is not valid..
+        /// </summary>
+        public static string AuthCodeInvalid {
+            get {
+                return ResourceManager.GetString("AuthCodeInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You must request a verification code before continuing.
+        /// </summary>
+        public static string AuthCodeNotRequested {
+            get {
+                return ResourceManager.GetString("AuthCodeNotRequested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a This email address is already registered..
+        /// </summary>
+        public static string AuthEmailAlreadyExists {
+            get {
+                return ResourceManager.GetString("AuthEmailAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Email is required..
+        /// </summary>
+        public static string AuthEmailRequired {
+            get {
+                return ResourceManager.GetString("AuthEmailRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a We could not send the email. Please try again later..
+        /// </summary>
+        public static string AuthEmailSendFailed {
+            get {
+                return ResourceManager.GetString("AuthEmailSendFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Invalid credentials, please verify them.
+        /// </summary>
+        public static string AuthInvalidCredentials {
+            get {
+                return ResourceManager.GetString("AuthInvalidCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a A server error occurred while processing your request..
+        /// </summary>
+        public static string AuthServerError {
+            get {
+                return ResourceManager.GetString("AuthServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Please wait {0} seconds before requesting a new code..
+        /// </summary>
+        public static string AuthThrottleWaitFmt {
+            get {
+                return ResourceManager.GetString("AuthThrottleWaitFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The username is already taken..
+        /// </summary>
+        public static string AuthUserNameAlreadyExists {
+            get {
+                return ResourceManager.GetString("AuthUserNameAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Continue.
         /// </summary>
         public static string bntContinueText {
@@ -129,6 +264,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string btnChangeAvatarText {
             get {
                 return ResourceManager.GetString("btnChangeAvatarText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Change password.
+        /// </summary>
+        public static string btnChangePasswordText {
+            get {
+                return ResourceManager.GetString("btnChangePasswordText", resourceCulture);
             }
         }
         
@@ -327,6 +471,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string btnResendCodeText {
             get {
                 return ResourceManager.GetString("btnResendCodeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Send code.
+        /// </summary>
+        public static string btnSendCodeText {
+            get {
+                return ResourceManager.GetString("btnSendCodeText", resourceCulture);
             }
         }
         
@@ -651,6 +804,69 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string lblBoardSizeText {
             get {
                 return ResourceManager.GetString("lblBoardSizeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Verification code.
+        /// </summary>
+        public static string lblChangePasswordCodeText {
+            get {
+                return ResourceManager.GetString("lblChangePasswordCodeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Confirm new password.
+        /// </summary>
+        public static string lblChangePasswordConfirmPasswordText {
+            get {
+                return ResourceManager.GetString("lblChangePasswordConfirmPasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Current password.
+        /// </summary>
+        public static string lblChangePasswordCurrentPasswordText {
+            get {
+                return ResourceManager.GetString("lblChangePasswordCurrentPasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your new password must meet the security requirements.
+        /// </summary>
+        public static string lblChangePasswordFooterText {
+            get {
+                return ResourceManager.GetString("lblChangePasswordFooterText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Enter your current password and choose a new one.
+        /// </summary>
+        public static string lblChangePasswordInstructionText {
+            get {
+                return ResourceManager.GetString("lblChangePasswordInstructionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a New password.
+        /// </summary>
+        public static string lblChangePasswordNewPasswordText {
+            get {
+                return ResourceManager.GetString("lblChangePasswordNewPasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Change password.
+        /// </summary>
+        public static string lblChangePasswordTitleText {
+            get {
+                return ResourceManager.GetString("lblChangePasswordTitleText", resourceCulture);
             }
         }
         
@@ -1483,6 +1699,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Operation completed successfully..
+        /// </summary>
+        public static string String1AuthOk {
+            get {
+                return ResourceManager.GetString("String1AuthOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Friends list.
         /// </summary>
         public static string tvFriendsListText {
@@ -1537,6 +1762,105 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Your account &quot;{0}&quot; has been created successfully..
+        /// </summary>
+        public static string UiAccountCreatedFmt {
+            get {
+                return ResourceManager.GetString("UiAccountCreatedFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The verification code has expired. Please request a new one.
+        /// </summary>
+        public static string UiChangePasswordCodeExpired {
+            get {
+                return ResourceManager.GetString("UiChangePasswordCodeExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The verification code is not valid.
+        /// </summary>
+        public static string UiChangePasswordCodeInvalid {
+            get {
+                return ResourceManager.GetString("UiChangePasswordCodeInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You must request a verification code before changing your password.
+        /// </summary>
+        public static string UiChangePasswordCodeNotRequested {
+            get {
+                return ResourceManager.GetString("UiChangePasswordCodeNotRequested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a A verification code was sent to your email.
+        /// </summary>
+        public static string UiChangePasswordCodeSent {
+            get {
+                return ResourceManager.GetString("UiChangePasswordCodeSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred while changing your password.
+        /// </summary>
+        public static string UiChangePasswordGenericError {
+            get {
+                return ResourceManager.GetString("UiChangePasswordGenericError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The current password is incorrect.
+        /// </summary>
+        public static string UiChangePasswordInvalidCurrent {
+            get {
+                return ResourceManager.GetString("UiChangePasswordInvalidCurrent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a New password and confirmation do not match.
+        /// </summary>
+        public static string UiChangePasswordPasswordsDoNotMatch {
+            get {
+                return ResourceManager.GetString("UiChangePasswordPasswordsDoNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The new password cannot be the same as your 3 previous passwords.
+        /// </summary>
+        public static string UiChangePasswordReusedPassword {
+            get {
+                return ResourceManager.GetString("UiChangePasswordReusedPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your password has been updated successfully.
+        /// </summary>
+        public static string UiChangePasswordSuccess {
+            get {
+                return ResourceManager.GetString("UiChangePasswordSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The new password does not meet the security requirements.
+        /// </summary>
+        public static string UiChangePasswordWeakPassword {
+            get {
+                return ResourceManager.GetString("UiChangePasswordWeakPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Invalid email..
         /// </summary>
         public static string UiEmailInvalid {
@@ -1555,11 +1879,47 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Email address cannot be longer than 200 characters..
+        /// </summary>
+        public static string UiEmailTooLong {
+            get {
+                return ResourceManager.GetString("UiEmailTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Server not found. .
         /// </summary>
         public static string UiEndpointNotFound {
             get {
                 return ResourceManager.GetString("UiEndpointNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a First name can only contain letters..
+        /// </summary>
+        public static string UiFirstNameLettersOnly {
+            get {
+                return ResourceManager.GetString("UiFirstNameLettersOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a First name is required..
+        /// </summary>
+        public static string UiFirstNameRequired {
+            get {
+                return ResourceManager.GetString("UiFirstNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a First name cannot be longer than 90 characters..
+        /// </summary>
+        public static string UiFirstNameTooLong {
+            get {
+                return ResourceManager.GetString("UiFirstNameTooLong", resourceCulture);
             }
         }
         
@@ -1573,11 +1933,56 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Username or email is required..
+        /// </summary>
+        public static string UiIdentifierRequired {
+            get {
+                return ResourceManager.GetString("UiIdentifierRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The username or email is too long..
+        /// </summary>
+        public static string UiIdentifierTooLong {
+            get {
+                return ResourceManager.GetString("UiIdentifierTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The username or email is too short..
+        /// </summary>
+        public static string UiIdentifierTooShort {
+            get {
+                return ResourceManager.GetString("UiIdentifierTooShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Last name can only contain letters..
+        /// </summary>
+        public static string UiLastNameLettersOnly {
+            get {
+                return ResourceManager.GetString("UiLastNameLettersOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Last name is required..
         /// </summary>
         public static string UiLastNameRequired {
             get {
                 return ResourceManager.GetString("UiLastNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Last name cannot be longer than 90 characters..
+        /// </summary>
+        public static string UiLastNameTooLong {
+            get {
+                return ResourceManager.GetString("UiLastNameTooLong", resourceCulture);
             }
         }
         
@@ -1609,11 +2014,29 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The password must have at least 8 characters, one uppercase letter, one lowercase letter, and one special character..
+        /// </summary>
+        public static string UiPasswordPolicyDescription {
+            get {
+                return ResourceManager.GetString("UiPasswordPolicyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Password is required..
         /// </summary>
         public static string UiPasswordRequired {
             get {
                 return ResourceManager.GetString("UiPasswordRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Password is too long.
+        /// </summary>
+        public static string UiPasswordTooLong {
+            get {
+                return ResourceManager.GetString("UiPasswordTooLong", resourceCulture);
             }
         }
         
@@ -1632,6 +2055,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string UiResendCodeInFmt {
             get {
                 return ResourceManager.GetString("UiResendCodeInFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Session started, but the service did not return a token. Some features may not be available..
+        /// </summary>
+        public static string UiSessionTokenMissingWarn {
+            get {
+                return ResourceManager.GetString("UiSessionTokenMissingWarn", resourceCulture);
             }
         }
         
@@ -1708,11 +2140,47 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a An unexpected error occurred while navigating..
+        /// </summary>
+        public static string UiUnexpectedNavigationError {
+            get {
+                return ResourceManager.GetString("UiUnexpectedNavigationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Username is required.
         /// </summary>
         public static string UiUserNameRequired {
             get {
                 return ResourceManager.GetString("UiUserNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Username cannot be longer than 90 characters..
+        /// </summary>
+        public static string UiUserNameTooLong {
+            get {
+                return ResourceManager.GetString("UiUserNameTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Verification code is required..
+        /// </summary>
+        public static string UiVerificationCodeRequired {
+            get {
+                return ResourceManager.GetString("UiVerificationCodeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a A verification email was sent to {0}..
+        /// </summary>
+        public static string UiVerificationSentFmt {
+            get {
+                return ResourceManager.GetString("UiVerificationSentFmt", resourceCulture);
             }
         }
     }

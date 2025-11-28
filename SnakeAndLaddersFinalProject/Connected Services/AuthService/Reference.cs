@@ -404,6 +404,83 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ChangePasswordRequestDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class ChangePasswordRequestDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string EmailField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NewPasswordField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string VerificationCodeField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Email {
+            get {
+                return this.EmailField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EmailField, value) != true)) {
+                    this.EmailField = value;
+                    this.RaisePropertyChanged("Email");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string NewPassword {
+            get {
+                return this.NewPasswordField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NewPasswordField, value) != true)) {
+                    this.NewPasswordField = value;
+                    this.RaisePropertyChanged("NewPassword");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string VerificationCode {
+            get {
+                return this.VerificationCodeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.VerificationCodeField, value) != true)) {
+                    this.VerificationCodeField = value;
+                    this.RaisePropertyChanged("VerificationCode");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="AuthService.IAuthService")]
     public interface IAuthService {
@@ -431,6 +508,18 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/ConfirmEmailVerification", ReplyAction="http://tempuri.org/IAuthService/ConfirmEmailVerificationResponse")]
         System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> ConfirmEmailVerificationAsync(string email, string code);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/ChangePassword", ReplyAction="http://tempuri.org/IAuthService/ChangePasswordResponse")]
+        SnakeAndLaddersFinalProject.AuthService.AuthResult ChangePassword(SnakeAndLaddersFinalProject.AuthService.ChangePasswordRequestDto request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/ChangePassword", ReplyAction="http://tempuri.org/IAuthService/ChangePasswordResponse")]
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> ChangePasswordAsync(SnakeAndLaddersFinalProject.AuthService.ChangePasswordRequestDto request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/RequestPasswordChangeCode", ReplyAction="http://tempuri.org/IAuthService/RequestPasswordChangeCodeResponse")]
+        SnakeAndLaddersFinalProject.AuthService.AuthResult RequestPasswordChangeCode(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/RequestPasswordChangeCode", ReplyAction="http://tempuri.org/IAuthService/RequestPasswordChangeCodeResponse")]
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> RequestPasswordChangeCodeAsync(string email);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -490,6 +579,22 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         
         public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> ConfirmEmailVerificationAsync(string email, string code) {
             return base.Channel.ConfirmEmailVerificationAsync(email, code);
+        }
+        
+        public SnakeAndLaddersFinalProject.AuthService.AuthResult ChangePassword(SnakeAndLaddersFinalProject.AuthService.ChangePasswordRequestDto request) {
+            return base.Channel.ChangePassword(request);
+        }
+        
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> ChangePasswordAsync(SnakeAndLaddersFinalProject.AuthService.ChangePasswordRequestDto request) {
+            return base.Channel.ChangePasswordAsync(request);
+        }
+        
+        public SnakeAndLaddersFinalProject.AuthService.AuthResult RequestPasswordChangeCode(string email) {
+            return base.Channel.RequestPasswordChangeCode(email);
+        }
+        
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> RequestPasswordChangeCodeAsync(string email) {
+            return base.Channel.RequestPasswordChangeCodeAsync(email);
         }
     }
 }

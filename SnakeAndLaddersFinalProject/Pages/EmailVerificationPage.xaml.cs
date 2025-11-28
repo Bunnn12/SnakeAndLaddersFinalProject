@@ -1,5 +1,4 @@
 ﻿using log4net;
-using log4net.Repository.Hierarchy;
 using SnakeAndLaddersFinalProject.AuthService;
 using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.Utilities;
@@ -9,15 +8,18 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using System.Windows.Input;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class EmailVerificationPage : Page
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(EmailVerificationPage));
 
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(EmailVerificationPage)); 
         private const int DEFAULT_RESEND_COOLDOWN_SECONDS = 45;
         private const int MIN_RESEND_SECONDS = 1;
+
+        private const int VERIFICATION_CODE_LENGTH = 6;
 
         private const string AUTH_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IAuthService";
         private const string AUTH_CODE_THROTTLE_WAIT = "Auth.ThrottleWait";
@@ -55,15 +57,24 @@ namespace SnakeAndLaddersFinalProject.Pages
             btnVerificateCode.Click += VerificateCode;
             btnResendCode.Click += ResendCode;
 
+            DataObject.AddPastingHandler(txtCodeSended, TxtCodeSendedOnPaste);
+
             StartResendCooldown(DEFAULT_RESEND_COOLDOWN_SECONDS);
         }
 
         private async void VerificateCode(object sender, RoutedEventArgs e)
         {
             string code = (txtCodeSended.Text ?? string.Empty).Trim();
+
             if (string.IsNullOrWhiteSpace(code))
             {
                 ShowWarn(T(KEY_UI_VERIFICATION_CODE_REQUIRED));
+                return;
+            }
+
+            if (!IsNumericCode(code) || code.Length != VERIFICATION_CODE_LENGTH)
+            {
+                ShowWarn(MapAuth("Auth.CodeInvalid", null));
                 return;
             }
 
@@ -96,10 +107,12 @@ namespace SnakeAndLaddersFinalProject.Pages
                 }
 
                 ShowInfo(string.Format(T(KEY_UI_ACCOUNT_CREATED_FMT), register.DisplayName));
+
+                btnVerificateCode.IsEnabled = false;
+
                 NavigationService?.Navigate(new LoginPage());
                 client.Close();
             }
-            
             catch (Exception ex)
             {
                 string userMessage = ExceptionHandler.Handle(
@@ -156,7 +169,6 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 ShowWarn(MapAuth(result.Code, result.Meta));
             }
-            
             catch (Exception ex)
             {
                 string userMessage = ExceptionHandler.Handle(
@@ -213,6 +225,70 @@ namespace SnakeAndLaddersFinalProject.Pages
             btnResendCode.Content = string.Format(T(KEY_BTN_RESEND_CODE_TEXT), _remainingSeconds);
         }
 
+        private static bool IsNumericCode(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return false;
+            }
+
+            for (int index = 0; index < value.Length; index++)
+            {
+                if (!char.IsDigit(value[index]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void TxtCodeSendedPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (string.IsNullOrEmpty(e.Text))
+            {
+                return;
+            }
+
+            for (int index = 0; index < e.Text.Length; index++)
+            {
+                if (!char.IsDigit(e.Text[index]))
+                {
+                    e.Handled = true;
+                    return;
+                }
+            }
+
+            var textBox = sender as TextBox;
+            if (textBox == null)
+            {
+                return;
+            }
+
+            if (textBox.Text.Length - textBox.SelectionLength >= VERIFICATION_CODE_LENGTH)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void TxtCodeSendedOnPaste(object sender, DataObjectPastingEventArgs e)
+        {
+            if (!e.DataObject.GetDataPresent(DataFormats.UnicodeText))
+            {
+                e.CancelCommand();
+                return;
+            }
+
+            string pasted = e.DataObject.GetData(DataFormats.UnicodeText) as string ?? string.Empty;
+            pasted = pasted.Trim();
+
+            if (pasted.Length > VERIFICATION_CODE_LENGTH || !IsNumericCode(pasted))
+            {
+                e.CancelCommand();
+                return;
+            }
+        }
+
         private static string T(string key) =>
             Globalization.LocalizationManager.Current[key];
 
@@ -249,9 +325,6 @@ namespace SnakeAndLaddersFinalProject.Pages
                         metaDictionary.ContainsKey(META_KEY_SECONDS)
                             ? metaDictionary[META_KEY_SECONDS]
                             : DEFAULT_RESEND_COOLDOWN_SECONDS.ToString());
-
-                case "Auth.CodeNotRequested":
-                    return T("AuthCodeNotRequested");
 
                 case "Auth.CodeExpired":
                     return T("AuthCodeExpired");

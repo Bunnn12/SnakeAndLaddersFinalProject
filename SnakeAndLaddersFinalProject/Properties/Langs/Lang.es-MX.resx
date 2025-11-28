@@ -538,120 +538,291 @@
     <value>Posición entre los primeros 50</value>
   </data>
   <data name="lblAvatarSectionTitle" xml:space="preserve">
-    <value />
+    <value>Skins</value>
   </data>
   <data name="StickerSectionTitle" xml:space="preserve">
-    <value />
+    <value>Stickers</value>
   </data>
   <data name="lblDiceSectionTitle" xml:space="preserve">
     <value>Dados</value>
   </data>
   <data name="lblItemSectionTitle" xml:space="preserve">
-    <value />
+    <value>Elementos</value>
   </data>
   <data name="lblShopAvatarCommonTitle" xml:space="preserve">
-    <value />
+    <value>Cofre de skins común</value>
   </data>
   <data name="lblShopAvatarEpicTitle" xml:space="preserve">
-    <value />
+    <value>Cofre de skins épico</value>
   </data>
   <data name="lblAvatarLegendaryTitle" xml:space="preserve">
-    <value />
+    <value>Cofre de skins legendario</value>
   </data>
   <data name="lblAvatarCommonPrice" xml:space="preserve">
-    <value />
+    <value>Precio: 200 monedas</value>
   </data>
   <data name="lblAvatarEpicPrice" xml:space="preserve">
-    <value />
+    <value>Precio: 400 monedas</value>
   </data>
   <data name="lblAvatarLegendaryPrice" xml:space="preserve">
-    <value />
+    <value>Precio: 800 monedas</value>
   </data>
   <data name="stickerCommonTitle" xml:space="preserve">
-    <value />
+    <value>Cofre de pegatinas común</value>
   </data>
   <data name="lblStickerEpicText" xml:space="preserve">
-    <value />
+    <value>Cofre de pegatinas épico</value>
   </data>
   <data name="StickerLegendaryText" xml:space="preserve">
-    <value />
+    <value>Cofre de pegatinas legendario</value>
   </data>
   <data name="lblStickerCommonPrice" xml:space="preserve">
-    <value />
+    <value>Precio: 150 monedas</value>
   </data>
   <data name="lblStickerEpicPrice" xml:space="preserve">
-    <value />
+    <value>Precio: 300 monedas</value>
   </data>
   <data name="StickerLegendaryPrice" xml:space="preserve">
-    <value />
+    <value>Precio: 600 monedas</value>
   </data>
   <data name="lblDiceNegativeTitle" xml:space="preserve">
-    <value />
+    <value>dados negativos</value>
   </data>
   <data name="lblDice123Title" xml:space="preserve">
-    <value />
+    <value>1-3 dados</value>
   </data>
   <data name="lblDice456Title" xml:space="preserve">
-    <value />
+    <value>4 a 6 dados</value>
   </data>
   <data name="lblDiceNegativePrice" xml:space="preserve">
-    <value />
+    <value>Precio: 300 monedas</value>
   </data>
   <data name="lblDice123Price" xml:space="preserve">
-    <value />
+    <value>Precio: 300 monedas</value>
   </data>
   <data name="lblDice456Price" xml:space="preserve">
-    <value />
+    <value>Precio: 300 monedas</value>
   </data>
   <data name="lblItemChestTitle" xml:space="preserve">
-    <value />
+    <value>Cofre de artículos</value>
   </data>
   <data name="ItemChestPrice" xml:space="preserve">
-    <value />
+    <value>Precio: 500 monedas</value>
   </data>
   <data name="UiShopRequiresLogin" xml:space="preserve">
-    <value />
+    <value>Debes iniciar sesión para utilizar la tienda.</value>
   </data>
   <data name="UiShopRequiresRegisteredUser" xml:space="preserve">
-    <value />
+    <value>La tienda sólo está disponible para cuentas registradas.</value>
   </data>
   <data name="UiShopRequiresToken" xml:space="preserve">
-    <value />
+    <value>Falta el token de sesión. Por favor inicia sesión nuevamente</value>
   </data>
   <data name="UiShopPurchaseSuccessFmt" xml:space="preserve">
-    <value />
+    <value>Obtuviste: {0}. Monedas actuales: {1}</value>
   </data>
   <data name="ShopInvalidSessionError" xml:space="preserve">
-    <value />
+    <value>Sesión no válida. Por favor inicia sesión nuevamente</value>
   </data>
   <data name="ShopInvalidUserIdError" xml:space="preserve">
-    <value />
+    <value>Usuario no válido</value>
   </data>
   <data name="ShopUserNotFoundError" xml:space="preserve">
-    <value />
+    <value>Usuario no encontrado</value>
   </data>
   <data name="ShopInsufficientCoinsWarn" xml:space="preserve">
-    <value />
+    <value>No tienes suficientes monedas para esta compra.</value>
   </data>
   <data name="ShopNoAvatarsForRarityWarn" xml:space="preserve">
-    <value />
+    <value>No hay skins disponibles para esa rareza.</value>
   </data>
   <data name="ShopNoStickerPacksWarn" xml:space="preserve">
-    <value />
+    <value>No hay paquetes de pegatinas disponibles</value>
   </data>
   <data name="ShopInvalidDiceError" xml:space="preserve">
-    <value />
+    <value>Dados no válidos</value>
   </data>
   <data name="ShopDiceNotFoundWarn" xml:space="preserve">
-    <value />
+    <value>No se encontraron los dados solicitados.</value>
   </data>
   <data name="ShopItemNotFoundWarn" xml:space="preserve">
-    <value />
+    <value>No se encontró el artículo solicitado</value>
   </data>
   <data name="ShopServerError" xml:space="preserve">
-    <value />
+    <value>Se produjo un error del servidor en la tienda.</value>
   </data>
   <data name="ShopUnknownError" xml:space="preserve">
-    <value />
+    <value>Se produjo un error desconocido en la tienda.</value>
+  </data>
+  <data name="btnSendCodeText" xml:space="preserve">
+    <value>Enviar código</value>
+  </data>
+  <data name="UiChangePasswordCodeSent" xml:space="preserve">
+    <value>Se envió un código de verificación a su correo electrónico.</value>
+  </data>
+  <data name="UiChangePasswordCodeNotRequested" xml:space="preserve">
+    <value>Debes solicitar un código de verificación antes de cambiar tu contraseña</value>
+  </data>
+  <data name="UiChangePasswordCodeExpired" xml:space="preserve">
+    <value>El código de verificación ha caducado. Por favor solicite uno nuevo</value>
+  </data>
+  <data name="UiChangePasswordCodeInvalid" xml:space="preserve">
+    <value>El código de verificación no es válido.</value>
+  </data>
+  <data name="AuthEmailRequired" xml:space="preserve">
+    <value>Se requiere correo electrónico.</value>
+  </data>
+  <data name="ShopDice123Info" xml:space="preserve">
+    <value>Dados 1 a 3: solo arroja valores del 1 al 3</value>
+  </data>
+  <data name="ShopDice456Info" xml:space="preserve">
+    <value>Dados 4 a 6: solo arroja valores del 4 al 6</value>
+  </data>
+  <data name="ShopDiceNegativeInfo" xml:space="preserve">
+    <value>Dados negativos: aumenta la posibilidad de retroceder.</value>
+  </data>
+  <data name="ShopItemChestInfo" xml:space="preserve">
+    <value>Cofre de artículos: combinación aleatoria de objetos, tienes posibilidades de escudos, potenciadores y trampas</value>
+  </data>
+  <data name="UiShopChestInfoTitle" xml:space="preserve">
+    <value>Detalles del pecho</value>
+  </data>
+  <data name="btnChangePasswordText" xml:space="preserve">
+    <value>Cambiar la contraseña</value>
+  </data>
+  <data name="lblChangePasswordCodeText" xml:space="preserve">
+    <value>Código de verificación</value>
+  </data>
+  <data name="lblChangePasswordConfirmPasswordText" xml:space="preserve">
+    <value>Confirmar nueva contraseña</value>
+  </data>
+  <data name="lblChangePasswordCurrentPasswordText" xml:space="preserve">
+    <value>Contraseña actual</value>
+  </data>
+  <data name="lblChangePasswordFooterText" xml:space="preserve">
+    <value>Su nueva contraseña debe cumplir con los requisitos de seguridad.</value>
+  </data>
+  <data name="lblChangePasswordInstructionText" xml:space="preserve">
+    <value>Ingrese su contraseña actual y elija una nueva</value>
+  </data>
+  <data name="lblChangePasswordNewPasswordText" xml:space="preserve">
+    <value>Nueva contraseña</value>
+  </data>
+  <data name="lblChangePasswordTitleText" xml:space="preserve">
+    <value>Cambiar la contraseña</value>
+  </data>
+  <data name="UiChangePasswordGenericError" xml:space="preserve">
+    <value>Se produjo un error al cambiar su contraseña.</value>
+  </data>
+  <data name="UiChangePasswordInvalidCurrent" xml:space="preserve">
+    <value>La contraseña actual es incorrecta</value>
+  </data>
+  <data name="UiChangePasswordPasswordsDoNotMatch" xml:space="preserve">
+    <value>La nueva contraseña y la confirmación no coinciden</value>
+  </data>
+  <data name="UiChangePasswordReusedPassword" xml:space="preserve">
+    <value>La nueva contraseña no puede ser la misma que sus 3 contraseñas anteriores</value>
+  </data>
+  <data name="UiChangePasswordSuccess" xml:space="preserve">
+    <value>Su contraseña ha sido actualizada exitosamente</value>
+  </data>
+  <data name="UiChangePasswordWeakPassword" xml:space="preserve">
+    <value>La nueva contraseña no cumple con los requisitos de seguridad.</value>
+  </data>
+  <data name="AuthAccountDeleted" xml:space="preserve">
+    <value>Esta cuenta ha sido eliminada.</value>
+  </data>
+  <data name="AuthBannedGeneric" xml:space="preserve">
+    <value>Esta cuenta está actualmente prohibida.</value>
+  </data>
+  <data name="AuthBannedPermanent" xml:space="preserve">
+    <value>Esta cuenta ha sido prohibida permanentemente.</value>
+  </data>
+  <data name="AuthBannedUntilFmt" xml:space="preserve">
+    <value>Esta cuenta está prohibida hasta el {0}.</value>
+  </data>
+  <data name="AuthCodeExpired" xml:space="preserve">
+    <value>El código de verificación ha caducado. Por favor solicite uno nuevo.</value>
+  </data>
+  <data name="AuthCodeInvalid" xml:space="preserve">
+    <value>El código de verificación no es válido.</value>
+  </data>
+  <data name="AuthCodeNotRequested" xml:space="preserve">
+    <value>Debes solicitar un código de verificación antes de continuar</value>
+  </data>
+  <data name="AuthEmailAlreadyExists" xml:space="preserve">
+    <value>Esta dirección de correo electrónico ya está registrada.</value>
+  </data>
+  <data name="AuthEmailSendFailed" xml:space="preserve">
+    <value>No pudimos enviar el correo electrónico. Inténtelo de nuevo más tarde.</value>
+  </data>
+  <data name="AuthInvalidCredentials" xml:space="preserve">
+    <value>Credenciales no válidas, verifíquelas</value>
+  </data>
+  <data name="AuthServerError" xml:space="preserve">
+    <value>Se produjo un error en el servidor al procesar su solicitud.</value>
+  </data>
+  <data name="AuthThrottleWaitFmt" xml:space="preserve">
+    <value>Espere {0} segundos antes de solicitar un nuevo código.</value>
+  </data>
+  <data name="AuthUserNameAlreadyExists" xml:space="preserve">
+    <value>El nombre de usuario ya está en uso.</value>
+  </data>
+  <data name="Auth_ThrottleWaitFmt" xml:space="preserve">
+    <value>Espere {0} segundos antes de volver a intentarlo.</value>
+  </data>
+  <data name="String1AuthOk" xml:space="preserve">
+    <value>La operación se completó con éxito.</value>
+  </data>
+  <data name="UiAccountCreatedFmt" xml:space="preserve">
+    <value>Su cuenta "{0}" se ha creado correctamente.</value>
+  </data>
+  <data name="UiEmailTooLong" xml:space="preserve">
+    <value>La dirección de correo electrónico no puede tener más de 200 caracteres.</value>
+  </data>
+  <data name="UiFirstNameLettersOnly" xml:space="preserve">
+    <value>El nombre sólo puede contener letras.</value>
+  </data>
+  <data name="UiFirstNameRequired" xml:space="preserve">
+    <value>Se requiere el nombre.</value>
+  </data>
+  <data name="UiFirstNameTooLong" xml:space="preserve">
+    <value>El nombre no puede tener más de 90 caracteres.</value>
+  </data>
+  <data name="UiIdentifierRequired" xml:space="preserve">
+    <value>Se requiere nombre de usuario o correo electrónico.</value>
+  </data>
+  <data name="UiIdentifierTooLong" xml:space="preserve">
+    <value>El nombre de usuario o el correo electrónico son demasiado largos.</value>
+  </data>
+  <data name="UiIdentifierTooShort" xml:space="preserve">
+    <value>El nombre de usuario o el correo electrónico son demasiado cortos.</value>
+  </data>
+  <data name="UiLastNameLettersOnly" xml:space="preserve">
+    <value>El apellido sólo puede contener letras.</value>
+  </data>
+  <data name="UiLastNameTooLong" xml:space="preserve">
+    <value>El apellido no puede tener más de 90 caracteres.</value>
+  </data>
+  <data name="UiPasswordPolicyDescription" xml:space="preserve">
+    <value>La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un carácter especial.</value>
+  </data>
+  <data name="UiPasswordTooLong" xml:space="preserve">
+    <value>La contraseña es demasiado larga</value>
+  </data>
+  <data name="UiSessionTokenMissingWarn" xml:space="preserve">
+    <value>La sesión comenzó, pero el servicio no devolvió ningún token. Es posible que algunas funciones no estén disponibles.</value>
+  </data>
+  <data name="UiUnexpectedNavigationError" xml:space="preserve">
+    <value>Se produjo un error inesperado al navegar.</value>
+  </data>
+  <data name="UiUserNameTooLong" xml:space="preserve">
+    <value>El nombre de usuario no puede tener más de 90 caracteres.</value>
+  </data>
+  <data name="UiVerificationCodeRequired" xml:space="preserve">
+    <value>Se requiere código de verificación.</value>
+  </data>
+  <data name="UiVerificationSentFmt" xml:space="preserve">
+    <value>Se envió un correo electrónico de verificación a {0}.</value>
   </data>
 </root>

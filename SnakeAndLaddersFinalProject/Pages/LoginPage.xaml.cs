@@ -42,7 +42,12 @@ namespace SnakeAndLaddersFinalProject.Pages
         private const string ICON_URI_INFO = "pack://application:,,,/Assets/Icons/info.png";
         private const string ICON_URI_ERROR = "pack://application:,,,/Assets/Icons/error.png";
 
-        private const int LOGIN_LOADING_DELAY_MILLISECONDS = 500;
+        private const int LOGIN_LOADING_DELAY_MILLISECONDS = 200;
+
+        private const int IDENTIFIER_MIN_LENGTH = 1;
+        private const int IDENTIFIER_MAX_LENGTH = 90;
+        private const int PASSWORD_MIN_LENGTH = 8;
+        private const int PASSWORD_MAX_LENGTH = 510;
 
         private static readonly Regex EMAIL_REGEX =
             new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
@@ -79,14 +84,39 @@ namespace SnakeAndLaddersFinalProject.Pages
             {
                 errors.Add(T("UiIdentifierRequired"));
             }
-            else if (identifier.Contains("@") && !EMAIL_REGEX.IsMatch(identifier))
+            else
             {
-                errors.Add(T("UiEmailInvalid"));
+                if (identifier.Contains("@") && !EMAIL_REGEX.IsMatch(identifier))
+                {
+                    errors.Add(T("UiEmailInvalid"));
+                }
+
+                if (identifier.Length < IDENTIFIER_MIN_LENGTH)
+                {
+                    errors.Add(T("UiIdentifierTooShort")); 
+                }
+
+                if (identifier.Length > IDENTIFIER_MAX_LENGTH)
+                {
+                    errors.Add(T("UiIdentifierTooLong")); 
+                }
             }
 
             if (string.IsNullOrWhiteSpace(password))
             {
                 errors.Add(T("UiPasswordRequired"));
+            }
+            else
+            {
+                if (password.Length < PASSWORD_MIN_LENGTH)
+                {
+                    errors.Add(T("UiPasswordTooShort")); 
+                }
+
+                if (password.Length > PASSWORD_MAX_LENGTH)
+                {
+                    errors.Add(T("UiPasswordTooLong")); 
+                }
             }
 
             return errors.ToArray();
@@ -322,7 +352,6 @@ namespace SnakeAndLaddersFinalProject.Pages
                     NavigationService?.Navigate(new LoginPage());
                 });
 
-                // No exponemos detalles técnicos al usuario
                 ShowError(T("UiGenericError"));
                 authClient.Abort();
             }
@@ -424,6 +453,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 case "Auth.EmailSendFailed":
                     return T("AuthEmailSendFailed");
+
                 case "Auth.AccountDeleted":
                     return T("AuthAccountDeleted");
 
@@ -505,6 +535,37 @@ namespace SnakeAndLaddersFinalProject.Pages
             {
                 ShowError("Unexpected error while navigating.");
             }
+        }
+
+        private void ForgottenPassword(object sender, RoutedEventArgs e)
+        {
+            string token = null;
+
+            try
+            {
+                if (SessionContext.Current != null)
+                {
+                    token = SessionContext.Current.AuthToken;
+                }
+            }
+            catch
+            {
+                token = null;
+            }
+
+            if (token == null)
+            {
+                token = string.Empty;
+            }
+
+            Frame mainFrame = GetMainFrame();
+            if (mainFrame != null)
+            {
+                mainFrame.Navigate(new ChangePasswordPage());
+                return;
+            }
+
+            NavigationService?.Navigate(new ChangePasswordPage());
         }
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)

@@ -184,6 +184,9 @@
     <Compile Include="Mappers\InventoryIconMapper.cs" />
     <Compile Include="Mappers\LobbyMapper.cs" />
     <Compile Include="Mappers\PlayerReportErrorMapper.cs" />
+    <Compile Include="Pages\ChangePasswordPage.xaml.cs">
+      <DependentUpon>ChangePasswordPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\FriendRequestsPage.xaml.cs">
       <DependentUpon>FriendRequestsPage.xaml</DependentUpon>
     </Compile>
@@ -314,6 +317,10 @@
     <Page Include="Pages\AddFriendsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\ChangePasswordPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\CreateMatchPage.xaml">
       <SubType>Designer</SubType>

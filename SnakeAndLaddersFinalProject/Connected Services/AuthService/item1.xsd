@@ -35,4 +35,12 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="LoginDto" nillable="true" type="tns:LoginDto" />
+  <xs:complexType name="ChangePasswordRequestDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NewPassword" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VerificationCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ChangePasswordRequestDto" nillable="true" type="tns:ChangePasswordRequestDto" />
 </xs:schema>

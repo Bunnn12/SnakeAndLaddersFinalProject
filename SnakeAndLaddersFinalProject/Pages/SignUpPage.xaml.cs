@@ -14,6 +14,10 @@ namespace SnakeAndLaddersFinalProject.Pages
         private static readonly ILog Logger = LogManager.GetLogger(typeof(SignUpPage));
 
         private const int MIN_PASSWORD_LENGTH = 8;
+        private const int PASSWORD_MAX_LENGTH = 510;
+        private const int USERNAME_MAX_LENGTH = 90;
+        private const int NAME_MAX_LENGTH = 90;
+        private const int EMAIL_MAX_LENGTH = 200;
 
         private const string AUTH_CODE_OK = "Auth.Ok";
         private const string AUTH_CODE_EMAIL_REQUIRED = "Auth.EmailRequired";
@@ -21,9 +25,9 @@ namespace SnakeAndLaddersFinalProject.Pages
         private const string AUTH_CODE_USERNAME_ALREADY_EXISTS = "Auth.UserNameAlreadyExists";
         private const string AUTH_CODE_INVALID_CREDENTIALS = "Auth.InvalidCredentials";
         private const string AUTH_CODE_THROTTLE_WAIT = "Auth.ThrottleWait";
-        private const string AUTH_CODE_NOT_REQUESTED = "Auth.CodeNotRequested";
-        private const string AUTH_CODE_EXPIRED = "Auth.CodeExpired";
-        private const string AUTH_CODE_INVALID = "Auth.CodeInvalid";
+        private const string AUTH_CODE_NOT_REQUESTED = "Auth.NotRequested";
+        private const string AUTH_CODE_EXPIRED = "Auth.Expired";
+        private const string AUTH_CODE_INVALID = "Auth.Invalid";
         private const string AUTH_CODE_EMAIL_SEND_FAILED = "Auth.EmailSendFailed";
 
         private const string META_KEY_SECONDS = "seconds";
@@ -64,37 +68,156 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             var errors = new List<string>();
 
+            // Nombre
             if (string.IsNullOrWhiteSpace(input.GivenName))
             {
                 errors.Add(T("UiFirstNameRequired"));
             }
+            else
+            {
+                if (input.GivenName.Length > NAME_MAX_LENGTH)
+                {
+                    errors.Add("El nombre no puede tener más de 90 caracteres.");
+                }
 
+                if (!IsLettersOnly(input.GivenName))
+                {
+                    errors.Add("El nombre sólo puede contener letras.");
+                }
+            }
+
+            // Apellido
             if (string.IsNullOrWhiteSpace(input.FamilyName))
             {
                 errors.Add(T("UiLastNameRequired"));
             }
+            else
+            {
+                if (input.FamilyName.Length > NAME_MAX_LENGTH)
+                {
+                    errors.Add("El apellido no puede tener más de 90 caracteres.");
+                }
 
+                if (!IsLettersOnly(input.FamilyName))
+                {
+                    errors.Add("El apellido sólo puede contener letras.");
+                }
+            }
+
+            // Username
             if (string.IsNullOrWhiteSpace(input.Username))
             {
                 errors.Add(T("UiUserNameRequired"));
             }
+            else if (input.Username.Length > USERNAME_MAX_LENGTH)
+            {
+                errors.Add("El nombre de usuario no puede tener más de 90 caracteres.");
+            }
 
+            // Email
             if (string.IsNullOrWhiteSpace(input.EmailAddress))
             {
                 errors.Add(T("UiEmailRequired"));
             }
-            else if (!Regex.IsMatch(input.EmailAddress, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            else
             {
-                errors.Add(T("UiEmailInvalid"));
+                if (input.EmailAddress.Length > EMAIL_MAX_LENGTH)
+                {
+                    errors.Add("El correo electrónico no puede tener más de 200 caracteres.");
+                }
+                else if (!Regex.IsMatch(input.EmailAddress, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                {
+                    errors.Add(T("UiEmailInvalid"));
+                }
             }
 
-            if (string.IsNullOrWhiteSpace(input.PlainPassword) ||
-                input.PlainPassword.Length < MIN_PASSWORD_LENGTH)
+            // Password
+            if (string.IsNullOrWhiteSpace(input.PlainPassword))
             {
-                errors.Add(T("UiPasswordTooShort"));
+                errors.Add("La contraseña no puede estar vacía.");
+            }
+            else
+            {
+                if (input.PlainPassword.Length > PASSWORD_MAX_LENGTH)
+                {
+                    errors.Add("La contraseña no puede tener más de 510 caracteres.");
+                }
+
+                if (!IsPasswordStrong(input.PlainPassword))
+                {
+                    errors.Add("LA CONTRASEÑA DEBE TENER MINIMO 8 CARACTERES, 1 LETRA MAYUSCULA Y UNA MINUSCULA Y UN CARACTER ESPECIAL");
+                }
             }
 
             return errors.ToArray();
+        }
+
+        private static bool IsLettersOnly(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return false;
+            }
+
+            for (int index = 0; index < value.Length; index++)
+            {
+                char character = value[index];
+
+                if (char.IsLetter(character))
+                {
+                    continue;
+                }
+
+                if (char.IsWhiteSpace(character))
+                {
+                    continue;
+                }
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool IsPasswordStrong(string password)
+        {
+            if (string.IsNullOrEmpty(password))
+            {
+                return false;
+            }
+
+            if (password.Length < MIN_PASSWORD_LENGTH || password.Length > PASSWORD_MAX_LENGTH)
+            {
+                return false;
+            }
+
+            bool hasUpper = false;
+            bool hasLower = false;
+            bool hasSpecial = false;
+
+            for (int index = 0; index < password.Length; index++)
+            {
+                char character = password[index];
+
+                if (char.IsUpper(character))
+                {
+                    hasUpper = true;
+                    continue;
+                }
+
+                if (char.IsLower(character))
+                {
+                    hasLower = true;
+                    continue;
+                }
+
+                if (!char.IsLetterOrDigit(character))
+                {
+                    hasSpecial = true;
+                }
+            }
+
+            return hasUpper && hasLower && hasSpecial;
         }
 
         private async void SignUp(object sender, RoutedEventArgs e)
@@ -110,6 +233,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 });
 
             string[] errors = ValidateRegistration(input);
+
             if (errors.Any())
             {
                 ShowWarn(string.Join("\n", errors));
@@ -134,6 +258,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 if (!sendResult.Success)
                 {
+                    // Aquí se manejan duplicados de correo / throttling / etc.
                     ShowWarn(MapAuth(sendResult.Code, sendResult.Meta));
                     authClient.Close();
                     return;
