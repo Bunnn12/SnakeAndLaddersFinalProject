@@ -1,10 +1,12 @@
-﻿using System;
+﻿using log4net;
+using SnakeAndLaddersFinalProject.Mappers;
+using SnakeAndLaddersFinalProject.Pages;
+using SnakeAndLaddersFinalProject.Properties.Langs;
+using SnakeAndLaddersFinalProject.Utilities;
+using System;
 using System.ServiceModel;
 using System.Windows;
 using System.Windows.Controls;
-using log4net;
-using SnakeAndLaddersFinalProject.Mappers;
-using SnakeAndLaddersFinalProject.Properties.Langs;
 
 namespace SnakeAndLaddersFinalProject.Windows
 {
@@ -217,25 +219,17 @@ namespace SnakeAndLaddersFinalProject.Windows
 
                 client.Abort();
             }
-            catch (EndpointNotFoundException endpointException)
+            
+            catch (Exception ex)
             {
-                Logger.Error("Endpoint de PlayerReportService no encontrado.", endpointException);
+                String message = ExceptionHandler.Handle(
+                        ex,
+                        $"{nameof(ReportsWindow)}.{nameof(SendReport)}",
+                        Logger);
 
                 MessageBox.Show(
-                    REPORT_ENDPOINT_NOT_FOUND_MESSAGE_TEXT_KEY,
-                    Lang.reportUserTittle,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-
-                client.Abort();
-            }
-            catch (Exception exception)
-            {
-                Logger.Error("Error inesperado al enviar el reporte.", exception);
-
-                MessageBox.Show(
-                    REPORT_GENERIC_ERROR_MESSAGE_TEXT_KEY,
-                    Lang.reportUserTittle,
+                    "ocurrio un error al mandar el reporte " + message,
+                    Lang.errorTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
 

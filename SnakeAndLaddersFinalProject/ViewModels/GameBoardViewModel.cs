@@ -6,8 +6,10 @@ using SnakeAndLaddersFinalProject.Game.Gameplay;
 using SnakeAndLaddersFinalProject.GameBoardService;
 using SnakeAndLaddersFinalProject.GameplayService;
 using SnakeAndLaddersFinalProject.Infrastructure;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.Services;
 using SnakeAndLaddersFinalProject.ViewModels.Models;
+using SnakeAndLaddersFinalProject.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -163,7 +165,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             await JoinGameplayAsync(safeUserName).ConfigureAwait(false);
 
-            // Sync inicial ÚNICA para turno y fichas
             await SyncGameStateAsync().ConfigureAwait(false);
         }
 
@@ -351,7 +352,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     return;
                 }
 
-                // Siempre actualizamos de quién es el turno
                 UpdateTurnFromState(stateResponse.CurrentTurnUserId);
 
                 if (stateResponse.Tokens == null)
@@ -361,7 +361,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 if (PlayerTokens.Count > 0)
                 {
-                    // Ya hay fichas inicializadas, no duplicar
+ 
                     return;
                 }
 
@@ -385,7 +385,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error(GAME_STATE_SYNC_ERROR_LOG_MESSAGE, ex);
+                ExceptionHandler.Handle(
+                    ex,
+                    $"{nameof(GameBoardViewModel)}.{nameof(SyncGameStateAsync)}",
+                    Logger);
+
+                MessageBox.Show(
+                    GAME_STATE_SYNC_ERROR_LOG_MESSAGE,
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
 

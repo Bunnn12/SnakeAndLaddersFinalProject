@@ -128,17 +128,17 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             return LoadInventoryAsync();
         }
 
-        private bool CanAlwaysExecute(object parameter)
+        private static bool CanAlwaysExecute(object parameter)
         {
             return true;
         }
 
-        private bool CanExecuteSetItemSlot(object parameter)
+        private static bool CanExecuteSetItemSlot(object parameter)
         {
             return parameter is InventoryItemSlotSelection;
         }
 
-        private bool CanExecuteSetDiceSlot(object parameter)
+        private static bool CanExecuteSetDiceSlot(object parameter)
         {
             return parameter is InventoryDiceSlotSelection;
         }
@@ -379,8 +379,5 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
     }
-
-    
-
     
 }

@@ -10,6 +10,7 @@ using SnakeAndLaddersFinalProject.ViewModels;
 using SnakeAndLaddersFinalProject.Windows;
 using SnakeAndLaddersFinalProject.Policies;
 using SnakeAndLaddersFinalProject.Utilities;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 
 
 namespace SnakeAndLaddersFinalProject.Pages
@@ -45,17 +46,16 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var vm = ViewModel;
-            if (vm == null)
+            var viewModel = ViewModel;
+            if (viewModel == null)
             {
                 return;
             }
 
-            // Suscribimos el evento de navegación al tablero
-            vm.NavigateToBoardRequested -= OnNavigateToBoardRequested;
-            vm.NavigateToBoardRequested += OnNavigateToBoardRequested;
-            vm.CurrentUserKickedFromLobby -= OnCurrentUserKickedFromLobby;
-            vm.CurrentUserKickedFromLobby += OnCurrentUserKickedFromLobby;
+            viewModel.NavigateToBoardRequested -= OnNavigateToBoardRequested;
+            viewModel.NavigateToBoardRequested += OnNavigateToBoardRequested;
+            viewModel.CurrentUserKickedFromLobby -= OnCurrentUserKickedFromLobby;
+            viewModel.CurrentUserKickedFromLobby += OnCurrentUserKickedFromLobby;
 
             try
             {
@@ -63,17 +63,17 @@ namespace SnakeAndLaddersFinalProject.Pages
                 {
                     if (args.CreateOptions != null)
                     {
-                        vm.ApplyCreateOptions(args.CreateOptions);
+                        viewModel.ApplyCreateOptions(args.CreateOptions);
                     }
 
-                    vm.CreateLobbyCommand?.Execute(null);
+                    viewModel.CreateLobbyCommand?.Execute(null);
                 }
                 else if (args.Mode == LobbyEntryMode.Join)
                 {
                     if (!string.IsNullOrWhiteSpace(args.JoinCode))
                     {
-                        vm.CodigoInput = args.JoinCode.Trim();
-                        vm.JoinLobbyCommand?.Execute(null);
+                        viewModel.CodeInput = args.JoinCode.Trim();
+                        viewModel.JoinLobbyCommand?.Execute(null);
                     }
                 }
             }
@@ -212,13 +212,16 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    $"{nameof(LobbyPage)}.{nameof(OpenChat)}",
+                    Logger);
+
                 MessageBox.Show(
-                    "Ocurrió un error inesperado al intentar abrir el chat.",
-                    "Error",
+                    userMessage,
+                    Lang.errorTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
-
-                Logger.Error("Error inesperado al abrir la ventana de chat.", ex);
             }
         }
 
