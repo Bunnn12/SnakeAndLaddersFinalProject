@@ -1,0 +1,185 @@
+root = true
+
+###########################################################
+# REGLAS GENERALES DE FORMATO
+###########################################################
+
+[*.cs]
+
+# Indentación y líneas
+indent_style = space
+indent_size = 4
+tab_width = 4
+max_line_length = 100
+end_of_line = crlf
+charset = utf-8-bom
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+###########################################################
+# ESTILO C#
+###########################################################
+
+# Llaves en nueva línea para tipos, métodos, propiedades y bloques de control
+csharp_new_line_before_open_brace = types, methods, properties, accessors, control_blocks, anonymous_methods, anonymous_types, object_collection_array_initializers, lambdas, local_functions
+
+# Sangría en switch/case
+csharp_indent_case_contents = true
+csharp_indent_switch_labels = true
+csharp_indent_labels = flush_left
+
+# Espacios
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_after_cast = false
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
+csharp_space_after_comma = true
+csharp_space_before_comma = false
+csharp_space_around_binary_operators = before_and_after
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_after_colon_in_inheritance_clause = true
+
+# this. / Me.
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_event = false:suggestion
+
+# Var vs tipo explícito
+dotnet_style_require_accessibility_modifiers = always:suggestion
+
+###########################################################
+# NAMING RULES (ALINEADO A TU ESTÁNDAR)
+###########################################################
+
+# Estilos
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+
+dotnet_naming_style.camel_case_style.capitalization = camel_case
+
+dotnet_naming_style.camel_with_underscore_style.capitalization = camel_case
+dotnet_naming_style.camel_with_underscore_style.required_prefix = _
+
+dotnet_naming_style.all_caps_with_underscores_style.capitalization = all_upper
+dotnet_naming_style.all_caps_with_underscores_style.word_separator = _
+
+dotnet_naming_style.interface_prefix_style.capitalization = pascal_case
+dotnet_naming_style.interface_prefix_style.required_prefix = I
+
+dotnet_naming_style.test_method_style.capitalization = pascal_case
+dotnet_naming_style.test_method_style.required_prefix = Test
+
+###########################################################
+# Símbolos
+###########################################################
+
+# Miembros públicos (clases, métodos, props, eventos, enums, delegates)
+dotnet_naming_symbols.public_members.applicable_kinds = class, struct, interface, enum, property, method, event, delegate
+dotnet_naming_symbols.public_members.applicable_accessibilities = public, protected, protected_internal
+
+# Interfaces
+dotnet_naming_symbols.interfaces.applicable_kinds = interface
+
+# Enums
+dotnet_naming_symbols.enums.applicable_kinds = enum
+
+# Miembros de enum
+dotnet_naming_symbols.enum_members.applicable_kinds = field
+dotnet_naming_symbols.enum_members.applicable_accessibilities = public, internal, private, protected, protected_internal
+
+# Campos privados
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+# Constantes
+dotnet_naming_symbols.constants.applicable_kinds = field
+dotnet_naming_symbols.constants.required_modifiers = const
+
+# Variables locales y parámetros
+dotnet_naming_symbols.locals_and_parameters.applicable_kinds = local, parameter
+
+# Métodos de prueba (MSTest, NUnit, xUnit)
+dotnet_naming_symbols.test_methods.applicable_kinds = method
+dotnet_naming_symbols.test_methods.applicable_accessibilities = public
+dotnet_naming_symbols.test_methods.required_attributes = TestMethod, Test, Fact, Theory
+
+###########################################################
+# Reglas de nombramiento
+###########################################################
+
+# 1) Públicos en PascalCase (clases, métodos, props, enums, etc.)
+dotnet_naming_rule.public_members_should_be_pascalcase.symbols = public_members
+dotnet_naming_rule.public_members_should_be_pascalcase.style = pascal_case_style
+dotnet_naming_rule.public_members_should_be_pascalcase.severity = warning
+
+# 2) Interfaces comienzan con I
+dotnet_naming_rule.interfaces_should_start_with_i.symbols = interfaces
+dotnet_naming_rule.interfaces_should_start_with_i.style = interface_prefix_style
+dotnet_naming_rule.interfaces_should_start_with_i.severity = warning
+
+# 3) Enums en PascalCase
+dotnet_naming_rule.enums_should_be_pascalcase.symbols = enums
+dotnet_naming_rule.enums_should_be_pascalcase.style = pascal_case_style
+dotnet_naming_rule.enums_should_be_pascalcase.severity = warning
+
+# 4) Miembros de enum en PascalCase
+dotnet_naming_rule.enum_members_should_be_pascalcase.symbols = enum_members
+dotnet_naming_rule.enum_members_should_be_pascalcase.style = pascal_case_style
+dotnet_naming_rule.enum_members_should_be_pascalcase.severity = warning
+
+# 5) Campos privados: _camelCase
+dotnet_naming_rule.private_fields_should_be_camelcase.symbols = private_fields
+dotnet_naming_rule.private_fields_should_be_camelcase.style = camel_with_underscore_style
+dotnet_naming_rule.private_fields_should_be_camelcase.severity = warning
+
+# 6) Constantes: UPPER_SNAKE_CASE
+dotnet_naming_rule.constants_should_be_uppercase.symbols = constants
+dotnet_naming_rule.constants_should_be_uppercase.style = all_caps_with_underscores_style
+dotnet_naming_rule.constants_should_be_uppercase.severity = warning
+
+# 7) Variables locales y parámetros: camelCase
+dotnet_naming_rule.locals_and_parameters_should_be_camelcase.symbols = locals_and_parameters
+dotnet_naming_rule.locals_and_parameters_should_be_camelcase.style = camel_case_style
+dotnet_naming_rule.locals_and_parameters_should_be_camelcase.severity = warning
+
+# 8) Métodos de prueba: Test + PascalCase
+dotnet_naming_rule.test_methods_should_start_with_test.symbols = test_methods
+dotnet_naming_rule.test_methods_should_start_with_test.style = test_method_style
+dotnet_naming_rule.test_methods_should_start_with_test.severity = suggestion
+
+###########################################################
+# ANÁLISIS, SEGURIDAD Y EXCEPCIONES
+###########################################################
+
+# Subir severidad por categoría
+dotnet_analyzer_diagnostic.category-Style.severity = warning
+dotnet_analyzer_diagnostic.category-Reliability.severity = warning
+dotnet_analyzer_diagnostic.category-Design.severity = warning
+dotnet_analyzer_diagnostic.category-Maintainability.severity = warning
+dotnet_analyzer_diagnostic.category-Security.severity = error
+dotnet_analyzer_diagnostic.category-Usage.severity = warning
+dotnet_analyzer_diagnostic.category-Performance.severity = warning
+
+# No capturar Exception genérica (CA1031)
+dotnet_diagnostic.CA1031.severity = error
+
+# SQL concatenado (CA2100) -> SIEMPRE parametrizado
+dotnet_diagnostic.CA2100.severity = error
+
+# Requerir documentación XML pública (alineado a comentarios /// del estándar)
+dotnet_diagnostic.CS1591.severity = suggestion
+
+###########################################################
+# NOTAS: REGLAS DEL ESTÁNDAR QUE NO SE PUEDEN FORZAR 100%
+###########################################################
+
+# - Nombres SIEMPRE en inglés (código y comentarios).
+# - Booleanos con prefijo is/has/can/should (por tipo no se puede filtrar en naming rules).
+# - Evitar números mágicos: usar constantes con nombre o configuración externa.
+# - Convención de nombres para controles de UI (btn, lbl, txt, img, etc.) sin afectar otros campos.
+# - Uso obligatorio de log4net, nombre del logger y niveles de logging por tipo operativo.
+# - Estructura de mensajes de error al usuario (claros, sin detalles internos).
+# - Reglas de complejidad de contraseña y validaciones de entrada a nivel de dominio/servicio.
+# Estas partes del estándar deben revisarse mediante code review, pruebas y reglas de Sonar/analizadores adicionales.
