@@ -12,9 +12,7 @@ using SnakeAndLaddersFinalProject.AuthService;
 using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.Utilities;
 
-//aaaa
-//bbbb
-//cccc
+
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
