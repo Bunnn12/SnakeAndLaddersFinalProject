@@ -10,6 +10,11 @@ jobs:
   sonarcloud:
     runs-on: windows-latest
 
+    env:
+      SONAR_PROJECT_KEY: Bunnn12_SnakeAndLaddersFinalProject
+      SONAR_ORG: bunnn12
+      SONAR_HOST_URL: https://sonarcloud.io
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,7 +26,6 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      # NuGet CLI para projects con packages.config
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1
 
@@ -31,17 +35,20 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      # Build con MSBuild (ya con paquetes restaurados)
+      - name: Install SonarScanner for .NET
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: SonarCloud Begin
+        run: >
+          dotnet sonarscanner begin
+          /k:"${{ env.SONAR_PROJECT_KEY }}"
+          /o:"${{ env.SONAR_ORG }}"
+          /d:sonar.host.url="${{ env.SONAR_HOST_URL }}"
+          /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          /d:sonar.dotnet.enableRoslynAnalyzers=true
+
       - name: Build (usa .editorconfig y analyzers)
         run: msbuild SnakeAndLaddersFinalProject.sln /p:Configuration=Debug
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey=Bunnn12_SnakeAndLaddersFinalProject
-            -Dsonar.organization=bunnn12
-            -Dsonar.dotnet.enableRoslynAnalyzers=true
+      - name: SonarCloud End
+        run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
