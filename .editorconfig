@@ -34,7 +34,7 @@ csharp_space_after_cast = false
 csharp_space_between_method_declaration_parameter_list_parentheses = false
 csharp_space_between_method_call_parameter_list_parentheses = false
 csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
-csharp_space_between_method_call_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_empty_parameter_list_parent_list_parentheses = false
 csharp_space_after_comma = true
 csharp_space_before_comma = false
 csharp_space_around_binary_operators = before_and_after
@@ -47,7 +47,7 @@ dotnet_style_qualification_for_property = false:suggestion
 dotnet_style_qualification_for_method = false:suggestion
 dotnet_style_qualification_for_event = false:suggestion
 
-# Var vs tipo explícito
+# Modificadores de accesibilidad siempre explícitos
 dotnet_style_require_accessibility_modifiers = always:suggestion
 
 ###########################################################
@@ -70,6 +70,12 @@ dotnet_naming_style.interface_prefix_style.required_prefix = I
 
 dotnet_naming_style.test_method_style.capitalization = pascal_case
 dotnet_naming_style.test_method_style.required_prefix = Test
+
+# Métodos: PascalCase sin guiones bajos
+dotnet_naming_style.pascal_case_no_underscore_style.capitalization = pascal_case
+dotnet_naming_style.pascal_case_no_underscore_style.required_prefix =
+dotnet_naming_style.pascal_case_no_underscore_style.required_suffix =
+dotnet_naming_style.pascal_case_no_underscore_style.word_separator =
 
 ###########################################################
 # Símbolos
@@ -104,6 +110,11 @@ dotnet_naming_symbols.locals_and_parameters.applicable_kinds = local, parameter
 dotnet_naming_symbols.test_methods.applicable_kinds = method
 dotnet_naming_symbols.test_methods.applicable_accessibilities = public
 dotnet_naming_symbols.test_methods.required_attributes = TestMethod, Test, Fact, Theory
+
+# TODOS los métodos (cualquier accesibilidad)
+dotnet_naming_symbols.methods.applicable_kinds = method
+dotnet_naming_symbols.methods.applicable_accessibilities = *
+dotnet_naming_symbols.methods.required_modifiers = *
 
 ###########################################################
 # Reglas de nombramiento
@@ -149,6 +160,11 @@ dotnet_naming_rule.test_methods_should_start_with_test.symbols = test_methods
 dotnet_naming_rule.test_methods_should_start_with_test.style = test_method_style
 dotnet_naming_rule.test_methods_should_start_with_test.severity = suggestion
 
+# 9) TODOS los métodos: PascalCase sin guiones bajos
+dotnet_naming_rule.methods_must_be_pascal_case_no_underscore.symbols = methods
+dotnet_naming_rule.methods_must_be_pascal_case_no_underscore.style = pascal_case_no_underscore_style
+dotnet_naming_rule.methods_must_be_pascal_case_no_underscore.severity = error
+
 ###########################################################
 # ANÁLISIS, SEGURIDAD Y EXCEPCIONES
 ###########################################################
@@ -168,7 +184,7 @@ dotnet_diagnostic.CA1031.severity = error
 # SQL concatenado (CA2100) -> SIEMPRE parametrizado
 dotnet_diagnostic.CA2100.severity = error
 
-# Requerir documentación XML pública (alineado a comentarios /// del estándar)
+# Requerir documentación XML pública
 dotnet_diagnostic.CS1591.severity = suggestion
 
 ###########################################################
@@ -176,10 +192,9 @@ dotnet_diagnostic.CS1591.severity = suggestion
 ###########################################################
 
 # - Nombres SIEMPRE en inglés (código y comentarios).
-# - Booleanos con prefijo is/has/can/should (por tipo no se puede filtrar en naming rules).
-# - Evitar números mágicos: usar constantes con nombre o configuración externa.
-# - Convención de nombres para controles de UI (btn, lbl, txt, img, etc.) sin afectar otros campos.
-# - Uso obligatorio de log4net, nombre del logger y niveles de logging por tipo operativo.
-# - Estructura de mensajes de error al usuario (claros, sin detalles internos).
-# - Reglas de complejidad de contraseña y validaciones de entrada a nivel de dominio/servicio.
-# Estas partes del estándar deben revisarse mediante code review, pruebas y reglas de Sonar/analizadores adicionales.
+# - Booleanos con prefijo is/has/can/should.
+# - Evitar números mágicos (usar constantes o config).
+# - Convención de nombres para controles de UI (btn, lbl, txt, img, etc.).
+# - Uso de log4net (nombre de logger, niveles, etc.).
+# - Mensajes de error claros para usuario sin detalles internos.
+# - Reglas de complejidad de contraseña y validación de entrada a nivel dominio/servicios.
