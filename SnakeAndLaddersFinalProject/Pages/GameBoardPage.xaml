@@ -489,9 +489,11 @@
 
                 <!-- Inventario solo local -->
                 <controls:InventorySlotsControl
-                    Margin="0,8,0,0"
-                    DataContext="{Binding DataContext.Inventory,
-                                          Source={x:Reference GameBoardPageRoot}}" />
+    Margin="0,8,0,0"
+    DataContext="{Binding DataContext.Inventory,
+                          Source={x:Reference GameBoardPageRoot}}"
+    IsEditable="False" />
+
             </StackPanel>
         </DataTemplate>
 

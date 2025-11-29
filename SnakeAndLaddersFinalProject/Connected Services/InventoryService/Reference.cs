@@ -313,6 +313,30 @@ namespace SnakeAndLaddersFinalProject.InventoryService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInventoryService/UpdateSelectedDice", ReplyAction="http://tempuri.org/IInventoryService/UpdateSelectedDiceResponse")]
         System.Threading.Tasks.Task UpdateSelectedDiceAsync(int userId, System.Nullable<int> slot1DiceId, System.Nullable<int> slot2DiceId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInventoryService/EquipItemToSlot", ReplyAction="http://tempuri.org/IInventoryService/EquipItemToSlotResponse")]
+        void EquipItemToSlot(int userId, byte slotNumber, int objectId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInventoryService/EquipItemToSlot", ReplyAction="http://tempuri.org/IInventoryService/EquipItemToSlotResponse")]
+        System.Threading.Tasks.Task EquipItemToSlotAsync(int userId, byte slotNumber, int objectId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInventoryService/UnequipItemFromSlot", ReplyAction="http://tempuri.org/IInventoryService/UnequipItemFromSlotResponse")]
+        void UnequipItemFromSlot(int userId, byte slotNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInventoryService/UnequipItemFromSlot", ReplyAction="http://tempuri.org/IInventoryService/UnequipItemFromSlotResponse")]
+        System.Threading.Tasks.Task UnequipItemFromSlotAsync(int userId, byte slotNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInventoryService/EquipDiceToSlot", ReplyAction="http://tempuri.org/IInventoryService/EquipDiceToSlotResponse")]
+        void EquipDiceToSlot(int userId, byte slotNumber, int diceId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInventoryService/EquipDiceToSlot", ReplyAction="http://tempuri.org/IInventoryService/EquipDiceToSlotResponse")]
+        System.Threading.Tasks.Task EquipDiceToSlotAsync(int userId, byte slotNumber, int diceId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInventoryService/UnequipDiceFromSlot", ReplyAction="http://tempuri.org/IInventoryService/UnequipDiceFromSlotResponse")]
+        void UnequipDiceFromSlot(int userId, byte slotNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInventoryService/UnequipDiceFromSlot", ReplyAction="http://tempuri.org/IInventoryService/UnequipDiceFromSlotResponse")]
+        System.Threading.Tasks.Task UnequipDiceFromSlotAsync(int userId, byte slotNumber);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -364,6 +388,38 @@ namespace SnakeAndLaddersFinalProject.InventoryService {
         
         public System.Threading.Tasks.Task UpdateSelectedDiceAsync(int userId, System.Nullable<int> slot1DiceId, System.Nullable<int> slot2DiceId) {
             return base.Channel.UpdateSelectedDiceAsync(userId, slot1DiceId, slot2DiceId);
+        }
+        
+        public void EquipItemToSlot(int userId, byte slotNumber, int objectId) {
+            base.Channel.EquipItemToSlot(userId, slotNumber, objectId);
+        }
+        
+        public System.Threading.Tasks.Task EquipItemToSlotAsync(int userId, byte slotNumber, int objectId) {
+            return base.Channel.EquipItemToSlotAsync(userId, slotNumber, objectId);
+        }
+        
+        public void UnequipItemFromSlot(int userId, byte slotNumber) {
+            base.Channel.UnequipItemFromSlot(userId, slotNumber);
+        }
+        
+        public System.Threading.Tasks.Task UnequipItemFromSlotAsync(int userId, byte slotNumber) {
+            return base.Channel.UnequipItemFromSlotAsync(userId, slotNumber);
+        }
+        
+        public void EquipDiceToSlot(int userId, byte slotNumber, int diceId) {
+            base.Channel.EquipDiceToSlot(userId, slotNumber, diceId);
+        }
+        
+        public System.Threading.Tasks.Task EquipDiceToSlotAsync(int userId, byte slotNumber, int diceId) {
+            return base.Channel.EquipDiceToSlotAsync(userId, slotNumber, diceId);
+        }
+        
+        public void UnequipDiceFromSlot(int userId, byte slotNumber) {
+            base.Channel.UnequipDiceFromSlot(userId, slotNumber);
+        }
+        
+        public System.Threading.Tasks.Task UnequipDiceFromSlotAsync(int userId, byte slotNumber) {
+            return base.Channel.UnequipDiceFromSlotAsync(userId, slotNumber);
         }
     }
 }

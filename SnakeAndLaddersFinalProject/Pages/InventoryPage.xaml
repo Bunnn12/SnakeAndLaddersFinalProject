@@ -158,8 +158,8 @@
                 BorderBrush="#F5F1C5"
                 BorderThickness="2"
                 Padding="6">
-            <!-- Aquí usamos el UserControl de slots -->
             <controls:InventorySlotsControl HorizontalAlignment="Center" />
+            
         </Border>
     </Grid>
 </Page>

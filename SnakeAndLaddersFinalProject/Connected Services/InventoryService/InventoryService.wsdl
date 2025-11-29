@@ -54,6 +54,30 @@
   <wsdl:message name="IInventoryService_UpdateSelectedDice_OutputMessage">
     <wsdl:part name="parameters" element="tns:UpdateSelectedDiceResponse" />
   </wsdl:message>
+  <wsdl:message name="IInventoryService_EquipItemToSlot_InputMessage">
+    <wsdl:part name="parameters" element="tns:EquipItemToSlot" />
+  </wsdl:message>
+  <wsdl:message name="IInventoryService_EquipItemToSlot_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EquipItemToSlotResponse" />
+  </wsdl:message>
+  <wsdl:message name="IInventoryService_UnequipItemFromSlot_InputMessage">
+    <wsdl:part name="parameters" element="tns:UnequipItemFromSlot" />
+  </wsdl:message>
+  <wsdl:message name="IInventoryService_UnequipItemFromSlot_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UnequipItemFromSlotResponse" />
+  </wsdl:message>
+  <wsdl:message name="IInventoryService_EquipDiceToSlot_InputMessage">
+    <wsdl:part name="parameters" element="tns:EquipDiceToSlot" />
+  </wsdl:message>
+  <wsdl:message name="IInventoryService_EquipDiceToSlot_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EquipDiceToSlotResponse" />
+  </wsdl:message>
+  <wsdl:message name="IInventoryService_UnequipDiceFromSlot_InputMessage">
+    <wsdl:part name="parameters" element="tns:UnequipDiceFromSlot" />
+  </wsdl:message>
+  <wsdl:message name="IInventoryService_UnequipDiceFromSlot_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UnequipDiceFromSlotResponse" />
+  </wsdl:message>
   <wsdl:portType name="IInventoryService">
     <wsdl:operation name="GetInventory">
       <wsdl:input wsaw:Action="http://tempuri.org/IInventoryService/GetInventory" message="tns:IInventoryService_GetInventory_InputMessage" />
@@ -66,6 +90,22 @@
     <wsdl:operation name="UpdateSelectedDice">
       <wsdl:input wsaw:Action="http://tempuri.org/IInventoryService/UpdateSelectedDice" message="tns:IInventoryService_UpdateSelectedDice_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IInventoryService/UpdateSelectedDiceResponse" message="tns:IInventoryService_UpdateSelectedDice_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="EquipItemToSlot">
+      <wsdl:input wsaw:Action="http://tempuri.org/IInventoryService/EquipItemToSlot" message="tns:IInventoryService_EquipItemToSlot_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IInventoryService/EquipItemToSlotResponse" message="tns:IInventoryService_EquipItemToSlot_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UnequipItemFromSlot">
+      <wsdl:input wsaw:Action="http://tempuri.org/IInventoryService/UnequipItemFromSlot" message="tns:IInventoryService_UnequipItemFromSlot_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IInventoryService/UnequipItemFromSlotResponse" message="tns:IInventoryService_UnequipItemFromSlot_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="EquipDiceToSlot">
+      <wsdl:input wsaw:Action="http://tempuri.org/IInventoryService/EquipDiceToSlot" message="tns:IInventoryService_EquipDiceToSlot_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IInventoryService/EquipDiceToSlotResponse" message="tns:IInventoryService_EquipDiceToSlot_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UnequipDiceFromSlot">
+      <wsdl:input wsaw:Action="http://tempuri.org/IInventoryService/UnequipDiceFromSlot" message="tns:IInventoryService_UnequipDiceFromSlot_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IInventoryService/UnequipDiceFromSlotResponse" message="tns:IInventoryService_UnequipDiceFromSlot_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IInventoryService" type="tns:IInventoryService">
@@ -97,6 +137,42 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="EquipItemToSlot">
+      <soap:operation soapAction="http://tempuri.org/IInventoryService/EquipItemToSlot" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnequipItemFromSlot">
+      <soap:operation soapAction="http://tempuri.org/IInventoryService/UnequipItemFromSlot" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EquipDiceToSlot">
+      <soap:operation soapAction="http://tempuri.org/IInventoryService/EquipDiceToSlot" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnequipDiceFromSlot">
+      <soap:operation soapAction="http://tempuri.org/IInventoryService/UnequipDiceFromSlot" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="NetTcpBinding_IInventoryService" type="tns:IInventoryService">
     <wsp:PolicyReference URI="#NetTcpBinding_IInventoryService_policy" />
@@ -121,6 +197,42 @@
     </wsdl:operation>
     <wsdl:operation name="UpdateSelectedDice">
       <soap12:operation soapAction="http://tempuri.org/IInventoryService/UpdateSelectedDice" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EquipItemToSlot">
+      <soap12:operation soapAction="http://tempuri.org/IInventoryService/EquipItemToSlot" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnequipItemFromSlot">
+      <soap12:operation soapAction="http://tempuri.org/IInventoryService/UnequipItemFromSlot" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EquipDiceToSlot">
+      <soap12:operation soapAction="http://tempuri.org/IInventoryService/EquipDiceToSlot" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnequipDiceFromSlot">
+      <soap12:operation soapAction="http://tempuri.org/IInventoryService/UnequipDiceFromSlot" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

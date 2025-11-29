@@ -18,7 +18,6 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             {
                 using (InventoryServiceClient client = CreateClient())
                 {
-                    // Servicio generado por WCF (sin nombres fuertes de DTO)
                     var snapshotDto = await Task.Run(() => client.GetInventory(userId));
 
                     List<InventoryItemData> items = new List<InventoryItemData>();
@@ -109,6 +108,104 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
                 throw;
             }
         }
+
+        // ===============================================================
+        // NUEVOS MÉTODOS: EQUIP / UNEQUIP ITEMS
+        // ===============================================================
+
+        public async Task EquipItemToSlotAsync(
+            int userId,
+            byte slotNumber,
+            int objectId)
+        {
+            try
+            {
+                using (InventoryServiceClient client = CreateClient())
+                {
+                    await Task.Run(
+                        () => client.EquipItemToSlot(
+                            userId,
+                            slotNumber,
+                            objectId));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error equipping item to slot.", ex);
+                throw;
+            }
+        }
+
+        public async Task UnequipItemFromSlotAsync(
+            int userId,
+            byte slotNumber)
+        {
+            try
+            {
+                using (InventoryServiceClient client = CreateClient())
+                {
+                    await Task.Run(
+                        () => client.UnequipItemFromSlot(
+                            userId,
+                            slotNumber));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error unequipping item from slot.", ex);
+                throw;
+            }
+        }
+
+        // ===============================================================
+        // NUEVOS MÉTODOS: EQUIP / UNEQUIP DICE
+        // ===============================================================
+
+        public async Task EquipDiceToSlotAsync(
+            int userId,
+            byte slotNumber,
+            int diceId)
+        {
+            try
+            {
+                using (InventoryServiceClient client = CreateClient())
+                {
+                    await Task.Run(
+                        () => client.EquipDiceToSlot(
+                            userId,
+                            slotNumber,
+                            diceId));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error equipping dice to slot.", ex);
+                throw;
+            }
+        }
+
+        public async Task UnequipDiceFromSlotAsync(
+            int userId,
+            byte slotNumber)
+        {
+            try
+            {
+                using (InventoryServiceClient client = CreateClient())
+                {
+                    await Task.Run(
+                        () => client.UnequipDiceFromSlot(
+                            userId,
+                            slotNumber));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error unequipping dice from slot.", ex);
+                throw;
+            }
+        }
+
+        // ===============================================================
 
         private static InventoryServiceClient CreateClient()
         {

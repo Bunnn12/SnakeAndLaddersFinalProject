@@ -16,5 +16,24 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             int userId,
             int? slot1DiceId,
             int? slot2DiceId);
+
+        Task EquipItemToSlotAsync(
+            int userId,
+            byte slotNumber,
+            int objectId);
+
+        Task UnequipItemFromSlotAsync(
+            int userId,
+            byte slotNumber);
+
+        Task EquipDiceToSlotAsync(
+            int userId,
+            byte slotNumber,
+            int diceId);
+
+        Task UnequipDiceFromSlotAsync(
+            int userId,
+            byte slotNumber);
     }
+
 }

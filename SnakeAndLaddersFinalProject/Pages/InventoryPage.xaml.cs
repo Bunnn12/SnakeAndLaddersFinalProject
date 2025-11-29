@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
 using log4net;
 using SnakeAndLaddersFinalProject.ViewModels;
 
@@ -12,16 +11,16 @@ namespace SnakeAndLaddersFinalProject.Pages
     /// </summary>
     public partial class InventoryPage : Page
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(InventoryPage));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(InventoryPage));
 
-        private readonly InventoryViewModel viewModel;
+        private readonly InventoryViewModel _viewModel;
 
         public InventoryPage()
         {
             InitializeComponent();
 
-            viewModel = new InventoryViewModel();
-            DataContext = viewModel;
+            _viewModel = new InventoryViewModel();
+            DataContext = _viewModel;
 
             Loaded += OnLoaded;
         }
@@ -31,11 +30,11 @@ namespace SnakeAndLaddersFinalProject.Pages
             try
             {
                 Loaded -= OnLoaded;
-                await viewModel.InitializeAsync();
+                await _viewModel.InitializeAsync();
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al inicializar InventoryPage.", ex);
+                _logger.Error("Error al inicializar InventoryPage.", ex);
             }
         }
 

@@ -2,132 +2,222 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Name="InventorySlotsRoot">
-    <!-- DataContext esperado: InventoryViewModel -->
+
     <StackPanel Orientation="Horizontal"
                 HorizontalAlignment="Center">
 
-        <!-- Slots de ITEMS (1–3) -->
+        <!-- ========================================================= -->
+        <!-- SLOTS DE ITEMS (1–3) -->
+        <!-- ========================================================= -->
         <StackPanel Orientation="Horizontal"
                     Margin="0,0,24,0">
 
-            <!-- SLOT 1 ITEM -->
-            <Button Width="64"
-                    Height="48"
-                    Margin="4"
-                    Command="{Binding SetItemSlot1Command}"
-                    Background="Transparent"
-                    BorderBrush="#F5F1C5"
-                    BorderThickness="2"
-                    ToolTip="{Binding Slot1Item.Name}">
-                <Grid>
-                    <Image Source="{Binding Slot1Item.IconPath}"
-                           Stretch="Uniform"
-                           Margin="4" />
-                    <TextBlock Text="{Binding Slot1Item.Quantity, StringFormat=x{0}}"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Bottom"
-                               Margin="2"
-                               Foreground="#F5F1C5"
-                               FontSize="12"
-                               FontWeight="Bold" />
-                </Grid>
-            </Button>
+            <!-- ==================== SLOT 1 ITEM ==================== -->
+            <Grid Margin="4">
 
-            <!-- SLOT 2 ITEM -->
-            <Button Width="64"
-                    Height="48"
-                    Margin="4"
-                    Command="{Binding SetItemSlot2Command}"
-                    Background="Transparent"
-                    BorderBrush="#F5F1C5"
-                    BorderThickness="2"
-                    ToolTip="{Binding Slot2Item.Name}">
-                <Grid>
-                    <Image Source="{Binding Slot2Item.IconPath}"
-                           Stretch="Uniform"
-                           Margin="4" />
-                    <TextBlock Text="{Binding Slot2Item.Quantity, StringFormat=x{0}}"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Bottom"
-                               Margin="2"
-                               Foreground="#F5F1C5"
-                               FontSize="12"
-                               FontWeight="Bold" />
-                </Grid>
-            </Button>
+                <!-- EQUIP ITEM SLOT 1 -->
+                <Button Width="64"
+                        Height="48"
+                        Command="{Binding SetItemSlot1Command}"
+                        Background="Transparent"
+                        BorderBrush="#F5F1C5"
+                        BorderThickness="2"
+                        ToolTip="{Binding Slot1Item.Name}"
+                        IsEnabled="{Binding IsEditable, ElementName=InventorySlotsRoot}">
+                    <Grid>
+                        <Image Source="{Binding Slot1Item.IconPath}"
+                               Stretch="Uniform"
+                               Margin="4" />
+                        <TextBlock Text="{Binding Slot1Item.Quantity, StringFormat=x{0}}"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   Margin="2"
+                                   Foreground="#F5F1C5"
+                                   FontSize="12"
+                                   FontWeight="Bold" />
+                    </Grid>
+                </Button>
 
-            <!-- SLOT 3 ITEM -->
-            <Button Width="64"
-                    Height="48"
-                    Margin="4"
-                    Command="{Binding SetItemSlot3Command}"
-                    Background="Transparent"
-                    BorderBrush="#F5F1C5"
-                    BorderThickness="2"
-                    ToolTip="{Binding Slot3Item.Name}">
-                <Grid>
-                    <Image Source="{Binding Slot3Item.IconPath}"
-                           Stretch="Uniform"
-                           Margin="4" />
-                    <TextBlock Text="{Binding Slot3Item.Quantity, StringFormat=x{0}}"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Bottom"
-                               Margin="2"
-                               Foreground="#F5F1C5"
-                               FontSize="12"
-                               FontWeight="Bold" />
-                </Grid>
-            </Button>
+                <!-- QUITAR ITEM SLOT 1 -->
+                <Button Width="16"
+                        Height="16"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="0,0,2,0"
+                        Command="{Binding ClearItemSlot1Command}"
+                        Background="#66000000"
+                        BorderThickness="0"
+                        FontSize="10"
+                        Foreground="#F5F1C5"
+                        Content="X"
+                        IsEnabled="{Binding IsEditable, ElementName=InventorySlotsRoot}" />
+            </Grid>
+
+
+            <!-- ==================== SLOT 2 ITEM ==================== -->
+            <Grid Margin="4">
+
+                <Button Width="64"
+                        Height="48"
+                        Command="{Binding SetItemSlot2Command}"
+                        Background="Transparent"
+                        BorderBrush="#F5F1C5"
+                        BorderThickness="2"
+                        ToolTip="{Binding Slot2Item.Name}"
+                        IsEnabled="{Binding IsEditable, ElementName=InventorySlotsRoot}">
+                    <Grid>
+                        <Image Source="{Binding Slot2Item.IconPath}"
+                               Stretch="Uniform"
+                               Margin="4" />
+                        <TextBlock Text="{Binding Slot2Item.Quantity, StringFormat=x{0}}"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   Margin="2"
+                                   Foreground="#F5F1C5"
+                                   FontSize="12"
+                                   FontWeight="Bold" />
+                    </Grid>
+                </Button>
+
+                <Button Width="16"
+                        Height="16"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="0,0,2,0"
+                        Command="{Binding ClearItemSlot2Command}"
+                        Background="#66000000"
+                        BorderThickness="0"
+                        FontSize="10"
+                        Foreground="#F5F1C5"
+                        Content="X"
+                        IsEnabled="{Binding IsEditable, ElementName=InventorySlotsRoot}" />
+            </Grid>
+
+
+            <!-- ==================== SLOT 3 ITEM ==================== -->
+            <Grid Margin="4">
+
+                <Button Width="64"
+                        Height="48"
+                        Command="{Binding SetItemSlot3Command}"
+                        Background="Transparent"
+                        BorderBrush="#F5F1C5"
+                        BorderThickness="2"
+                        ToolTip="{Binding Slot3Item.Name}"
+                        IsEnabled="{Binding IsEditable, ElementName=InventorySlotsRoot}">
+                    <Grid>
+                        <Image Source="{Binding Slot3Item.IconPath}"
+                               Stretch="Uniform"
+                               Margin="4" />
+                        <TextBlock Text="{Binding Slot3Item.Quantity, StringFormat=x{0}}"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   Margin="2"
+                                   Foreground="#F5F1C5"
+                                   FontSize="12"
+                                   FontWeight="Bold" />
+                    </Grid>
+                </Button>
+
+                <Button Width="16"
+                        Height="16"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="0,0,2,0"
+                        Command="{Binding ClearItemSlot3Command}"
+                        Background="#66000000"
+                        BorderThickness="0"
+                        FontSize="10"
+                        Foreground="#F5F1C5"
+                        Content="X"
+                        IsEnabled="{Binding IsEditable, ElementName=InventorySlotsRoot}" />
+            </Grid>
         </StackPanel>
 
-        <!-- Slots de DADOS (1–2) -->
+
+
+        <!-- ========================================================= -->
+        <!-- SLOTS DE DADOS (1–2) -->
+        <!-- ========================================================= -->
         <StackPanel Orientation="Horizontal">
 
-            <!-- SLOT 1 DADO -->
-            <Button Width="64"
-                    Height="48"
-                    Margin="4"
-                    Command="{Binding SetDiceSlot1Command}"
-                    Background="Transparent"
-                    BorderBrush="#F5F1C5"
-                    BorderThickness="2"
-                    ToolTip="{Binding Slot1Dice.Name}">
-                <Grid>
-                    <Image Source="{Binding Slot1Dice.IconPath}"
-                           Stretch="Uniform"
-                           Margin="4" />
-                    <TextBlock Text="{Binding Slot1Dice.Quantity, StringFormat=x{0}}"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Bottom"
-                               Margin="2"
-                               Foreground="#F5F1C5"
-                               FontSize="12"
-                               FontWeight="Bold" />
-                </Grid>
-            </Button>
+            <!-- ==================== SLOT 1 DADO ==================== -->
+            <Grid Margin="4">
+                <Button Width="64"
+                        Height="48"
+                        Command="{Binding SetDiceSlot1Command}"
+                        Background="Transparent"
+                        BorderBrush="#F5F1C5"
+                        BorderThickness="2"
+                        ToolTip="{Binding Slot1Dice.Name}"
+                        IsEnabled="{Binding IsEditable, ElementName=InventorySlotsRoot}">
+                    <Grid>
+                        <Image Source="{Binding Slot1Dice.IconPath}"
+                               Stretch="Uniform"
+                               Margin="4" />
+                        <TextBlock Text="{Binding Slot1Dice.Quantity, StringFormat=x{0}}"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   Margin="2"
+                                   Foreground="#F5F1C5"
+                                   FontSize="12"
+                                   FontWeight="Bold" />
+                    </Grid>
+                </Button>
 
-            <!-- SLOT 2 DADO -->
-            <Button Width="64"
-                    Height="48"
-                    Margin="4"
-                    Command="{Binding SetDiceSlot2Command}"
-                    Background="Transparent"
-                    BorderBrush="#F5F1C5"
-                    BorderThickness="2"
-                    ToolTip="{Binding Slot2Dice.Name}">
-                <Grid>
-                    <Image Source="{Binding Slot2Dice.IconPath}"
-                           Stretch="Uniform"
-                           Margin="4" />
-                    <TextBlock Text="{Binding Slot2Dice.Quantity, StringFormat=x{0}}"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Bottom"
-                               Margin="2"
-                               Foreground="#F5F1C5"
-                               FontSize="12"
-                               FontWeight="Bold" />
-                </Grid>
-            </Button>
+                <Button Width="16"
+                        Height="16"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="0,0,2,0"
+                        Command="{Binding ClearDiceSlot1Command}"
+                        Background="#66000000"
+                        BorderThickness="0"
+                        FontSize="10"
+                        Foreground="#F5F1C5"
+                        Content="X"
+                        IsEnabled="{Binding IsEditable, ElementName=InventorySlotsRoot}" />
+            </Grid>
+
+
+            <!-- ==================== SLOT 2 DADO ==================== -->
+            <Grid Margin="4">
+                <Button Width="64"
+                        Height="48"
+                        Command="{Binding SetDiceSlot2Command}"
+                        Background="Transparent"
+                        BorderBrush="#F5F1C5"
+                        BorderThickness="2"
+                        ToolTip="{Binding Slot2Dice.Name}"
+                        IsEnabled="{Binding IsEditable, ElementName=InventorySlotsRoot}">
+                    <Grid>
+                        <Image Source="{Binding Slot2Dice.IconPath}"
+                               Stretch="Uniform"
+                               Margin="4" />
+                        <TextBlock Text="{Binding Slot2Dice.Quantity, StringFormat=x{0}}"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   Margin="2"
+                                   Foreground="#F5F1C5"
+                                   FontSize="12"
+                                   FontWeight="Bold" />
+                    </Grid>
+                </Button>
+
+                <Button Width="16"
+                        Height="16"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="0,0,2,0"
+                        Command="{Binding ClearDiceSlot2Command}"
+                        Background="#66000000"
+                        BorderThickness="0"
+                        FontSize="10"
+                        Foreground="#F5F1C5"
+                        Content="X"
+                        IsEnabled="{Binding IsEditable, ElementName=InventorySlotsRoot}" />
+            </Grid>
         </StackPanel>
+
     </StackPanel>
 </UserControl>

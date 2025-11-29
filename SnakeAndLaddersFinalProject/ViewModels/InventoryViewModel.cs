@@ -18,6 +18,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     {
         private const int MIN_VALID_USER_ID = 1;
 
+        private const byte MIN_ITEM_SLOT = 1;
+        private const byte MAX_ITEM_SLOT = 3;
+
+        private const byte MIN_DICE_SLOT = 1;
+        private const byte MAX_DICE_SLOT = 2;
+
         private static readonly ILog Logger = LogManager.GetLogger(typeof(InventoryViewModel));
 
         private readonly IInventoryManager inventoryManager;
@@ -145,14 +151,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public ICommand RefreshCommand { get; }
 
-        // Un comando por slot de item
         public ICommand SetItemSlot1Command { get; }
         public ICommand SetItemSlot2Command { get; }
         public ICommand SetItemSlot3Command { get; }
 
-        // Un comando por slot de dado
+        public ICommand ClearItemSlot1Command { get; }
+        public ICommand ClearItemSlot2Command { get; }
+        public ICommand ClearItemSlot3Command { get; }
+
         public ICommand SetDiceSlot1Command { get; }
         public ICommand SetDiceSlot2Command { get; }
+
+        public ICommand ClearDiceSlot1Command { get; }
+        public ICommand ClearDiceSlot2Command { get; }
 
         public InventoryViewModel()
             : this(new InventoryManager())
@@ -166,15 +177,21 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             Items = new ObservableCollection<InventoryItemViewModel>();
             Dice = new ObservableCollection<InventoryDiceViewModel>();
 
-            // Tu RelayCommand (versión actual) espera Action<object>
             RefreshCommand = new RelayCommand(_ => OnRefreshExecuted());
 
-            SetItemSlot1Command = new RelayCommand(_ => OnSetItemSlot1Executed());
-            SetItemSlot2Command = new RelayCommand(_ => OnSetItemSlot2Executed());
-            SetItemSlot3Command = new RelayCommand(_ => OnSetItemSlot3Executed());
+            SetItemSlot1Command = new RelayCommand(_ => OnSetItemSlotExecuted(MIN_ITEM_SLOT));
+            SetItemSlot2Command = new RelayCommand(_ => OnSetItemSlotExecuted(2));
+            SetItemSlot3Command = new RelayCommand(_ => OnSetItemSlotExecuted(MAX_ITEM_SLOT));
 
-            SetDiceSlot1Command = new RelayCommand(_ => OnSetDiceSlot1Executed());
-            SetDiceSlot2Command = new RelayCommand(_ => OnSetDiceSlot2Executed());
+            ClearItemSlot1Command = new RelayCommand(_ => OnClearItemSlotExecuted(MIN_ITEM_SLOT));
+            ClearItemSlot2Command = new RelayCommand(_ => OnClearItemSlotExecuted(2));
+            ClearItemSlot3Command = new RelayCommand(_ => OnClearItemSlotExecuted(MAX_ITEM_SLOT));
+
+            SetDiceSlot1Command = new RelayCommand(_ => OnSetDiceSlotExecuted(MIN_DICE_SLOT));
+            SetDiceSlot2Command = new RelayCommand(_ => OnSetDiceSlotExecuted(MAX_DICE_SLOT));
+
+            ClearDiceSlot1Command = new RelayCommand(_ => OnClearDiceSlotExecuted(MIN_DICE_SLOT));
+            ClearDiceSlot2Command = new RelayCommand(_ => OnClearDiceSlotExecuted(MAX_DICE_SLOT));
         }
 
         public Task InitializeAsync()
@@ -187,9 +204,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             await LoadInventoryAsync();
         }
 
+        private async void OnSetItemSlotExecuted(byte slotNumber)
+        {
+            await SetItemSlotAsync(slotNumber);
+        }
+
         private async void OnSetItemSlot1Executed()
         {
-            await SetItemSlotAsync(1);
+            await SetItemSlotAsync(MIN_ITEM_SLOT);
         }
 
         private async void OnSetItemSlot2Executed()
@@ -199,17 +221,32 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private async void OnSetItemSlot3Executed()
         {
-            await SetItemSlotAsync(3);
+            await SetItemSlotAsync(MAX_ITEM_SLOT);
+        }
+
+        private async void OnClearItemSlotExecuted(byte slotNumber)
+        {
+            await ClearItemSlotAsync(slotNumber);
+        }
+
+        private async void OnSetDiceSlotExecuted(byte slotNumber)
+        {
+            await SetDiceSlotAsync(slotNumber);
         }
 
         private async void OnSetDiceSlot1Executed()
         {
-            await SetDiceSlotAsync(1);
+            await SetDiceSlotAsync(MIN_DICE_SLOT);
         }
 
         private async void OnSetDiceSlot2Executed()
         {
-            await SetDiceSlotAsync(2);
+            await SetDiceSlotAsync(MAX_DICE_SLOT);
+        }
+
+        private async void OnClearDiceSlotExecuted(byte slotNumber)
+        {
+            await ClearDiceSlotAsync(slotNumber);
         }
 
         private async Task LoadInventoryAsync()
@@ -271,20 +308,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private void RefreshSlotItems()
         {
-            Slot1Item = Items.FirstOrDefault(i => i.SlotNumber == 1);
+            Slot1Item = Items.FirstOrDefault(i => i.SlotNumber == MIN_ITEM_SLOT);
             Slot2Item = Items.FirstOrDefault(i => i.SlotNumber == 2);
-            Slot3Item = Items.FirstOrDefault(i => i.SlotNumber == 3);
+            Slot3Item = Items.FirstOrDefault(i => i.SlotNumber == MAX_ITEM_SLOT);
         }
 
         private void RefreshDiceSlots()
         {
-            Slot1Dice = Dice.FirstOrDefault(d => d.SlotNumber == 1);
-            Slot2Dice = Dice.FirstOrDefault(d => d.SlotNumber == 2);
+            Slot1Dice = Dice.FirstOrDefault(d => d.SlotNumber == MIN_DICE_SLOT);
+            Slot2Dice = Dice.FirstOrDefault(d => d.SlotNumber == MAX_DICE_SLOT);
         }
 
-        private async Task SetItemSlotAsync(int slotNumber)
+        private async Task SetItemSlotAsync(byte slotNumber)
         {
-            // Si no hay item seleccionado, no hace nada
             if (selectedItem == null)
             {
                 return;
@@ -297,36 +333,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            if (slotNumber < 1 || slotNumber > 3)
+            if (slotNumber < MIN_ITEM_SLOT || slotNumber > MAX_ITEM_SLOT)
             {
                 return;
             }
 
             try
             {
-                byte slot = (byte)slotNumber;
-
-                foreach (InventoryItemViewModel item in Items)
-                {
-                    if (item.SlotNumber == slot && !ReferenceEquals(item, selectedItem))
-                    {
-                        item.SlotNumber = null;
-                    }
-                }
-
-                selectedItem.SlotNumber = slot;
-
-                int? slot1ObjectId = Items.FirstOrDefault(i => i.SlotNumber == 1)?.ObjectId;
-                int? slot2ObjectId = Items.FirstOrDefault(i => i.SlotNumber == 2)?.ObjectId;
-                int? slot3ObjectId = Items.FirstOrDefault(i => i.SlotNumber == 3)?.ObjectId;
-
-                await inventoryManager.UpdateSelectedItemsAsync(
+                await inventoryManager.EquipItemToSlotAsync(
                     userId,
-                    slot1ObjectId,
-                    slot2ObjectId,
-                    slot3ObjectId);
+                    slotNumber,
+                    selectedItem.ObjectId);
 
-                RefreshSlotItems();
+                await LoadInventoryAsync();
             }
             catch (Exception ex)
             {
@@ -337,7 +356,38 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        private async Task SetDiceSlotAsync(int slotNumber)
+        private async Task ClearItemSlotAsync(byte slotNumber)
+        {
+            int userId = SessionContext.Current.UserId;
+
+            if (!IsValidUserId(userId))
+            {
+                return;
+            }
+
+            if (slotNumber < MIN_ITEM_SLOT || slotNumber > MAX_ITEM_SLOT)
+            {
+                return;
+            }
+
+            try
+            {
+                await inventoryManager.UnequipItemFromSlotAsync(
+                    userId,
+                    slotNumber);
+
+                await LoadInventoryAsync();
+            }
+            catch (Exception ex)
+            {
+                _ = ExceptionHandler.Handle(
+                    ex,
+                    "InventoryViewModel.ClearItemSlotAsync",
+                    Logger);
+            }
+        }
+
+        private async Task SetDiceSlotAsync(byte slotNumber)
         {
             if (selectedDice == null)
             {
@@ -351,40 +401,56 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            if (slotNumber < 1 || slotNumber > 2)
+            if (slotNumber < MIN_DICE_SLOT || slotNumber > MAX_DICE_SLOT)
             {
                 return;
             }
 
             try
             {
-                byte slot = (byte)slotNumber;
-
-                foreach (InventoryDiceViewModel diceItem in Dice)
-                {
-                    if (diceItem.SlotNumber == slot && !ReferenceEquals(diceItem, selectedDice))
-                    {
-                        diceItem.SlotNumber = null;
-                    }
-                }
-
-                selectedDice.SlotNumber = slot;
-
-                int? slot1DiceId = Dice.FirstOrDefault(d => d.SlotNumber == 1)?.DiceId;
-                int? slot2DiceId = Dice.FirstOrDefault(d => d.SlotNumber == 2)?.DiceId;
-
-                await inventoryManager.UpdateSelectedDiceAsync(
+                await inventoryManager.EquipDiceToSlotAsync(
                     userId,
-                    slot1DiceId,
-                    slot2DiceId);
+                    slotNumber,
+                    selectedDice.DiceId);
 
-                RefreshDiceSlots();
+                await LoadInventoryAsync();
             }
             catch (Exception ex)
             {
                 _ = ExceptionHandler.Handle(
                     ex,
                     "InventoryViewModel.SetDiceSlotAsync",
+                    Logger);
+            }
+        }
+
+        private async Task ClearDiceSlotAsync(byte slotNumber)
+        {
+            int userId = SessionContext.Current.UserId;
+
+            if (!IsValidUserId(userId))
+            {
+                return;
+            }
+
+            if (slotNumber < MIN_DICE_SLOT || slotNumber > MAX_DICE_SLOT)
+            {
+                return;
+            }
+
+            try
+            {
+                await inventoryManager.UnequipDiceFromSlotAsync(
+                    userId,
+                    slotNumber);
+
+                await LoadInventoryAsync();
+            }
+            catch (Exception ex)
+            {
+                _ = ExceptionHandler.Handle(
+                    ex,
+                    "InventoryViewModel.ClearDiceSlotAsync",
                     Logger);
             }
         }
