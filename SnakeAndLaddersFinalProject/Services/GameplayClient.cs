@@ -78,6 +78,26 @@ namespace SnakeAndLaddersFinalProject.Services
                 });
         }
 
+        // Dentro de la clase GameplayClient
+        public Task<UseItemResponseDto> UseItemAsync(
+    int gameId,
+    int userId,
+    byte itemSlotNumber,
+    int? targetUserId)
+        {
+            var request = new UseItemRequestDto
+            {
+                GameId = gameId,
+                PlayerUserId = userId,
+                ItemSlotNumber = itemSlotNumber,
+                TargetUserId = targetUserId
+            };
+
+            return gameplayProxy.UseItemAsync(request);
+        }
+
+
+
         public void Dispose()
         {
             try

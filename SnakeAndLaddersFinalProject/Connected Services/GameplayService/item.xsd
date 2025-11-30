@@ -32,6 +32,10 @@
   <xs:complexType name="TokenStateDto">
     <xs:sequence>
       <xs:element minOccurs="0" name="CellIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="HasPendingRocketBonus" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HasShield" type="xs:boolean" />
+      <xs:element minOccurs="0" name="RemainingFrozenTurns" type="xs:int" />
+      <xs:element minOccurs="0" name="RemainingShieldTurns" type="xs:int" />
       <xs:element minOccurs="0" name="UserId" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
@@ -51,10 +55,32 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="GetGameStateResponseDto" nillable="true" type="tns:GetGameStateResponseDto" />
+  <xs:complexType name="UseItemRequestDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GameId" type="xs:int" />
+      <xs:element minOccurs="0" name="PlayerUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="ItemSlotNumber" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="TargetUserId" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UseItemRequestDto" nillable="true" type="tns:UseItemRequestDto" />
+  <xs:complexType name="UseItemResponseDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Success" type="xs:boolean" />
+      <xs:element minOccurs="0" name="FailureReason" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="GameId" type="xs:int" />
+      <xs:element minOccurs="0" name="PlayerUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="TargetUserId" nillable="true" type="xs:int" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" minOccurs="0" name="EffectType" type="q2:ItemEffectType" />
+      <xs:element minOccurs="0" name="ItemCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UpdatedGameState" nillable="true" type="tns:GetGameStateResponseDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UseItemResponseDto" nillable="true" type="tns:UseItemResponseDto" />
   <xs:complexType name="PlayerMoveResultDto">
     <xs:sequence>
       <xs:element minOccurs="0" name="DiceValue" type="xs:int" />
-      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" minOccurs="0" name="EffectType" type="q2:MoveEffectType" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" minOccurs="0" name="EffectType" type="q3:MoveEffectType" />
       <xs:element minOccurs="0" name="FromCellIndex" type="xs:int" />
       <xs:element minOccurs="0" name="HasExtraTurn" type="xs:boolean" />
       <xs:element minOccurs="0" name="HasWon" type="xs:boolean" />
@@ -74,6 +100,31 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="TurnChangedDto" nillable="true" type="tns:TurnChangedDto" />
+  <xs:complexType name="ItemUsedNotificationDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GameId" type="xs:int" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+      <xs:element minOccurs="0" name="TargetUserId" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ItemCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EffectResult" nillable="true" type="tns:ItemEffectResultDto" />
+      <xs:element minOccurs="0" name="UpdatedGameState" nillable="true" type="tns:GetGameStateResponseDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ItemUsedNotificationDto" nillable="true" type="tns:ItemUsedNotificationDto" />
+  <xs:complexType name="ItemEffectResultDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ItemCode" nillable="true" type="xs:string" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" minOccurs="0" name="EffectType" type="q4:ItemEffectType" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+      <xs:element minOccurs="0" name="TargetUserId" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="FromCellIndex" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ToCellIndex" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="WasBlockedByShield" type="xs:boolean" />
+      <xs:element minOccurs="0" name="TargetFrozen" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ShieldActivated" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ItemEffectResultDto" nillable="true" type="tns:ItemEffectResultDto" />
   <xs:complexType name="PlayerLeftDto">
     <xs:sequence>
       <xs:element minOccurs="0" name="GameId" type="xs:int" />

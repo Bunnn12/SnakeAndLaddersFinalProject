@@ -143,7 +143,7 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Slot de inventario jugadores (por si lo reutilizas) -->
+        <!-- Slot de inventario jugadores -->
         <Style x:Key="InventorySlotStyle"
                TargetType="Border">
             <Setter Property="Width" Value="40" />
@@ -157,7 +157,7 @@
 
         <!-- Botón de dado para jugadores (usa DiceAnimator.CurrentFrame) -->
         <Style x:Key="CornerPlayerDiceButtonStyle"
-       TargetType="Button">
+               TargetType="Button">
             <Setter Property="Width" Value="72" />
             <Setter Property="Height" Value="72" />
             <Setter Property="Padding" Value="0" />
@@ -169,27 +169,26 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="12"
-                        Background="#33000000">
+                                Background="#33000000">
                             <Border.Effect>
                                 <DropShadowEffect ShadowDepth="2"
-                                          BlurRadius="6"
-                                          Opacity="0.6" />
+                                                  BlurRadius="6"
+                                                  Opacity="0.6" />
                             </Border.Effect>
 
                             <Grid>
 
-                                <!-- Dado estático (se ve cuando NO es su turno) -->
+                                <!-- Dado estático (no turno) -->
                                 <Image x:Name="StaticDiceImage"
-                               Stretch="Uniform"
-                               RenderOptions.BitmapScalingMode="NearestNeighbor"
-                               Source="{StaticResource DiceIconSource}">
+                                       Stretch="Uniform"
+                                       RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                       Source="{StaticResource DiceIconSource}">
                                     <Image.Style>
                                         <Style TargetType="Image">
                                             <Setter Property="Opacity" Value="1" />
                                             <Style.Triggers>
-                                                <!-- Si es el jugador en turno, ocultamos el estático -->
                                                 <DataTrigger Binding="{Binding IsCurrentTurn}"
-                                                     Value="True">
+                                                             Value="True">
                                                     <Setter Property="Opacity" Value="0" />
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -197,18 +196,18 @@
                                     </Image.Style>
                                 </Image>
 
-                                <!-- Dado animado (se ve SOLO si IsCurrentTurn = true) -->
+                                <!-- Dado animado (solo turno actual) -->
                                 <Image x:Name="AnimatedDiceImage"
-                               Stretch="Uniform"
-                               RenderOptions.BitmapScalingMode="NearestNeighbor"
-                               Source="{Binding DataContext.DiceAnimator.CurrentFrame,
-                                                RelativeSource={RelativeSource AncestorType=Page}}">
+                                       Stretch="Uniform"
+                                       RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                       Source="{Binding DataContext.DiceAnimator.CurrentFrame,
+                                                        RelativeSource={RelativeSource AncestorType=Page}}">
                                     <Image.Style>
                                         <Style TargetType="Image">
                                             <Setter Property="Opacity" Value="0" />
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsCurrentTurn}"
-                                                     Value="True">
+                                                             Value="True">
                                                     <Setter Property="Opacity" Value="1" />
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -216,7 +215,7 @@
                                     </Image.Style>
                                     <Image.LayoutTransform>
                                         <ScaleTransform ScaleX="1"
-                                                ScaleY="1" />
+                                                        ScaleY="1" />
                                     </Image.LayoutTransform>
                                 </Image>
 
@@ -227,17 +226,17 @@
                             <!-- Hover -->
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="AnimatedDiceImage"
-                                Property="LayoutTransform">
+                                        Property="LayoutTransform">
                                     <Setter.Value>
                                         <ScaleTransform ScaleX="1.05"
-                                                ScaleY="1.05" />
+                                                        ScaleY="1.05" />
                                     </Setter.Value>
                                 </Setter>
                                 <Setter TargetName="StaticDiceImage"
-                                Property="LayoutTransform">
+                                        Property="LayoutTransform">
                                     <Setter.Value>
                                         <ScaleTransform ScaleX="1.05"
-                                                ScaleY="1.05" />
+                                                        ScaleY="1.05" />
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
@@ -245,17 +244,17 @@
                             <!-- Click -->
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="AnimatedDiceImage"
-                                Property="LayoutTransform">
+                                        Property="LayoutTransform">
                                     <Setter.Value>
                                         <ScaleTransform ScaleX="0.95"
-                                                ScaleY="0.95" />
+                                                        ScaleY="0.95" />
                                     </Setter.Value>
                                 </Setter>
                                 <Setter TargetName="StaticDiceImage"
-                                Property="LayoutTransform">
+                                        Property="LayoutTransform">
                                     <Setter.Value>
                                         <ScaleTransform ScaleX="0.95"
-                                                ScaleY="0.95" />
+                                                        ScaleY="0.95" />
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
@@ -270,7 +269,6 @@
             </Setter>
         </Style>
 
-
         <!-- Plantilla de casilla -->
         <DataTemplate x:Key="BoardCellTemplate">
             <Border Style="{StaticResource BoardCellStyle}">
@@ -282,7 +280,6 @@
                                VerticalAlignment="Bottom"
                                Margin="0,0,6,4"
                                Foreground="#3B2313"
-                               FontFamily="{StaticResource Font.PixelatedDisplay}"
                                FontSize="12"
                                FontWeight="Bold"
                                TextOptions.TextRenderingMode="Aliased"
@@ -382,42 +379,48 @@
             </Border>
         </DataTemplate>
 
-        <!-- Template jugador normal (sin inventario, dado deshabilitado) -->
+        <!-- Template jugador normal -->
         <DataTemplate x:Key="CornerPlayerTemplate"
                       DataType="{x:Type vmModels:LobbyMemberViewModel}">
             <StackPanel Orientation="Vertical"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
 
-                <!-- Avatar grande -->
-                <Grid Width="112"
-                      Height="112"
-                      Margin="4">
-                    <Border CornerRadius="12"
-                            Background="#22000000">
-                        <Image Source="{Binding SkinImagePath}"
-                               Stretch="Uniform"
-                               Margin="4" />
-                    </Border>
+                <!-- Avatar clickeable para seleccionar target -->
+                <Button Background="Transparent"
+                        BorderThickness="0"
+                        Command="{Binding DataContext.SelectTargetUserCommand,
+                                          Source={x:Reference GameBoardPageRoot}}"
+                        CommandParameter="{Binding UserId}">
+                    <Grid Width="112"
+                          Height="112"
+                          Margin="4">
+                        <Border CornerRadius="12"
+                                Background="#22000000">
+                            <Image Source="{Binding SkinImagePath}"
+                                   Stretch="Uniform"
+                                   Margin="4" />
+                        </Border>
 
-                    <!-- Aro de color -->
-                    <Grid Width="44"
-                          Height="44"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Bottom"
-                          Margin="0,0,-4,-4">
-                        <Ellipse Stroke="{Binding UserId,
-                                                  Converter={StaticResource PlayerColorConverter}}"
-                                 StrokeThickness="3" />
-                        <Ellipse Margin="3">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="{Binding AvatarId,
-                                              Converter={StaticResource AvatarIdToPathConverter}}"
-                                            Stretch="UniformToFill" />
-                            </Ellipse.Fill>
-                        </Ellipse>
+                        <!-- Aro de color -->
+                        <Grid Width="44"
+                              Height="44"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Bottom"
+                              Margin="0,0,-4,-4">
+                            <Ellipse Stroke="{Binding UserId,
+                                                      Converter={StaticResource PlayerColorConverter}}"
+                                     StrokeThickness="3" />
+                            <Ellipse Margin="3">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding AvatarId,
+                                                  Converter={StaticResource AvatarIdToPathConverter}}"
+                                                Stretch="UniformToFill" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Grid>
                     </Grid>
-                </Grid>
+                </Button>
 
                 <!-- Nombre -->
                 <TextBlock Text="{Binding UserName}"
@@ -426,6 +429,15 @@
                            Foreground="White"
                            FontSize="14"
                            FontWeight="Bold"
+                           TextTrimming="CharacterEllipsis" />
+
+                <!-- Texto de efectos -->
+                <TextBlock Text="{Binding EffectsText}"
+                           Margin="0,2,0,0"
+                           HorizontalAlignment="Center"
+                           Foreground="#FFEFE2C4"
+                           FontSize="11"
+                           TextWrapping="Wrap"
                            TextTrimming="CharacterEllipsis" />
 
                 <!-- Dado solo visual -->
@@ -435,42 +447,48 @@
             </StackPanel>
         </DataTemplate>
 
-        <!-- Template jugador LOCAL (con inventario y comando de dado) -->
+        <!-- Template jugador LOCAL -->
         <DataTemplate x:Key="LocalCornerPlayerTemplate"
                       DataType="{x:Type vmModels:LobbyMemberViewModel}">
             <StackPanel Orientation="Vertical"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
 
-                <!-- Avatar grande -->
-                <Grid Width="112"
-                      Height="112"
-                      Margin="4">
-                    <Border CornerRadius="12"
-                            Background="#22000000">
-                        <Image Source="{Binding SkinImagePath}"
-                               Stretch="Uniform"
-                               Margin="4" />
-                    </Border>
+                <!-- Avatar clickeable para seleccionar target -->
+                <Button Background="Transparent"
+                        BorderThickness="0"
+                        Command="{Binding DataContext.SelectTargetUserCommand,
+                                          Source={x:Reference GameBoardPageRoot}}"
+                        CommandParameter="{Binding UserId}">
+                    <Grid Width="112"
+                          Height="112"
+                          Margin="4">
+                        <Border CornerRadius="12"
+                                Background="#22000000">
+                            <Image Source="{Binding SkinImagePath}"
+                                   Stretch="Uniform"
+                                   Margin="4" />
+                        </Border>
 
-                    <!-- Aro de color -->
-                    <Grid Width="44"
-                          Height="44"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Bottom"
-                          Margin="0,0,-4,-4">
-                        <Ellipse Stroke="{Binding UserId,
-                                                  Converter={StaticResource PlayerColorConverter}}"
-                                 StrokeThickness="3" />
-                        <Ellipse Margin="3">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="{Binding AvatarId,
-                                              Converter={StaticResource AvatarIdToPathConverter}}"
-                                            Stretch="UniformToFill" />
-                            </Ellipse.Fill>
-                        </Ellipse>
+                        <!-- Aro de color -->
+                        <Grid Width="44"
+                              Height="44"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Bottom"
+                              Margin="0,0,-4,-4">
+                            <Ellipse Stroke="{Binding UserId,
+                                                      Converter={StaticResource PlayerColorConverter}}"
+                                     StrokeThickness="3" />
+                            <Ellipse Margin="3">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding AvatarId,
+                                                  Converter={StaticResource AvatarIdToPathConverter}}"
+                                                Stretch="UniformToFill" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Grid>
                     </Grid>
-                </Grid>
+                </Button>
 
                 <!-- Nombre -->
                 <TextBlock Text="{Binding UserName}"
@@ -481,23 +499,122 @@
                            FontWeight="Bold"
                            TextTrimming="CharacterEllipsis" />
 
+                <!-- Texto de efectos -->
+                <TextBlock Text="{Binding EffectsText}"
+                           Margin="0,2,0,0"
+                           HorizontalAlignment="Center"
+                           Foreground="#FFEFE2C4"
+                           FontSize="11"
+                           TextWrapping="Wrap"
+                           TextTrimming="CharacterEllipsis" />
+
                 <!-- Dado clickeable del jugador local -->
                 <Button Style="{StaticResource CornerPlayerDiceButtonStyle}"
                         Margin="0,6,0,6"
                         Command="{Binding DataContext.RollDiceCommand,
                                           Source={x:Reference GameBoardPageRoot}}" />
 
-                <!-- Inventario solo local -->
-                <controls:InventorySlotsControl
-    Margin="0,8,0,0"
-    DataContext="{Binding DataContext.Inventory,
-                          Source={x:Reference GameBoardPageRoot}}"
-    IsEditable="False" />
+                <!-- Inventario local -->
+                <StackPanel Orientation="Horizontal"
+                            Margin="0,8,0,0"
+                            HorizontalAlignment="Center">
+
+                    <!-- SLOT 1 -->
+                    <Button Width="64"
+                            Height="48"
+                            Background="Transparent"
+                            BorderBrush="#F5F1C5"
+                            BorderThickness="2"
+                            Command="{Binding DataContext.UseItemFromSlot1Command,
+                                              Source={x:Reference GameBoardPageRoot}}">
+                        <Grid>
+                            <Image Source="{Binding DataContext.Inventory.Slot1Item.IconPath,
+                                                    Source={x:Reference GameBoardPageRoot}}"
+                                   Stretch="Uniform"
+                                   Margin="4" />
+                            <TextBlock Text="{Binding DataContext.Inventory.Slot1Item.Quantity,
+                                                      Source={x:Reference GameBoardPageRoot},
+                                                      StringFormat=x{0}}"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Bottom"
+                                       Margin="2"
+                                       Foreground="#F5F1C5"
+                                       FontSize="12"
+                                       FontWeight="Bold" />
+                        </Grid>
+                    </Button>
+
+                    <!-- SLOT 2 -->
+                    <Button Width="64"
+                            Height="48"
+                            Margin="4,0,0,0"
+                            Background="Transparent"
+                            BorderBrush="#F5F1C5"
+                            BorderThickness="2"
+                            Command="{Binding DataContext.UseItemFromSlot2Command,
+                                              Source={x:Reference GameBoardPageRoot}}">
+                        <Grid>
+                            <Image Source="{Binding DataContext.Inventory.Slot2Item.IconPath,
+                                                    Source={x:Reference GameBoardPageRoot}}"
+                                   Stretch="Uniform"
+                                   Margin="4" />
+                            <TextBlock Text="{Binding DataContext.Inventory.Slot2Item.Quantity,
+                                                      Source={x:Reference GameBoardPageRoot},
+                                                      StringFormat=x{0}}"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Bottom"
+                                       Margin="2"
+                                       Foreground="#F5F1C5"
+                                       FontSize="12"
+                                       FontWeight="Bold" />
+                        </Grid>
+                    </Button>
+
+                    <!-- SLOT 3 -->
+                    <Button Width="64"
+                            Height="48"
+                            Margin="4,0,0,0"
+                            Background="Transparent"
+                            BorderBrush="#F5F1C5"
+                            BorderThickness="2"
+                            Command="{Binding DataContext.UseItemFromSlot3Command,
+                                              Source={x:Reference GameBoardPageRoot}}">
+                        <Grid>
+                            <Image Source="{Binding DataContext.Inventory.Slot3Item.IconPath,
+                                                    Source={x:Reference GameBoardPageRoot}}"
+                                   Stretch="Uniform"
+                                   Margin="4" />
+                            <TextBlock Text="{Binding DataContext.Inventory.Slot3Item.Quantity,
+                                                      Source={x:Reference GameBoardPageRoot},
+                                                      StringFormat=x{0}}"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Bottom"
+                                       Margin="2"
+                                       Foreground="#F5F1C5"
+                                       FontSize="12"
+                                       FontWeight="Bold" />
+                        </Grid>
+                    </Button>
+
+                </StackPanel>
 
             </StackPanel>
         </DataTemplate>
 
     </Page.Resources>
+
+    <!-- Atajos de teclado para usar ítems equipados -->
+    <Page.InputBindings>
+        <KeyBinding Key="A"
+                    Command="{Binding UseItemFromSlot1Command}" />
+        <KeyBinding Key="B"
+                    Command="{Binding UseItemFromSlot2Command}" />
+        <KeyBinding Key="C"
+                    Command="{Binding UseItemFromSlot3Command}" />
+        <!-- Cancelar selección de ítem -->
+        <KeyBinding Key="Escape"
+                    Command="{Binding CancelItemUseCommand}" />
+    </Page.InputBindings>
 
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
@@ -727,19 +844,35 @@
             </Border>
         </Viewbox>
 
-        <!-- Footer -->
+        <!-- Footer con notificación de ítems y botón Cancelar -->
         <Grid Grid.Row="2"
               Margin="16,0,16,16">
-            <Border Background="{StaticResource BrushFooterBackground}"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0"
+                    Background="{StaticResource BrushFooterBackground}"
                     BorderBrush="{StaticResource BrushFooterBorder}"
                     CornerRadius="14"
                     BorderThickness="1"
                     Padding="10,6">
-                <TextBlock Text="Game in progress – roll the dice to move your token."
+                <TextBlock Text="{Binding LastItemNotification,
+                                          FallbackValue=Game in progress – roll the dice to move your token.}"
                            Foreground="#FFEFE2C4"
                            FontSize="14"
-                           HorizontalAlignment="Center" />
+                           HorizontalAlignment="Center"
+                           TextWrapping="Wrap" />
             </Border>
+
+            <Button Grid.Column="1"
+                    Margin="8,0,0,0"
+                    Padding="12,4"
+                    VerticalAlignment="Center"
+                    Content="Cancelar ítem"
+                    Command="{Binding CancelItemUseCommand}"
+                    IsEnabled="{Binding IsTargetSelectionActive}" />
         </Grid>
 
         <!-- Esquinas jugadores -->

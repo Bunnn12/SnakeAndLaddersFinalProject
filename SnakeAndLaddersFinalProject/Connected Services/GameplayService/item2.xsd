@@ -29,6 +29,20 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="UseItem">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" minOccurs="0" name="request" nillable="true" type="q5:UseItemRequestDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UseItemResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" minOccurs="0" name="UseItemResult" nillable="true" type="q6:UseItemResponseDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="JoinGame">
     <xs:complexType>
       <xs:sequence>
@@ -60,21 +74,28 @@
   <xs:element name="OnPlayerMoved">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" minOccurs="0" name="move" nillable="true" type="q5:PlayerMoveResultDto" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" minOccurs="0" name="move" nillable="true" type="q7:PlayerMoveResultDto" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="OnTurnChanged">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" minOccurs="0" name="turnInfo" nillable="true" type="q6:TurnChangedDto" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" minOccurs="0" name="turnInfo" nillable="true" type="q8:TurnChangedDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OnItemUsed">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" minOccurs="0" name="notification" nillable="true" type="q9:ItemUsedNotificationDto" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="OnPlayerLeft">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" minOccurs="0" name="playerLeftInfo" nillable="true" type="q7:PlayerLeftDto" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" minOccurs="0" name="playerLeftInfo" nillable="true" type="q10:PlayerLeftDto" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿// SnakeAndLaddersFinalProject.Services/GameplayClientCallback.cs
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -50,6 +51,16 @@ namespace SnakeAndLaddersFinalProject.Services
             RunOnUiThreadAsync(() => eventsHandler.HandleServerPlayerLeftAsync(playerLeftInfo));
         }
 
+        public void OnItemUsed(ItemUsedNotificationDto notification)
+        {
+            if (notification == null)
+            {
+                return;
+            }
+
+            RunOnUiThreadAsync(() => eventsHandler.HandleServerItemUsedAsync(notification));
+        }
+
         private void RunOnUiThreadAsync(Func<Task> actionAsync)
         {
             if (actionAsync == null)
@@ -70,6 +81,5 @@ namespace SnakeAndLaddersFinalProject.Services
                         _ = actionAsync();
                     }));
         }
-
     }
 }

@@ -49,6 +49,12 @@
   <wsdl:message name="IGameplayService_GetGameState_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetGameStateResponse" />
   </wsdl:message>
+  <wsdl:message name="IGameplayService_UseItem_InputMessage">
+    <wsdl:part name="parameters" element="tns:UseItem" />
+  </wsdl:message>
+  <wsdl:message name="IGameplayService_UseItem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UseItemResponse" />
+  </wsdl:message>
   <wsdl:message name="IGameplayService_JoinGame_InputMessage">
     <wsdl:part name="parameters" element="tns:JoinGame" />
   </wsdl:message>
@@ -67,6 +73,9 @@
   <wsdl:message name="IGameplayService_OnTurnChanged_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:OnTurnChanged" />
   </wsdl:message>
+  <wsdl:message name="IGameplayService_OnItemUsed_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:OnItemUsed" />
+  </wsdl:message>
   <wsdl:message name="IGameplayService_OnPlayerLeft_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:OnPlayerLeft" />
   </wsdl:message>
@@ -78,6 +87,10 @@
     <wsdl:operation name="GetGameState">
       <wsdl:input wsaw:Action="http://tempuri.org/IGameplayService/GetGameState" message="tns:IGameplayService_GetGameState_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IGameplayService/GetGameStateResponse" message="tns:IGameplayService_GetGameState_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UseItem">
+      <wsdl:input wsaw:Action="http://tempuri.org/IGameplayService/UseItem" message="tns:IGameplayService_UseItem_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IGameplayService/UseItemResponse" message="tns:IGameplayService_UseItem_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="JoinGame">
       <wsdl:input wsaw:Action="http://tempuri.org/IGameplayService/JoinGame" message="tns:IGameplayService_JoinGame_InputMessage" />
@@ -92,6 +105,9 @@
     </wsdl:operation>
     <wsdl:operation name="OnTurnChanged">
       <wsdl:output wsaw:Action="http://tempuri.org/IGameplayService/OnTurnChanged" message="tns:IGameplayService_OnTurnChanged_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OnItemUsed">
+      <wsdl:output wsaw:Action="http://tempuri.org/IGameplayService/OnItemUsed" message="tns:IGameplayService_OnItemUsed_OutputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation name="OnPlayerLeft">
       <wsdl:output wsaw:Action="http://tempuri.org/IGameplayService/OnPlayerLeft" message="tns:IGameplayService_OnPlayerLeft_OutputCallbackMessage" />
@@ -111,6 +127,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetGameState">
       <soap12:operation soapAction="http://tempuri.org/IGameplayService/GetGameState" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UseItem">
+      <soap12:operation soapAction="http://tempuri.org/IGameplayService/UseItem" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -144,6 +169,12 @@
     </wsdl:operation>
     <wsdl:operation name="OnTurnChanged">
       <soap12:operation soapAction="http://tempuri.org/IGameplayService/OnTurnChanged" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OnItemUsed">
+      <soap12:operation soapAction="http://tempuri.org/IGameplayService/OnItemUsed" style="document" />
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>

@@ -299,6 +299,18 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         private int CellIndexField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool HasPendingRocketBonusField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool HasShieldField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int RemainingFrozenTurnsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int RemainingShieldTurnsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int UserIdField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -320,6 +332,58 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
                 if ((this.CellIndexField.Equals(value) != true)) {
                     this.CellIndexField = value;
                     this.RaisePropertyChanged("CellIndex");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool HasPendingRocketBonus {
+            get {
+                return this.HasPendingRocketBonusField;
+            }
+            set {
+                if ((this.HasPendingRocketBonusField.Equals(value) != true)) {
+                    this.HasPendingRocketBonusField = value;
+                    this.RaisePropertyChanged("HasPendingRocketBonus");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool HasShield {
+            get {
+                return this.HasShieldField;
+            }
+            set {
+                if ((this.HasShieldField.Equals(value) != true)) {
+                    this.HasShieldField = value;
+                    this.RaisePropertyChanged("HasShield");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int RemainingFrozenTurns {
+            get {
+                return this.RemainingFrozenTurnsField;
+            }
+            set {
+                if ((this.RemainingFrozenTurnsField.Equals(value) != true)) {
+                    this.RemainingFrozenTurnsField = value;
+                    this.RaisePropertyChanged("RemainingFrozenTurns");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int RemainingShieldTurns {
+            get {
+                return this.RemainingShieldTurnsField;
+            }
+            set {
+                if ((this.RemainingShieldTurnsField.Equals(value) != true)) {
+                    this.RemainingShieldTurnsField = value;
+                    this.RaisePropertyChanged("RemainingShieldTurns");
                 }
             }
         }
@@ -483,6 +547,279 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UseItemRequestDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay")]
+    [System.SerializableAttribute()]
+    public partial class UseItemRequestDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int GameIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int PlayerUserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private byte ItemSlotNumberField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> TargetUserIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int GameId {
+            get {
+                return this.GameIdField;
+            }
+            set {
+                if ((this.GameIdField.Equals(value) != true)) {
+                    this.GameIdField = value;
+                    this.RaisePropertyChanged("GameId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int PlayerUserId {
+            get {
+                return this.PlayerUserIdField;
+            }
+            set {
+                if ((this.PlayerUserIdField.Equals(value) != true)) {
+                    this.PlayerUserIdField = value;
+                    this.RaisePropertyChanged("PlayerUserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+        public byte ItemSlotNumber {
+            get {
+                return this.ItemSlotNumberField;
+            }
+            set {
+                if ((this.ItemSlotNumberField.Equals(value) != true)) {
+                    this.ItemSlotNumberField = value;
+                    this.RaisePropertyChanged("ItemSlotNumber");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+        public System.Nullable<int> TargetUserId {
+            get {
+                return this.TargetUserIdField;
+            }
+            set {
+                if ((this.TargetUserIdField.Equals(value) != true)) {
+                    this.TargetUserIdField = value;
+                    this.RaisePropertyChanged("TargetUserId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UseItemResponseDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay")]
+    [System.SerializableAttribute()]
+    public partial class UseItemResponseDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool SuccessField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string FailureReasonField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int GameIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int PlayerUserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> TargetUserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private SnakeAndLaddersFinalProject.GameplayService.ItemEffectType EffectTypeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ItemCodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private SnakeAndLaddersFinalProject.GameplayService.GetGameStateResponseDto UpdatedGameStateField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Success {
+            get {
+                return this.SuccessField;
+            }
+            set {
+                if ((this.SuccessField.Equals(value) != true)) {
+                    this.SuccessField = value;
+                    this.RaisePropertyChanged("Success");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public string FailureReason {
+            get {
+                return this.FailureReasonField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.FailureReasonField, value) != true)) {
+                    this.FailureReasonField = value;
+                    this.RaisePropertyChanged("FailureReason");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+        public int GameId {
+            get {
+                return this.GameIdField;
+            }
+            set {
+                if ((this.GameIdField.Equals(value) != true)) {
+                    this.GameIdField = value;
+                    this.RaisePropertyChanged("GameId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+        public int PlayerUserId {
+            get {
+                return this.PlayerUserIdField;
+            }
+            set {
+                if ((this.PlayerUserIdField.Equals(value) != true)) {
+                    this.PlayerUserIdField = value;
+                    this.RaisePropertyChanged("PlayerUserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+        public System.Nullable<int> TargetUserId {
+            get {
+                return this.TargetUserIdField;
+            }
+            set {
+                if ((this.TargetUserIdField.Equals(value) != true)) {
+                    this.TargetUserIdField = value;
+                    this.RaisePropertyChanged("TargetUserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+        public SnakeAndLaddersFinalProject.GameplayService.ItemEffectType EffectType {
+            get {
+                return this.EffectTypeField;
+            }
+            set {
+                if ((this.EffectTypeField.Equals(value) != true)) {
+                    this.EffectTypeField = value;
+                    this.RaisePropertyChanged("EffectType");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+        public string ItemCode {
+            get {
+                return this.ItemCodeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ItemCodeField, value) != true)) {
+                    this.ItemCodeField = value;
+                    this.RaisePropertyChanged("ItemCode");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+        public SnakeAndLaddersFinalProject.GameplayService.GetGameStateResponseDto UpdatedGameState {
+            get {
+                return this.UpdatedGameStateField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UpdatedGameStateField, value) != true)) {
+                    this.UpdatedGameStateField = value;
+                    this.RaisePropertyChanged("UpdatedGameState");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ItemEffectType", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums")]
+    public enum ItemEffectType : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        None = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Rocket = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Anchor = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Swap = 3,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Freeze = 4,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Shield = 5,
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -753,6 +1090,304 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ItemUsedNotificationDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay")]
+    [System.SerializableAttribute()]
+    public partial class ItemUsedNotificationDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int GameIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> TargetUserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ItemCodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private SnakeAndLaddersFinalProject.GameplayService.ItemEffectResultDto EffectResultField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private SnakeAndLaddersFinalProject.GameplayService.GetGameStateResponseDto UpdatedGameStateField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int GameId {
+            get {
+                return this.GameIdField;
+            }
+            set {
+                if ((this.GameIdField.Equals(value) != true)) {
+                    this.GameIdField = value;
+                    this.RaisePropertyChanged("GameId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserId {
+            get {
+                return this.UserIdField;
+            }
+            set {
+                if ((this.UserIdField.Equals(value) != true)) {
+                    this.UserIdField = value;
+                    this.RaisePropertyChanged("UserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+        public System.Nullable<int> TargetUserId {
+            get {
+                return this.TargetUserIdField;
+            }
+            set {
+                if ((this.TargetUserIdField.Equals(value) != true)) {
+                    this.TargetUserIdField = value;
+                    this.RaisePropertyChanged("TargetUserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+        public string ItemCode {
+            get {
+                return this.ItemCodeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ItemCodeField, value) != true)) {
+                    this.ItemCodeField = value;
+                    this.RaisePropertyChanged("ItemCode");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+        public SnakeAndLaddersFinalProject.GameplayService.ItemEffectResultDto EffectResult {
+            get {
+                return this.EffectResultField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EffectResultField, value) != true)) {
+                    this.EffectResultField = value;
+                    this.RaisePropertyChanged("EffectResult");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+        public SnakeAndLaddersFinalProject.GameplayService.GetGameStateResponseDto UpdatedGameState {
+            get {
+                return this.UpdatedGameStateField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UpdatedGameStateField, value) != true)) {
+                    this.UpdatedGameStateField = value;
+                    this.RaisePropertyChanged("UpdatedGameState");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ItemEffectResultDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay")]
+    [System.SerializableAttribute()]
+    public partial class ItemEffectResultDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ItemCodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private SnakeAndLaddersFinalProject.GameplayService.ItemEffectType EffectTypeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> TargetUserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> FromCellIndexField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> ToCellIndexField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool WasBlockedByShieldField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool TargetFrozenField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool ShieldActivatedField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ItemCode {
+            get {
+                return this.ItemCodeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ItemCodeField, value) != true)) {
+                    this.ItemCodeField = value;
+                    this.RaisePropertyChanged("ItemCode");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public SnakeAndLaddersFinalProject.GameplayService.ItemEffectType EffectType {
+            get {
+                return this.EffectTypeField;
+            }
+            set {
+                if ((this.EffectTypeField.Equals(value) != true)) {
+                    this.EffectTypeField = value;
+                    this.RaisePropertyChanged("EffectType");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+        public int UserId {
+            get {
+                return this.UserIdField;
+            }
+            set {
+                if ((this.UserIdField.Equals(value) != true)) {
+                    this.UserIdField = value;
+                    this.RaisePropertyChanged("UserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+        public System.Nullable<int> TargetUserId {
+            get {
+                return this.TargetUserIdField;
+            }
+            set {
+                if ((this.TargetUserIdField.Equals(value) != true)) {
+                    this.TargetUserIdField = value;
+                    this.RaisePropertyChanged("TargetUserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+        public System.Nullable<int> FromCellIndex {
+            get {
+                return this.FromCellIndexField;
+            }
+            set {
+                if ((this.FromCellIndexField.Equals(value) != true)) {
+                    this.FromCellIndexField = value;
+                    this.RaisePropertyChanged("FromCellIndex");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+        public System.Nullable<int> ToCellIndex {
+            get {
+                return this.ToCellIndexField;
+            }
+            set {
+                if ((this.ToCellIndexField.Equals(value) != true)) {
+                    this.ToCellIndexField = value;
+                    this.RaisePropertyChanged("ToCellIndex");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+        public bool WasBlockedByShield {
+            get {
+                return this.WasBlockedByShieldField;
+            }
+            set {
+                if ((this.WasBlockedByShieldField.Equals(value) != true)) {
+                    this.WasBlockedByShieldField = value;
+                    this.RaisePropertyChanged("WasBlockedByShield");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+        public bool TargetFrozen {
+            get {
+                return this.TargetFrozenField;
+            }
+            set {
+                if ((this.TargetFrozenField.Equals(value) != true)) {
+                    this.TargetFrozenField = value;
+                    this.RaisePropertyChanged("TargetFrozen");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=8)]
+        public bool ShieldActivated {
+            get {
+                return this.ShieldActivatedField;
+            }
+            set {
+                if ((this.ShieldActivatedField.Equals(value) != true)) {
+                    this.ShieldActivatedField = value;
+                    this.RaisePropertyChanged("ShieldActivated");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="PlayerLeftDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay")]
     [System.SerializableAttribute()]
     public partial class PlayerLeftDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -892,6 +1527,12 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGameplayService/GetGameState", ReplyAction="http://tempuri.org/IGameplayService/GetGameStateResponse")]
         System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.GameplayService.GetGameStateResponseDto> GetGameStateAsync(SnakeAndLaddersFinalProject.GameplayService.GetGameStateRequestDto request);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGameplayService/UseItem", ReplyAction="http://tempuri.org/IGameplayService/UseItemResponse")]
+        SnakeAndLaddersFinalProject.GameplayService.UseItemResponseDto UseItem(SnakeAndLaddersFinalProject.GameplayService.UseItemRequestDto request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGameplayService/UseItem", ReplyAction="http://tempuri.org/IGameplayService/UseItemResponse")]
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.GameplayService.UseItemResponseDto> UseItemAsync(SnakeAndLaddersFinalProject.GameplayService.UseItemRequestDto request);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGameplayService/JoinGame", ReplyAction="http://tempuri.org/IGameplayService/JoinGameResponse")]
         void JoinGame(int gameId, int userId, string userName);
         
@@ -913,6 +1554,9 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IGameplayService/OnTurnChanged")]
         void OnTurnChanged(SnakeAndLaddersFinalProject.GameplayService.TurnChangedDto turnInfo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IGameplayService/OnItemUsed")]
+        void OnItemUsed(SnakeAndLaddersFinalProject.GameplayService.ItemUsedNotificationDto notification);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IGameplayService/OnPlayerLeft")]
         void OnPlayerLeft(SnakeAndLaddersFinalProject.GameplayService.PlayerLeftDto playerLeftInfo);
@@ -960,6 +1604,14 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         
         public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.GameplayService.GetGameStateResponseDto> GetGameStateAsync(SnakeAndLaddersFinalProject.GameplayService.GetGameStateRequestDto request) {
             return base.Channel.GetGameStateAsync(request);
+        }
+        
+        public SnakeAndLaddersFinalProject.GameplayService.UseItemResponseDto UseItem(SnakeAndLaddersFinalProject.GameplayService.UseItemRequestDto request) {
+            return base.Channel.UseItem(request);
+        }
+        
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.GameplayService.UseItemResponseDto> UseItemAsync(SnakeAndLaddersFinalProject.GameplayService.UseItemRequestDto request) {
+            return base.Channel.UseItemAsync(request);
         }
         
         public void JoinGame(int gameId, int userId, string userName) {

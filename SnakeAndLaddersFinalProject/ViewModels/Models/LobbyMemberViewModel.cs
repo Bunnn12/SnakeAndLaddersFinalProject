@@ -1,5 +1,4 @@
 ﻿using SnakeAndLaddersFinalProject.Utilities;
-
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -17,28 +16,50 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
         public string CurrentSkinId { get; }
         public int? CurrentSkinUnlockedId { get; }
 
-        // Clave normalizada de skin (002, 003, etc.)
+        // Clave normalizada de skin (002, 003, etc.).
         public string SkinKey => SkinAssetHelper.NormalizeSkinKey(CurrentSkinId);
 
-        // Claves lógicas (por si las necesitas en otro lado)
+        // Claves lógicas.
         public string TokenKey => SkinAssetHelper.ResolveAssets(CurrentSkinId).TokenKey;
         public string IdleKey => SkinAssetHelper.ResolveAssets(CurrentSkinId).IdleKey;
         public string SadKey => SkinAssetHelper.ResolveAssets(CurrentSkinId).SadKey;
 
-        // 🔹 RUTA COMPLETA PARA LA SKIN GRANDE (lo que usa el XAML)
+        // Imagen grande de la skin.
         public string SkinImagePath => SkinAssetHelper.GetSkinPathFromSkinId(CurrentSkinId);
 
-        // 🔹 Si luego quieres usar el token en el tablero
+        // Imagen del token en tablero.
         public string TokenImagePath => SkinAssetHelper.GetTokenPathFromSkinId(CurrentSkinId);
 
-        private bool _isHost;
-
+        private bool isHost;
         private bool isLocalPlayer;
-
         private bool isCurrentTurn;
+
+        // Efectos de estado
+        private bool hasShield;
+        private int remainingShieldTurns;
+        private bool isFrozen;
+        private int remainingFrozenTurns;
+
+        private string effectsText;
+
+        public string EffectsText
+        {
+            get { return effectsText; }
+            set
+            {
+                if (string.Equals(effectsText, value, StringComparison.Ordinal))
+                {
+                    return;
+                }
+
+                effectsText = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool IsCurrentTurn
         {
-            get => isCurrentTurn;
+            get { return isCurrentTurn; }
             set
             {
                 if (isCurrentTurn == value)
@@ -65,27 +86,92 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
                 OnPropertyChanged();
             }
         }
+
         public bool IsHost
         {
-            get => _isHost;
+            get { return isHost; }
             set
             {
-                if (_isHost == value)
+                if (isHost == value)
                 {
                     return;
                 }
 
-                _isHost = value;
+                isHost = value;
                 OnPropertyChanged();
             }
         }
+
+        // ---- Nuevas propiedades para efectos ----
+
+        public bool HasShield
+        {
+            get { return hasShield; }
+            set
+            {
+                if (hasShield == value)
+                {
+                    return;
+                }
+
+                hasShield = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int RemainingShieldTurns
+        {
+            get { return remainingShieldTurns; }
+            set
+            {
+                if (remainingShieldTurns == value)
+                {
+                    return;
+                }
+
+                remainingShieldTurns = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsFrozen
+        {
+            get { return isFrozen; }
+            set
+            {
+                if (isFrozen == value)
+                {
+                    return;
+                }
+
+                isFrozen = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int RemainingFrozenTurns
+        {
+            get { return remainingFrozenTurns; }
+            set
+            {
+                if (remainingFrozenTurns == value)
+                {
+                    return;
+                }
+
+                remainingFrozenTurns = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // ---- Constructores ----
 
         public LobbyMemberViewModel(int userId, string userName, bool isHost, DateTime joinedAt)
         {
             UserId = userId;
             UserName = userName;
             JoinedAt = joinedAt;
-            _isHost = isHost;
+            this.isHost = isHost;
         }
 
         public LobbyMemberViewModel(
@@ -111,7 +197,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
             UserName = userName;
             JoinedAt = joinedAt;
             AvatarId = avatarId;
-            _isHost = isHost;
+            this.isHost = isHost;
             CurrentSkinId = currentSkinId;
             CurrentSkinUnlockedId = currentSkinUnlockedId;
         }
@@ -120,8 +206,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
 
         private void OnPropertyChanged([CallerMemberName] string name = null)
         {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

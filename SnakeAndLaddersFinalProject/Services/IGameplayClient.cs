@@ -12,5 +12,11 @@ namespace SnakeAndLaddersFinalProject.Services
         Task<RollDiceResponseDto> GetRollDiceAsync(int gameId, int playerUserId);
 
         Task<GetGameStateResponseDto> GetGameStateAsync(int gameId);
+
+        Task<UseItemResponseDto> UseItemAsync(
+        int gameId,
+        int userId,
+        byte itemSlotNumber,
+        int? targetUserId);
     }
 }

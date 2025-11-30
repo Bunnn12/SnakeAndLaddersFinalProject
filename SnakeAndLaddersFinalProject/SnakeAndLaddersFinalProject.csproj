@@ -181,6 +181,7 @@
     <Compile Include="Infrastructure\IGameplayEventsHandler.cs" />
     <Compile Include="Infrastructure\ILobbyEventsHandler.cs" />
     <Compile Include="Infrastructure\RelayCommand.cs" />
+    <Compile Include="Infrastructure\RelayCommandGeneric.cs" />
     <Compile Include="Mappers\InventoryIconMapper.cs" />
     <Compile Include="Mappers\LobbyMapper.cs" />
     <Compile Include="Mappers\PlayerReportErrorMapper.cs" />
@@ -568,6 +569,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\GameplayService\SnakeAndLaddersFinalProject.GameplayService.RollDiceResponseDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\GameplayService\SnakeAndLaddersFinalProject.GameplayService.UseItemResponseDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\InventoryService\InventoryService.wsdl" />

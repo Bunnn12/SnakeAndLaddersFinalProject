@@ -11,4 +11,15 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="MoveEffectType" nillable="true" type="tns:MoveEffectType" />
+  <xs:simpleType name="ItemEffectType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Rocket" />
+      <xs:enumeration value="Anchor" />
+      <xs:enumeration value="Swap" />
+      <xs:enumeration value="Freeze" />
+      <xs:enumeration value="Shield" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ItemEffectType" nillable="true" type="tns:ItemEffectType" />
 </xs:schema>
