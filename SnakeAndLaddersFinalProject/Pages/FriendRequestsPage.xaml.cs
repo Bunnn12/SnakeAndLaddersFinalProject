@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 using log4net;
 using SnakeAndLaddersFinalProject.FriendsService;
 using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.Services;
 using SnakeAndLaddersFinalProject.Utilities;
+using SnakeAndLaddersFinalProject.ViewModels;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
@@ -15,56 +15,29 @@ namespace SnakeAndLaddersFinalProject.Pages
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(FriendRequestsPage));
 
-        private readonly ObservableCollection<FriendRequestItemDto> incomingRequests =
-            new ObservableCollection<FriendRequestItemDto>();
-
-        private readonly ObservableCollection<FriendRequestItemDto> outgoingRequests =
-            new ObservableCollection<FriendRequestItemDto>();
+        private FriendRequestsViewModel ViewModel
+        {
+            get { return DataContext as FriendRequestsViewModel; }
+        }
 
         public FriendRequestsPage()
         {
             InitializeComponent();
 
-            tvIncoming.ItemsSource = incomingRequests;
-            tvOutgoing.ItemsSource = outgoingRequests;
+            DataContext = new FriendRequestsViewModel();
+
+            if (ViewModel != null)
+            {
+                tvIncoming.ItemsSource = ViewModel.IncomingRequests;
+                tvOutgoing.ItemsSource = ViewModel.OutgoingRequests;
+            }
 
             if (!SessionGuard.HasValidSession())
             {
                 return;
             }
 
-            LoadData();
-        }
-
-        private void LoadData()
-        {
-            if (!SessionGuard.HasValidSession())
-            {
-                return;
-            }
-
-            try
-            {
-                using (var friendsApi = new FriendsApi())
-                {
-                    incomingRequests.Clear();
-                    foreach (FriendRequestItemDto request in friendsApi.GetIncoming())
-                    {
-                        incomingRequests.Add(request);
-                    }
-
-                    outgoingRequests.Clear();
-                    foreach (FriendRequestItemDto request in friendsApi.GetOutgoing())
-                    {
-                        outgoingRequests.Add(request);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Error loading friend requests.", ex);
-                MessageBox.Show(Lang.errorLoadingRequestsText, Lang.errorTitle);
-            }
+            ViewModel?.LoadData();
         }
 
         private void BtnAccept_Click(object sender, RoutedEventArgs e)
@@ -79,39 +52,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            int friendLinkId = requestItem.FriendLinkId;
-
-            try
-            {
-                using (var friendsApi = new FriendsApi())
-                {
-                    friendsApi.Accept(friendLinkId);
-                }
-
-                incomingRequests.Remove(requestItem);
-                MessageBox.Show(Lang.friendAcceptedText, Lang.infoTitle);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Error accepting friend request.", ex);
-
-                LoadData();
-
-                bool stillExists = incomingRequests.Any(r => r.FriendLinkId == friendLinkId);
-
-                if (!stillExists)
-                {
-                    MessageBox.Show(
-                        "Lang.friendRequestNoLongerExistsText",
-                        Lang.infoTitle);
-                }
-                else
-                {
-                    MessageBox.Show(
-                        Lang.errorAcceptingRequestText,
-                        Lang.errorTitle);
-                }
-            }
+            ViewModel?.AcceptRequest(requestItem);
         }
 
         private void BtnReject_Click(object sender, RoutedEventArgs e)
@@ -126,39 +67,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            int friendLinkId = requestItem.FriendLinkId;
-
-            try
-            {
-                using (var friendsApi = new FriendsApi())
-                {
-                    friendsApi.Reject(friendLinkId);
-                }
-
-                incomingRequests.Remove(requestItem);
-                MessageBox.Show(Lang.friendRejectedText, Lang.infoTitle);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Error rejecting friend request.", ex);
-
-                LoadData();
-
-                bool stillExists = incomingRequests.Any(r => r.FriendLinkId == friendLinkId);
-
-                if (!stillExists)
-                {
-                    MessageBox.Show(
-                        "Lang.friendRequestNoLongerExistsText",
-                        Lang.infoTitle);
-                }
-                else
-                {
-                    MessageBox.Show(
-                        Lang.errorRejectingRequestText,
-                        Lang.errorTitle);
-                }
-            }
+            ViewModel?.RejectRequest(requestItem);
         }
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
@@ -173,39 +82,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            int friendLinkId = requestItem.FriendLinkId;
-
-            try
-            {
-                using (var friendsApi = new FriendsApi())
-                {
-                    friendsApi.Cancel(friendLinkId);
-                }
-
-                outgoingRequests.Remove(requestItem);
-                MessageBox.Show(Lang.friendRequestCanceledText, Lang.infoTitle);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Error canceling friend request.", ex);
-
-                LoadData();
-
-                bool stillExists = outgoingRequests.Any(r => r.FriendLinkId == friendLinkId);
-
-                if (!stillExists)
-                {
-                    MessageBox.Show(
-                        "Lang.friendRequestNoLongerExistsText",
-                        Lang.infoTitle);
-                }
-                else
-                {
-                    MessageBox.Show(
-                        Lang.errorCancelingRequestText,
-                        Lang.errorTitle);
-                }
-            }
+            ViewModel?.CancelRequest(requestItem);
         }
 
         private void Back(object sender, RoutedEventArgs e)

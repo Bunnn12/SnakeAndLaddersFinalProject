@@ -825,4 +825,73 @@
   <data name="UiVerificationSentFmt" xml:space="preserve">
     <value>A verification email was sent to {0}.</value>
   </data>
+  <data name="btnSendInvitationText" xml:space="preserve">
+    <value>Send invitation</value>
+  </data>
+  <data name="InviteInactiveFriendWarn" xml:space="preserve">
+    <value>This friend cannot be invited because their account is inactive.</value>
+  </data>
+  <data name="InviteInvalidSessionError" xml:space="preserve">
+    <value>The session is not valid. Please sign in again.</value>
+  </data>
+  <data name="InviteNoFriendsInfo" xml:space="preserve">
+    <value>You do not have any friends to invite yet.</value>
+  </data>
+  <data name="InviteNoLobbyContextError" xml:space="preserve">
+    <value>Lobby context was not found.</value>
+  </data>
+  <data name="InviteNoMatchCodeWarn" xml:space="preserve">
+    <value>There is no active match with a code to invite friends.</value>
+  </data>
+  <data name="InviteNoServerResponseError" xml:space="preserve">
+    <value>No response was received from the server.</value>
+  </data>
+  <data name="InviteSelectFriendWarn" xml:space="preserve">
+    <value>You must select a friend to send an invitation.</value>
+  </data>
+  <data name="InviteSendFailedText" xml:space="preserve">
+    <value>The invitation could not be sent.</value>
+  </data>
+  <data name="InviteSentOkText" xml:space="preserve">
+    <value>Invitation sent successfully.</value>
+  </data>
+  <data name="InviteSessionExpiredWarn" xml:space="preserve">
+    <value>Your session has expired. Please sign in again.</value>
+  </data>
+  <data name="lblInviteFriendsToMatchText" xml:space="preserve">
+    <value>Invite friends to the match</value>
+  </data>
+  <data name="colFriendNoteHeader" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="UiInviteFriendFailureDefault" xml:space="preserve">
+    <value>The invitation could not be sent.</value>
+  </data>
+  <data name="UiInviteFriendGuestsNotAllowed" xml:space="preserve">
+    <value>Guests cannot send match invitations. Please sign in with an account.</value>
+  </data>
+  <data name="UiInviteFriendInvalidSession" xml:space="preserve">
+    <value>The session is not valid. Please sign in again.</value>
+  </data>
+  <data name="UiInviteFriendLobbyContextMissing" xml:space="preserve">
+    <value>Lobby context was not found.</value>
+  </data>
+  <data name="UiInviteFriendMissingGameCode" xml:space="preserve">
+    <value>Match code is missing. Please create or join a match again.</value>
+  </data>
+  <data name="UiInviteFriendNoMatchCode" xml:space="preserve">
+    <value>There is no match with a code to invite friends yet.</value>
+  </data>
+  <data name="UiInviteFriendNoResponse" xml:space="preserve">
+    <value>No response was received from the server.</value>
+  </data>
+  <data name="UiInviteFriendSelectFriendRequired" xml:space="preserve">
+    <value>You must select a friend before sending an invitation.</value>
+  </data>
+  <data name="UiInviteFriendSuccessDefault" xml:space="preserve">
+    <value>Invitation sent successfully.</value>
+  </data>
+  <data name="warningTitle" xml:space="preserve">
+    <value>Warning</value>
+  </data>
 </root>

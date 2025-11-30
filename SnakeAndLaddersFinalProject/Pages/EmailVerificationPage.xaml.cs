@@ -1,14 +1,14 @@
 ﻿using log4net;
 using SnakeAndLaddersFinalProject.AuthService;
 using SnakeAndLaddersFinalProject.Properties.Langs;
-using SnakeAndLaddersFinalProject.Utilities;
+using SnakeAndLaddersFinalProject.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 using System.Windows.Input;
+using System.Windows.Navigation;
+using System.Windows.Threading;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
@@ -21,23 +21,18 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private const int VERIFICATION_CODE_LENGTH = 6;
 
-        private const string AUTH_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IAuthService";
-        private const string AUTH_CODE_THROTTLE_WAIT = "Auth.ThrottleWait";
-
-        private const string META_KEY_SECONDS = "seconds";
-
         private const string KEY_BTN_RESEND_CODE_TEXT = "btnResendCodeText";
-        private const string KEY_AUTH_THROTTLE_WAIT_FMT = "AuthThrottleWaitFmt";
-        private const string KEY_UI_VERIFICATION_CODE_REQUIRED = "UiVerificationCodeRequired";
-        private const string KEY_UI_ACCOUNT_CREATED_FMT = "UiAccountCreatedFmt";
-
-        private readonly AuthService.RegistrationDto _pendingDto;
 
         private DispatcherTimer _resendTimer;
         private int _remainingSeconds;
 
+        private EmailVerificationViewModel ViewModel
+        {
+            get { return DataContext as EmailVerificationViewModel; }
+        }
+
         public EmailVerificationPage()
-            : this(new AuthService.RegistrationDto
+            : this(new RegistrationDto
             {
                 Email = string.Empty,
                 FirstName = string.Empty,
@@ -48,11 +43,15 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
         }
 
-        public EmailVerificationPage(AuthService.RegistrationDto pendingDto)
+        public EmailVerificationPage(RegistrationDto pendingDto)
         {
             InitializeComponent();
 
-            _pendingDto = pendingDto ?? throw new ArgumentNullException(nameof(pendingDto));
+            var viewModel = new EmailVerificationViewModel(pendingDto);
+            DataContext = viewModel;
+
+            viewModel.ResendCooldownRequested += OnResendCooldownRequested;
+            viewModel.NavigateToLoginRequested += OnNavigateToLoginRequested;
 
             btnVerificateCode.Click += VerificateCode;
             btnResendCode.Click += ResendCode;
@@ -66,118 +65,45 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             string code = (txtCodeSended.Text ?? string.Empty).Trim();
 
-            if (string.IsNullOrWhiteSpace(code))
+            var viewModel = ViewModel;
+            if (viewModel == null)
             {
-                ShowWarn(T(KEY_UI_VERIFICATION_CODE_REQUIRED));
                 return;
             }
 
-            if (!IsNumericCode(code) || code.Length != VERIFICATION_CODE_LENGTH)
-            {
-                ShowWarn(MapAuth("Auth.CodeInvalid", null));
-                return;
-            }
-
-            var client = new AuthService.AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
-
-            try
-            {
-                string normalizedEmail = (_pendingDto.Email ?? string.Empty).Trim().ToLowerInvariant();
-
-                AuthResult confirm = await Task.Run(() =>
-                    client.ConfirmEmailVerification(normalizedEmail, code));
-
-                if (!confirm.Success)
-                {
-                    ShowWarn(MapAuth(confirm.Code, confirm.Meta));
-                    client.Close();
-                    return;
-                }
-
-                _pendingDto.Email = normalizedEmail;
-
-                AuthResult register = await Task.Run(() =>
-                    client.Register(_pendingDto));
-
-                if (!register.Success)
-                {
-                    ShowWarn(MapAuth(register.Code, register.Meta));
-                    client.Close();
-                    return;
-                }
-
-                ShowInfo(string.Format(T(KEY_UI_ACCOUNT_CREATED_FMT), register.DisplayName));
-
-                btnVerificateCode.IsEnabled = false;
-
-                NavigationService?.Navigate(new LoginPage());
-                client.Close();
-            }
-            catch (Exception ex)
-            {
-                string userMessage = ExceptionHandler.Handle(
-                    ex,
-                    $"{nameof(EmailVerificationPage)}.{nameof(VerificateCode)}",
-                    Logger);
-
-                MessageBox.Show(
-                    userMessage,
-                    Lang.errorTitle,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-
-                client.Abort();
-            }
+            await viewModel.VerificateCodeAsync(code);
         }
 
         private async void ResendCode(object sender, RoutedEventArgs e)
         {
-            string email = (_pendingDto.Email ?? string.Empty).Trim().ToLowerInvariant();
-            var client = new AuthService.AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
+            var viewModel = ViewModel;
+            if (viewModel == null)
+            {
+                return;
+            }
 
+            await viewModel.ResendCodeAsync();
+        }
+
+        private void OnResendCooldownRequested(int seconds)
+        {
+            StartResendCooldown(seconds);
+        }
+
+        private void OnNavigateToLoginRequested()
+        {
             try
             {
-                AuthResult result = await Task.Run(() =>
-                    client.RequestEmailVerification(email));
+                btnVerificateCode.IsEnabled = false;
 
-                client.Close();
-
-                if (result.Success)
-                {
-                    ShowInfo(string.Format(T("UiVerificationSentFmt"), email));
-                    StartResendCooldown(DEFAULT_RESEND_COOLDOWN_SECONDS);
-                    return;
-                }
-
-                if (result.Code == AUTH_CODE_THROTTLE_WAIT)
-                {
-                    int seconds = DEFAULT_RESEND_COOLDOWN_SECONDS;
-
-                    if (result.Meta != null &&
-                        result.Meta.TryGetValue(META_KEY_SECONDS, out string secondsText))
-                    {
-                        if (int.TryParse(secondsText, out int parsedSeconds))
-                        {
-                            seconds = parsedSeconds;
-                        }
-                    }
-
-                    ShowWarn(string.Format(T(KEY_AUTH_THROTTLE_WAIT_FMT), seconds));
-                    StartResendCooldown(seconds);
-                    return;
-                }
-
-                ShowWarn(MapAuth(result.Code, result.Meta));
+                NavigationService?.Navigate(new LoginPage());
             }
             catch (Exception ex)
             {
-                string userMessage = ExceptionHandler.Handle(
-                    ex,
-                    $"{nameof(EmailVerificationPage)}.{nameof(ResendCode)}",
-                    Logger);
+                Logger.Error("Error al navegar a Login desde EmailVerificationPage.", ex);
 
                 MessageBox.Show(
-                    userMessage,
+                    Lang.errorTitle,
                     Lang.errorTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -222,25 +148,9 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void UpdateResendButtonContent()
         {
-            btnResendCode.Content = string.Format(T(KEY_BTN_RESEND_CODE_TEXT), _remainingSeconds);
-        }
-
-        private static bool IsNumericCode(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                return false;
-            }
-
-            for (int index = 0; index < value.Length; index++)
-            {
-                if (!char.IsDigit(value[index]))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            btnResendCode.Content = string.Format(
+                T(KEY_BTN_RESEND_CODE_TEXT),
+                _remainingSeconds);
         }
 
         private void TxtCodeSendedPreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -289,55 +199,27 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private static string T(string key) =>
-            Globalization.LocalizationManager.Current[key];
-
-        private static void ShowWarn(string message) =>
-            MessageBox.Show(message, T("UiTitleWarning"), MessageBoxButton.OK, MessageBoxImage.Warning);
-
-        private static void ShowInfo(string message) =>
-            MessageBox.Show(message, T("UiTitleInfo"), MessageBoxButton.OK, MessageBoxImage.Information);
-
-        private static string MapAuth(string code, Dictionary<string, string> meta)
+        private static bool IsNumericCode(string value)
         {
-            Dictionary<string, string> metaDictionary = meta ?? new Dictionary<string, string>();
-
-            switch (code)
+            if (string.IsNullOrEmpty(value))
             {
-                case "Auth.Ok":
-                    return T("AuthOk");
-
-                case "Auth.EmailRequired":
-                    return T("AuthEmailRequired");
-
-                case "Auth.EmailAlreadyExists":
-                    return T("AuthEmailAlreadyExists");
-
-                case "Auth.UserNameAlreadyExists":
-                    return T("AuthUserNameAlreadyExists");
-
-                case "Auth.InvalidCredentials":
-                    return T("AuthInvalidCredentials");
-
-                case "Auth.ThrottleWait":
-                    return string.Format(
-                        T(KEY_AUTH_THROTTLE_WAIT_FMT),
-                        metaDictionary.ContainsKey(META_KEY_SECONDS)
-                            ? metaDictionary[META_KEY_SECONDS]
-                            : DEFAULT_RESEND_COOLDOWN_SECONDS.ToString());
-
-                case "Auth.CodeExpired":
-                    return T("AuthCodeExpired");
-
-                case "Auth.CodeInvalid":
-                    return T("AuthCodeInvalid");
-
-                case "Auth.EmailSendFailed":
-                    return T("AuthEmailSendFailed");
-
-                default:
-                    return T("AuthServerError");
+                return false;
             }
+
+            for (int index = 0; index < value.Length; index++)
+            {
+                if (!char.IsDigit(value[index]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static string T(string key)
+        {
+            return Globalization.LocalizationManager.Current[key];
         }
     }
 }

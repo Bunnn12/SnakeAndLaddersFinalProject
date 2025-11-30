@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using SnakeAndLaddersFinalProject.Authentication;
 using SnakeAndLaddersFinalProject.Utilities;
+using SnakeAndLaddersFinalProject.ViewModels;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
@@ -25,7 +26,6 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private const string DEFAULT_GUEST_SKIN_ID = "001";
 
-        private const string AUTH_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IAuthService";
         private const string AUTH_CODE_THROTTLE_WAIT = "Auth.ThrottleWait";
 
         private const string META_KEY_SECONDS = "seconds";
@@ -44,19 +44,17 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private const int LOGIN_LOADING_DELAY_MILLISECONDS = 200;
 
-        private const int IDENTIFIER_MIN_LENGTH = 1;
-        private const int IDENTIFIER_MAX_LENGTH = 90;
-        private const int PASSWORD_MIN_LENGTH = 8;
-        private const int PASSWORD_MAX_LENGTH = 510;
-
-        private static readonly Regex EMAIL_REGEX =
-            new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
-
         private static readonly Random GUEST_RANDOM = new Random();
+
+        private LoginViewModel ViewModel
+        {
+            get { return DataContext as LoginViewModel; }
+        }
 
         public LoginPage()
         {
             InitializeComponent();
+            DataContext = new LoginViewModel();
         }
 
         private void PageLoaded(object sender, RoutedEventArgs e)
@@ -74,52 +72,6 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void TextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
-        }
-
-        private string[] ValidateLogin(string identifier, string password)
-        {
-            var errors = new List<string>();
-
-            if (string.IsNullOrWhiteSpace(identifier))
-            {
-                errors.Add(T("UiIdentifierRequired"));
-            }
-            else
-            {
-                if (identifier.Contains("@") && !EMAIL_REGEX.IsMatch(identifier))
-                {
-                    errors.Add(T("UiEmailInvalid"));
-                }
-
-                if (identifier.Length < IDENTIFIER_MIN_LENGTH)
-                {
-                    errors.Add(T("UiIdentifierTooShort")); 
-                }
-
-                if (identifier.Length > IDENTIFIER_MAX_LENGTH)
-                {
-                    errors.Add(T("UiIdentifierTooLong")); 
-                }
-            }
-
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                errors.Add(T("UiPasswordRequired"));
-            }
-            else
-            {
-                if (password.Length < PASSWORD_MIN_LENGTH)
-                {
-                    errors.Add(T("UiPasswordTooShort")); 
-                }
-
-                if (password.Length > PASSWORD_MAX_LENGTH)
-                {
-                    errors.Add(T("UiPasswordTooLong")); 
-                }
-            }
-
-            return errors.ToArray();
         }
 
         private void PwdPasswordKeyDown(object sender, KeyEventArgs e)
@@ -150,178 +102,32 @@ namespace SnakeAndLaddersFinalProject.Pages
             string identifier = txtUsername.Text?.Trim() ?? string.Empty;
             string password = pwdPassword.Password ?? string.Empty;
 
-            string[] errors = ValidateLogin(identifier, password);
+            var viewModel = ViewModel;
+            if (viewModel == null)
+            {
+                ShowError(T("UiGenericError"));
+                return;
+            }
+
+            string[] errors = viewModel.ValidateLogin(identifier, password);
             if (errors.Any())
             {
                 ShowWarn(string.Join("\n", errors));
                 return;
             }
 
-            var loginDto = new AuthService.LoginDto
+            Dispatcher.Invoke(() =>
             {
-                Email = identifier,
-                Password = password
-            };
+                Frame mainFrame = GetMainFrame();
+                mainFrame?.Navigate(new LoadingPage());
+            });
 
-            var authClient = new AuthService.AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
-            dynamic response = null;
+            await Task.Delay(LOGIN_LOADING_DELAY_MILLISECONDS).ConfigureAwait(true);
 
-            try
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    Frame mainFrame = GetMainFrame();
-                    mainFrame?.Navigate(new LoadingPage());
-                });
+            LoginViewModel.LoginServiceResult result =
+                await viewModel.LoginAsync(identifier, password).ConfigureAwait(true);
 
-                await Task.Delay(LOGIN_LOADING_DELAY_MILLISECONDS).ConfigureAwait(true);
-
-                response = await Task.Run(() => authClient.Login(loginDto)).ConfigureAwait(true);
-
-                bool isSuccess;
-
-                try
-                {
-                    isSuccess = response?.Success == true;
-                }
-                catch
-                {
-                    isSuccess = false;
-                }
-
-                if (isSuccess)
-                {
-                    int userId;
-                    try
-                    {
-                        userId = (int)(response?.UserId ?? 0);
-                    }
-                    catch
-                    {
-                        userId = 0;
-                    }
-
-                    string displayName;
-                    try
-                    {
-                        displayName = (string)response?.DisplayName;
-                    }
-                    catch
-                    {
-                        displayName = null;
-                    }
-
-                    string profilePhotoId;
-                    try
-                    {
-                        profilePhotoId = (string)response?.ProfilePhotoId;
-                    }
-                    catch
-                    {
-                        profilePhotoId = null;
-                    }
-
-                    string token = TryGetToken(response);
-
-                    string currentSkinId;
-                    int? currentSkinUnlockedId;
-
-                    try
-                    {
-                        currentSkinId = (string)response?.CurrentSkinId;
-                    }
-                    catch
-                    {
-                        currentSkinId = null;
-                    }
-
-                    try
-                    {
-                        currentSkinUnlockedId = (int?)response?.CurrentSkinUnlockedId;
-                    }
-                    catch
-                    {
-                        currentSkinUnlockedId = null;
-                    }
-
-                    if (SessionContext.Current == null)
-                    {
-                        ShowError(T("UiGenericError"));
-                        authClient.Close();
-                        return;
-                    }
-
-                    SessionContext.Current.UserId = userId;
-                    SessionContext.Current.UserName =
-                        string.IsNullOrWhiteSpace(displayName) ? identifier : displayName;
-                    SessionContext.Current.Email = identifier.Contains("@") ? identifier : string.Empty;
-                    SessionContext.Current.ProfilePhotoId =
-                        AvatarIdHelper.NormalizeOrDefault(profilePhotoId);
-                    SessionContext.Current.AuthToken = token ?? string.Empty;
-
-                    SessionContext.Current.CurrentSkinId = currentSkinId;
-                    SessionContext.Current.CurrentSkinUnlockedId = currentSkinUnlockedId;
-
-                    if (string.IsNullOrWhiteSpace(SessionContext.Current.AuthToken))
-                    {
-                        ShowWarn(
-                            "Sesión iniciada, pero el servicio no devolvió token. Algunas funciones pueden no estar disponibles.");
-                    }
-
-                    Dispatcher.Invoke(() =>
-                    {
-                        Frame mainFrame = GetMainFrame();
-                        if (mainFrame != null)
-                        {
-                            mainFrame.Navigate(new MainPage());
-                            return;
-                        }
-
-                        NavigationService?.Navigate(new MainPage());
-                    });
-
-                    authClient.Close();
-                }
-                else
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        Frame mainFrame = GetMainFrame();
-                        if (mainFrame != null)
-                        {
-                            mainFrame.Navigate(new LoginPage());
-                            return;
-                        }
-
-                        NavigationService?.Navigate(new LoginPage());
-                    });
-
-                    string code;
-                    Dictionary<string, string> meta;
-
-                    try
-                    {
-                        code = (string)response?.Code;
-                    }
-                    catch
-                    {
-                        code = null;
-                    }
-
-                    try
-                    {
-                        meta = response?.Meta as Dictionary<string, string>;
-                    }
-                    catch
-                    {
-                        meta = null;
-                    }
-
-                    ShowWarn(MapAuth(code, meta));
-                    authClient.Close();
-                }
-            }
-            catch (System.ServiceModel.EndpointNotFoundException)
+            if (result.IsEndpointNotFound)
             {
                 Dispatcher.Invoke(() =>
                 {
@@ -336,9 +142,10 @@ namespace SnakeAndLaddersFinalProject.Pages
                 });
 
                 ShowError(T("UiEndpointNotFound"));
-                authClient.Abort();
+                return;
             }
-            catch (Exception)
+
+            if (result.IsGenericError)
             {
                 Dispatcher.Invoke(() =>
                 {
@@ -353,29 +160,51 @@ namespace SnakeAndLaddersFinalProject.Pages
                 });
 
                 ShowError(T("UiGenericError"));
-                authClient.Abort();
+                return;
             }
+
+            if (result.IsSuccess)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    Frame mainFrame = GetMainFrame();
+                    if (mainFrame != null)
+                    {
+                        mainFrame.Navigate(new MainPage());
+                        return;
+                    }
+
+                    NavigationService?.Navigate(new MainPage());
+                });
+
+                if (!result.HasAuthToken)
+                {
+                    ShowWarn(
+                        "Sesión iniciada, pero el servicio no devolvió token. Algunas funciones pueden no estar disponibles.");
+                }
+
+                return;
+            }
+
+            Dispatcher.Invoke(() =>
+            {
+                Frame mainFrame = GetMainFrame();
+                if (mainFrame != null)
+                {
+                    mainFrame.Navigate(new LoginPage());
+                    return;
+                }
+
+                NavigationService?.Navigate(new LoginPage());
+            });
+
+            ShowWarn(MapAuth(result.Code, result.Meta));
         }
 
         private Frame GetMainFrame()
         {
             Window owner = Window.GetWindow(this) ?? Application.Current?.MainWindow;
             return owner?.FindName("MainFrame") as Frame;
-        }
-
-        private static string TryGetToken(dynamic response)
-        {
-            try
-            {
-                return (string)(response?.Token
-                                ?? response?.AuthToken
-                                ?? response?.SessionToken
-                                ?? response?.AccessToken);
-            }
-            catch
-            {
-                return null;
-            }
         }
 
         private static string T(string key) =>

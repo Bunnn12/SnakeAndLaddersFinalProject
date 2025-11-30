@@ -654,24 +654,6 @@
   <data name="ShopUnknownError" xml:space="preserve">
     <value>Ocorreu um erro desconhecido na loja</value>
   </data>
-  <data name="btnSendCodeText" xml:space="preserve">
-    <value>Enviar código</value>
-  </data>
-  <data name="UiChangePasswordCodeSent" xml:space="preserve">
-    <value>Um código de verificação foi enviado para seu e-mail</value>
-  </data>
-  <data name="UiChangePasswordCodeNotRequested" xml:space="preserve">
-    <value>Você deve solicitar um código de verificação antes de alterar sua senha</value>
-  </data>
-  <data name="UiChangePasswordCodeExpired" xml:space="preserve">
-    <value>O código de verificação expirou. Solicite um novo</value>
-  </data>
-  <data name="UiChangePasswordCodeInvalid" xml:space="preserve">
-    <value>O código de verificação não é válido</value>
-  </data>
-  <data name="AuthEmailRequired" xml:space="preserve">
-    <value>O e-mail é obrigatório.</value>
-  </data>
   <data name="ShopDice123Info" xml:space="preserve">
     <value>Dados 1–3: apenas rola valores de 1 a 3</value>
   </data>
@@ -687,20 +669,8 @@
   <data name="UiShopChestInfoTitle" xml:space="preserve">
     <value>Detalhes do baú</value>
   </data>
-  <data name="btnChangePasswordText" xml:space="preserve">
-    <value>Alterar a senha</value>
-  </data>
-  <data name="lblChangePasswordCodeText" xml:space="preserve">
-    <value>Código de verificação</value>
-  </data>
-  <data name="lblChangePasswordConfirmPasswordText" xml:space="preserve">
-    <value>Confirme a nova senha</value>
-  </data>
   <data name="lblChangePasswordCurrentPasswordText" xml:space="preserve">
     <value>Senha atual</value>
-  </data>
-  <data name="lblChangePasswordFooterText" xml:space="preserve">
-    <value>Sua nova senha deve atender aos requisitos de segurança</value>
   </data>
   <data name="lblChangePasswordInstructionText" xml:space="preserve">
     <value>Digite sua senha atual e escolha uma nova</value>
@@ -710,6 +680,15 @@
   </data>
   <data name="lblChangePasswordTitleText" xml:space="preserve">
     <value>Alterar a senha</value>
+  </data>
+  <data name="btnChangePasswordText" xml:space="preserve">
+    <value>Alterar a senha</value>
+  </data>
+  <data name="lblChangePasswordConfirmPasswordText" xml:space="preserve">
+    <value>Confirme a nova senha</value>
+  </data>
+  <data name="lblChangePasswordFooterText" xml:space="preserve">
+    <value>Sua nova senha deve atender aos requisitos de segurança</value>
   </data>
   <data name="UiChangePasswordGenericError" xml:space="preserve">
     <value>Ocorreu um erro ao alterar sua senha</value>
@@ -728,6 +707,24 @@
   </data>
   <data name="UiChangePasswordWeakPassword" xml:space="preserve">
     <value>A nova senha não atende aos requisitos de segurança</value>
+  </data>
+  <data name="lblChangePasswordCodeText" xml:space="preserve">
+    <value>Código de verificação</value>
+  </data>
+  <data name="btnSendCodeText" xml:space="preserve">
+    <value>Enviar código</value>
+  </data>
+  <data name="UiChangePasswordCodeSent" xml:space="preserve">
+    <value>Um código de verificação foi enviado para seu e-mail</value>
+  </data>
+  <data name="UiChangePasswordCodeNotRequested" xml:space="preserve">
+    <value>Você deve solicitar um código de verificação antes de alterar sua senha</value>
+  </data>
+  <data name="UiChangePasswordCodeExpired" xml:space="preserve">
+    <value>O código de verificação expirou. Solicite um novo</value>
+  </data>
+  <data name="UiChangePasswordCodeInvalid" xml:space="preserve">
+    <value>O código de verificação não é válido</value>
   </data>
   <data name="AuthAccountDeleted" xml:space="preserve">
     <value>Esta conta foi excluída.</value>
@@ -752,6 +749,9 @@
   </data>
   <data name="AuthEmailAlreadyExists" xml:space="preserve">
     <value>Este endereço de e-mail já está registrado.</value>
+  </data>
+  <data name="AuthEmailRequired" xml:space="preserve">
+    <value>O e-mail é obrigatório.</value>
   </data>
   <data name="AuthEmailSendFailed" xml:space="preserve">
     <value>Não foi possível enviar o e-mail. Por favor, tente novamente mais tarde.</value>
@@ -824,5 +824,8 @@
   </data>
   <data name="UiVerificationSentFmt" xml:space="preserve">
     <value>Um e-mail de verificação foi enviado para {0}.</value>
+  </data>
+  <data name="warningTitle" xml:space="preserve">
+    <value />
   </data>
 </root>

@@ -654,24 +654,6 @@
   <data name="ShopUnknownError" xml:space="preserve">
     <value>Se produjo un error desconocido en la tienda.</value>
   </data>
-  <data name="btnSendCodeText" xml:space="preserve">
-    <value>Enviar código</value>
-  </data>
-  <data name="UiChangePasswordCodeSent" xml:space="preserve">
-    <value>Se envió un código de verificación a su correo electrónico.</value>
-  </data>
-  <data name="UiChangePasswordCodeNotRequested" xml:space="preserve">
-    <value>Debes solicitar un código de verificación antes de cambiar tu contraseña</value>
-  </data>
-  <data name="UiChangePasswordCodeExpired" xml:space="preserve">
-    <value>El código de verificación ha caducado. Por favor solicite uno nuevo</value>
-  </data>
-  <data name="UiChangePasswordCodeInvalid" xml:space="preserve">
-    <value>El código de verificación no es válido.</value>
-  </data>
-  <data name="AuthEmailRequired" xml:space="preserve">
-    <value>Se requiere correo electrónico.</value>
-  </data>
   <data name="ShopDice123Info" xml:space="preserve">
     <value>Dados 1 a 3: solo arroja valores del 1 al 3</value>
   </data>
@@ -687,20 +669,8 @@
   <data name="UiShopChestInfoTitle" xml:space="preserve">
     <value>Detalles del pecho</value>
   </data>
-  <data name="btnChangePasswordText" xml:space="preserve">
-    <value>Cambiar la contraseña</value>
-  </data>
-  <data name="lblChangePasswordCodeText" xml:space="preserve">
-    <value>Código de verificación</value>
-  </data>
-  <data name="lblChangePasswordConfirmPasswordText" xml:space="preserve">
-    <value>Confirmar nueva contraseña</value>
-  </data>
   <data name="lblChangePasswordCurrentPasswordText" xml:space="preserve">
     <value>Contraseña actual</value>
-  </data>
-  <data name="lblChangePasswordFooterText" xml:space="preserve">
-    <value>Su nueva contraseña debe cumplir con los requisitos de seguridad.</value>
   </data>
   <data name="lblChangePasswordInstructionText" xml:space="preserve">
     <value>Ingrese su contraseña actual y elija una nueva</value>
@@ -710,6 +680,15 @@
   </data>
   <data name="lblChangePasswordTitleText" xml:space="preserve">
     <value>Cambiar la contraseña</value>
+  </data>
+  <data name="btnChangePasswordText" xml:space="preserve">
+    <value>Cambiar la contraseña</value>
+  </data>
+  <data name="lblChangePasswordConfirmPasswordText" xml:space="preserve">
+    <value>Confirmar nueva contraseña</value>
+  </data>
+  <data name="lblChangePasswordFooterText" xml:space="preserve">
+    <value>Su nueva contraseña debe cumplir con los requisitos de seguridad.</value>
   </data>
   <data name="UiChangePasswordGenericError" xml:space="preserve">
     <value>Se produjo un error al cambiar su contraseña.</value>
@@ -728,6 +707,24 @@
   </data>
   <data name="UiChangePasswordWeakPassword" xml:space="preserve">
     <value>La nueva contraseña no cumple con los requisitos de seguridad.</value>
+  </data>
+  <data name="lblChangePasswordCodeText" xml:space="preserve">
+    <value>Código de verificación</value>
+  </data>
+  <data name="btnSendCodeText" xml:space="preserve">
+    <value>Enviar código</value>
+  </data>
+  <data name="UiChangePasswordCodeSent" xml:space="preserve">
+    <value>Se envió un código de verificación a su correo electrónico.</value>
+  </data>
+  <data name="UiChangePasswordCodeNotRequested" xml:space="preserve">
+    <value>Debes solicitar un código de verificación antes de cambiar tu contraseña</value>
+  </data>
+  <data name="UiChangePasswordCodeExpired" xml:space="preserve">
+    <value>El código de verificación ha caducado. Por favor solicite uno nuevo</value>
+  </data>
+  <data name="UiChangePasswordCodeInvalid" xml:space="preserve">
+    <value>El código de verificación no es válido.</value>
   </data>
   <data name="AuthAccountDeleted" xml:space="preserve">
     <value>Esta cuenta ha sido eliminada.</value>
@@ -752,6 +749,9 @@
   </data>
   <data name="AuthEmailAlreadyExists" xml:space="preserve">
     <value>Esta dirección de correo electrónico ya está registrada.</value>
+  </data>
+  <data name="AuthEmailRequired" xml:space="preserve">
+    <value>Se requiere correo electrónico.</value>
   </data>
   <data name="AuthEmailSendFailed" xml:space="preserve">
     <value>No pudimos enviar el correo electrónico. Inténtelo de nuevo más tarde.</value>
@@ -824,5 +824,8 @@
   </data>
   <data name="UiVerificationSentFmt" xml:space="preserve">
     <value>Se envió un correo electrónico de verificación a {0}.</value>
+  </data>
+  <data name="warningTitle" xml:space="preserve">
+    <value />
   </data>
 </root>

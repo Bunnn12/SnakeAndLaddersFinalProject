@@ -484,6 +484,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Send invitation.
+        /// </summary>
+        public static string btnSendInvitationText {
+            get {
+                return ResourceManager.GetString("btnSendInvitationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Send.
         /// </summary>
         public static string btnSendText {
@@ -570,6 +579,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string chatTittle {
             get {
                 return ResourceManager.GetString("chatTittle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Notes.
+        /// </summary>
+        public static string colFriendNoteHeader {
+            get {
+                return ResourceManager.GetString("colFriendNoteHeader", resourceCulture);
             }
         }
         
@@ -732,6 +750,96 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string infoTitle {
             get {
                 return ResourceManager.GetString("infoTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a This friend cannot be invited because their account is inactive..
+        /// </summary>
+        public static string InviteInactiveFriendWarn {
+            get {
+                return ResourceManager.GetString("InviteInactiveFriendWarn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The session is not valid. Please sign in again..
+        /// </summary>
+        public static string InviteInvalidSessionError {
+            get {
+                return ResourceManager.GetString("InviteInvalidSessionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You do not have any friends to invite yet..
+        /// </summary>
+        public static string InviteNoFriendsInfo {
+            get {
+                return ResourceManager.GetString("InviteNoFriendsInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Lobby context was not found..
+        /// </summary>
+        public static string InviteNoLobbyContextError {
+            get {
+                return ResourceManager.GetString("InviteNoLobbyContextError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a There is no active match with a code to invite friends..
+        /// </summary>
+        public static string InviteNoMatchCodeWarn {
+            get {
+                return ResourceManager.GetString("InviteNoMatchCodeWarn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No response was received from the server..
+        /// </summary>
+        public static string InviteNoServerResponseError {
+            get {
+                return ResourceManager.GetString("InviteNoServerResponseError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You must select a friend to send an invitation..
+        /// </summary>
+        public static string InviteSelectFriendWarn {
+            get {
+                return ResourceManager.GetString("InviteSelectFriendWarn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The invitation could not be sent..
+        /// </summary>
+        public static string InviteSendFailedText {
+            get {
+                return ResourceManager.GetString("InviteSendFailedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Invitation sent successfully..
+        /// </summary>
+        public static string InviteSentOkText {
+            get {
+                return ResourceManager.GetString("InviteSentOkText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your session has expired. Please sign in again..
+        /// </summary>
+        public static string InviteSessionExpiredWarn {
+            get {
+                return ResourceManager.GetString("InviteSessionExpiredWarn", resourceCulture);
             }
         }
         
@@ -1038,6 +1146,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string lblInventory {
             get {
                 return ResourceManager.GetString("lblInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Invite friends to the match.
+        /// </summary>
+        public static string lblInviteFriendsToMatchText {
+            get {
+                return ResourceManager.GetString("lblInviteFriendsToMatchText", resourceCulture);
             }
         }
         
@@ -1960,6 +2077,87 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The invitation could not be sent..
+        /// </summary>
+        public static string UiInviteFriendFailureDefault {
+            get {
+                return ResourceManager.GetString("UiInviteFriendFailureDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Guests cannot send match invitations. Please sign in with an account..
+        /// </summary>
+        public static string UiInviteFriendGuestsNotAllowed {
+            get {
+                return ResourceManager.GetString("UiInviteFriendGuestsNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The session is not valid. Please sign in again..
+        /// </summary>
+        public static string UiInviteFriendInvalidSession {
+            get {
+                return ResourceManager.GetString("UiInviteFriendInvalidSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Lobby context was not found..
+        /// </summary>
+        public static string UiInviteFriendLobbyContextMissing {
+            get {
+                return ResourceManager.GetString("UiInviteFriendLobbyContextMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Match code is missing. Please create or join a match again..
+        /// </summary>
+        public static string UiInviteFriendMissingGameCode {
+            get {
+                return ResourceManager.GetString("UiInviteFriendMissingGameCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a There is no match with a code to invite friends yet..
+        /// </summary>
+        public static string UiInviteFriendNoMatchCode {
+            get {
+                return ResourceManager.GetString("UiInviteFriendNoMatchCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No response was received from the server..
+        /// </summary>
+        public static string UiInviteFriendNoResponse {
+            get {
+                return ResourceManager.GetString("UiInviteFriendNoResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You must select a friend before sending an invitation..
+        /// </summary>
+        public static string UiInviteFriendSelectFriendRequired {
+            get {
+                return ResourceManager.GetString("UiInviteFriendSelectFriendRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Invitation sent successfully..
+        /// </summary>
+        public static string UiInviteFriendSuccessDefault {
+            get {
+                return ResourceManager.GetString("UiInviteFriendSuccessDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Last name can only contain letters..
         /// </summary>
         public static string UiLastNameLettersOnly {
@@ -2181,6 +2379,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string UiVerificationSentFmt {
             get {
                 return ResourceManager.GetString("UiVerificationSentFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Warning.
+        /// </summary>
+        public static string warningTitle {
+            get {
+                return ResourceManager.GetString("warningTitle", resourceCulture);
             }
         }
     }
