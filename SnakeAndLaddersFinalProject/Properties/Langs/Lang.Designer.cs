@@ -1321,6 +1321,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Social networks.
+        /// </summary>
+        public static string lblProfileSocialNetworksText {
+            get {
+                return ResourceManager.GetString("lblProfileSocialNetworksText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Statistics Profile.
         /// </summary>
         public static string lblProfileStatsTitle {
@@ -1573,6 +1582,276 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Could not retrieve the account information..
+        /// </summary>
+        public static string ProfileAccountInfoLoadError {
+            get {
+                return ResourceManager.GetString("ProfileAccountInfoLoadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The avatar could not be updated..
+        /// </summary>
+        public static string ProfileAvatarUpdateErrorText {
+            get {
+                return ResourceManager.GetString("ProfileAvatarUpdateErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Avatar updated successfully..
+        /// </summary>
+        public static string ProfileAvatarUpdateSuccessText {
+            get {
+                return ResourceManager.GetString("ProfileAvatarUpdateSuccessText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Do you want to use this avatar as your profile picture?.
+        /// </summary>
+        public static string ProfileChangeAvatarConfirmText {
+            get {
+                return ResourceManager.GetString("ProfileChangeAvatarConfirmText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Change avatar.
+        /// </summary>
+        public static string ProfileChangeAvatarConfirmTitle {
+            get {
+                return ResourceManager.GetString("ProfileChangeAvatarConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Are you sure you want to deactivate your account?\nYou will not be able to use it again until an administrator reactivates it..
+        /// </summary>
+        public static string ProfileDeactivateConfirmText {
+            get {
+                return ResourceManager.GetString("ProfileDeactivateConfirmText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Deactivate account.
+        /// </summary>
+        public static string ProfileDeactivateConfirmTitle {
+            get {
+                return ResourceManager.GetString("ProfileDeactivateConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred while deactivating the account..
+        /// </summary>
+        public static string ProfileDeactivateErrorText {
+            get {
+                return ResourceManager.GetString("ProfileDeactivateErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your account has been deactivated successfully. The application will now close..
+        /// </summary>
+        public static string ProfileDeactivateSuccessText {
+            get {
+                return ResourceManager.GetString("ProfileDeactivateSuccessText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Account deactivated.
+        /// </summary>
+        public static string ProfileDeactivateSuccessTitle {
+            get {
+                return ResourceManager.GetString("ProfileDeactivateSuccessTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Description cannot be longer than {0} characters..
+        /// </summary>
+        public static string ProfileDescriptionTooLongFmt {
+            get {
+                return ResourceManager.GetString("ProfileDescriptionTooLongFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The first name contains characters that are not allowed..
+        /// </summary>
+        public static string ProfileFirstNameInvalidCharsText {
+            get {
+                return ResourceManager.GetString("ProfileFirstNameInvalidCharsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a First name cannot be longer than {0} characters..
+        /// </summary>
+        public static string ProfileFirstNameTooLongFmt {
+            get {
+                return ResourceManager.GetString("ProfileFirstNameTooLongFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You signed in as a guest, so you cannot access the profile.\n\nIf you want to use a profile, please create an account..
+        /// </summary>
+        public static string ProfileGuestNotAllowedText {
+            get {
+                return ResourceManager.GetString("ProfileGuestNotAllowedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Profile not available.
+        /// </summary>
+        public static string ProfileGuestNotAllowedTitle {
+            get {
+                return ResourceManager.GetString("ProfileGuestNotAllowedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The text contains invalid characters..
+        /// </summary>
+        public static string ProfileInvalidCharactersText {
+            get {
+                return ResourceManager.GetString("ProfileInvalidCharactersText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The last name contains characters that are not allowed..
+        /// </summary>
+        public static string ProfileLastNameInvalidCharsText {
+            get {
+                return ResourceManager.GetString("ProfileLastNameInvalidCharsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Last name cannot be longer than {0} characters..
+        /// </summary>
+        public static string ProfileLastNameTooLongFmt {
+            get {
+                return ResourceManager.GetString("ProfileLastNameTooLongFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Link {0}.
+        /// </summary>
+        public static string ProfileMenuLinkFmt {
+            get {
+                return ResourceManager.GetString("ProfileMenuLinkFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Unlink {0}.
+        /// </summary>
+        public static string ProfileMenuUnlinkFmt {
+            get {
+                return ResourceManager.GetString("ProfileMenuUnlinkFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Facebook.
+        /// </summary>
+        public static string ProfileNetworkFacebookText {
+            get {
+                return ResourceManager.GetString("ProfileNetworkFacebookText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Instagram.
+        /// </summary>
+        public static string ProfileNetworkInstagramText {
+            get {
+                return ResourceManager.GetString("ProfileNetworkInstagramText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a X/ Twitter.
+        /// </summary>
+        public static string ProfileNetworkTwitterText {
+            get {
+                return ResourceManager.GetString("ProfileNetworkTwitterText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Profile not found..
+        /// </summary>
+        public static string ProfileNotFoundText {
+            get {
+                return ResourceManager.GetString("ProfileNotFoundText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The profile has not been loaded..
+        /// </summary>
+        public static string ProfileNotLoadedError {
+            get {
+                return ResourceManager.GetString("ProfileNotLoadedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a (not linked).
+        /// </summary>
+        public static string ProfileSocialNotLinkedText {
+            get {
+                return ResourceManager.GetString("ProfileSocialNotLinkedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The profile could not be updated..
+        /// </summary>
+        public static string ProfileUpdateErrorText {
+            get {
+                return ResourceManager.GetString("ProfileUpdateErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Profile updated successfully..
+        /// </summary>
+        public static string ProfileUpdateSuccessText {
+            get {
+                return ResourceManager.GetString("ProfileUpdateSuccessText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Username is not available..
+        /// </summary>
+        public static string ProfileUserNameUnavailableText {
+            get {
+                return ResourceManager.GetString("ProfileUserNameUnavailableText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The user profile has not been loaded..
+        /// </summary>
+        public static string ProfileUserNotLoadedError {
+            get {
+                return ResourceManager.GetString("ProfileUserNotLoadedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Password.
         /// </summary>
         public static string pwdPasswordText {
@@ -1776,6 +2055,204 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string ShopUserNotFoundError {
             get {
                 return ResourceManager.GetString("ShopUserNotFoundError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The browser could not be opened..
+        /// </summary>
+        public static string SocialBrowserOpenError {
+            get {
+                return ResourceManager.GetString("SocialBrowserOpenError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a This social network is not linked..
+        /// </summary>
+        public static string SocialNetworkNotLinkedInfo {
+            get {
+                return ResourceManager.GetString("SocialNetworkNotLinkedInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The link does not seem to be a valid profile URL for this social network.\nMake sure to paste the full URL to your profile (not the home page)..
+        /// </summary>
+        public static string SocialProfileInvalidUrlWarn {
+            get {
+                return ResourceManager.GetString("SocialProfileInvalidUrlWarn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Social network profile linked successfully..
+        /// </summary>
+        public static string SocialProfileLinkedInfo {
+            get {
+                return ResourceManager.GetString("SocialProfileLinkedInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The profile link cannot be empty..
+        /// </summary>
+        public static string SocialProfileLinkEmptyWarn {
+            get {
+                return ResourceManager.GetString("SocialProfileLinkEmptyWarn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred while linking the social network profile..
+        /// </summary>
+        public static string SocialProfileLinkError {
+            get {
+                return ResourceManager.GetString("SocialProfileLinkError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a URL of your Facebook profile:.
+        /// </summary>
+        public static string SocialProfileLinkFacebookCaption {
+            get {
+                return ResourceManager.GetString("SocialProfileLinkFacebookCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Link Facebook.
+        /// </summary>
+        public static string SocialProfileLinkFacebookTitle {
+            get {
+                return ResourceManager.GetString("SocialProfileLinkFacebookTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a URL of your profile:.
+        /// </summary>
+        public static string SocialProfileLinkGenericCaption {
+            get {
+                return ResourceManager.GetString("SocialProfileLinkGenericCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Link social network.
+        /// </summary>
+        public static string SocialProfileLinkGenericTitle {
+            get {
+                return ResourceManager.GetString("SocialProfileLinkGenericTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a URL of your Instagram profile:.
+        /// </summary>
+        public static string SocialProfileLinkInstagramCaption {
+            get {
+                return ResourceManager.GetString("SocialProfileLinkInstagramCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Link Instagram.
+        /// </summary>
+        public static string SocialProfileLinkInstagramTitle {
+            get {
+                return ResourceManager.GetString("SocialProfileLinkInstagramTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your browser will open so you can sign in. Then paste here the URL of your profile as shown there..
+        /// </summary>
+        public static string SocialProfileLinkInstructionsText {
+            get {
+                return ResourceManager.GetString("SocialProfileLinkInstructionsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a URL of your X / Twitter profile:.
+        /// </summary>
+        public static string SocialProfileLinkTwitterCaption {
+            get {
+                return ResourceManager.GetString("SocialProfileLinkTwitterCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Link X / Twitter.
+        /// </summary>
+        public static string SocialProfileLinkTwitterTitle {
+            get {
+                return ResourceManager.GetString("SocialProfileLinkTwitterTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Paste the URL of your profile..
+        /// </summary>
+        public static string SocialProfileLinkUrlRequiredText {
+            get {
+                return ResourceManager.GetString("SocialProfileLinkUrlRequiredText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The social network link could not be opened..
+        /// </summary>
+        public static string SocialProfileOpenError {
+            get {
+                return ResourceManager.GetString("SocialProfileOpenError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The social network profile could not be saved..
+        /// </summary>
+        public static string SocialProfileSaveError {
+            get {
+                return ResourceManager.GetString("SocialProfileSaveError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Are you sure you want to unlink this social network?.
+        /// </summary>
+        public static string SocialProfileUnlinkConfirmText {
+            get {
+                return ResourceManager.GetString("SocialProfileUnlinkConfirmText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Confirm.
+        /// </summary>
+        public static string SocialProfileUnlinkConfirmTitle {
+            get {
+                return ResourceManager.GetString("SocialProfileUnlinkConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Social network profile unlinked successfully..
+        /// </summary>
+        public static string SocialProfileUnlinkedInfo {
+            get {
+                return ResourceManager.GetString("SocialProfileUnlinkedInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred while unlinking the social network profile..
+        /// </summary>
+        public static string SocialProfileUnlinkError {
+            get {
+                return ResourceManager.GetString("SocialProfileUnlinkError", resourceCulture);
             }
         }
         

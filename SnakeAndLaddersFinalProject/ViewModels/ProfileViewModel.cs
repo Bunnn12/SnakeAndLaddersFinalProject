@@ -1,9 +1,11 @@
-﻿using log4net;
-using SnakeAndLaddersFinalProject.Authentication;
-using SnakeAndLaddersFinalProject.UserService;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
+using log4net;
+using SnakeAndLaddersFinalProject.Authentication;
+using SnakeAndLaddersFinalProject.Properties.Langs;
+using SnakeAndLaddersFinalProject.UserService;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
@@ -28,8 +30,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             get { return !string.IsNullOrWhiteSpace(AvatarId); }
         }
 
+        public IList<AvatarProfileOptionViewModel> AvatarOptions { get; private set; }
+
         public ProfileViewModel()
         {
+            AvatarOptions = new List<AvatarProfileOptionViewModel>();
             AvatarId = SessionContext.Current?.ProfilePhotoId;
         }
 
@@ -40,9 +45,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             if (session == null || !session.IsAuthenticated)
             {
                 MessageBox.Show(
-                    "Iniciaste sesión como invitado, no puedes acceder al perfil.\n\n" +
-                    "Si deseas usar un perfil, crea una cuenta :).",
-                    "Perfil no disponible",
+                    Lang.ProfileGuestNotAllowedText,
+                    Lang.ProfileGuestNotAllowedTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
 
@@ -54,8 +58,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             if (string.IsNullOrWhiteSpace(userName))
             {
                 MessageBox.Show(
-                    "Nombre de usuario no disponible.",
-                    "Error",
+                    Lang.ProfileUserNameUnavailableText,
+                    Lang.UiTitleError,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 return false;
@@ -70,8 +74,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 if (LoadedAccount == null)
                 {
                     MessageBox.Show(
-                        "Perfil no encontrado.",
-                        "Información",
+                        Lang.ProfileNotFoundText,
+                        Lang.UiTitleInfo,
                         MessageBoxButton.OK,
                         MessageBoxImage.Information);
                     return false;
@@ -84,8 +88,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 Logger.Error("Error loading profile.", ex);
                 MessageBox.Show(
-                    "Error cargando perfil.",
-                    "Error",
+                    Lang.ProfileAccountInfoLoadError,
+                    Lang.UiTitleError,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 return false;
@@ -103,6 +107,60 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
+        public bool LoadAvatarOptions()
+        {
+            if (LoadedAccount == null)
+            {
+                return false;
+            }
+
+            var client = new UserServiceClient(USER_SERVICE_ENDPOINT_CONFIGURATION_NAME);
+
+            try
+            {
+                AvatarProfileOptionsDto optionsDto = client.GetAvatarOptions(LoadedAccount.UserId);
+
+                var options = new List<AvatarProfileOptionViewModel>();
+
+                if (optionsDto != null && optionsDto.Avatars != null)
+                {
+                    foreach (var avatarDto in optionsDto.Avatars)
+                    {
+                        if (string.IsNullOrWhiteSpace(avatarDto.AvatarCode))
+                        {
+                            continue;
+                        }
+
+                        var option = new AvatarProfileOptionViewModel(
+                            avatarDto.AvatarCode,
+                            avatarDto.IsUnlocked,
+                            avatarDto.IsCurrent);
+
+                        options.Add(option);
+                    }
+                }
+
+                AvatarOptions = options;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error loading avatar options.", ex);
+                return false;
+            }
+            finally
+            {
+                try
+                {
+                    client.Close();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("Error while closing UserServiceClient after loading avatar options.", ex);
+                }
+            }
+        }
+
         public bool ValidateProfileInputs(string firstName, string lastName, string description)
         {
             firstName = firstName ?? string.Empty;
@@ -112,8 +170,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             if (firstName.Length > MAX_FIRST_NAME_LENGTH)
             {
                 MessageBox.Show(
-                    $"El nombre no puede exceder {MAX_FIRST_NAME_LENGTH} caracteres.",
-                    "Datos inválidos",
+                    string.Format(Lang.ProfileFirstNameTooLongFmt, MAX_FIRST_NAME_LENGTH),
+                    Lang.UiTitleWarning,
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
 
@@ -124,8 +182,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 !Regex.IsMatch(firstName, NAME_ALLOWED_PATTERN))
             {
                 MessageBox.Show(
-                    "El nombre contiene caracteres no permitidos.",
-                    "Datos inválidos",
+                    Lang.ProfileFirstNameInvalidCharsText,
+                    Lang.UiTitleWarning,
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
                 return false;
@@ -134,8 +192,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             if (lastName.Length > MAX_LAST_NAME_LENGTH)
             {
                 MessageBox.Show(
-                    $"Los apellidos no pueden exceder {MAX_LAST_NAME_LENGTH} caracteres.",
-                    "Datos inválidos",
+                    string.Format(Lang.ProfileLastNameTooLongFmt, MAX_LAST_NAME_LENGTH),
+                    Lang.UiTitleWarning,
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
                 return false;
@@ -145,8 +203,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 !Regex.IsMatch(lastName, NAME_ALLOWED_PATTERN))
             {
                 MessageBox.Show(
-                    "Los apellidos contienen caracteres no permitidos.",
-                    "Datos inválidos",
+                    Lang.ProfileLastNameInvalidCharsText,
+                    Lang.UiTitleWarning,
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
                 return false;
@@ -155,8 +213,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             if (description.Length > MAX_DESCRIPTION_LENGTH)
             {
                 MessageBox.Show(
-                    $"La descripción no puede exceder {MAX_DESCRIPTION_LENGTH} caracteres.",
-                    "Datos inválidos",
+                    string.Format(Lang.ProfileDescriptionTooLongFmt, MAX_DESCRIPTION_LENGTH),
+                    Lang.UiTitleWarning,
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
                 return false;
@@ -167,8 +225,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 HasControlCharacters(description))
             {
                 MessageBox.Show(
-                    "El texto contiene caracteres no válidos.",
-                    "Datos inválidos",
+                    Lang.ProfileInvalidCharactersText,
+                    Lang.UiTitleWarning,
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
                 return false;
@@ -220,8 +278,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 if (updated == null)
                 {
                     MessageBox.Show(
-                        "No se pudo actualizar el perfil.",
-                        "Error",
+                        Lang.ProfileUpdateErrorText,
+                        Lang.UiTitleError,
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
                     return false;
@@ -236,8 +294,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
 
                 MessageBox.Show(
-                    "Perfil actualizado.",
-                    "Información",
+                    Lang.ProfileUpdateSuccessText,
+                    Lang.UiTitleInfo,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
 
@@ -247,8 +305,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 Logger.Error("Error updating profile.", ex);
                 MessageBox.Show(
-                    "Error guardando perfil.",
-                    "Error",
+                    Lang.ProfileUpdateErrorText,
+                    Lang.UiTitleError,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 return false;
@@ -280,8 +338,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 client.DeactivateAccount(LoadedAccount.UserId);
 
                 MessageBox.Show(
-                    "Tu cuenta ha sido desactivada correctamente. La aplicación se cerrará.",
-                    "Cuenta desactivada",
+                    Lang.ProfileDeactivateSuccessText,
+                    Lang.ProfileDeactivateSuccessTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
 
@@ -292,8 +350,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 Logger.Error("Error deactivating account.", ex);
                 MessageBox.Show(
-                    "Ocurrió un error al desactivar la cuenta.",
-                    "Error",
+                    Lang.ProfileDeactivateErrorText,
+                    Lang.UiTitleError,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 return false;
@@ -336,8 +394,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 if (updated == null)
                 {
                     MessageBox.Show(
-                        "No se pudo actualizar el avatar.",
-                        "Error",
+                        Lang.ProfileAvatarUpdateErrorText,
+                        Lang.UiTitleError,
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
                     return false;
@@ -352,8 +410,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
 
                 MessageBox.Show(
-                    "Avatar actualizado.",
-                    "Información",
+                    Lang.ProfileAvatarUpdateSuccessText,
+                    Lang.UiTitleInfo,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
 
@@ -363,8 +421,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 Logger.Error("Error updating avatar.", ex);
                 MessageBox.Show(
-                    "Error al actualizar el avatar.",
-                    "Error",
+                    Lang.ProfileAvatarUpdateErrorText,
+                    Lang.UiTitleError,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 return false;
