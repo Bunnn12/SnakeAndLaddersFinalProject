@@ -825,4 +825,232 @@
   <data name="UiVerificationSentFmt" xml:space="preserve">
     <value>A verification email was sent to {0}.</value>
   </data>
+  <data name="btnSendInvitationText" xml:space="preserve">
+    <value>Send invitation</value>
+  </data>
+  <data name="InviteInactiveFriendWarn" xml:space="preserve">
+    <value>This friend cannot be invited because their account is inactive.</value>
+  </data>
+  <data name="InviteInvalidSessionError" xml:space="preserve">
+    <value>The session is not valid. Please sign in again.</value>
+  </data>
+  <data name="InviteNoFriendsInfo" xml:space="preserve">
+    <value>You do not have any friends to invite yet.</value>
+  </data>
+  <data name="InviteNoLobbyContextError" xml:space="preserve">
+    <value>Lobby context was not found.</value>
+  </data>
+  <data name="InviteNoMatchCodeWarn" xml:space="preserve">
+    <value>There is no active match with a code to invite friends.</value>
+  </data>
+  <data name="InviteNoServerResponseError" xml:space="preserve">
+    <value>No response was received from the server.</value>
+  </data>
+  <data name="InviteSelectFriendWarn" xml:space="preserve">
+    <value>You must select a friend to send an invitation.</value>
+  </data>
+  <data name="InviteSendFailedText" xml:space="preserve">
+    <value>The invitation could not be sent.</value>
+  </data>
+  <data name="InviteSentOkText" xml:space="preserve">
+    <value>Invitation sent successfully.</value>
+  </data>
+  <data name="InviteSessionExpiredWarn" xml:space="preserve">
+    <value>Your session has expired. Please sign in again.</value>
+  </data>
+  <data name="lblInviteFriendsToMatchText" xml:space="preserve">
+    <value>Invite friends to the match</value>
+  </data>
+  <data name="colFriendNoteHeader" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="UiInviteFriendFailureDefault" xml:space="preserve">
+    <value>The invitation could not be sent.</value>
+  </data>
+  <data name="UiInviteFriendGuestsNotAllowed" xml:space="preserve">
+    <value>Guests cannot send match invitations. Please sign in with an account.</value>
+  </data>
+  <data name="UiInviteFriendInvalidSession" xml:space="preserve">
+    <value>The session is not valid. Please sign in again.</value>
+  </data>
+  <data name="UiInviteFriendLobbyContextMissing" xml:space="preserve">
+    <value>Lobby context was not found.</value>
+  </data>
+  <data name="UiInviteFriendMissingGameCode" xml:space="preserve">
+    <value>Match code is missing. Please create or join a match again.</value>
+  </data>
+  <data name="UiInviteFriendNoMatchCode" xml:space="preserve">
+    <value>There is no match with a code to invite friends yet.</value>
+  </data>
+  <data name="UiInviteFriendNoResponse" xml:space="preserve">
+    <value>No response was received from the server.</value>
+  </data>
+  <data name="UiInviteFriendSelectFriendRequired" xml:space="preserve">
+    <value>You must select a friend before sending an invitation.</value>
+  </data>
+  <data name="UiInviteFriendSuccessDefault" xml:space="preserve">
+    <value>Invitation sent successfully.</value>
+  </data>
+  <data name="warningTitle" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="lblProfileSocialNetworksText" xml:space="preserve">
+    <value>Social networks</value>
+  </data>
+  <data name="ProfileAccountInfoLoadError" xml:space="preserve">
+    <value>Could not retrieve the account information.</value>
+  </data>
+  <data name="ProfileAvatarUpdateErrorText" xml:space="preserve">
+    <value>The avatar could not be updated.</value>
+  </data>
+  <data name="ProfileAvatarUpdateSuccessText" xml:space="preserve">
+    <value>Avatar updated successfully.</value>
+  </data>
+  <data name="ProfileChangeAvatarConfirmText" xml:space="preserve">
+    <value>Do you want to use this avatar as your profile picture?</value>
+  </data>
+  <data name="ProfileChangeAvatarConfirmTitle" xml:space="preserve">
+    <value>Change avatar</value>
+  </data>
+  <data name="ProfileDeactivateConfirmText" xml:space="preserve">
+    <value>Are you sure you want to deactivate your account?\nYou will not be able to use it again until an administrator reactivates it.</value>
+  </data>
+  <data name="ProfileDeactivateConfirmTitle" xml:space="preserve">
+    <value>Deactivate account</value>
+  </data>
+  <data name="ProfileDeactivateErrorText" xml:space="preserve">
+    <value>An error occurred while deactivating the account.</value>
+  </data>
+  <data name="ProfileDeactivateSuccessText" xml:space="preserve">
+    <value>Your account has been deactivated successfully. The application will now close.</value>
+  </data>
+  <data name="ProfileDeactivateSuccessTitle" xml:space="preserve">
+    <value>Account deactivated</value>
+  </data>
+  <data name="ProfileDescriptionTooLongFmt" xml:space="preserve">
+    <value>Description cannot be longer than {0} characters.</value>
+  </data>
+  <data name="ProfileFirstNameInvalidCharsText" xml:space="preserve">
+    <value>The first name contains characters that are not allowed.</value>
+  </data>
+  <data name="ProfileFirstNameTooLongFmt" xml:space="preserve">
+    <value>First name cannot be longer than {0} characters.</value>
+  </data>
+  <data name="ProfileGuestNotAllowedText" xml:space="preserve">
+    <value>You signed in as a guest, so you cannot access the profile.\n\nIf you want to use a profile, please create an account.</value>
+  </data>
+  <data name="ProfileGuestNotAllowedTitle" xml:space="preserve">
+    <value>Profile not available</value>
+  </data>
+  <data name="ProfileInvalidCharactersText" xml:space="preserve">
+    <value>The text contains invalid characters.</value>
+  </data>
+  <data name="ProfileLastNameInvalidCharsText" xml:space="preserve">
+    <value>The last name contains characters that are not allowed.</value>
+  </data>
+  <data name="ProfileLastNameTooLongFmt" xml:space="preserve">
+    <value>Last name cannot be longer than {0} characters.</value>
+  </data>
+  <data name="ProfileMenuLinkFmt" xml:space="preserve">
+    <value>Link {0}</value>
+  </data>
+  <data name="ProfileMenuUnlinkFmt" xml:space="preserve">
+    <value>Unlink {0}</value>
+  </data>
+  <data name="ProfileNetworkFacebookText" xml:space="preserve">
+    <value>Facebook</value>
+  </data>
+  <data name="ProfileNetworkInstagramText" xml:space="preserve">
+    <value>Instagram</value>
+  </data>
+  <data name="ProfileNetworkTwitterText" xml:space="preserve">
+    <value>X/ Twitter</value>
+  </data>
+  <data name="ProfileNotFoundText" xml:space="preserve">
+    <value>Profile not found.</value>
+  </data>
+  <data name="ProfileNotLoadedError" xml:space="preserve">
+    <value>The profile has not been loaded.</value>
+  </data>
+  <data name="ProfileSocialNotLinkedText" xml:space="preserve">
+    <value>(not linked)</value>
+  </data>
+  <data name="ProfileUpdateErrorText" xml:space="preserve">
+    <value>The profile could not be updated.</value>
+  </data>
+  <data name="ProfileUpdateSuccessText" xml:space="preserve">
+    <value>Profile updated successfully.</value>
+  </data>
+  <data name="ProfileUserNameUnavailableText" xml:space="preserve">
+    <value>Username is not available.</value>
+  </data>
+  <data name="ProfileUserNotLoadedError" xml:space="preserve">
+    <value>The user profile has not been loaded.</value>
+  </data>
+  <data name="SocialBrowserOpenError" xml:space="preserve">
+    <value>The browser could not be opened.</value>
+  </data>
+  <data name="SocialNetworkNotLinkedInfo" xml:space="preserve">
+    <value>This social network is not linked.</value>
+  </data>
+  <data name="SocialProfileInvalidUrlWarn" xml:space="preserve">
+    <value>The link does not seem to be a valid profile URL for this social network.\nMake sure to paste the full URL to your profile (not the home page).</value>
+  </data>
+  <data name="SocialProfileLinkedInfo" xml:space="preserve">
+    <value>Social network profile linked successfully.</value>
+  </data>
+  <data name="SocialProfileLinkEmptyWarn" xml:space="preserve">
+    <value>The profile link cannot be empty.</value>
+  </data>
+  <data name="SocialProfileLinkError" xml:space="preserve">
+    <value>An error occurred while linking the social network profile.</value>
+  </data>
+  <data name="SocialProfileLinkFacebookCaption" xml:space="preserve">
+    <value>URL of your Facebook profile:</value>
+  </data>
+  <data name="SocialProfileLinkFacebookTitle" xml:space="preserve">
+    <value>Link Facebook</value>
+  </data>
+  <data name="SocialProfileLinkGenericCaption" xml:space="preserve">
+    <value>URL of your profile:</value>
+  </data>
+  <data name="SocialProfileLinkGenericTitle" xml:space="preserve">
+    <value>Link social network</value>
+  </data>
+  <data name="SocialProfileLinkInstagramCaption" xml:space="preserve">
+    <value>URL of your Instagram profile:</value>
+  </data>
+  <data name="SocialProfileLinkInstagramTitle" xml:space="preserve">
+    <value>Link Instagram</value>
+  </data>
+  <data name="SocialProfileLinkInstructionsText" xml:space="preserve">
+    <value>Your browser will open so you can sign in. Then paste here the URL of your profile as shown there.</value>
+  </data>
+  <data name="SocialProfileLinkTwitterCaption" xml:space="preserve">
+    <value>URL of your X / Twitter profile:</value>
+  </data>
+  <data name="SocialProfileLinkTwitterTitle" xml:space="preserve">
+    <value>Link X / Twitter</value>
+  </data>
+  <data name="SocialProfileLinkUrlRequiredText" xml:space="preserve">
+    <value>Paste the URL of your profile.</value>
+  </data>
+  <data name="SocialProfileOpenError" xml:space="preserve">
+    <value>The social network link could not be opened.</value>
+  </data>
+  <data name="SocialProfileSaveError" xml:space="preserve">
+    <value>The social network profile could not be saved.</value>
+  </data>
+  <data name="SocialProfileUnlinkConfirmText" xml:space="preserve">
+    <value>Are you sure you want to unlink this social network?</value>
+  </data>
+  <data name="SocialProfileUnlinkConfirmTitle" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="SocialProfileUnlinkedInfo" xml:space="preserve">
+    <value>Social network profile unlinked successfully.</value>
+  </data>
+  <data name="SocialProfileUnlinkError" xml:space="preserve">
+    <value>An error occurred while unlinking the social network profile.</value>
+  </data>
 </root>

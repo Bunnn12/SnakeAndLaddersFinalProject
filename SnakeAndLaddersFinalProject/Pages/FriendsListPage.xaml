@@ -417,47 +417,24 @@
                         <ColumnDefinition Width="246*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="btnFriends"
-                            Grid.Column="0"
-                            Margin="0,0,8,0"
-                            Content="{x:Static language:Lang.lblFriendsListTitle}"/>
-
                     <Button x:Name="btnShop"
                             Grid.Column="1"
                             Margin="8,-24,8,0"
                             Style="{StaticResource BtnIcon}"
-                            ToolTip="{x:Static language:Lang.btnShopText}">
-                        <Image Width="96"
-                               Height="76"
-                               Source="/Assets/Images/Icons/StoreIcon.png"
-                               Stretch="Uniform"
-                               RenderOptions.BitmapScalingMode="NearestNeighbor" />
-                    </Button>
+                            ToolTip="{x:Static language:Lang.btnShopText}"/>
 
                     <Button x:Name="btnInventory"
                             Grid.Column="4"
                             Margin="57,-23,39,0"
                             Style="{StaticResource BtnIcon}"
-                            ToolTip="{x:Static language:Lang.btnInventoryText}">
-                        <Image Width="177"
-                               Height="80"
-                               Source="/Assets/Images/Icons/InventoryIcon.png"
-                               Stretch="Uniform"
-                               RenderOptions.BitmapScalingMode="NearestNeighbor" />
-                    </Button>
+                            ToolTip="{x:Static language:Lang.btnInventoryText}"/>
 
                     <Button x:Name="btnSkins"
                             Grid.Column="7"
                             Grid.ColumnSpan="2"
                             Margin="10,-24,0,0"
                             Style="{StaticResource BtnIcon}"
-                            ToolTip="{x:Static language:Lang.btnSkinsText}">
-                        <Image Width="122"
-                               Height="78"
-                               Source="/Assets/Images/Icons/SkinIcon.png"
-                               Stretch="Uniform"
-                               RenderOptions.BitmapScalingMode="NearestNeighbor" />
-                    </Button>
+                            ToolTip="{x:Static language:Lang.btnSkinsText}"/>
                 </Grid>
 
             </Grid>

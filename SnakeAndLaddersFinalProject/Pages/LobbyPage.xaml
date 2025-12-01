@@ -75,7 +75,9 @@
                 <Button Style="{StaticResource ActionButton}"
                         Content="{x:Static language:Lang.btnExitMatchText}"
                         Command="{Binding LeaveLobbyCommand}" Click="LeaveLobby"/>
-
+                <Button Style="{StaticResource ActionButton}"
+                        Content="Invitar amigos"
+                        Click="OpenMatchInvitation"/>
                 <!-- Si aún no existe la clave en Lang, usa texto literal -->
                 <Button Style="{StaticResource ActionButton}"
                         Content="Copiar enlace"

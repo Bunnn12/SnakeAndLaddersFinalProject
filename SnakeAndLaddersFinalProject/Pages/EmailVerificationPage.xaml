@@ -68,12 +68,31 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
 
-        <!-- Estilo TextBox -->
+        <!-- Estilo TextBox tipo chat -->
         <Style x:Key="InnerTextBoxStyle" TargetType="TextBox">
             <Setter Property="FontFamily" Value="{StaticResource Font.RankingMain}" />
             <Setter Property="FontSize" Value="22" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Background" Value="#FFFFFF" />
+            <Setter Property="Foreground" Value="#321309" />
+            <Setter Property="BorderBrush" Value="{StaticResource BrushBoardInnerBorder}" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="14"
+                                SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="8,2" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- Botón principal -->
@@ -111,7 +130,9 @@
 
     </Page.Resources>
 
-    <Grid Background="{StaticResource RankingBackgroundBrush}">
+    <Grid Background="{StaticResource RankingBackgroundBrush}"
+          FocusManager.FocusedElement="{Binding ElementName=txtCodeSended}"
+          KeyboardNavigation.TabNavigation="Cycle">
 
         <Viewbox Stretch="Uniform"
                  StretchDirection="Both">
@@ -161,7 +182,8 @@
                                    Style="{StaticResource LblRankingTitle}"
                                    HorizontalAlignment="Center"
                                    FontFamily="{StaticResource Font.M04B}"
-                                   FontWeight="Bold" FontSize="36" />
+                                   FontWeight="Bold"
+                                   FontSize="36" />
                     </Border>
                 </Grid>
 
@@ -204,14 +226,13 @@
 
                                 <!-- TextBox código -->
                                 <TextBox x:Name="txtCodeSended"
-                                 Grid.Row="2"
-                                 Width="260"
-                                 Height="40"
-                                 MaxLength="6"
-                                 Style="{StaticResource InnerTextBoxStyle}"
-                                 PreviewTextInput="TxtCodeSendedPreviewTextInput"
-                                 DataObject.Pasting="TxtCodeSendedOnPaste" />
-
+                                         Grid.Row="2"
+                                         Width="260"
+                                         Height="40"
+                                         MaxLength="6"
+                                         Style="{StaticResource InnerTextBoxStyle}"
+                                         PreviewTextInput="TxtCodeSendedPreviewTextInput"
+                                         DataObject.Pasting="TxtCodeSendedOnPaste" />
 
                                 <!-- Botón verificar -->
                                 <Button x:Name="btnVerificateCode"

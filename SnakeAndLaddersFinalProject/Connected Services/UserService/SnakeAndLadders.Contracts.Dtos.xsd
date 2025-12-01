@@ -32,4 +32,26 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="UpdateProfileRequestDto" nillable="true" type="tns:UpdateProfileRequestDto" />
+  <xs:complexType name="AvatarProfileOptionsDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Avatars" nillable="true" type="tns:ArrayOfAvatarProfileOptionDto" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AvatarProfileOptionsDto" nillable="true" type="tns:AvatarProfileOptionsDto" />
+  <xs:complexType name="ArrayOfAvatarProfileOptionDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AvatarProfileOptionDto" nillable="true" type="tns:AvatarProfileOptionDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAvatarProfileOptionDto" nillable="true" type="tns:ArrayOfAvatarProfileOptionDto" />
+  <xs:complexType name="AvatarProfileOptionDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AvatarCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DisplayName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsCurrent" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsUnlocked" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AvatarProfileOptionDto" nillable="true" type="tns:AvatarProfileOptionDto" />
 </xs:schema>

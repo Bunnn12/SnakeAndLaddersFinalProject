@@ -54,12 +54,12 @@
                   Background="Transparent">
 
                 <!-- TARJETA NEGRA TIPO MATCH SETTINGS (mismas medidas que ProfilePage) -->
-                <Border Margin="24"
+                <Border
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         MaxWidth="980"
                         CornerRadius="18"
-                        Padding="24">
+                        Padding="24" Height="540" Width="930">
                     <Border.Background>
                         <SolidColorBrush Color="#FF000000" Opacity="0.55" />
                     </Border.Background>

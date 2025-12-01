@@ -372,6 +372,160 @@ namespace SnakeAndLaddersFinalProject.UserService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AvatarProfileOptionsDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class AvatarProfileOptionsDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private SnakeAndLaddersFinalProject.UserService.AvatarProfileOptionDto[] AvatarsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public SnakeAndLaddersFinalProject.UserService.AvatarProfileOptionDto[] Avatars {
+            get {
+                return this.AvatarsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AvatarsField, value) != true)) {
+                    this.AvatarsField = value;
+                    this.RaisePropertyChanged("Avatars");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserId {
+            get {
+                return this.UserIdField;
+            }
+            set {
+                if ((this.UserIdField.Equals(value) != true)) {
+                    this.UserIdField = value;
+                    this.RaisePropertyChanged("UserId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AvatarProfileOptionDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class AvatarProfileOptionDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AvatarCodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string DisplayNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsCurrentField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsUnlockedField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AvatarCode {
+            get {
+                return this.AvatarCodeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AvatarCodeField, value) != true)) {
+                    this.AvatarCodeField = value;
+                    this.RaisePropertyChanged("AvatarCode");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string DisplayName {
+            get {
+                return this.DisplayNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DisplayNameField, value) != true)) {
+                    this.DisplayNameField = value;
+                    this.RaisePropertyChanged("DisplayName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsCurrent {
+            get {
+                return this.IsCurrentField;
+            }
+            set {
+                if ((this.IsCurrentField.Equals(value) != true)) {
+                    this.IsCurrentField = value;
+                    this.RaisePropertyChanged("IsCurrent");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsUnlocked {
+            get {
+                return this.IsUnlockedField;
+            }
+            set {
+                if ((this.IsUnlockedField.Equals(value) != true)) {
+                    this.IsUnlockedField = value;
+                    this.RaisePropertyChanged("IsUnlocked");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UserService.IUserService")]
     public interface IUserService {
@@ -399,6 +553,12 @@ namespace SnakeAndLaddersFinalProject.UserService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/DeactivateAccount", ReplyAction="http://tempuri.org/IUserService/DeactivateAccountResponse")]
         System.Threading.Tasks.Task DeactivateAccountAsync(int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAvatarOptions", ReplyAction="http://tempuri.org/IUserService/GetAvatarOptionsResponse")]
+        SnakeAndLaddersFinalProject.UserService.AvatarProfileOptionsDto GetAvatarOptions(int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAvatarOptions", ReplyAction="http://tempuri.org/IUserService/GetAvatarOptionsResponse")]
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.UserService.AvatarProfileOptionsDto> GetAvatarOptionsAsync(int userId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -458,6 +618,14 @@ namespace SnakeAndLaddersFinalProject.UserService {
         
         public System.Threading.Tasks.Task DeactivateAccountAsync(int userId) {
             return base.Channel.DeactivateAccountAsync(userId);
+        }
+        
+        public SnakeAndLaddersFinalProject.UserService.AvatarProfileOptionsDto GetAvatarOptions(int userId) {
+            return base.Channel.GetAvatarOptions(userId);
+        }
+        
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.UserService.AvatarProfileOptionsDto> GetAvatarOptionsAsync(int userId) {
+            return base.Channel.GetAvatarOptionsAsync(userId);
         }
     }
 }

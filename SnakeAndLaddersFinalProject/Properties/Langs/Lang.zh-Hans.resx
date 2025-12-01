@@ -654,24 +654,6 @@
   <data name="ShopUnknownError" xml:space="preserve">
     <value>商店发生未知错误</value>
   </data>
-  <data name="btnSendCodeText" xml:space="preserve">
-    <value>发送代码</value>
-  </data>
-  <data name="UiChangePasswordCodeSent" xml:space="preserve">
-    <value>验证码已发送至您的邮箱</value>
-  </data>
-  <data name="UiChangePasswordCodeNotRequested" xml:space="preserve">
-    <value>更改密码之前您必须请求验证码</value>
-  </data>
-  <data name="UiChangePasswordCodeExpired" xml:space="preserve">
-    <value>验证码已过期。请索取新的</value>
-  </data>
-  <data name="UiChangePasswordCodeInvalid" xml:space="preserve">
-    <value>验证码无效</value>
-  </data>
-  <data name="AuthEmailRequired" xml:space="preserve">
-    <value>需要电子邮件。</value>
-  </data>
   <data name="ShopDice123Info" xml:space="preserve">
     <value>骰子 1–3：仅掷 1 到 3 的值</value>
   </data>
@@ -687,20 +669,8 @@
   <data name="UiShopChestInfoTitle" xml:space="preserve">
     <value>胸部细节</value>
   </data>
-  <data name="btnChangePasswordText" xml:space="preserve">
-    <value>更改密码</value>
-  </data>
-  <data name="lblChangePasswordCodeText" xml:space="preserve">
-    <value>验证码</value>
-  </data>
-  <data name="lblChangePasswordConfirmPasswordText" xml:space="preserve">
-    <value>确认新密码</value>
-  </data>
   <data name="lblChangePasswordCurrentPasswordText" xml:space="preserve">
     <value>当前密码</value>
-  </data>
-  <data name="lblChangePasswordFooterText" xml:space="preserve">
-    <value>您的新密码必须符合安全要求</value>
   </data>
   <data name="lblChangePasswordInstructionText" xml:space="preserve">
     <value>输入您当前的密码并选择一个新密码</value>
@@ -710,6 +680,15 @@
   </data>
   <data name="lblChangePasswordTitleText" xml:space="preserve">
     <value>更改密码</value>
+  </data>
+  <data name="btnChangePasswordText" xml:space="preserve">
+    <value>更改密码</value>
+  </data>
+  <data name="lblChangePasswordConfirmPasswordText" xml:space="preserve">
+    <value>确认新密码</value>
+  </data>
+  <data name="lblChangePasswordFooterText" xml:space="preserve">
+    <value>您的新密码必须符合安全要求</value>
   </data>
   <data name="UiChangePasswordGenericError" xml:space="preserve">
     <value>更改密码时发生错误</value>
@@ -728,6 +707,24 @@
   </data>
   <data name="UiChangePasswordWeakPassword" xml:space="preserve">
     <value>新密码不符合安全要求</value>
+  </data>
+  <data name="lblChangePasswordCodeText" xml:space="preserve">
+    <value>验证码</value>
+  </data>
+  <data name="btnSendCodeText" xml:space="preserve">
+    <value>发送代码</value>
+  </data>
+  <data name="UiChangePasswordCodeSent" xml:space="preserve">
+    <value>验证码已发送至您的邮箱</value>
+  </data>
+  <data name="UiChangePasswordCodeNotRequested" xml:space="preserve">
+    <value>更改密码之前您必须请求验证码</value>
+  </data>
+  <data name="UiChangePasswordCodeExpired" xml:space="preserve">
+    <value>验证码已过期。请索取新的</value>
+  </data>
+  <data name="UiChangePasswordCodeInvalid" xml:space="preserve">
+    <value>验证码无效</value>
   </data>
   <data name="AuthAccountDeleted" xml:space="preserve">
     <value>该帐户已被删除。</value>
@@ -752,6 +749,9 @@
   </data>
   <data name="AuthEmailAlreadyExists" xml:space="preserve">
     <value>该电子邮件地址已被注册。</value>
+  </data>
+  <data name="AuthEmailRequired" xml:space="preserve">
+    <value>需要电子邮件。</value>
   </data>
   <data name="AuthEmailSendFailed" xml:space="preserve">
     <value>我们无法发送电子邮件。请稍后重试。</value>
@@ -824,5 +824,8 @@
   </data>
   <data name="UiVerificationSentFmt" xml:space="preserve">
     <value>验证电子邮件已发送至 {0}。</value>
+  </data>
+  <data name="warningTitle" xml:space="preserve">
+    <value />
   </data>
 </root>

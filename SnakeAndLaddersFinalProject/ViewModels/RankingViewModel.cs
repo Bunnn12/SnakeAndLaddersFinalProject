@@ -22,10 +22,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public RankingViewModel()
         {
             Players = new ObservableCollection<PlayerRankingItemViewModel>();
-            LoadRanking();
         }
 
-        private void LoadRanking()
+        public void LoadRanking()
         {
             try
             {

@@ -1,120 +1,81 @@
-﻿using log4net;
-using SnakeAndLaddersFinalProject.Authentication;
-using SnakeAndLaddersFinalProject.UserService;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
+using System.Windows.Documents;
 using System.Windows.Navigation;
+using log4net;
+using SnakeAndLaddersFinalProject.SocialProfileService;
+using SnakeAndLaddersFinalProject.UserService;
+using SnakeAndLaddersFinalProject.ViewModels;
+using SnakeAndLaddersFinalProject.Windows;
+using Lang = SnakeAndLaddersFinalProject.Properties.Langs.Lang;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class ProfilePage : Page
     {
-        private const string USER_SERVICE_ENDPOINT_CONFIGURATION_NAME = "NetTcpBinding_IUserService";
-
-        private const int MAX_FIRST_NAME_LENGTH = 100;
-        private const int MAX_LAST_NAME_LENGTH = 255;
-        private const int MAX_DESCRIPTION_LENGTH = 500;
-
-        private const string NAME_ALLOWED_PATTERN = @"^[\p{L}\p{M}0-9 .,'\-]*$";
-
-        private const string AVATAR_ID_PREFIX = "A";
-        private const int AVATAR_FIRST_INDEX = 1;
-        private const int AVATAR_LAST_INDEX = 23;
+        private const string INSTAGRAM_URL = "https://www.instagram.com/";
+        private const string FACEBOOK_URL = "https://www.facebook.com/";
+        private const string TWITTER_URL = "https://x.com/";
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(ProfilePage));
 
-        private static readonly Brush NORMAL_CARD_BORDER_BRUSH = new SolidColorBrush(Color.FromRgb(0xDD, 0xDD, 0xDD));
-        private static readonly Brush EDIT_CARD_BORDER_BRUSH = new SolidColorBrush(Color.FromRgb(0x42, 0x85, 0xF4));
-        private static readonly Brush NORMAL_CARD_BACKGROUND_BRUSH = Brushes.White;
-        private static readonly Brush EDIT_CARD_BACKGROUND_BRUSH = new SolidColorBrush(Color.FromRgb(0xF3, 0xF7, 0xFF));
+        private readonly SocialProfilesViewModel socialProfilesViewModel;
 
-        private AccountDto loadedAccount;
-
-        public string AvatarId { get; private set; }
-
-        public bool HasAvatar => !string.IsNullOrWhiteSpace(AvatarId);
+        private ProfileViewModel ViewModel
+        {
+            get { return DataContext as ProfileViewModel; }
+        }
 
         public ProfilePage()
         {
             InitializeComponent();
 
-            AvatarId = SessionContext.Current?.ProfilePhotoId;
-            DataContext = this;
-
-            InitializeAvatarOptions();
+            DataContext = new ProfileViewModel();
+            socialProfilesViewModel = new SocialProfilesViewModel();
         }
 
         private void PageLoaded(object sender, RoutedEventArgs e)
         {
-            LoadProfile();
+            var viewModel = ViewModel;
+            if (viewModel == null)
+            {
+                return;
+            }
+
+            bool loaded = viewModel.LoadProfile();
+            if (loaded && viewModel.LoadedAccount != null)
+            {
+                ApplyLoadedAccountToUi(viewModel.LoadedAccount);
+
+                InitializeSocialProfiles(viewModel.LoadedAccount.UserId);
+
+                bool avatarsLoaded = viewModel.LoadAvatarOptions();
+                if (!avatarsLoaded)
+                {
+                    Logger.Warn("Avatar options could not be loaded.");
+                }
+
+                RefreshAvatarBinding();
+            }
+
             SetEditMode(false);
         }
 
-        private void LoadProfile()
+        private void ApplyLoadedAccountToUi(AccountDto account)
         {
-            var session = SessionContext.Current;
-
-            if (session == null || !session.IsAuthenticated)
+            if (account == null)
             {
-                MessageBox.Show(
-                    "Iniciaste sesión como invitado, no puedes acceder al perfil.\n\n" +
-                    "Si deseas usar un perfil, crea una cuenta :).",
-                    "Perfil no disponible",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-
                 return;
             }
 
-            string userName = session.UserName;
-
-            if (string.IsNullOrWhiteSpace(userName))
-            {
-                MessageBox.Show("Nombre de usuario no disponible.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            var client = new UserServiceClient(USER_SERVICE_ENDPOINT_CONFIGURATION_NAME);
-
-            try
-            {
-                loadedAccount = client.GetProfileByUsername(userName);
-
-                if (loadedAccount == null)
-                {
-                    MessageBox.Show("Perfil no encontrado.", "Información", MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
-                }
-
-                txtUsername.Text = loadedAccount.Username;
-                txtFirstName.Text = loadedAccount.FirstName;
-                txtLastName.Text = loadedAccount.LastName;
-                txtDescription.Text = loadedAccount.ProfileDescription;
-                txtCoins.Text = loadedAccount.Coins.ToString();
-
-                AvatarId = loadedAccount.ProfilePhotoId;
-                RefreshAvatarBinding();
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Error loading profile.", ex);
-                MessageBox.Show("Error cargando perfil.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                try
-                {
-                    client.Close();
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error("Error while closing UserServiceClient.", ex);
-                }
-            }
+            txtUsername.Text = account.Username;
+            txtFirstName.Text = account.FirstName;
+            txtLastName.Text = account.LastName;
+            txtDescription.Text = account.ProfileDescription;
+            txtCoins.Text = account.Coins.ToString();
         }
 
         private void SetEditMode(bool enabled)
@@ -138,14 +99,10 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void BtnCancelar_Click(object sender, RoutedEventArgs e)
         {
-            if (loadedAccount != null)
+            var viewModel = ViewModel;
+            if (viewModel?.LoadedAccount != null)
             {
-                txtFirstName.Text = loadedAccount.FirstName;
-                txtLastName.Text = loadedAccount.LastName;
-                txtDescription.Text = loadedAccount.ProfileDescription;
-                txtCoins.Text = loadedAccount.Coins.ToString();
-
-                AvatarId = loadedAccount.ProfilePhotoId;
+                ApplyLoadedAccountToUi(viewModel.LoadedAccount);
                 RefreshAvatarBinding();
             }
 
@@ -154,12 +111,8 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void BtnGuardar_Click(object sender, RoutedEventArgs e)
         {
-            if (loadedAccount == null)
-            {
-                return;
-            }
-
-            if (!ValidateProfileInputs())
+            var viewModel = ViewModel;
+            if (viewModel?.LoadedAccount == null)
             {
                 return;
             }
@@ -168,154 +121,20 @@ namespace SnakeAndLaddersFinalProject.Pages
             string lastName = txtLastName.Text?.Trim();
             string description = txtDescription.Text?.Trim();
 
-            var request = new UpdateProfileRequestDto
+            if (!viewModel.ValidateProfileInputs(firstName, lastName, description))
             {
-                UserId = loadedAccount.UserId,
-                FirstName = firstName,
-                LastName = lastName,
-                ProfileDescription = description,
-                ProfilePhotoId = loadedAccount.ProfilePhotoId
-            };
-
-            var client = new UserServiceClient(USER_SERVICE_ENDPOINT_CONFIGURATION_NAME);
-
-            try
-            {
-                var updated = client.UpdateProfile(request);
-
-                if (updated == null)
-                {
-                    MessageBox.Show("No se pudo actualizar el perfil.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                loadedAccount = updated;
-
-                txtFirstName.Text = loadedAccount.FirstName;
-                txtLastName.Text = loadedAccount.LastName;
-                txtDescription.Text = loadedAccount.ProfileDescription;
-                txtCoins.Text = loadedAccount.Coins.ToString();
-
-                AvatarId = loadedAccount.ProfilePhotoId;
-                RefreshAvatarBinding();
-
-                if (SessionContext.Current != null)
-                {
-                    SessionContext.Current.ProfilePhotoId = loadedAccount.ProfilePhotoId;
-                }
-
-                MessageBox.Show("Perfil actualizado.", "Información", MessageBoxButton.OK, MessageBoxImage.Information);
-                SetEditMode(false);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Error updating profile.", ex);
-                MessageBox.Show("Error guardando perfil.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                try
-                {
-                    client.Close();
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error("Error while closing UserServiceClient after update.", ex);
-                }
-            }
-        }
-
-        private bool ValidateProfileInputs()
-        {
-            string firstName = txtFirstName.Text?.Trim() ?? string.Empty;
-            string lastName = txtLastName.Text?.Trim() ?? string.Empty;
-            string description = txtDescription.Text?.Trim() ?? string.Empty;
-
-            if (firstName.Length > MAX_FIRST_NAME_LENGTH)
-            {
-                MessageBox.Show(
-                    $"El nombre no puede exceder {MAX_FIRST_NAME_LENGTH} caracteres.",
-                    "Datos inválidos",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-
-
-                return false;
+                return;
             }
 
-            if (!string.IsNullOrEmpty(firstName) &&
-                !Regex.IsMatch(firstName, NAME_ALLOWED_PATTERN))
+            bool updated = viewModel.TryUpdateProfile(firstName, lastName, description);
+            if (!updated || viewModel.LoadedAccount == null)
             {
-                MessageBox.Show(
-                    "El nombre contiene caracteres no permitidos.",
-                    "Datos inválidos",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-                return false;
+                return;
             }
 
-            if (lastName.Length > MAX_LAST_NAME_LENGTH)
-            {
-                MessageBox.Show(
-                    $"Los apellidos no pueden exceder {MAX_LAST_NAME_LENGTH} caracteres.",
-                    "Datos inválidos",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-                return false;
-            }
-
-            if (!string.IsNullOrEmpty(lastName) &&
-                !Regex.IsMatch(lastName, NAME_ALLOWED_PATTERN))
-            {
-                MessageBox.Show(
-                    "Los apellidos contienen caracteres no permitidos.",
-                    "Datos inválidos",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-                return false;
-            }
-
-            if (description.Length > MAX_DESCRIPTION_LENGTH)
-            {
-                MessageBox.Show(
-                    $"La descripción no puede exceder {MAX_DESCRIPTION_LENGTH} caracteres.",
-                    "Datos inválidos",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-                return false;
-            }
-
-            if (HasControlCharacters(firstName) ||
-                HasControlCharacters(lastName) ||
-                HasControlCharacters(description))
-            {
-                MessageBox.Show(
-                    "El texto contiene caracteres no válidos.",
-                    "Datos inválidos",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-                return false;
-            }
-
-            return true;
-        }
-
-        private static bool HasControlCharacters(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                return false;
-            }
-
-            foreach (char ch in value)
-            {
-                if (char.IsControl(ch) && ch != '\r' && ch != '\n' && ch != '\t')
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            ApplyLoadedAccountToUi(viewModel.LoadedAccount);
+            RefreshAvatarBinding();
+            SetEditMode(false);
         }
 
         private void BtnMenu_Click(object sender, RoutedEventArgs e)
@@ -327,23 +146,22 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void MenuEditAccount_Click(object sender, RoutedEventArgs e)
-        {
-            SetEditMode(true);
-        }
-
         private void MenuDeleteAccount_Click(object sender, RoutedEventArgs e)
         {
-            if (loadedAccount == null)
+            var viewModel = ViewModel;
+            if (viewModel?.LoadedAccount == null)
             {
-                MessageBox.Show("No se pudo obtener la información de la cuenta.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(
+                    Lang.ProfileAccountInfoLoadError,
+                    Lang.UiTitleError,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
                 return;
             }
 
             var result = MessageBox.Show(
-                "¿Seguro que deseas desactivar tu cuenta?\n" +
-                "No podrás usarla nuevamente hasta que un administrador la reactive.",
-                "Desactivar cuenta",
+                Lang.ProfileDeactivateConfirmText,
+                Lang.ProfileDeactivateConfirmTitle,
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning);
 
@@ -352,36 +170,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            var client = new UserServiceClient(USER_SERVICE_ENDPOINT_CONFIGURATION_NAME);
-
-            try
-            {
-                client.DeactivateAccount(loadedAccount.UserId);
-
-                MessageBox.Show(
-                    "Tu cuenta ha sido desactivada correctamente. La aplicación se cerrará.",
-                    "Cuenta desactivada",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-
-                Application.Current.Shutdown();
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Error deactivating account.", ex);
-                MessageBox.Show("Ocurrió un error al desactivar la cuenta.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                try
-                {
-                    client.Close();
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error("Error while closing UserServiceClient after deactivate.", ex);
-                }
-            }
+            viewModel.TryDeactivateAccount();
         }
 
         private void MenuViewStats_Click(object sender, RoutedEventArgs e)
@@ -407,14 +196,10 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void BtnChangeAvatar_Click(object sender, RoutedEventArgs e)
         {
-            if (borderAvatarPicker.Visibility == Visibility.Visible)
-            {
-                borderAvatarPicker.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                borderAvatarPicker.Visibility = Visibility.Visible;
-            }
+            borderAvatarPicker.Visibility =
+                borderAvatarPicker.Visibility == Visibility.Visible
+                    ? Visibility.Collapsed
+                    : Visibility.Visible;
         }
 
         private void BtnCloseAvatarPicker_Click(object sender, RoutedEventArgs e)
@@ -424,9 +209,14 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void AvatarItem_Click(object sender, RoutedEventArgs e)
         {
-            if (loadedAccount == null)
+            var viewModel = ViewModel;
+            if (viewModel?.LoadedAccount == null)
             {
-                MessageBox.Show("No se ha cargado el perfil.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(
+                    Lang.ProfileNotLoadedError,
+                    Lang.UiTitleError,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
                 return;
             }
 
@@ -436,15 +226,21 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            string avatarId = button.Tag as string;
+            var option = button.Tag as AvatarProfileOptionViewModel;
+            if (option == null || !option.IsUnlocked)
+            {
+                return;
+            }
+
+            string avatarId = option.AvatarCode;
             if (string.IsNullOrWhiteSpace(avatarId))
             {
                 return;
             }
 
             var result = MessageBox.Show(
-                "¿Quieres usar este avatar como foto de perfil?",
-                "Cambiar avatar",
+                Lang.ProfileChangeAvatarConfirmText,
+                Lang.ProfileChangeAvatarConfirmTitle,
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
 
@@ -453,62 +249,16 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            var client = new UserServiceClient(USER_SERVICE_ENDPOINT_CONFIGURATION_NAME);
-
-            try
+            bool updated = viewModel.TryUpdateAvatar(avatarId);
+            if (!updated || viewModel.LoadedAccount == null)
             {
-                var request = new UpdateProfileRequestDto
-                {
-                    UserId = loadedAccount.UserId,
-                    FirstName = loadedAccount.FirstName,
-                    LastName = loadedAccount.LastName,
-                    ProfileDescription = loadedAccount.ProfileDescription,
-                    ProfilePhotoId = avatarId
-                };
-
-                var updated = client.UpdateProfile(request);
-
-                if (updated == null)
-                {
-                    MessageBox.Show("No se pudo actualizar el avatar.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                loadedAccount = updated;
-
-                txtFirstName.Text = loadedAccount.FirstName;
-                txtLastName.Text = loadedAccount.LastName;
-                txtDescription.Text = loadedAccount.ProfileDescription;
-                txtCoins.Text = loadedAccount.Coins.ToString();
-
-                AvatarId = loadedAccount.ProfilePhotoId;
-                RefreshAvatarBinding();
-
-                if (SessionContext.Current != null)
-                {
-                    SessionContext.Current.ProfilePhotoId = loadedAccount.ProfilePhotoId;
-                }
-
-                borderAvatarPicker.Visibility = Visibility.Collapsed;
-
-                MessageBox.Show("Avatar actualizado.", "Información", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
             }
-            catch (Exception ex)
-            {
-                Logger.Error("Error updating avatar.", ex);
-                MessageBox.Show("Error al actualizar el avatar.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                try
-                {
-                    client.Close();
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error("Error while closing UserServiceClient after avatar update.", ex);
-                }
-            }
+
+            ApplyLoadedAccountToUi(viewModel.LoadedAccount);
+            RefreshAvatarBinding();
+
+            borderAvatarPicker.Visibility = Visibility.Collapsed;
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
@@ -544,24 +294,315 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void InitializeAvatarOptions()
-        {
-            var avatarIds = new List<string>();
-
-            for (int index = AVATAR_FIRST_INDEX; index <= AVATAR_LAST_INDEX; index++)
-            {
-                string id = string.Format("{0}{1:D4}", AVATAR_ID_PREFIX, index);
-                avatarIds.Add(id);
-            }
-
-            avatarItemsControl.ItemsSource = avatarIds;
-        }
-
         private void RefreshAvatarBinding()
         {
             var currentDataContext = DataContext;
             DataContext = null;
             DataContext = currentDataContext;
+        }
+
+        private void InitializeSocialProfiles(int userId)
+        {
+            socialProfilesViewModel.LoadSocialProfiles(userId);
+            ApplySocialProfilesToUi();
+        }
+
+        private void ApplySocialProfilesToUi()
+        {
+            ApplySocialProfileToHyperlink(
+                socialProfilesViewModel.Instagram,
+                lnkInstagramProfile,
+                Lang.ProfileNetworkInstagramText);
+
+            ApplySocialProfileToHyperlink(
+                socialProfilesViewModel.Facebook,
+                lnkFacebookProfile,
+                Lang.ProfileNetworkFacebookText);
+
+            ApplySocialProfileToHyperlink(
+                socialProfilesViewModel.Twitter,
+                lnkTwitterProfile,
+                Lang.ProfileNetworkTwitterText);
+
+            UpdateSocialMenuHeaders();
+        }
+
+        private static void ApplySocialProfileToHyperlink(
+            SocialProfileItemViewModel item,
+            Hyperlink hyperlink,
+            string displayName)
+        {
+            if (item == null || hyperlink == null)
+            {
+                return;
+            }
+
+            hyperlink.Inlines.Clear();
+
+            if (item.IsLinked)
+            {
+                hyperlink.Inlines.Add(displayName);
+                hyperlink.IsEnabled = true;
+            }
+            else
+            {
+                hyperlink.Inlines.Add(Lang.ProfileSocialNotLinkedText);
+                hyperlink.IsEnabled = false;
+            }
+        }
+
+        private void UpdateSocialMenuHeaders()
+        {
+            UpdateMenuHeader(
+                miInstagramLinkToggle,
+                socialProfilesViewModel.Instagram,
+                Lang.ProfileNetworkInstagramText);
+
+            UpdateMenuHeader(
+                miFacebookLinkToggle,
+                socialProfilesViewModel.Facebook,
+                Lang.ProfileNetworkFacebookText);
+
+            UpdateMenuHeader(
+                miTwitterLinkToggle,
+                socialProfilesViewModel.Twitter,
+                Lang.ProfileNetworkTwitterText);
+        }
+
+        private static void UpdateMenuHeader(
+            MenuItem menuItem,
+            SocialProfileItemViewModel item,
+            string networkDisplayName)
+        {
+            if (menuItem == null || item == null)
+            {
+                return;
+            }
+
+            menuItem.Header = item.IsLinked
+                ? string.Format(Lang.ProfileMenuUnlinkFmt, networkDisplayName)
+                : string.Format(Lang.ProfileMenuLinkFmt, networkDisplayName);
+        }
+
+        private void OpenNetworkInBrowser(SocialNetworkType network)
+        {
+            string url;
+
+            switch (network)
+            {
+                case SocialNetworkType.Instagram:
+                    url = INSTAGRAM_URL;
+                    break;
+                case SocialNetworkType.Facebook:
+                    url = FACEBOOK_URL;
+                    break;
+                case SocialNetworkType.Twitter:
+                    url = TWITTER_URL;
+                    break;
+                default:
+                    return;
+            }
+
+            try
+            {
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                };
+
+                Process.Start(startInfo);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error opening browser for social network.", ex);
+                MessageBox.Show(
+                    Lang.SocialBrowserOpenError,
+                    Lang.UiTitleError,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
+
+        private void OpenSavedProfile(SocialNetworkType network)
+        {
+            SocialProfileItemViewModel item = null;
+
+            switch (network)
+            {
+                case SocialNetworkType.Instagram:
+                    item = socialProfilesViewModel.Instagram;
+                    break;
+                case SocialNetworkType.Facebook:
+                    item = socialProfilesViewModel.Facebook;
+                    break;
+                case SocialNetworkType.Twitter:
+                    item = socialProfilesViewModel.Twitter;
+                    break;
+            }
+
+            if (item == null || !item.IsLinked || string.IsNullOrWhiteSpace(item.ProfileLink))
+            {
+                MessageBox.Show(
+                    Lang.SocialNetworkNotLinkedInfo,
+                    Lang.UiTitleInfo,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            try
+            {
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = item.ProfileLink,
+                    UseShellExecute = true
+                };
+
+                Process.Start(startInfo);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error opening social profile link.", ex);
+                MessageBox.Show(
+                    Lang.SocialProfileOpenError,
+                    Lang.UiTitleError,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
+
+        private void LinkSocialProfile(SocialNetworkType network)
+        {
+            var profileVm = ViewModel;
+            if (profileVm?.LoadedAccount == null)
+            {
+                MessageBox.Show(
+                    Lang.ProfileUserNotLoadedError,
+                    Lang.UiTitleError,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            int userId = profileVm.LoadedAccount.UserId;
+
+            OpenNetworkInBrowser(network);
+
+            var dialog = new SocialProfileLinkWindow(network)
+            {
+                Owner = Application.Current.MainWindow
+            };
+
+            bool? result = dialog.ShowDialog();
+            if (result != true)
+            {
+                return;
+            }
+
+            string profileLink = dialog.ProfileLink;
+
+            bool linked = socialProfilesViewModel.TryLinkProfile(userId, network, profileLink);
+            if (!linked)
+            {
+                return;
+            }
+
+            socialProfilesViewModel.LoadSocialProfiles(userId);
+            ApplySocialProfilesToUi();
+        }
+
+        private void UnlinkSocialProfile(SocialNetworkType network)
+        {
+            var profileVm = ViewModel;
+            if (profileVm?.LoadedAccount == null)
+            {
+                MessageBox.Show(
+                    Lang.ProfileUserNotLoadedError,
+                    Lang.UiTitleError,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            int userId = profileVm.LoadedAccount.UserId;
+
+            var confirm = MessageBox.Show(
+                Lang.SocialProfileUnlinkConfirmText,
+                Lang.SocialProfileUnlinkConfirmTitle,
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (confirm != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            bool unlinked = socialProfilesViewModel.TryUnlinkProfile(userId, network);
+            if (!unlinked)
+            {
+                return;
+            }
+
+            socialProfilesViewModel.LoadSocialProfiles(userId);
+            ApplySocialProfilesToUi();
+        }
+
+        private void LnkInstagramProfile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenSavedProfile(SocialNetworkType.Instagram);
+        }
+
+        private void LnkFacebookProfile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenSavedProfile(SocialNetworkType.Facebook);
+        }
+
+        private void LnkTwitterProfile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenSavedProfile(SocialNetworkType.Twitter);
+        }
+
+        private void MenuInstagramLinkToggle_Click(object sender, RoutedEventArgs e)
+        {
+            var item = socialProfilesViewModel.Instagram;
+
+            if (item != null && item.IsLinked)
+            {
+                UnlinkSocialProfile(SocialNetworkType.Instagram);
+            }
+            else
+            {
+                LinkSocialProfile(SocialNetworkType.Instagram);
+            }
+        }
+
+        private void MenuFacebookLinkToggle_Click(object sender, RoutedEventArgs e)
+        {
+            var item = socialProfilesViewModel.Facebook;
+
+            if (item != null && item.IsLinked)
+            {
+                UnlinkSocialProfile(SocialNetworkType.Facebook);
+            }
+            else
+            {
+                LinkSocialProfile(SocialNetworkType.Facebook);
+            }
+        }
+
+        private void MenuTwitterLinkToggle_Click(object sender, RoutedEventArgs e)
+        {
+            var item = socialProfilesViewModel.Twitter;
+
+            if (item != null && item.IsLinked)
+            {
+                UnlinkSocialProfile(SocialNetworkType.Twitter);
+            }
+            else
+            {
+                LinkSocialProfile(SocialNetworkType.Twitter);
+            }
         }
     }
 }

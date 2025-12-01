@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8085/social/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" />
+  <xs:complexType name="ArrayOfSocialProfileDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SocialProfileDto" nillable="true" type="tns:SocialProfileDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSocialProfileDto" nillable="true" type="tns:ArrayOfSocialProfileDto" />
+  <xs:complexType name="SocialProfileDto">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" minOccurs="0" name="Network" type="q1:SocialNetworkType" />
+      <xs:element minOccurs="0" name="ProfileLink" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SocialProfileDto" nillable="true" type="tns:SocialProfileDto" />
+  <xs:complexType name="LinkSocialProfileRequestDto">
+    <xs:sequence>
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" minOccurs="0" name="Network" type="q2:SocialNetworkType" />
+      <xs:element minOccurs="0" name="ProfileLink" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LinkSocialProfileRequestDto" nillable="true" type="tns:LinkSocialProfileRequestDto" />
+  <xs:complexType name="UnlinkSocialProfileRequestDto">
+    <xs:sequence>
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" minOccurs="0" name="Network" type="q3:SocialNetworkType" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UnlinkSocialProfileRequestDto" nillable="true" type="tns:UnlinkSocialProfileRequestDto" />
+</xs:schema>

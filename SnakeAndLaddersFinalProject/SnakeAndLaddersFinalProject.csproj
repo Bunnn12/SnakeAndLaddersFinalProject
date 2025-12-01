@@ -126,12 +126,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Connected Services\MatchInvitationService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\PlayerReportService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Connected Services\ShopService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\SocialProfileService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -274,11 +284,16 @@
     <Compile Include="Utilities\SkinAssetHelper.cs" />
     <Compile Include="Utilities\TextBoxCharCounterHelper.cs" />
     <Compile Include="Utilities\WidthToBoolConverter.cs" />
+    <Compile Include="ViewModels\AvatarProfileOptionViewModel.cs" />
+    <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\ChatClientCallback.cs" />
     <Compile Include="ViewModels\ChatMessageVm.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\CornerPlayersViewModel.cs" />
     <Compile Include="ViewModels\CreateMatchViewModel.cs" />
+    <Compile Include="ViewModels\EmailVerificationViewModel.cs" />
+    <Compile Include="ViewModels\FriendRequestsViewModel.cs" />
+    <Compile Include="ViewModels\FriendsListViewModel.cs" />
     <Compile Include="ViewModels\GameBoardCellViewModel.cs" />
     <Compile Include="ViewModels\GameBoardConnectionViewModel.cs" />
     <Compile Include="ViewModels\GameBoardViewModel.cs" />
@@ -286,18 +301,32 @@
     <Compile Include="ViewModels\InventoryItemViewModel.cs" />
     <Compile Include="ViewModels\InventoryViewModel.cs" />
     <Compile Include="ViewModels\LobbyViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\MatchInvitationViewModel.cs" />
     <Compile Include="ViewModels\Models\LobbyMemberViewModel.cs" />
     <Compile Include="ViewModels\PlayerRankingItemViewModel.cs" />
     <Compile Include="ViewModels\PlayerTokenViewModel.cs" />
+    <Compile Include="ViewModels\ProfileStatsViewModel.cs" />
+    <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="ViewModels\RankingViewModel.cs" />
+    <Compile Include="ViewModels\ReportsViewModel.cs" />
+    <Compile Include="ViewModels\ShopViewModel.cs" />
+    <Compile Include="ViewModels\SignUpViewModel.cs" />
+    <Compile Include="ViewModels\SocialProfilesViewModel.cs" />
     <Compile Include="Windows\ChatWindow.xaml.cs">
       <DependentUpon>ChatWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\MatchInvitationWindow.xaml.cs">
+      <DependentUpon>MatchInvitationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\OtherReportCommentWindow.xaml.cs">
       <DependentUpon>OtherReportCommentWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ReportsWindow.xaml.cs">
       <DependentUpon>ReportsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SocialProfileLinkWindow.xaml.cs">
+      <DependentUpon>SocialProfileLinkWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="BasicWindow.xaml">
       <SubType>Designer</SubType>
@@ -419,11 +448,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\MatchInvitationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\OtherReportCommentWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ReportsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SocialProfileLinkWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -612,6 +649,19 @@
     <None Include="Connected Services\LobbyService\SnakeAndLaddersFinalProject.LobbyService.OperationResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\MatchInvitationService\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\MatchInvitationService\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\MatchInvitationService\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\MatchInvitationService\MatchInvitationService.wsdl" />
+    <None Include="Connected Services\MatchInvitationService\SnakeAndLaddersFinalProject.MatchInvitationService.OperationResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\PlayerReportService\item.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -647,6 +697,22 @@
     <None Include="Connected Services\ShopService\SnakeAndLaddersFinalProject.ShopService.ShopRewardDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\SocialProfileService\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\SocialProfileService\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\SocialProfileService\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\SocialProfileService\item3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\SocialProfileService\SnakeAndLaddersFinalProject.SocialProfileService.SocialProfileDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\SocialProfileService\SocialProfileService.wsdl" />
     <None Include="Connected Services\StatsService\item.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -674,6 +740,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\UserService\SnakeAndLaddersFinalProject.UserService.AccountDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\UserService\SnakeAndLaddersFinalProject.UserService.AvatarProfileOptionsDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\UserService\SnakeAndLaddersFinalProject.UserService.ProfilePhotoDto.datasource">
@@ -714,8 +783,10 @@
     <WCFMetadataStorage Include="Connected Services\GameplayService\" />
     <WCFMetadataStorage Include="Connected Services\InventoryService\" />
     <WCFMetadataStorage Include="Connected Services\LobbyService\" />
+    <WCFMetadataStorage Include="Connected Services\MatchInvitationService\" />
     <WCFMetadataStorage Include="Connected Services\PlayerReportService\" />
     <WCFMetadataStorage Include="Connected Services\ShopService\" />
+    <WCFMetadataStorage Include="Connected Services\SocialProfileService\" />
     <WCFMetadataStorage Include="Connected Services\StatsService\" />
     <WCFMetadataStorage Include="Connected Services\UserService\" />
   </ItemGroup>
@@ -732,6 +803,20 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\SocialProfileService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\SocialProfileService\configuration.svcinfo" />
+    <None Include="Connected Services\SocialProfileService\configuration91.svcinfo" />
+    <None Include="Connected Services\SocialProfileService\item.disco" />
+    <None Include="Connected Services\MatchInvitationService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\MatchInvitationService\configuration.svcinfo" />
+    <None Include="Connected Services\MatchInvitationService\configuration91.svcinfo" />
+    <None Include="Connected Services\MatchInvitationService\item.disco" />
     <None Include="Connected Services\InventoryService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -986,6 +1071,12 @@
     <Resource Include="Assets\Images\Icons\DiceNegIcon.png" />
     <Resource Include="Assets\Images\Icons\DiceBaseIcon.png" />
     <Resource Include="Assets\Images\Icons\Dice123Icon.png" />
+    <Resource Include="Assets\Images\Icons\FacebookIcon.jpg" />
+    <Resource Include="Assets\Images\Icons\InstagramIcon.jpg" />
+    <Resource Include="Assets\Images\Icons\TwitterIcon.jpg" />
+    <Resource Include="Assets\Images\Icons\CommonChestIcon.png" />
+    <Resource Include="Assets\Images\Icons\EpicChestIcon.png" />
+    <Resource Include="Assets\Images\Icons\LegendaryChestIcon.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

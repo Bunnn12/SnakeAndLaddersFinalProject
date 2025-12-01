@@ -11,7 +11,8 @@
       SnapsToDevicePixels="True"
       UseLayoutRounding="True"
       TextOptions.TextRenderingMode="Aliased"
-      Background="Transparent">
+      Background="Transparent"
+      Loaded="PageLoaded">
 
     <Page.Resources>
 
@@ -151,6 +152,33 @@
             <Setter Property="FontSize" Value="22" />
         </Style>
 
+        <!-- TextBox estilo chat para búsqueda de amigos -->
+        <Style x:Key="ChatLikeSearchTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="#FFFFFF" />
+            <Setter Property="Foreground" Value="#321309" />
+            <Setter Property="BorderBrush" Value="{StaticResource BrushBoardInnerBorder}" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Padding" Value="4,2" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="Bahnschrift SemiBold" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="14"
+                                SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="8,2" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Page.Resources>
 
     <!-- Forzamos el foco inicial en el cuadro de búsqueda -->
@@ -242,26 +270,19 @@
 
                                 <!-- Cuadro de búsqueda -->
                                 <TextBox x:Name="txtFindFriend"
-         Grid.Row="0"
-         Height="40"
-         MaxLength="50"
-         VerticalContentAlignment="Center"
-         FontFamily="Bahnschrift SemiBold"
-         FontSize="20"
-         Cursor="IBeam"
-         CaretBrush="{StaticResource BrushWoodDark}"
-         Background="#FFFDF7"               
-                                    Foreground="#321309"
-         BorderBrush="{StaticResource BrushBoardInnerBorder}"
-         BorderThickness="2"
-         Padding="10,6"
-         UseLayoutRounding="False"
-                                    SnapsToDevicePixels="False"
-                                    TextOptions.TextFormattingMode="Display"
-         TextOptions.TextRenderingMode="ClearType"
-         TextChanged="FindFriendTextChanged"/>
+                                         Grid.Row="0"
+                                         Height="40"
+                                         MaxLength="50"
+                                         Cursor="IBeam"
+                                         CaretBrush="{StaticResource BrushWoodDark}"
+                                         UseLayoutRounding="False"
+                                         SnapsToDevicePixels="False"
+                                         TextOptions.TextFormattingMode="Display"
+                                         TextOptions.TextRenderingMode="ClearType"
+                                         Style="{StaticResource ChatLikeSearchTextBox}"
+                                         TextChanged="FindFriendTextChanged" />
 
-                                    <!-- Resultados (headers arriba) -->
+                                <!-- Resultados (headers arriba) -->
                                 <DataGrid x:Name="tvSearchResults"
                                           Grid.Row="2"
                                           Style="{StaticResource RankingDataGridStyle}"

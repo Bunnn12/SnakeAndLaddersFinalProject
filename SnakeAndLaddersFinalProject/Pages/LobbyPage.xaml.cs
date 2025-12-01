@@ -130,14 +130,12 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             try
             {
-                // 1) Si esta Page tiene NavigationService, úsalo
                 if (NavigationService != null)
                 {
                     NavigationService.Navigate(boardPage);
                     return;
                 }
 
-                // 2) Si la ventana principal tiene un Frame llamado MainFrame, úsalo
                 var currentWindow = Window.GetWindow(this);
                 var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
                 if (mainFrame != null)
@@ -146,11 +144,10 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                // 3) Último recurso: crear un NavigationWindow para hospedar GameBoardPage
                 var navigationWindow = new NavigationWindow
                 {
                     Owner = currentWindow,
-                    ShowsNavigationUI = false, // sin barra de navegación
+                    ShowsNavigationUI = false,
                     Content = boardPage,
                     Title = "Snakes & Ladders - Game Board"
                 };
@@ -271,6 +268,57 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
+        private void OpenMatchInvitation(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var lobbyViewModel = ViewModel;
+                if (lobbyViewModel == null)
+                {
+                    MessageBox.Show(
+                        Lang.UiInviteFriendLobbyContextMissing,
+                        Lang.infoTitle,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (lobbyViewModel.LobbyId <= 0 ||
+                    string.IsNullOrWhiteSpace(lobbyViewModel.CodigoPartida))
+                {
+                    MessageBox.Show(
+                        Lang.UiInviteFriendNoMatchCode,
+                        Lang.infoTitle,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                    return;
+                }
+
+                var ownerWindow = Window.GetWindow(this);
+
+                var inviteWindow = new MatchInvitationWindow(
+                    lobbyViewModel.LobbyId,
+                    lobbyViewModel.CodigoPartida)
+                {
+                    Owner = ownerWindow
+                };
+
+                inviteWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    $"{nameof(LobbyPage)}.{nameof(OpenMatchInvitation)}",
+                    Logger);
+
+                MessageBox.Show(
+                    userMessage,
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
 
         private void ReportPlayerMenuItem_Click(object sender, RoutedEventArgs e)
         {
