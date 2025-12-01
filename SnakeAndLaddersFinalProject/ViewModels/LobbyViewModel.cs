@@ -10,6 +10,7 @@ using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.Services;
 using SnakeAndLaddersFinalProject.ViewModels.Models;
 using SnakeAndLaddersFinalProject.Utilities;
+using ServerLobbyStatus = SnakeAndLaddersFinalProject.LobbyService.LobbyStatus;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -66,7 +67,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public ObservableCollection<LobbySummary> PublicLobbies { get; } =
             new ObservableCollection<LobbySummary>();
-
 
         public ICommand CreateLobbyCommand { get; }
         public ICommand JoinLobbyCommand { get; }
@@ -134,6 +134,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 (JoinLobbyCommand as AsyncCommand)?.RaiseCanExecuteChanged();
             }
         }
+
         public LobbySummary SelectedPublicLobby
         {
             get { return selectedPublicLobby; }
@@ -149,7 +150,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 (JoinPublicLobbyCommand as AsyncCommand)?.RaiseCanExecuteChanged();
             }
         }
-
 
         public bool IsPrivateLobby
         {
@@ -191,7 +191,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 LobbyStatus,
                 LobbyMessages.LOBBY_STATUS_WAITING,
                 StringComparison.OrdinalIgnoreCase);
-
 
         public void ApplyCreateOptions(CreateMatchOptions options)
         {
@@ -290,7 +289,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-
                 string userMessage = ExceptionHandler.Handle(
                     ex,
                     $"{nameof(LobbyViewModel)}.{nameof(CreateLobbyAsync)}",
@@ -338,6 +336,18 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 if (!joinResult.Success)
                 {
                     StatusText = LobbyMessages.STATUS_JOIN_FAILED_PREFIX + joinResult.FailureReason;
+                    return;
+                }
+
+                if (joinResult.Lobby == null)
+                {
+                    StatusText = LobbyMessages.STATUS_JOIN_FAILED_PREFIX + LobbyMessages.STATUS_LOBBY_CLOSED;
+                    return;
+                }
+
+                if (IsLobbyExpired(joinResult.Lobby.ExpiresAtUtc))
+                {
+                    StatusText = LobbyMessages.STATUS_JOIN_FAILED_PREFIX + LobbyMessages.STATUS_LOBBY_CLOSED;
                     return;
                 }
 
@@ -547,6 +557,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             LobbyStatus = info.Status.ToString();
             ExpiresAtUtc = info.ExpiresAtUtc;
 
+            // Si el server ya lo marca cerrado o la fecha ya pasó, sacar al usuario.
+            if (info.Status == ServerLobbyStatus.Closed || IsLobbyExpired(ExpiresAtUtc))
+            {
+                StatusText = LobbyMessages.STATUS_LOBBY_CLOSED;
+                ResetLobbyState(StatusText);
+                return;
+            }
+
+
             Members.SynchronizeWith(
                 info.Players,
                 (vm, dto) => vm.UserId == dto.UserId,
@@ -677,6 +696,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
             }
         }
+
         private void RaiseCanExecutes()
         {
             (StartMatchCommand as AsyncCommand)?.RaiseCanExecuteChanged();
@@ -703,6 +723,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private bool HasLobby()
         {
             return LobbyId > LobbyMessages.LOBBY_ID_NOT_SET;
+        }
+
+        private static bool IsLobbyExpired(DateTime expiresAtUtc)
+        {
+            return expiresAtUtc <= DateTime.UtcNow;
         }
 
         private void ResetLobbyState(string statusMessage)
