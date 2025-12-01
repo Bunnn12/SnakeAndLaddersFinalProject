@@ -843,54 +843,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 await Inventory.InitializeAsync();
             }
 
-            // 🔹 AQUÍ queremos:
-            //   - Teleport de posiciones (Anchor / Swap / lo que cambie casillas)
-            //   - Refrescar textos de efectos
             if (gameplayClient != null)
             {
                 await SyncGameStateAsync(true);
             }
         }
-
-
-        private async Task AnimateItemMovementIfAnyAsync(ItemUsedNotificationDto notification)
-        {
-            ItemEffectResultDto effect = notification.EffectResult;
-
-            if (effect == null)
-            {
-                return;
-            }
-
-            if (!effect.FromCellIndex.HasValue || !effect.ToCellIndex.HasValue)
-            {
-                return;
-            }
-
-            // Solo animamos los que mueven ficha
-            if (effect.EffectType != ItemEffectType.Anchor &&
-                effect.EffectType != ItemEffectType.Swap)
-            {
-                return;
-            }
-
-            var fakeMove = new PlayerMoveResultDto
-            {
-                UserId = effect.UserId,
-                FromCellIndex = effect.FromCellIndex.Value,
-                ToCellIndex = effect.ToCellIndex.Value,
-                DiceValue = 0,
-                HasExtraTurn = false,
-                HasWon = false,
-                Message = notification.ItemCode,
-                EffectType = MoveEffectType.None
-            };
-
-            await HandleServerPlayerMovedAsync(fakeMove);
-        }
-
-
-        private static string BuildItemUsedMessage(ItemUsedNotificationDto notification)
+  private static string BuildItemUsedMessage(ItemUsedNotificationDto notification)
         {
             string actor = string.Format("Jugador {0}", notification.UserId);
             string target = notification.TargetUserId.HasValue
