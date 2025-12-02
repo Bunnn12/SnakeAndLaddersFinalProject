@@ -5,9 +5,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class InventoryItemViewModel : INotifyPropertyChanged
     {
-        private int quantity;
-        private byte? slotNumber;
-        private string iconPath;
+        private int _quantity;
+        private byte? _slotNumber;
+        private string _iconPath;
 
 
 
@@ -21,45 +21,45 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public int Quantity
         {
-            get => quantity;
+            get => _quantity;
             set
             {
-                if (quantity == value)
+                if (_quantity == value)
                 {
                     return;
                 }
 
-                quantity = value;
+                _quantity = value;
                 OnPropertyChanged();
             }
         }
 
         public byte? SlotNumber
         {
-            get => slotNumber;
+            get => _slotNumber;
             set
             {
-                if (slotNumber == value)
+                if (_slotNumber == value)
                 {
                     return;
                 }
 
-                slotNumber = value;
+                _slotNumber = value;
                 OnPropertyChanged();
             }
         }
 
         public string IconPath
         {
-            get => iconPath;
+            get => _iconPath;
             set
             {
-                if (iconPath == value)
+                if (_iconPath == value)
                 {
                     return;
                 }
 
-                iconPath = value;
+                _iconPath = value;
                 OnPropertyChanged();
             }
         }

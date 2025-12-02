@@ -106,7 +106,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         }
 
         /// <summary>
-        /// Recarga la UI para que los textos localizados (x:Static o bindings) se reevalúen.
+        /// Recarga la UI para que los textos localizados (_x:Static o bindings) se reevalúen.
         /// Usa la ventana principal típica "MainWindow". Si tu shell tiene otro nombre, cámbialo aquí.
         /// </summary>
 

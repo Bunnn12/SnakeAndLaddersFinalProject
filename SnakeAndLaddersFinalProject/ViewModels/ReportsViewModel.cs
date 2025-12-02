@@ -10,7 +10,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class ReportsViewModel
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(ReportsViewModel));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ReportsViewModel));
 
         private const int MIN_REGISTERED_USER_ID = 1;
 
@@ -167,7 +167,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (EndpointNotFoundException ex)
             {
-                Logger.Error("Endpoint not found while sending report.", ex);
+                _logger.Error("Endpoint not found while sending report.", ex);
 
                 MessageBox.Show(
                     REPORT_ENDPOINT_NOT_FOUND_MESSAGE_TEXT_KEY,
@@ -182,7 +182,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 string message = ExceptionHandler.Handle(
                     ex,
                     $"{nameof(ReportsViewModel)}.{nameof(SendReport)}",
-                    Logger);
+                    _logger);
 
                 MessageBox.Show(
                     REPORT_GENERIC_ERROR_MESSAGE_TEXT_KEY + " " + message,

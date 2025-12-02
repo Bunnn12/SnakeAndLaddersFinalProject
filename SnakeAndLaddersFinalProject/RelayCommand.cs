@@ -5,28 +5,28 @@ namespace SnakeAndLaddersFinalProject
 {
     public sealed class RelayCommand : ICommand
     {
-        private readonly Action<object> executeAction;
-        private readonly Predicate<object> canExecutePredicate;
+        private readonly Action<object> _executeAction;
+        private readonly Predicate<object> _canExecutePredicate;
 
         public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
         {
-            executeAction = execute ?? throw new ArgumentNullException(nameof(execute));
-            canExecutePredicate = canExecute;
+            _executeAction = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecutePredicate = canExecute;
         }
 
         public bool CanExecute(object parameter)
         {
-            if (canExecutePredicate == null)
+            if (_canExecutePredicate == null)
             {
                 return true;
             }
 
-            return canExecutePredicate.Invoke(parameter);
+            return _canExecutePredicate.Invoke(parameter);
         }
 
         public void Execute(object parameter)
         {
-            executeAction(parameter);
+            _executeAction(parameter);
         }
 
         public event EventHandler CanExecuteChanged

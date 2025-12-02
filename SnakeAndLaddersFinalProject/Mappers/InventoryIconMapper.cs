@@ -1,10 +1,8 @@
-﻿using System;
-
+﻿
 namespace SnakeAndLaddersFinalProject.Mappers
 {
     internal static class InventoryIconMapper
     {
-        // ITEMS
         private const string BASE_PATH = "pack://application:,,,/Assets/Images/Icons/";
 
         private const string ICON_ANCHOR = "AnchorIcon.png";

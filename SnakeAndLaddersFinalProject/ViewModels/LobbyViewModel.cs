@@ -4,7 +4,7 @@ using SnakeAndLaddersFinalProject.GameplayService;
 using SnakeAndLaddersFinalProject.Infrastructure;
 using SnakeAndLaddersFinalProject.LobbyService;
 using SnakeAndLaddersFinalProject.Mappers;
-using SnakeAndLaddersFinalProject.Pages;
+
 using SnakeAndLaddersFinalProject.Policies;
 using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.Services;
@@ -27,27 +27,27 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class LobbyViewModel : INotifyPropertyChanged, ILobbyEventsHandler
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(LobbyViewModel));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(LobbyViewModel));
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public event Action<GameBoardViewModel> NavigateToBoardRequested;
         public event Action CurrentUserKickedFromLobby;
 
-        private readonly GameBoardClient gameBoardClient;
-        private readonly LobbyClient lobbyClient;
-        private readonly LobbyBoardService lobbyBoardService;
+        private readonly GameBoardClient _gameBoardClient;
+        private readonly LobbyClient _lobbyClient;
+        private readonly LobbyBoardService _lobbyBoardService;
 
-        private string statusText = LobbyMessages.STATUS_LOBBY_READY;
-        private string codeInput = string.Empty;
-        private byte maxPlayers;
-        private bool isPrivateLobby;
-        private bool isTryingNavigateToBoard;
+        private string _statusText = LobbyMessages.STATUS_LOBBY_READY;
+        private string _codeInput = string.Empty;
+        private byte _maxPlayers;
+        private bool _isPrivateLobby;
+        private bool _isTryingNavigateToBoard;
 
-        private CreateMatchOptions createOptions;
-        private bool hasNavigatedToBoard;
+        private CreateMatchOptions _createOptions;
+        private bool _hasNavigatedToBoard;
 
-        private LobbySummary selectedPublicLobby;
+        private LobbySummary _selectedPublicLobby;
 
         public int CurrentUserId { get; private set; }
         public string CurrentUserName { get; private set; }
@@ -79,9 +79,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             InitializeCurrentUser();
 
-            gameBoardClient = new GameBoardClient();
-            lobbyClient = new LobbyClient(this);
-            lobbyBoardService = new LobbyBoardService(gameBoardClient);
+            _gameBoardClient = new GameBoardClient();
+            _lobbyClient = new LobbyClient(this);
+            _lobbyBoardService = new LobbyBoardService(_gameBoardClient);
 
             CreateLobbyCommand = new AsyncCommand(CreateLobbyAsync);
             JoinLobbyCommand = new AsyncCommand(
@@ -100,36 +100,36 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             if (CurrentUserId != LobbyMessages.INVALID_USER_ID)
             {
-                lobbyClient.SubscribePublicLobbies(CurrentUserId);
+                _lobbyClient.SubscribePublicLobbies(CurrentUserId);
             }
         }
 
         public string StatusText
         {
-            get { return statusText; }
+            get { return _statusText; }
             private set
             {
-                if (statusText == value)
+                if (_statusText == value)
                 {
                     return;
                 }
 
-                statusText = value;
+                _statusText = value;
                 OnPropertyChanged();
             }
         }
 
         public string CodeInput
         {
-            get { return codeInput; }
+            get { return _codeInput; }
             set
             {
-                if (codeInput == value)
+                if (_codeInput == value)
                 {
                     return;
                 }
 
-                codeInput = value;
+                _codeInput = value;
                 OnPropertyChanged();
                 (JoinLobbyCommand as AsyncCommand)?.RaiseCanExecuteChanged();
             }
@@ -137,15 +137,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public LobbySummary SelectedPublicLobby
         {
-            get { return selectedPublicLobby; }
+            get { return _selectedPublicLobby; }
             set
             {
-                if (Equals(selectedPublicLobby, value))
+                if (Equals(_selectedPublicLobby, value))
                 {
                     return;
                 }
 
-                selectedPublicLobby = value;
+                _selectedPublicLobby = value;
                 OnPropertyChanged();
                 (JoinPublicLobbyCommand as AsyncCommand)?.RaiseCanExecuteChanged();
             }
@@ -153,30 +153,30 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public bool IsPrivateLobby
         {
-            get { return isPrivateLobby; }
+            get { return _isPrivateLobby; }
             set
             {
-                if (isPrivateLobby == value)
+                if (_isPrivateLobby == value)
                 {
                     return;
                 }
 
-                isPrivateLobby = value;
+                _isPrivateLobby = value;
                 OnPropertyChanged();
             }
         }
 
         public byte MaxPlayers
         {
-            get { return maxPlayers; }
+            get { return _maxPlayers; }
             private set
             {
-                if (maxPlayers == value)
+                if (_maxPlayers == value)
                 {
                     return;
                 }
 
-                maxPlayers = value;
+                _maxPlayers = value;
                 OnPropertyChanged();
                 (StartMatchCommand as AsyncCommand)?.RaiseCanExecuteChanged();
                 UpdateStatus();
@@ -199,7 +199,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            createOptions = options;
+            _createOptions = options;
 
             Difficulty = options.Difficulty;
             PlayersRequested = (byte)options.Players;
@@ -246,7 +246,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             (StartMatchCommand as AsyncCommand)?.RaiseCanExecuteChanged();
         }
 
-        private LobbyServiceClient LobbyProxy => lobbyClient.Proxy;
+        private LobbyServiceClient LobbyProxy => _lobbyClient.Proxy;
 
         private async Task CreateLobbyAsync()
         {
@@ -254,14 +254,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 var client = LobbyProxy;
 
-                var boardSize = createOptions?.BoardSize ?? BoardSizeOption.TenByTen;
-                var difficultyOption = createOptions?.Difficulty ?? DifficultyOption.Medium;
-                var specialTiles = createOptions?.SpecialTiles ?? SpecialTileOptions.None;
+                var boardSize = _createOptions?.BoardSize ?? BoardSizeOption.TenByTen;
+                var difficultyOption = _createOptions?.Difficulty ?? DifficultyOption.Medium;
+                var specialTiles = _createOptions?.SpecialTiles ?? SpecialTileOptions.None;
                 var playersRequested =
-                    (byte)(createOptions?.Players ?? AppConstants.MIN_PLAYERS_TO_START);
+                    (byte)(_createOptions?.Players ?? AppConstants.MIN_PLAYERS_TO_START);
 
-                bool isPrivate = createOptions != null
-                    ? createOptions.IsPrivate
+                bool isPrivate = _createOptions != null
+                    ? _createOptions.IsPrivate
                     : IsPrivateLobby;
 
                 var session = SessionContext.Current;
@@ -274,7 +274,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     HostUserId = CurrentUserId,
                     MaxPlayers = playersRequested,
                     Dificultad = LobbyMapper.MapDifficultyToServerString(difficultyOption),
-                    TtlMinutes = AppConstants.DEFAULT_TTL_MINUTES,
+                    TtlMinutes = AppConstants.DEFAULT_EXPIRATION_MINUTES,
                     BoardSide = (int)boardSize,
                     PlayersRequested = playersRequested,
                     SpecialTiles = specialTiles.ToString(),
@@ -292,7 +292,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 string userMessage = ExceptionHandler.Handle(
                     ex,
                     $"{nameof(LobbyViewModel)}.{nameof(CreateLobbyAsync)}",
-                    Logger);
+                    _logger);
 
                 MessageBox.Show(
                     userMessage + "STATUS_CREATE_ERROR_PREFIX",
@@ -361,7 +361,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             catch (Exception ex)
             {
                 StatusText = LobbyMessages.STATUS_JOIN_ERROR_PREFIX + ex.Message;
-                Logger.Error("Error al unirse al lobby.", ex);
+                _logger.Error("Error al unirse al lobby.", ex);
             }
             finally
             {
@@ -400,7 +400,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     return;
                 }
 
-                var options = createOptions ?? new CreateMatchOptions
+                var options = _createOptions ?? new CreateMatchOptions
                 {
                     BoardSize = BoardSizeOption.TenByTen,
                     Difficulty = Difficulty,
@@ -409,7 +409,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     RoomKey = CodigoPartida
                 };
 
-                var boardViewModel = await lobbyBoardService.CreateBoardForHostAsync(
+                var boardViewModel = await _lobbyBoardService.CreateBoardForHostAsync(
                     LobbyId,
                     CurrentUserName,
                     CurrentUserId,
@@ -422,13 +422,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     return;
                 }
 
-                hasNavigatedToBoard = true;
+                _hasNavigatedToBoard = true;
                 NavigateToBoardRequested?.Invoke(boardViewModel);
             }
             catch (Exception ex)
             {
                 StatusText = LobbyMessages.STATUS_START_ERROR_PREFIX + ex.Message;
-                Logger.Error("Error al iniciar la partida.", ex);
+                _logger.Error("Error al iniciar la partida.", ex);
             }
         }
 
@@ -453,7 +453,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             catch (Exception ex)
             {
                 StatusText = LobbyMessages.STATUS_LEAVE_ERROR_PREFIX + ex.Message;
-                Logger.Error("Error al salir del lobby.", ex);
+                _logger.Error("Error al salir del lobby.", ex);
             }
         }
 
@@ -476,7 +476,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Warn("Error al abandonar el lobby al cerrar la aplicación.", ex);
+                _logger.Warn("Error al abandonar el lobby al cerrar la aplicación.", ex);
             }
 
             await Task.CompletedTask;
@@ -494,7 +494,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al copiar el código al portapapeles.", ex);
+                _logger.Error("Error al copiar el código al portapapeles.", ex);
             }
         }
 
@@ -515,9 +515,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             MaxPlayers = PlayersRequested;
 
-            if (createOptions != null)
+            if (_createOptions != null)
             {
-                createOptions.RoomKey = CodigoPartida;
+                _createOptions.RoomKey = CodigoPartida;
             }
 
             var session = SessionContext.Current;
@@ -596,7 +596,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 ? info.PlayersRequested
                 : (byte)AppConstants.MIN_PLAYERS_TO_START;
 
-            createOptions = new CreateMatchOptions
+            _createOptions = new CreateMatchOptions
             {
                 BoardSize = boardSize,
                 Difficulty = difficultyOption,
@@ -610,7 +610,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             UpdateStatus();
 
-            Logger.InfoFormat(
+            _logger.InfoFormat(
                 "ApplyLobbyInfo: LobbyId={0}, Status={1}, CurrentUserId={2}, HostUserId={3}, Members={4}",
                 LobbyId,
                 LobbyStatus,
@@ -623,21 +623,21 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private async Task TryNavigateToBoardIfMatchStartedAsync()
         {
-            if (hasNavigatedToBoard)
+            if (_hasNavigatedToBoard)
             {
-                Logger.Info("TryNavigateToBoardIfMatchStartedAsync: ya se navegó anteriormente, se omite.");
+                _logger.Info("TryNavigateToBoardIfMatchStartedAsync: ya se navegó anteriormente, se omite.");
                 return;
             }
 
-            if (isTryingNavigateToBoard)
+            if (_isTryingNavigateToBoard)
             {
-                Logger.Info("TryNavigateToBoardIfMatchStartedAsync: ya hay un intento en curso, se omite.");
+                _logger.Info("TryNavigateToBoardIfMatchStartedAsync: ya hay un intento en curso, se omite.");
                 return;
             }
 
             bool isHost = IsCurrentUserHost();
 
-            Logger.InfoFormat(
+            _logger.InfoFormat(
                 "TryNavigateToBoardIfMatchStartedAsync: LobbyId={0}, Status={1}, CurrentUserId={2}, HostUserId={3}, IsHost={4}",
                 LobbyId,
                 LobbyStatus,
@@ -663,11 +663,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            isTryingNavigateToBoard = true;
+            _isTryingNavigateToBoard = true;
 
             try
             {
-                var boardViewModel = await lobbyBoardService.TryCreateBoardForGuestWithRetryAsync(
+                var boardViewModel = await _lobbyBoardService.TryCreateBoardForGuestWithRetryAsync(
                     LobbyId,
                     CurrentUserName,
                     CurrentUserId,
@@ -678,21 +678,21 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     return;
                 }
 
-                hasNavigatedToBoard = true;
+                _hasNavigatedToBoard = true;
 
-                Logger.Info("TryNavigateToBoardIfMatchStartedAsync: disparando NavigateToBoardRequested.");
+                _logger.Info("TryNavigateToBoardIfMatchStartedAsync: disparando NavigateToBoardRequested.");
                 Application.Current.Dispatcher.Invoke(
                     () => NavigateToBoardRequested?.Invoke(boardViewModel));
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al obtener el tablero cuando la partida inició.", ex);
+                _logger.Error("Error al obtener el tablero cuando la partida inició.", ex);
             }
             finally
             {
-                if (!hasNavigatedToBoard)
+                if (!_hasNavigatedToBoard)
                 {
-                    isTryingNavigateToBoard = false;
+                    _isTryingNavigateToBoard = false;
                 }
             }
         }
@@ -805,7 +805,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public Task HandlePublicLobbiesChangedAsync(IList<LobbySummary> lobbies)
         {
-            Logger.InfoFormat(
+            _logger.InfoFormat(
                 "HandlePublicLobbiesChangedAsync: recibidos {0} lobbies públicos.",
                 lobbies == null ? 0 : lobbies.Count);
 

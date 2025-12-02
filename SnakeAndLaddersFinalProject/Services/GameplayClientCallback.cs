@@ -1,4 +1,4 @@
-﻿// SnakeAndLaddersFinalProject.Services/GameplayClientCallback.cs
+﻿
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,15 +10,15 @@ namespace SnakeAndLaddersFinalProject.Services
 {
     internal sealed class GameplayClientCallback : IGameplayServiceCallback
     {
-        private readonly IGameplayEventsHandler eventsHandler;
-        private readonly Dispatcher dispatcher;
+        private readonly IGameplayEventsHandler _eventsHandler;
+        private readonly Dispatcher _dispatcher;
 
         public GameplayClientCallback(IGameplayEventsHandler eventsHandler)
         {
-            this.eventsHandler = eventsHandler
+            this._eventsHandler = eventsHandler
                 ?? throw new ArgumentNullException(nameof(eventsHandler));
 
-            dispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
+            _dispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
         }
 
         public void OnPlayerMoved(PlayerMoveResultDto move)
@@ -28,7 +28,7 @@ namespace SnakeAndLaddersFinalProject.Services
                 return;
             }
 
-            RunOnUiThreadAsync(() => eventsHandler.HandleServerPlayerMovedAsync(move));
+            RunOnUiThreadAsync(() => _eventsHandler.HandleServerPlayerMovedAsync(move));
         }
 
         public void OnTurnChanged(TurnChangedDto turnInfo)
@@ -38,7 +38,7 @@ namespace SnakeAndLaddersFinalProject.Services
                 return;
             }
 
-            RunOnUiThreadAsync(() => eventsHandler.HandleServerTurnChangedAsync(turnInfo));
+            RunOnUiThreadAsync(() => _eventsHandler.HandleServerTurnChangedAsync(turnInfo));
         }
 
         public void OnPlayerLeft(PlayerLeftDto playerLeftInfo)
@@ -48,7 +48,7 @@ namespace SnakeAndLaddersFinalProject.Services
                 return;
             }
 
-            RunOnUiThreadAsync(() => eventsHandler.HandleServerPlayerLeftAsync(playerLeftInfo));
+            RunOnUiThreadAsync(() => _eventsHandler.HandleServerPlayerLeftAsync(playerLeftInfo));
         }
 
         public void OnItemUsed(ItemUsedNotificationDto notification)
@@ -58,7 +58,7 @@ namespace SnakeAndLaddersFinalProject.Services
                 return;
             }
 
-            RunOnUiThreadAsync(() => eventsHandler.HandleServerItemUsedAsync(notification));
+            RunOnUiThreadAsync(() => _eventsHandler.HandleServerItemUsedAsync(notification));
         }
 
         private void RunOnUiThreadAsync(Func<Task> actionAsync)
@@ -68,13 +68,13 @@ namespace SnakeAndLaddersFinalProject.Services
                 return;
             }
 
-            if (dispatcher.CheckAccess())
+            if (_dispatcher.CheckAccess())
             {
                 _ = actionAsync();
                 return;
             }
 
-            dispatcher.BeginInvoke(
+            _dispatcher.BeginInvoke(
                 new Action(
                     () =>
                     {

@@ -10,11 +10,11 @@ namespace SnakeAndLaddersFinalProject.Services
     {
         private const int DEFAULT_MAX_RESULTS = 20;
 
-        private readonly IFriendsService friendsServiceClient;
+        private readonly IFriendsService _friendsServiceClient;
 
         public FriendsApi()
         {
-            friendsServiceClient = new FriendsServiceClient("NetTcpBinding_IFriendsService");
+            _friendsServiceClient = new FriendsServiceClient("NetTcpBinding_IFriendsService");
         }
 
         private static string GetTokenOrNull()
@@ -30,7 +30,7 @@ namespace SnakeAndLaddersFinalProject.Services
                 return new List<FriendListItemDto>();
             }
 
-            return new List<FriendListItemDto>(friendsServiceClient.GetFriends(token));
+            return new List<FriendListItemDto>(_friendsServiceClient.GetFriends(token));
         }
 
         public List<FriendRequestItemDto> GetIncoming()
@@ -41,7 +41,7 @@ namespace SnakeAndLaddersFinalProject.Services
                 return new List<FriendRequestItemDto>();
             }
 
-            return new List<FriendRequestItemDto>(friendsServiceClient.GetIncomingRequests(token));
+            return new List<FriendRequestItemDto>(_friendsServiceClient.GetIncomingRequests(token));
         }
 
         public List<FriendRequestItemDto> GetOutgoing()
@@ -52,7 +52,7 @@ namespace SnakeAndLaddersFinalProject.Services
                 return new List<FriendRequestItemDto>();
             }
 
-            return new List<FriendRequestItemDto>(friendsServiceClient.GetOutgoingRequests(token));
+            return new List<FriendRequestItemDto>(_friendsServiceClient.GetOutgoingRequests(token));
         }
 
         public List<UserBriefDto> SearchUsers(string term, int max = DEFAULT_MAX_RESULTS)
@@ -65,7 +65,7 @@ namespace SnakeAndLaddersFinalProject.Services
 
             string searchTerm = term ?? string.Empty;
 
-            return new List<UserBriefDto>(friendsServiceClient.SearchUsers(token, searchTerm, max));
+            return new List<UserBriefDto>(_friendsServiceClient.SearchUsers(token, searchTerm, max));
         }
 
         public FriendLinkDto SendFriendRequest(int targetUserId)
@@ -76,7 +76,7 @@ namespace SnakeAndLaddersFinalProject.Services
                 return null;
             }
 
-            return friendsServiceClient.SendFriendRequest(token, targetUserId);
+            return _friendsServiceClient.SendFriendRequest(token, targetUserId);
         }
 
         public void Accept(int linkId)
@@ -87,7 +87,7 @@ namespace SnakeAndLaddersFinalProject.Services
                 return;
             }
 
-            friendsServiceClient.AcceptFriendRequest(token, linkId);
+            _friendsServiceClient.AcceptFriendRequest(token, linkId);
         }
 
         public void Reject(int linkId)
@@ -98,7 +98,7 @@ namespace SnakeAndLaddersFinalProject.Services
                 return;
             }
 
-            friendsServiceClient.RejectFriendRequest(token, linkId);
+            _friendsServiceClient.RejectFriendRequest(token, linkId);
         }
 
         public void Cancel(int linkId)
@@ -109,7 +109,7 @@ namespace SnakeAndLaddersFinalProject.Services
                 return;
             }
 
-            friendsServiceClient.CancelFriendRequest(token, linkId);
+            _friendsServiceClient.CancelFriendRequest(token, linkId);
         }
 
         public void Remove(int linkId)
@@ -120,12 +120,12 @@ namespace SnakeAndLaddersFinalProject.Services
                 return;
             }
 
-            friendsServiceClient.RemoveFriend(token, linkId);
+            _friendsServiceClient.RemoveFriend(token, linkId);
         }
 
         public void Dispose()
         {
-            if (friendsServiceClient is IClientChannel clientChannel)
+            if (_friendsServiceClient is IClientChannel clientChannel)
             {
                 try
                 {

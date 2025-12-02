@@ -76,10 +76,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             UpdateIsCurrentTurn(BottomRightPlayer, currentTurnUserId);
         }
 
-        /// <summary>
-        /// Llamar cuando termina el turno de un jugador para disminuir contadores
-        /// de escudo / congelado y refrescar el texto.
-        /// </summary>
         public void OnTurnAdvanced(int previousTurnUserId)
         {
             if (!TryFindSlotByUserId(previousTurnUserId, out LobbyMemberViewModel slot))
@@ -112,10 +108,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             RefreshEffectsTextForSlot(slot);
         }
 
-        /// <summary>
-        /// Aplica el resultado de un ítem a los jugadores en las esquinas
-        /// para actualizar banderas y texto de efectos.
-        /// </summary>
         public void ApplyItemEffect(ItemEffectResultDto effect)
         {
             if (effect == null)
@@ -123,7 +115,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            // Actor
             if (!TryFindSlotByUserId(effect.UserId, out LobbyMemberViewModel actorSlot))
             {
                 return;
@@ -166,7 +157,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     RefreshEffectsTextForSlot(targetSlot);
                     break;
 
-                // Anchor / Swap solo mueven fichas, no cambian texto de efectos
                 case ItemEffectType.Anchor:
                 case ItemEffectType.Swap:
                 case ItemEffectType.Rocket:

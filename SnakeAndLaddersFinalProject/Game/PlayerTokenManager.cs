@@ -10,32 +10,31 @@ namespace SnakeAndLaddersFinalProject.Game
     public sealed class PlayerTokenManager
     {
         private const double TOKEN_OFFSET_DIAGONAL = 0.18;
-
-        private static readonly Point[] TOKEN_CELL_OFFSETS =
+        private static readonly Point[] _tokenCellOffSet =
         {
-            new Point(-TOKEN_OFFSET_DIAGONAL, -TOKEN_OFFSET_DIAGONAL), 
-            new Point(TOKEN_OFFSET_DIAGONAL, -TOKEN_OFFSET_DIAGONAL),  
-            new Point(-TOKEN_OFFSET_DIAGONAL, TOKEN_OFFSET_DIAGONAL),  
-            new Point(TOKEN_OFFSET_DIAGONAL, TOKEN_OFFSET_DIAGONAL)    
+            new Point(-TOKEN_OFFSET_DIAGONAL, -TOKEN_OFFSET_DIAGONAL),
+            new Point(TOKEN_OFFSET_DIAGONAL, -TOKEN_OFFSET_DIAGONAL),
+            new Point(-TOKEN_OFFSET_DIAGONAL, TOKEN_OFFSET_DIAGONAL),
+            new Point(TOKEN_OFFSET_DIAGONAL, TOKEN_OFFSET_DIAGONAL)
         };
 
-        private readonly ObservableCollection<PlayerTokenViewModel> playerTokens;
-        private readonly IReadOnlyDictionary<int, Point> cellCentersByIndex;
+        private readonly ObservableCollection<PlayerTokenViewModel> _playerTokens;
+        private readonly IReadOnlyDictionary<int, Point> _cellCentersByIndex;
 
         public PlayerTokenManager(
             ObservableCollection<PlayerTokenViewModel> playerTokens,
             IReadOnlyDictionary<int, Point> cellCentersByIndex)
         {
-            this.playerTokens = playerTokens
+            this._playerTokens = playerTokens
                 ?? throw new ArgumentNullException(nameof(playerTokens));
 
-            this.cellCentersByIndex = cellCentersByIndex
+            this._cellCentersByIndex = cellCentersByIndex
                 ?? throw new ArgumentNullException(nameof(cellCentersByIndex));
         }
 
         public ObservableCollection<PlayerTokenViewModel> PlayerTokens
         {
-            get { return playerTokens; }
+            get { return _playerTokens; }
         }
 
         public PlayerTokenViewModel CreateFromLobbyMember(
@@ -53,7 +52,7 @@ namespace SnakeAndLaddersFinalProject.Game
                 member.CurrentSkinUnlockedId,
                 startCellIndex);
 
-            playerTokens.Add(token);
+            _playerTokens.Add(token);
             UpdateTokenPositionFromCell(token, startCellIndex);
 
             return token;
@@ -61,7 +60,7 @@ namespace SnakeAndLaddersFinalProject.Game
 
         public void ResetAllTokensToCell(int cellIndex)
         {
-            foreach (var token in playerTokens)
+            foreach (var token in _playerTokens)
             {
                 UpdateTokenPositionFromCell(token, cellIndex);
             }
@@ -71,7 +70,7 @@ namespace SnakeAndLaddersFinalProject.Game
             int userId,
             int initialCellIndex)
         {
-            var token = playerTokens.FirstOrDefault(t => t.UserId == userId);
+            var token = _playerTokens.FirstOrDefault(t => t.UserId == userId);
             if (token != null)
             {
                 return token;
@@ -83,7 +82,7 @@ namespace SnakeAndLaddersFinalProject.Game
                 null,
                 initialCellIndex);
 
-            playerTokens.Add(token);
+            _playerTokens.Add(token);
             UpdateTokenPositionFromCell(token, initialCellIndex);
 
             return token;
@@ -98,14 +97,14 @@ namespace SnakeAndLaddersFinalProject.Game
                 return;
             }
 
-            if (!cellCentersByIndex.TryGetValue(cellIndex, out Point center))
+            if (!_cellCentersByIndex.TryGetValue(cellIndex, out Point center))
             {
                 return;
             }
 
             token.CurrentCellIndex = cellIndex;
 
-            var tokensInCell = playerTokens
+            var tokensInCell = _playerTokens
                 .Where(t => t.CurrentCellIndex == cellIndex)
                 .OrderBy(t => t.UserId)
                 .ToList();
@@ -123,12 +122,12 @@ namespace SnakeAndLaddersFinalProject.Game
                 var currentToken = tokensInCell[i];
 
                 int slotIndex = i;
-                if (slotIndex >= TOKEN_CELL_OFFSETS.Length)
+                if (slotIndex >= _tokenCellOffSet.Length)
                 {
-                    slotIndex = TOKEN_CELL_OFFSETS.Length - 1;
+                    slotIndex = _tokenCellOffSet.Length - 1;
                 }
 
-                Point offset = TOKEN_CELL_OFFSETS[slotIndex];
+                Point offset = _tokenCellOffSet[slotIndex];
 
                 currentToken.X = center.X + offset.X;
                 currentToken.Y = center.Y + offset.Y;

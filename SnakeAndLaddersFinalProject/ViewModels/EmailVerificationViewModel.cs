@@ -11,7 +11,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class EmailVerificationViewModel
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(EmailVerificationViewModel));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(EmailVerificationViewModel));
 
         private const int DEFAULT_RESEND_COOLDOWN_SECONDS = 45;
         private const int VERIFICATION_CODE_LENGTH = 6;
@@ -25,7 +25,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string KEY_UI_VERIFICATION_CODE_REQUIRED = "UiVerificationCodeRequired";
         private const string KEY_UI_ACCOUNT_CREATED_FMT = "UiAccountCreatedFmt";
 
-        private readonly RegistrationDto pendingDto;
+        private readonly RegistrationDto _pendingDto;
 
 
         public event Action<int> ResendCooldownRequested;
@@ -34,7 +34,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public EmailVerificationViewModel(RegistrationDto pendingDto)
         {
-            this.pendingDto = pendingDto ?? throw new ArgumentNullException(nameof(pendingDto));
+            this._pendingDto = pendingDto ?? throw new ArgumentNullException(nameof(pendingDto));
         }
 
         public async Task VerificateCodeAsync(string code)
@@ -57,7 +57,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                string normalizedEmail = (pendingDto.Email ?? string.Empty)
+                string normalizedEmail = (_pendingDto.Email ?? string.Empty)
                     .Trim()
                     .ToLowerInvariant();
 
@@ -71,10 +71,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     return;
                 }
 
-                pendingDto.Email = normalizedEmail;
+                _pendingDto.Email = normalizedEmail;
 
                 AuthResult register = await Task.Run(
-                    () => client.Register(pendingDto));
+                    () => client.Register(_pendingDto));
 
                 if (!register.Success)
                 {
@@ -94,7 +94,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 string userMessage = ExceptionHandler.Handle(
                     ex,
                     "EmailVerificationPage.VerificateCode",
-                    Logger);
+                    _logger);
 
                 MessageBox.Show(
                     userMessage,
@@ -108,7 +108,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public async Task ResendCodeAsync()
         {
-            string email = (pendingDto.Email ?? string.Empty)
+            string email = (_pendingDto.Email ?? string.Empty)
                 .Trim()
                 .ToLowerInvariant();
 
@@ -153,7 +153,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 string userMessage = ExceptionHandler.Handle(
                     ex,
                     "EmailVerificationPage.ResendCode",
-                    Logger);
+                    _logger);
 
                 MessageBox.Show(
                     userMessage,

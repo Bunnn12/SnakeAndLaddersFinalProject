@@ -54,15 +54,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const int VERIFICATION_CODE_MAX_LENGTH = 6;
 
         private string email = string.Empty;
-        private string verificationCode = string.Empty;
-        private string newPassword = string.Empty;
-        private string confirmPassword = string.Empty;
+        private string _verificationCode = string.Empty;
+        private string _newPassword = string.Empty;
+        private string _confirmPassword = string.Empty;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        /// La Page se suscribe para navegar al Login cuando el cambio fue exitoso.
-        /// </summary>
         public event Action PasswordChangedSuccessfully;
 
         public ICommand SendCodeCommand { get; }
@@ -92,45 +89,45 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public string VerificationCode
         {
-            get { return verificationCode; }
+            get { return _verificationCode; }
             set
             {
-                if (verificationCode == value)
+                if (_verificationCode == value)
                 {
                     return;
                 }
 
-                verificationCode = value ?? string.Empty;
+                _verificationCode = value ?? string.Empty;
                 OnPropertyChanged();
             }
         }
 
         public string NewPassword
         {
-            get { return newPassword; }
+            get { return _newPassword; }
             set
             {
-                if (newPassword == value)
+                if (_newPassword == value)
                 {
                     return;
                 }
 
-                newPassword = value ?? string.Empty;
+                _newPassword = value ?? string.Empty;
                 OnPropertyChanged();
             }
         }
 
         public string ConfirmPassword
         {
-            get { return confirmPassword; }
+            get { return _confirmPassword; }
             set
             {
-                if (confirmPassword == value)
+                if (_confirmPassword == value)
                 {
                     return;
                 }
 
-                confirmPassword = value ?? string.Empty;
+                _confirmPassword = value ?? string.Empty;
                 OnPropertyChanged();
             }
         }
@@ -187,7 +184,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 client.Abort();
 
-                // Mantengo el mismo operation string que en la Page original
                 string userMessage = ExceptionHandler.Handle(
                     ex,
                     "ChangePasswordPage.BtnSendCode_Click.EndpointNotFound",

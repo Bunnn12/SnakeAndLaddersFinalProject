@@ -4,7 +4,6 @@ using System.Linq;
 using System.ServiceModel;
 using log4net;
 using SnakeAndLaddersFinalProject.GameBoardService;
-
 using ClientBoardSizeOption = SnakeAndLaddersFinalProject.BoardSizeOption;
 using ServiceBoardSizeOption = SnakeAndLaddersFinalProject.GameBoardService.BoardSizeOption;
 
@@ -15,7 +14,7 @@ namespace SnakeAndLaddersFinalProject.Services
         private const string ENDPOINT_NAME = "NetTcpBinding_IGameBoardService";
         private const int INVALID_USER_ID = 0;
 
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(GameBoardClient));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(GameBoardClient));
 
         public BoardDefinitionDto CreateBoard(
             int gameId,
@@ -32,13 +31,13 @@ namespace SnakeAndLaddersFinalProject.Services
             }
 
             int[] normalizedPlayers = (playerUserIds ?? Enumerable.Empty<int>())
-                .Where(id => id != INVALID_USER_ID) // ⬅ invitado negativo pasa, solo bloquea 0
+                .Where(id => id != INVALID_USER_ID)
                 .Distinct()
                 .ToArray();
 
             if (normalizedPlayers.Length == 0)
             {
-                Logger.Error("CreateBoard llamado sin jugadores válidos.");
+                _logger.Error("CreateBoard llamado sin jugadores válidos.");
                 throw new InvalidOperationException("No hay jugadores válidos para crear el tablero.");
             }
 
@@ -59,7 +58,7 @@ namespace SnakeAndLaddersFinalProject.Services
                     PlayerUserIds = normalizedPlayers
                 };
 
-                Logger.InfoFormat(
+                _logger.InfoFormat(
                     "GameBoardClient.CreateBoard GameId={0}, ClientBoardSize={1}, ServiceBoardSize={2}, Players={3}",
                     gameId,
                     boardSize,
@@ -71,7 +70,7 @@ namespace SnakeAndLaddersFinalProject.Services
                 if (response == null || response.Board == null)
                 {
                     const string message = "El servidor no devolvió ningún tablero.";
-                    Logger.Error(message);
+                    _logger.Error(message);
                     throw new InvalidOperationException(message);
                 }
 
@@ -80,7 +79,7 @@ namespace SnakeAndLaddersFinalProject.Services
             }
             catch (FaultException ex)
             {
-                Logger.Error("FaultException al crear el tablero.", ex);
+                _logger.Error("FaultException al crear el tablero.", ex);
                 client.Abort();
                 throw new InvalidOperationException(
                     "El servidor rechazó la creación del tablero: " + ex.Message,
@@ -88,7 +87,7 @@ namespace SnakeAndLaddersFinalProject.Services
             }
             catch (CommunicationException ex)
             {
-                Logger.Error("Error de comunicación al crear el tablero.", ex);
+                _logger.Error("Error de comunicación al crear el tablero.", ex);
                 client.Abort();
                 throw new InvalidOperationException(
                     "Hubo un problema de comunicación al crear el tablero.",
@@ -96,7 +95,7 @@ namespace SnakeAndLaddersFinalProject.Services
             }
             catch (TimeoutException ex)
             {
-                Logger.Error("Timeout al crear el tablero.", ex);
+                _logger.Error("Timeout al crear el tablero.", ex);
                 client.Abort();
                 throw new InvalidOperationException(
                     "El servidor tardó demasiado en crear el tablero.",
@@ -104,7 +103,7 @@ namespace SnakeAndLaddersFinalProject.Services
             }
             catch (Exception ex)
             {
-                Logger.Error("Error inesperado al crear el tablero.", ex);
+                _logger.Error("Error inesperado al crear el tablero.", ex);
                 client.Abort();
                 throw;
             }
@@ -127,25 +126,25 @@ namespace SnakeAndLaddersFinalProject.Services
             }
             catch (FaultException ex)
             {
-                Logger.Warn("FaultException al obtener el tablero.", ex);
+                _logger.Warn("FaultException al obtener el tablero.", ex);
                 client.Abort();
                 return null;
             }
             catch (CommunicationException ex)
             {
-                Logger.Error("Error de comunicación al obtener el tablero.", ex);
+                _logger.Error("Error de comunicación al obtener el tablero.", ex);
                 client.Abort();
                 return null;
             }
             catch (TimeoutException ex)
             {
-                Logger.Error("Timeout al obtener el tablero.", ex);
+                _logger.Error("Timeout al obtener el tablero.", ex);
                 client.Abort();
                 return null;
             }
             catch (Exception ex)
             {
-                Logger.Error("Error inesperado al obtener el tablero.", ex);
+                _logger.Error("Error inesperado al obtener el tablero.", ex);
                 client.Abort();
                 return null;
             }

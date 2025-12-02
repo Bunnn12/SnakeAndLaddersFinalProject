@@ -37,7 +37,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             get { return SpecialType == GameSpecialCellType.Teleport; }
         }
 
-        // NUEVO: flags que vienen del server
         public bool IsStart { get; }
 
         public bool IsFinal { get; }

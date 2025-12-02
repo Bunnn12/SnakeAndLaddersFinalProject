@@ -1,9 +1,9 @@
-﻿namespace SnakeAndLaddersFinalProject.Infrastructure
-{
-    using System;
-    using System.Threading.Tasks;
-    using System.Windows.Input;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
+namespace SnakeAndLaddersFinalProject.Infrastructure
+{
     public sealed class AsyncCommand : ICommand
     {
         private readonly Func<Task> _executeAsync;

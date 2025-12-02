@@ -12,7 +12,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     {
         private const string STATS_SERVICE_ENDPOINT_CONFIGURATION_NAME = "NetTcpBinding_IStatsService";
 
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(ProfileStatsViewModel));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ProfileStatsViewModel));
 
         public int TargetUserId { get; }
 
@@ -93,7 +93,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             if (TargetUserId <= 0)
             {
-                Logger.Warn("ProfileStatsPage: targetUserId inválido.");
+                _logger.Warn("ProfileStatsPage: targetUserId inválido.");
                 MessageBox.Show(
                     "Lang.errorProfileStatsInvalidUserIdText",
                     Lang.errorTitle,
@@ -111,7 +111,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 if (stats == null)
                 {
-                    Logger.Warn("ProfileStatsPage: GetPlayerStatsByUserId devolvió null.");
+                    _logger.Warn("ProfileStatsPage: GetPlayerStatsByUserId devolvió null.");
                     ResetStatsToZero();
                     return;
                 }
@@ -120,7 +120,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("Error loading player stats.", ex);
+                _logger.Error("Error loading player stats.", ex);
 
                 MessageBox.Show(
                     "Lang.errorLoadingProfileStatsText",
@@ -138,7 +138,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("Error while closing StatsServiceClient in ProfileStatsPage.", ex);
+                    _logger.Error("Error while closing StatsServiceClient in ProfileStatsPage.", ex);
                 }
             }
         }

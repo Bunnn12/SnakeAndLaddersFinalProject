@@ -41,7 +41,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 throw new ArgumentOutOfRangeException(nameof(columns));
             }
 
-            // Solo para mantener la firma compatible con GameBoardViewModel
             _ = cells;
 
             StartIndex = link.StartIndex;
@@ -76,12 +75,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             int zeroBasedIndex = index - MIN_INDEX;
 
-            // Numeración lógica: desde ABAJO hacia ARRIBA
             int rowFromBottom = zeroBasedIndex / columns;
             int columnFromLeft = zeroBasedIndex % columns;
 
-            // El Canvas / UniformGrid trabajan con filas desde ARRIBA,
-            // así que invertimos la fila
             int rowFromTop = (rows - 1) - rowFromBottom;
 
             return (rowFromTop, columnFromLeft);

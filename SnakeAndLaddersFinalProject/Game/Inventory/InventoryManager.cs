@@ -10,7 +10,7 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
     {
         private const string INVENTORY_SERVICE_ENDPOINT_NAME = "NetTcpBinding_IInventoryService";
 
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(InventoryManager));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(InventoryManager));
 
         public async Task<InventorySnapshot> GetInventoryAsync(int userId)
         {
@@ -56,7 +56,7 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             }
             catch (Exception ex)
             {
-                Logger.Error("Error loading inventory from service.", ex);
+                _logger.Error("Error loading inventory from service.", ex);
                 throw;
             }
         }
@@ -81,7 +81,7 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             }
             catch (Exception ex)
             {
-                Logger.Error("Error updating selected items.", ex);
+                _logger.Error("Error updating selected items.", ex);
                 throw;
             }
         }
@@ -104,15 +104,10 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             }
             catch (Exception ex)
             {
-                Logger.Error("Error updating selected dice.", ex);
+                _logger.Error("Error updating selected dice.", ex);
                 throw;
             }
         }
-
-        // ===============================================================
-        // NUEVOS MÉTODOS: EQUIP / UNEQUIP ITEMS
-        // ===============================================================
-
         public async Task EquipItemToSlotAsync(
             int userId,
             byte slotNumber,
@@ -131,7 +126,7 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             }
             catch (Exception ex)
             {
-                Logger.Error("Error equipping item to slot.", ex);
+                _logger.Error("Error equipping item to slot.", ex);
                 throw;
             }
         }
@@ -152,14 +147,10 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             }
             catch (Exception ex)
             {
-                Logger.Error("Error unequipping item from slot.", ex);
+                _logger.Error("Error unequipping item from slot.", ex);
                 throw;
             }
         }
-
-        // ===============================================================
-        // NUEVOS MÉTODOS: EQUIP / UNEQUIP DICE
-        // ===============================================================
 
         public async Task EquipDiceToSlotAsync(
             int userId,
@@ -179,7 +170,7 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             }
             catch (Exception ex)
             {
-                Logger.Error("Error equipping dice to slot.", ex);
+                _logger.Error("Error equipping dice to slot.", ex);
                 throw;
             }
         }
@@ -200,12 +191,10 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             }
             catch (Exception ex)
             {
-                Logger.Error("Error unequipping dice from slot.", ex);
+                _logger.Error("Error unequipping dice from slot.", ex);
                 throw;
             }
         }
-
-        // ===============================================================
 
         private static InventoryServiceClient CreateClient()
         {

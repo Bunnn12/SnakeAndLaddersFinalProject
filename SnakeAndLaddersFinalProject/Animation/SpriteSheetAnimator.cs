@@ -17,13 +17,13 @@ namespace SnakeAndLaddersFinalProject.Animation
         public const int SPRITE_COLUMNS = 4;
         public const int TOTAL_FRAMES = 16;
 
-        private readonly Image targetImage;
-        private readonly BitmapSource spriteSheet;
-        private readonly int frameWidth;
-        private readonly int frameHeight;
-        private readonly DispatcherTimer timer;
+        private readonly Image _targetImage;
+        private readonly BitmapSource _spriteSheet;
+        private readonly int _frameWidth;
+        private readonly int _frameHeight;
+        private readonly DispatcherTimer _timer;
 
-        private int currentFrameIndex;
+        private int _currentFrameIndex;
 
         public SpriteSheetAnimator(
             Image targetImage,
@@ -32,50 +32,65 @@ namespace SnakeAndLaddersFinalProject.Animation
             int frameHeight,
             double framesPerSecond)
         {
-            if (targetImage == null) throw new ArgumentNullException(nameof(targetImage));
-            if (spriteSheet == null) throw new ArgumentNullException(nameof(spriteSheet));
-            if (frameWidth <= 0) throw new ArgumentOutOfRangeException(nameof(frameWidth));
-            if (frameHeight <= 0) throw new ArgumentOutOfRangeException(nameof(frameHeight));
-            if (framesPerSecond <= 0) throw new ArgumentOutOfRangeException(nameof(framesPerSecond));
+            if (targetImage == null)
+            {
+                throw new ArgumentNullException(nameof(targetImage));
+            }
+            if (spriteSheet == null)
+            {
+                throw new ArgumentNullException(nameof(spriteSheet));
+            }
+            if (frameWidth <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(frameWidth));
+            }
+            if (frameHeight <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(frameHeight));
+            }
+            if (framesPerSecond <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(framesPerSecond));
+            }
 
-            this.targetImage = targetImage;
-            this.spriteSheet = spriteSheet;
-            this.frameWidth = frameWidth;
-            this.frameHeight = frameHeight;
+            this._targetImage = targetImage;
+            this._spriteSheet = spriteSheet;
+            this._frameWidth = frameWidth;
+            this._frameHeight = frameHeight;
 
-            timer = new DispatcherTimer();
+            _timer = new DispatcherTimer();
 
-            timer.Interval = TimeSpan.FromMilliseconds(
+            _timer.Interval = TimeSpan.FromMilliseconds(
                 MILLISECONDS_IN_SECOND / framesPerSecond);
-            timer.Tick += OnTimerTick;
+            _timer.Tick += OnTimerTick;
         }
         public void Start()
         {
-            currentFrameIndex = 0;
-            timer.Start();
+            _currentFrameIndex = 0;
+            _timer.Start();
         }
         public void Stop()
         {
-            timer.Stop();
+            _timer.Stop();
         }
 
         private void OnTimerTick(object sender, EventArgs e)
         {
 
-            Int32Rect sourceRect = CalculateSourceRect(currentFrameIndex);
-            CroppedBitmap frame = new CroppedBitmap(spriteSheet, sourceRect);
-            targetImage.Source = frame;
-            currentFrameIndex = (currentFrameIndex + 1) % TOTAL_FRAMES;
+            Int32Rect sourceRect = CalculateSourceRect(_currentFrameIndex);
+            CroppedBitmap frame = new CroppedBitmap(_spriteSheet, sourceRect);
+            _targetImage.Source = frame;
+            _currentFrameIndex = (_currentFrameIndex + 1) % TOTAL_FRAMES;
         }
         private Int32Rect CalculateSourceRect(int frameIndex)
         {
             int columnIndex = frameIndex % SPRITE_COLUMNS;
             int rowIndex = frameIndex / SPRITE_COLUMNS;
 
-            int x = columnIndex * frameWidth;
-            int y = rowIndex * frameHeight;
+            int x = columnIndex * _frameWidth;
+            int y = rowIndex * _frameHeight;
 
-            return new Int32Rect(x, y, frameWidth, frameHeight);
+            return new Int32Rect(x, y, _frameWidth, _frameHeight);
         }
     }
 }

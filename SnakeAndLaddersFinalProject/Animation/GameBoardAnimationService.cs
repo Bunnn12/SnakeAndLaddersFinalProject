@@ -18,10 +18,10 @@ namespace SnakeAndLaddersFinalProject.Animation
         private const double CURVE_FACTOR = 0.25;
         private const double MAX_CURVE_OFFSET = 1.20;
 
-        private readonly PlayerTokenManager tokenManager;
-        private readonly IReadOnlyDictionary<int, BoardLinkDto> linksByStartIndex;
-        private readonly IReadOnlyDictionary<int, Point> cellCentersByIndex;
-        private readonly Func<int, int> mapServerIndexToVisual;
+        private readonly PlayerTokenManager _tokenManager;
+        private readonly IReadOnlyDictionary<int, BoardLinkDto> _linksByStartIndex;
+        private readonly IReadOnlyDictionary<int, Point> _cellCentersByIndex;
+        private readonly Func<int, int> _mapServerIndexToVisual;
 
         public GameBoardAnimationService(
             PlayerTokenManager tokenManager,
@@ -29,16 +29,16 @@ namespace SnakeAndLaddersFinalProject.Animation
             IReadOnlyDictionary<int, Point> cellCentersByIndex,
             Func<int, int> mapServerIndexToVisual)
         {
-            this.tokenManager = tokenManager
+            this._tokenManager = tokenManager
                 ?? throw new ArgumentNullException(nameof(tokenManager));
 
-            this.linksByStartIndex = linksByStartIndex
+            this._linksByStartIndex = linksByStartIndex
                 ?? throw new ArgumentNullException(nameof(linksByStartIndex));
 
-            this.cellCentersByIndex = cellCentersByIndex
+            this._cellCentersByIndex = cellCentersByIndex
                 ?? throw new ArgumentNullException(nameof(cellCentersByIndex));
 
-            this.mapServerIndexToVisual = mapServerIndexToVisual
+            this._mapServerIndexToVisual = mapServerIndexToVisual
                 ?? throw new ArgumentNullException(nameof(mapServerIndexToVisual));
         }
 
@@ -50,10 +50,10 @@ namespace SnakeAndLaddersFinalProject.Animation
             int toIndexServer,
             int diceValue)
         {
-            int fromVisual = mapServerIndexToVisual(fromIndexServer);
-            int toVisual = mapServerIndexToVisual(toIndexServer);
+            int fromVisual = _mapServerIndexToVisual(fromIndexServer);
+            int toVisual = _mapServerIndexToVisual(toIndexServer);
 
-            PlayerTokenViewModel token = tokenManager.GetOrCreateTokenForUser(userId, fromVisual);
+            PlayerTokenViewModel token = _tokenManager.GetOrCreateTokenForUser(userId, fromVisual);
 
             IsAnimating = true;
 
@@ -62,13 +62,14 @@ namespace SnakeAndLaddersFinalProject.Animation
                 int landingIndexServer = fromIndexServer + diceValue;
 
                 if (landingIndexServer > 0 &&
-                    linksByStartIndex.TryGetValue(landingIndexServer, out BoardLinkDto usedLink))
+                    _linksByStartIndex.TryGetValue(landingIndexServer, out BoardLinkDto link) &&
+                    toIndexServer == link.EndIndex)
                 {
-                    int landingVisual = mapServerIndexToVisual(landingIndexServer);
+                    int landingVisual = _mapServerIndexToVisual(landingIndexServer);
 
                     await AnimateWalkAsync(token, fromVisual, landingVisual).ConfigureAwait(false);
 
-                    await AnimateLinkSlideAsync(token, usedLink).ConfigureAwait(false);
+                    await AnimateLinkSlideAsync(token, link).ConfigureAwait(false);
                 }
                 else
                 {
@@ -80,6 +81,8 @@ namespace SnakeAndLaddersFinalProject.Animation
                 IsAnimating = false;
             }
         }
+
+
 
         private async Task AnimateWalkAsync(
             PlayerTokenViewModel token,
@@ -96,7 +99,7 @@ namespace SnakeAndLaddersFinalProject.Animation
                 await Application.Current.Dispatcher.InvokeAsync(
                     () =>
                     {
-                        tokenManager.UpdateTokenPositionFromCell(token, toIndexVisual);
+                        _tokenManager.UpdateTokenPositionFromCell(token, toIndexVisual);
                     });
 
                 return;
@@ -113,7 +116,7 @@ namespace SnakeAndLaddersFinalProject.Animation
                 await Application.Current.Dispatcher.InvokeAsync(
                     () =>
                     {
-                        tokenManager.UpdateTokenPositionFromCell(token, cellIndex);
+                        _tokenManager.UpdateTokenPositionFromCell(token, cellIndex);
                     });
 
                 await BobTokenAsync(token).ConfigureAwait(false);
@@ -130,13 +133,13 @@ namespace SnakeAndLaddersFinalProject.Animation
                 return;
             }
 
-            if (!cellCentersByIndex.TryGetValue(link.StartIndex, out Point start) ||
-                !cellCentersByIndex.TryGetValue(link.EndIndex, out Point end))
+            if (!_cellCentersByIndex.TryGetValue(link.StartIndex, out Point start) ||
+                !_cellCentersByIndex.TryGetValue(link.EndIndex, out Point end))
             {
                 await Application.Current.Dispatcher.InvokeAsync(
                     () =>
                     {
-                        tokenManager.UpdateTokenPositionFromCell(token, link.EndIndex);
+                        _tokenManager.UpdateTokenPositionFromCell(token, link.EndIndex);
                     });
 
                 return;
@@ -163,7 +166,7 @@ namespace SnakeAndLaddersFinalProject.Animation
             await Application.Current.Dispatcher.InvokeAsync(
                 () =>
                 {
-                    tokenManager.UpdateTokenPositionFromCell(token, link.EndIndex);
+                    _tokenManager.UpdateTokenPositionFromCell(token, link.EndIndex);
                 });
         }
 

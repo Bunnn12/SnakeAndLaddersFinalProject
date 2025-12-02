@@ -18,7 +18,7 @@ namespace SnakeAndLaddersFinalProject.Pages
     {
         private const string INSTAGRAM_URL = "https://www.instagram.com/";
         private const string FACEBOOK_URL = "https://www.facebook.com/";
-        private const string TWITTER_URL = "https://x.com/";
+        private const string TWITTER_URL = "https://_x.com/";
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(ProfilePage));
 

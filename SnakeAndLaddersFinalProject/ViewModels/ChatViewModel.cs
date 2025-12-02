@@ -14,7 +14,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class ChatViewModel : INotifyPropertyChanged
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(ChatViewModel));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ChatViewModel));
 
         private const string CHAT_BINDING_KEY = "ChatBinding";
         private const string CHAT_ENDPOINT_ADDRESS_KEY = "ChatEndpointAddress";
@@ -27,10 +27,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const int DEFAULT_RECENT_MESSAGES_TAKE = 50;
         private const int MAX_RECEIVED_MESSAGE_SIZE_BYTES = 1_048_576;
 
-        private static readonly TimeSpan DUPLICATE_WINDOW = TimeSpan.FromSeconds(3);
+        private static readonly TimeSpan _duplicateWindow = TimeSpan.FromSeconds(3);
 
-        private IChatService chatServiceProxy;
-        private string newMessageText = string.Empty;
+        private IChatService _chatServiceProxy;
+        private string _newMessageText = string.Empty;
 
         public int LobbyId { get; }
 
@@ -38,10 +38,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public string NewMessage
         {
-            get => newMessageText;
+            get => _newMessageText;
             set
             {
-                newMessageText = value;
+                _newMessageText = value;
                 OnPropertyChanged(nameof(NewMessage));
             }
         }
@@ -71,13 +71,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 ? DEFAULT_GUEST_USER_NAME
                 : SessionContext.Current.UserName;
 
-            chatServiceProxy = CreateDuplexProxyFromConfig();
+            _chatServiceProxy = CreateDuplexProxyFromConfig();
 
             try
             {
-                chatServiceProxy.Subscribe(LobbyId, CurrentUserId);
+                _chatServiceProxy.Subscribe(LobbyId, CurrentUserId);
 
-                var recentMessages = chatServiceProxy.GetRecent(LobbyId, DEFAULT_RECENT_MESSAGES_TAKE);
+                var recentMessages = _chatServiceProxy.GetRecent(LobbyId, DEFAULT_RECENT_MESSAGES_TAKE);
                 foreach (var message in recentMessages)
                 {
                     Messages.Add(new ChatMessageVm(message, CurrentUserName));
@@ -87,7 +87,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 StatusText = $"Chat offline: {ex.Message}";
                 OnPropertyChanged(nameof(StatusText));
-                Logger.Error("Failed to subscribe or get recent messages.", ex);
+                _logger.Error("Failed to subscribe or get recent messages.", ex);
             }
 
             SendMessageCommand = new RelayCommand(_ => Send(), _ => CanSend());
@@ -149,7 +149,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                var response = chatServiceProxy.SendMessage(
+                var response = _chatServiceProxy.SendMessage(
                     new SendMessageRequest2
                     {
                         LobbyId = LobbyId,
@@ -167,7 +167,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 StatusText = $"Send failed: {ex.Message}";
                 OnPropertyChanged(nameof(StatusText));
                 TryRecreateProxy();
-                Logger.Error("Failed to send chat message.", ex);
+                _logger.Error("Failed to send chat message.", ex);
             }
         }
 
@@ -205,7 +205,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 delta = -delta;
             }
 
-            return delta <= DUPLICATE_WINDOW;
+            return delta <= _duplicateWindow;
         }
 
         internal void AddIncoming(ChatMessageDto messageDto)
@@ -222,12 +222,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             try
             {
-                chatServiceProxy = CreateDuplexProxyFromConfig();
-                chatServiceProxy.Subscribe(LobbyId, CurrentUserId);
+                _chatServiceProxy = CreateDuplexProxyFromConfig();
+                _chatServiceProxy.Subscribe(LobbyId, CurrentUserId);
             }
             catch (Exception ex)
             {
-                Logger.Error("Failed to recreate chat proxy.", ex);
+                _logger.Error("Failed to recreate chat proxy.", ex);
             }
         }
 
@@ -235,14 +235,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             try
             {
-                chatServiceProxy?.Unsubscribe(LobbyId, CurrentUserId);
+                _chatServiceProxy?.Unsubscribe(LobbyId, CurrentUserId);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                _logger.Error(ex);
             }
 
-            if (chatServiceProxy is ICommunicationObject communicationObject)
+            if (_chatServiceProxy is ICommunicationObject communicationObject)
             {
                 try
                 {
@@ -251,7 +251,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 catch (Exception ex)
                 {
                     communicationObject.Abort();
-                    Logger.Error(ex);
+                    _logger.Error(ex);
                 }
             }
         }

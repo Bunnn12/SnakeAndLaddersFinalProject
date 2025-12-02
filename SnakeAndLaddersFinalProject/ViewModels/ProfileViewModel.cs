@@ -19,7 +19,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private const string NAME_ALLOWED_PATTERN = @"^[\p{L}\p{M}0-9 .,'\-]*$";
 
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(ProfileViewModel));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ProfileViewModel));
 
         public AccountDto LoadedAccount { get; private set; }
 
@@ -86,7 +86,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("Error loading profile.", ex);
+                _logger.Error("Error loading profile.", ex);
                 MessageBox.Show(
                     Lang.ProfileAccountInfoLoadError,
                     Lang.UiTitleError,
@@ -102,7 +102,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("Error while closing UserServiceClient.", ex);
+                    _logger.Error("Error while closing UserServiceClient.", ex);
                 }
             }
         }
@@ -145,7 +145,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("Error loading avatar options.", ex);
+                _logger.Error("Error loading avatar options.", ex);
                 return false;
             }
             finally
@@ -156,7 +156,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("Error while closing UserServiceClient after loading avatar options.", ex);
+                    _logger.Error("Error while closing UserServiceClient after loading avatar options.", ex);
                 }
             }
         }
@@ -303,7 +303,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("Error updating profile.", ex);
+                _logger.Error("Error updating profile.", ex);
                 MessageBox.Show(
                     Lang.ProfileUpdateErrorText,
                     Lang.UiTitleError,
@@ -319,7 +319,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("Error while closing UserServiceClient after update.", ex);
+                    _logger.Error("Error while closing UserServiceClient after update.", ex);
                 }
             }
         }
@@ -348,7 +348,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("Error deactivating account.", ex);
+                _logger.Error("Error deactivating account.", ex);
                 MessageBox.Show(
                     Lang.ProfileDeactivateErrorText,
                     Lang.UiTitleError,
@@ -364,7 +364,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("Error while closing UserServiceClient after deactivate.", ex);
+                    _logger.Error("Error while closing UserServiceClient after deactivate.", ex);
                 }
             }
         }
@@ -419,7 +419,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("Error updating avatar.", ex);
+                _logger.Error("Error updating avatar.", ex);
                 MessageBox.Show(
                     Lang.ProfileAvatarUpdateErrorText,
                     Lang.UiTitleError,
@@ -435,7 +435,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("Error while closing UserServiceClient after avatar update.", ex);
+                    _logger.Error("Error while closing UserServiceClient after avatar update.", ex);
                 }
             }
         }

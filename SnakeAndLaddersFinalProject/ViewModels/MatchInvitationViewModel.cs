@@ -20,16 +20,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string MATCH_INVITATION_BASIC_ENDPOINT = "BasicHttpBinding_IMatchInvitationService";
         private const string GUEST_TOKEN_PREFIX = "GUEST-";
 
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(MatchInvitationViewModel));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(MatchInvitationViewModel));
 
-        private readonly MatchInvitationServiceClient invitationClient;
-        private readonly FriendsListViewModel friendsViewModel;
+        private readonly MatchInvitationServiceClient _invitationClient;
+        private readonly FriendsListViewModel _friendsViewModel;
 
-        private bool isBusy;
-        private string statusText;
-        private string gameCode;
-        private int lobbyId;
-        private FriendListItemDto selectedFriend;
+        private bool _isBusy;
+        private string _statusText;
+        private string _gameCode;
+        private int _lobbyId;
+        private FriendListItemDto _selectedFriend;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event Action RequestClose;
@@ -37,13 +37,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public MatchInvitationViewModel(int lobbyId, string gameCode)
         {
-            this.lobbyId = lobbyId;
-            this.gameCode = (gameCode ?? string.Empty).Trim();
+            this._lobbyId = lobbyId;
+            this._gameCode = (gameCode ?? string.Empty).Trim();
 
-            invitationClient = new MatchInvitationServiceClient(MATCH_INVITATION_BASIC_ENDPOINT);
-            friendsViewModel = new FriendsListViewModel();
+            _invitationClient = new MatchInvitationServiceClient(MATCH_INVITATION_BASIC_ENDPOINT);
+            _friendsViewModel = new FriendsListViewModel();
 
-            Friends = friendsViewModel.Friends;
+            Friends = _friendsViewModel.Friends;
 
             SendInvitationCommand = new AsyncCommand(SendInvitationAsync, () => CanSendInvitation);
 
@@ -53,7 +53,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 try
                 {
-                    friendsViewModel.LoadFriends();
+                    _friendsViewModel.LoadFriends();
 
                     if (Friends == null || Friends.Count == 0)
                     {
@@ -69,7 +69,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     string userMessage = ExceptionHandler.Handle(
                         ex,
                         $"{nameof(MatchInvitationViewModel)}.FriendsLoad",
-                        Logger);
+                        _logger);
 
                     StatusText = userMessage;
                     OnShowMessageRequested(
@@ -92,15 +92,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public FriendListItemDto SelectedFriend
         {
-            get { return selectedFriend; }
+            get { return _selectedFriend; }
             set
             {
-                if (selectedFriend == value)
+                if (_selectedFriend == value)
                 {
                     return;
                 }
 
-                selectedFriend = value;
+                _selectedFriend = value;
                 OnPropertyChanged();
                 RaiseCanExecutes();
             }
@@ -108,15 +108,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public string GameCode
         {
-            get { return gameCode; }
+            get { return _gameCode; }
             private set
             {
-                if (gameCode == value)
+                if (_gameCode == value)
                 {
                     return;
                 }
 
-                gameCode = value;
+                _gameCode = value;
                 OnPropertyChanged();
                 RaiseCanExecutes();
             }
@@ -124,15 +124,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public int LobbyId
         {
-            get { return lobbyId; }
+            get { return _lobbyId; }
             private set
             {
-                if (lobbyId == value)
+                if (_lobbyId == value)
                 {
                     return;
                 }
 
-                lobbyId = value;
+                _lobbyId = value;
                 OnPropertyChanged();
                 RaiseCanExecutes();
             }
@@ -140,30 +140,30 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public string StatusText
         {
-            get { return statusText; }
+            get { return _statusText; }
             private set
             {
-                if (statusText == value)
+                if (_statusText == value)
                 {
                     return;
                 }
 
-                statusText = value;
+                _statusText = value;
                 OnPropertyChanged();
             }
         }
 
         public bool IsBusy
         {
-            get { return isBusy; }
+            get { return _isBusy; }
             private set
             {
-                if (isBusy == value)
+                if (_isBusy == value)
                 {
                     return;
                 }
 
-                isBusy = value;
+                _isBusy = value;
                 OnPropertyChanged();
                 RaiseCanExecutes();
             }
@@ -247,12 +247,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     GameCode = GameCode
                 };
 
-                Logger.InfoFormat(
+                _logger.InfoFormat(
                     "Sending game invitation. FriendUserId={0}, GameCode={1}",
                     request.FriendUserId,
                     request.GameCode);
 
-                OperationResult result = await invitationClient.InviteFriendToGameAsync(request);
+                OperationResult result = await _invitationClient.InviteFriendToGameAsync(request);
 
                 if (result == null)
                 {
@@ -294,7 +294,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 string userMessage = ExceptionHandler.Handle(
                     ex,
                     $"{nameof(MatchInvitationViewModel)}.{nameof(SendInvitationAsync)}",
-                    Logger);
+                    _logger);
 
                 StatusText = userMessage;
                 OnShowMessageRequested(

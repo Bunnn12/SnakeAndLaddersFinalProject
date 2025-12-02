@@ -37,7 +37,7 @@ namespace SnakeAndLaddersFinalProject
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "SnakeAndLadders", "logs");
             Directory.CreateDirectory(logsDir);
-            log4net.GlobalContext.Properties["LogFileName"] = Path.Combine(logsDir, "client.log");
+            log4net.GlobalContext.Properties["LogFileName"] = Path.Combine(logsDir, "_client.log");
             
             XmlConfigurator.Configure(LogManager.GetRepository());
 

@@ -2,7 +2,7 @@
 using SnakeAndLaddersFinalProject.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+
 using System.ServiceModel;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -18,7 +18,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const int PASSWORD_MIN_LENGTH = 8;
         private const int PASSWORD_MAX_LENGTH = 510;
 
-        private static readonly Regex EMAIL_REGEX =
+        private static readonly Regex _emailRegex =
             new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         public sealed class LoginServiceResult
@@ -46,7 +46,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             else
             {
-                if (identifier.Contains("@") && !EMAIL_REGEX.IsMatch(identifier))
+                if (identifier.Contains("@") && !_emailRegex.IsMatch(identifier))
                 {
                     errors.Add(T("UiEmailInvalid"));
                 }

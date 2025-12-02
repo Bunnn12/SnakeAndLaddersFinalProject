@@ -1,4 +1,4 @@
-﻿using SnakeAndLaddersFinalProject.Game;
+﻿
 using SnakeAndLaddersFinalProject.GameplayService;
 using SnakeAndLaddersFinalProject.Infrastructure;
 using System;
@@ -9,8 +9,8 @@ namespace SnakeAndLaddersFinalProject.Services
 {
     internal sealed class GameplayClient : IGameplayClient, IDisposable
     {
-        private readonly IGameplayService gameplayProxy;
-        private readonly DuplexChannelFactory<IGameplayService> channelFactory;
+        private readonly IGameplayService _gameplayProxy;
+        private readonly DuplexChannelFactory<IGameplayService> _channelFactory;
 
         public GameplayClient(IGameplayEventsHandler eventsHandler)
         {
@@ -22,13 +22,11 @@ namespace SnakeAndLaddersFinalProject.Services
             var callback = new GameplayClientCallback(eventsHandler);
             var instanceContext = new InstanceContext(callback);
 
-            // Usa el endpoint duplex definido en App.config
-            // <endpoint name="NetTcpBinding_IGameplayService" ... />
-            channelFactory = new DuplexChannelFactory<IGameplayService>(
+            _channelFactory = new DuplexChannelFactory<IGameplayService>(
                 instanceContext,
                 "NetTcpBinding_IGameplayService");
 
-            gameplayProxy = channelFactory.CreateChannel();
+            _gameplayProxy = _channelFactory.CreateChannel();
         }
 
         public Task<RollDiceResponseDto> GetRollDiceAsync(int gameId, int userId)
@@ -42,7 +40,7 @@ namespace SnakeAndLaddersFinalProject.Services
                         PlayerUserId = userId
                     };
 
-                    return gameplayProxy.RollDice(request);
+                    return _gameplayProxy.RollDice(request);
                 });
         }
 
@@ -56,7 +54,7 @@ namespace SnakeAndLaddersFinalProject.Services
                         GameId = gameId
                     };
 
-                    return gameplayProxy.GetGameState(request);
+                    return _gameplayProxy.GetGameState(request);
                 });
         }
 
@@ -65,7 +63,7 @@ namespace SnakeAndLaddersFinalProject.Services
             return Task.Run(
                 () =>
                 {
-                    gameplayProxy.JoinGame(gameId, userId, userName);
+                    _gameplayProxy.JoinGame(gameId, userId, userName);
                 });
         }
 
@@ -74,16 +72,15 @@ namespace SnakeAndLaddersFinalProject.Services
             return Task.Run(
                 () =>
                 {
-                    gameplayProxy.LeaveGame(gameId, userId, reason);
+                    _gameplayProxy.LeaveGame(gameId, userId, reason);
                 });
         }
 
-        // Dentro de la clase GameplayClient
         public Task<UseItemResponseDto> UseItemAsync(
-    int gameId,
-    int userId,
-    byte itemSlotNumber,
-    int? targetUserId)
+            int gameId,
+            int userId,
+            byte itemSlotNumber,
+            int? targetUserId)
         {
             var request = new UseItemRequestDto
             {
@@ -93,7 +90,7 @@ namespace SnakeAndLaddersFinalProject.Services
                 TargetUserId = targetUserId
             };
 
-            return gameplayProxy.UseItemAsync(request);
+            return _gameplayProxy.UseItemAsync(request);
         }
 
 
@@ -102,7 +99,7 @@ namespace SnakeAndLaddersFinalProject.Services
         {
             try
             {
-                if (gameplayProxy is ICommunicationObject communicationObject)
+                if (_gameplayProxy is ICommunicationObject communicationObject)
                 {
                     if (communicationObject.State == CommunicationState.Faulted)
                     {
@@ -116,7 +113,7 @@ namespace SnakeAndLaddersFinalProject.Services
             }
             catch
             {
-                if (gameplayProxy is ICommunicationObject communicationObject)
+                if (_gameplayProxy is ICommunicationObject communicationObject)
                 {
                     communicationObject.Abort();
                 }
@@ -124,23 +121,23 @@ namespace SnakeAndLaddersFinalProject.Services
 
             try
             {
-                if (channelFactory != null)
+                if (_channelFactory != null)
                 {
-                    if (channelFactory.State == CommunicationState.Faulted)
+                    if (_channelFactory.State == CommunicationState.Faulted)
                     {
-                        channelFactory.Abort();
+                        _channelFactory.Abort();
                     }
                     else
                     {
-                        channelFactory.Close();
+                        _channelFactory.Close();
                     }
                 }
             }
             catch
             {
-                if (channelFactory != null)
+                if (_channelFactory != null)
                 {
-                    channelFactory.Abort();
+                    _channelFactory.Abort();
                 }
             }
         }

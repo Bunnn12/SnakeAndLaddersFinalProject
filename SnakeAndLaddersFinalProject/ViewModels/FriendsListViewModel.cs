@@ -17,7 +17,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string CONFIRM_UNFRIEND_MESSAGE = "Remove this user from your friends list?";
         private const string GENERIC_ERROR_TITLE = "Error";
 
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(FriendsListViewModel));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(FriendsListViewModel));
 
         public ObservableCollection<FriendListItemDto> Friends { get; } =
             new ObservableCollection<FriendListItemDto>();
@@ -43,7 +43,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("Failed loading friends.", ex);
+                _logger.Error("Failed loading friends.", ex);
                 MessageBox.Show(Lang.errorLoadingFriendsListText, Lang.errorTitle);
             }
         }
@@ -86,12 +86,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (FaultException ex)
             {
-                Logger.WarnFormat("Unfriend fault: {0} - {1}", ex.Code, ex.Message);
+                _logger.WarnFormat("Unfriend fault: {0} - {1}", ex.Code, ex.Message);
                 MessageBox.Show(ex.Message, Lang.errorTitle);
             }
             catch (Exception ex)
             {
-                Logger.Error("Error removing friend.", ex);
+                _logger.Error("Error removing friend.", ex);
                 MessageBox.Show(
                     Lang.errorRemovingFriendText ?? GENERIC_ERROR_TITLE,
                     Lang.errorTitle);
@@ -122,7 +122,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("Error removing friend.", ex);
+                _logger.Error("Error removing friend.", ex);
                 MessageBox.Show(Lang.errorRemovingFriendText, Lang.errorTitle);
             }
         }

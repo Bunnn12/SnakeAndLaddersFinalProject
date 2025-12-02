@@ -8,7 +8,6 @@ using System.Windows.Input;
 using log4net;
 using SnakeAndLaddersFinalProject.Authentication;
 using SnakeAndLaddersFinalProject.Game.Inventory;
-using SnakeAndLaddersFinalProject.Infrastructure;
 using SnakeAndLaddersFinalProject.Mappers;
 using SnakeAndLaddersFinalProject.Utilities;
 
@@ -24,19 +23,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const byte MIN_DICE_SLOT = 1;
         private const byte MAX_DICE_SLOT = 2;
 
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(InventoryViewModel));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(InventoryViewModel));
 
-        private readonly IInventoryManager inventoryManager;
+        private readonly IInventoryManager _inventoryManager;
 
-        private InventoryItemViewModel slot1Item;
-        private InventoryItemViewModel slot2Item;
-        private InventoryItemViewModel slot3Item;
+        private InventoryItemViewModel _slot1Item;
+        private InventoryItemViewModel _slot2Item;
+        private InventoryItemViewModel _slot3Item;
 
-        private InventoryDiceViewModel slot1Dice;
-        private InventoryDiceViewModel slot2Dice;
+        private InventoryDiceViewModel _slot1Dice;
+        private InventoryDiceViewModel _slot2Dice;
 
-        private InventoryItemViewModel selectedItem;
-        private InventoryDiceViewModel selectedDice;
+        private InventoryItemViewModel _selectedItem;
+        private InventoryDiceViewModel _selectedDice;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -46,105 +45,105 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public InventoryItemViewModel Slot1Item
         {
-            get { return slot1Item; }
+            get { return _slot1Item; }
             private set
             {
-                if (slot1Item == value)
+                if (_slot1Item == value)
                 {
                     return;
                 }
 
-                slot1Item = value;
+                _slot1Item = value;
                 OnPropertyChanged();
             }
         }
 
         public InventoryItemViewModel Slot2Item
         {
-            get { return slot2Item; }
+            get { return _slot2Item; }
             private set
             {
-                if (slot2Item == value)
+                if (_slot2Item == value)
                 {
                     return;
                 }
 
-                slot2Item = value;
+                _slot2Item = value;
                 OnPropertyChanged();
             }
         }
 
         public InventoryItemViewModel Slot3Item
         {
-            get { return slot3Item; }
+            get { return _slot3Item; }
             private set
             {
-                if (slot3Item == value)
+                if (_slot3Item == value)
                 {
                     return;
                 }
 
-                slot3Item = value;
+                _slot3Item = value;
                 OnPropertyChanged();
             }
         }
 
         public InventoryDiceViewModel Slot1Dice
         {
-            get { return slot1Dice; }
+            get { return _slot1Dice; }
             private set
             {
-                if (slot1Dice == value)
+                if (_slot1Dice == value)
                 {
                     return;
                 }
 
-                slot1Dice = value;
+                _slot1Dice = value;
                 OnPropertyChanged();
             }
         }
 
         public InventoryDiceViewModel Slot2Dice
         {
-            get { return slot2Dice; }
+            get { return _slot2Dice; }
             private set
             {
-                if (slot2Dice == value)
+                if (_slot2Dice == value)
                 {
                     return;
                 }
 
-                slot2Dice = value;
+                _slot2Dice = value;
                 OnPropertyChanged();
             }
         }
 
         public InventoryItemViewModel SelectedItem
         {
-            get { return selectedItem; }
+            get { return _selectedItem; }
             set
             {
-                if (selectedItem == value)
+                if (_selectedItem == value)
                 {
                     return;
                 }
 
-                selectedItem = value;
+                _selectedItem = value;
                 OnPropertyChanged();
             }
         }
 
         public InventoryDiceViewModel SelectedDice
         {
-            get { return selectedDice; }
+            get { return _selectedDice; }
             set
             {
-                if (selectedDice == value)
+                if (_selectedDice == value)
                 {
                     return;
                 }
 
-                selectedDice = value;
+                _selectedDice = value;
                 OnPropertyChanged();
             }
         }
@@ -172,7 +171,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public InventoryViewModel(IInventoryManager inventoryManager)
         {
-            this.inventoryManager = inventoryManager ?? throw new ArgumentNullException(nameof(inventoryManager));
+            this._inventoryManager = inventoryManager ?? throw new ArgumentNullException(nameof(inventoryManager));
 
             Items = new ObservableCollection<InventoryItemViewModel>();
             Dice = new ObservableCollection<InventoryDiceViewModel>();
@@ -209,21 +208,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             await SetItemSlotAsync(slotNumber);
         }
 
-        private async void OnSetItemSlot1Executed()
-        {
-            await SetItemSlotAsync(MIN_ITEM_SLOT);
-        }
-
-        private async void OnSetItemSlot2Executed()
-        {
-            await SetItemSlotAsync(2);
-        }
-
-        private async void OnSetItemSlot3Executed()
-        {
-            await SetItemSlotAsync(MAX_ITEM_SLOT);
-        }
-
         private async void OnClearItemSlotExecuted(byte slotNumber)
         {
             await ClearItemSlotAsync(slotNumber);
@@ -232,16 +216,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private async void OnSetDiceSlotExecuted(byte slotNumber)
         {
             await SetDiceSlotAsync(slotNumber);
-        }
-
-        private async void OnSetDiceSlot1Executed()
-        {
-            await SetDiceSlotAsync(MIN_DICE_SLOT);
-        }
-
-        private async void OnSetDiceSlot2Executed()
-        {
-            await SetDiceSlotAsync(MAX_DICE_SLOT);
         }
 
         private async void OnClearDiceSlotExecuted(byte slotNumber)
@@ -260,7 +234,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                InventorySnapshot snapshot = await inventoryManager.GetInventoryAsync(userId);
+                InventorySnapshot snapshot = await _inventoryManager.GetInventoryAsync(userId);
 
                 Items.Clear();
                 Dice.Clear();
@@ -302,7 +276,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 _ = ExceptionHandler.Handle(
                     ex,
                     "InventoryViewModel.LoadInventoryAsync",
-                    Logger);
+                    _logger);
             }
         }
 
@@ -321,7 +295,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private async Task SetItemSlotAsync(byte slotNumber)
         {
-            if (selectedItem == null)
+            if (_selectedItem == null)
             {
                 return;
             }
@@ -340,10 +314,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                await inventoryManager.EquipItemToSlotAsync(
+                await _inventoryManager.EquipItemToSlotAsync(
                     userId,
                     slotNumber,
-                    selectedItem.ObjectId);
+                    _selectedItem.ObjectId);
 
                 await LoadInventoryAsync();
             }
@@ -352,7 +326,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 _ = ExceptionHandler.Handle(
                     ex,
                     "InventoryViewModel.SetItemSlotAsync",
-                    Logger);
+                    _logger);
             }
         }
 
@@ -372,7 +346,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                await inventoryManager.UnequipItemFromSlotAsync(
+                await _inventoryManager.UnequipItemFromSlotAsync(
                     userId,
                     slotNumber);
 
@@ -383,13 +357,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 _ = ExceptionHandler.Handle(
                     ex,
                     "InventoryViewModel.ClearItemSlotAsync",
-                    Logger);
+                    _logger);
             }
         }
 
         private async Task SetDiceSlotAsync(byte slotNumber)
         {
-            if (selectedDice == null)
+            if (_selectedDice == null)
             {
                 return;
             }
@@ -408,10 +382,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                await inventoryManager.EquipDiceToSlotAsync(
+                await _inventoryManager.EquipDiceToSlotAsync(
                     userId,
                     slotNumber,
-                    selectedDice.DiceId);
+                    _selectedDice.DiceId);
 
                 await LoadInventoryAsync();
             }
@@ -420,7 +394,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 _ = ExceptionHandler.Handle(
                     ex,
                     "InventoryViewModel.SetDiceSlotAsync",
-                    Logger);
+                    _logger);
             }
         }
 
@@ -440,7 +414,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                await inventoryManager.UnequipDiceFromSlotAsync(
+                await _inventoryManager.UnequipDiceFromSlotAsync(
                     userId,
                     slotNumber);
 
@@ -451,7 +425,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 _ = ExceptionHandler.Handle(
                     ex,
                     "InventoryViewModel.ClearDiceSlotAsync",
-                    Logger);
+                    _logger);
             }
         }
 

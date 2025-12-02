@@ -5,18 +5,14 @@ using SnakeAndLaddersFinalProject.LobbyService;
 
 namespace SnakeAndLaddersFinalProject.Services
 {
-    /// <summary>
-    /// Encapsula la creación del cliente WCF duplex de Lobby
-    /// y expone el proxy ya configurado con callbacks.
-    /// </summary>
     internal sealed class LobbyClient : IDisposable
     {
         private const string LOBBY_ENDPOINT_NAME = "NetTcpBinding_ILobbyService";
 
-        private readonly LobbyClientCallback callback;
-        private readonly LobbyServiceClient client;
+        private readonly LobbyClientCallback _callback;
+        private readonly LobbyServiceClient _client;
 
-        private bool isDisposed;
+        private bool _isDisposed;
 
         public LobbyClient(ILobbyEventsHandler eventsHandler)
         {
@@ -25,47 +21,47 @@ namespace SnakeAndLaddersFinalProject.Services
                 throw new ArgumentNullException(nameof(eventsHandler));
             }
 
-            callback = new LobbyClientCallback(eventsHandler);
-            var context = new InstanceContext(callback);
+            _callback = new LobbyClientCallback(eventsHandler);
+            var context = new InstanceContext(_callback);
 
-            client = new LobbyServiceClient(context, LOBBY_ENDPOINT_NAME);
+            _client = new LobbyServiceClient(context, LOBBY_ENDPOINT_NAME);
         }
 
-        public LobbyServiceClient Proxy => client;
+        public LobbyServiceClient Proxy => _client;
 
         public void SubscribePublicLobbies(int userId)
         {
-            client.SubscribePublicLobbies(userId);
+            _client.SubscribePublicLobbies(userId);
         }
 
         public void UnsubscribePublicLobbies(int userId)
         {
-            client.UnsubscribePublicLobbies(userId);
+            _client.UnsubscribePublicLobbies(userId);
         }
 
         public void Dispose()
         {
-            if (isDisposed)
+            if (_isDisposed)
             {
                 return;
             }
 
-            isDisposed = true;
+            _isDisposed = true;
 
             try
             {
-                if (client.State == CommunicationState.Faulted)
+                if (_client.State == CommunicationState.Faulted)
                 {
-                    client.Abort();
+                    _client.Abort();
                 }
                 else
                 {
-                    client.Close();
+                    _client.Close();
                 }
             }
             catch
             {
-                client.Abort();
+                _client.Abort();
             }
         }
     }

@@ -14,13 +14,13 @@ namespace SnakeAndLaddersFinalProject.Services
         ConcurrencyMode = ConcurrencyMode.Multiple)]
     internal sealed class LobbyClientCallback : ILobbyServiceCallback
     {
-        private readonly ILobbyEventsHandler handler;
-        private readonly Dispatcher dispatcher;
+        private readonly ILobbyEventsHandler _handler;
+        private readonly Dispatcher _dispatcher;
 
         public LobbyClientCallback(ILobbyEventsHandler handler)
         {
-            this.handler = handler ?? throw new ArgumentNullException(nameof(handler));
-            dispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
+            this._handler = handler ?? throw new ArgumentNullException(nameof(handler));
+            _dispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
         }
 
         public void OnLobbyUpdated(LobbyInfo lobby)
@@ -30,23 +30,23 @@ namespace SnakeAndLaddersFinalProject.Services
                 return;
             }
 
-            RunOnUiThreadAsync(() => handler.HandleLobbyUpdatedAsync(lobby));
+            RunOnUiThreadAsync(() => _handler.HandleLobbyUpdatedAsync(lobby));
         }
 
         public void OnLobbyClosed(int partidaId, string reason)
         {
-            RunOnUiThreadAsync(() => handler.HandleLobbyClosedAsync(partidaId, reason));
+            RunOnUiThreadAsync(() => _handler.HandleLobbyClosedAsync(partidaId, reason));
         }
 
         public void OnKickedFromLobby(int partidaId, string reason)
         {
-            RunOnUiThreadAsync(() => handler.HandleKickedFromLobbyAsync(partidaId, reason));
+            RunOnUiThreadAsync(() => _handler.HandleKickedFromLobbyAsync(partidaId, reason));
         }
 
         public void OnPublicLobbiesChanged(LobbySummary[] lobbies)
         {
             IList<LobbySummary> list = lobbies ?? Array.Empty<LobbySummary>();
-            RunOnUiThreadAsync(() => handler.HandlePublicLobbiesChangedAsync(list));
+            RunOnUiThreadAsync(() => _handler.HandlePublicLobbiesChangedAsync(list));
         }
 
         private void RunOnUiThreadAsync(Func<Task> actionAsync)
@@ -56,13 +56,13 @@ namespace SnakeAndLaddersFinalProject.Services
                 return;
             }
 
-            if (dispatcher.CheckAccess())
+            if (_dispatcher.CheckAccess())
             {
                 _ = actionAsync();
                 return;
             }
 
-            dispatcher.BeginInvoke(
+            _dispatcher.BeginInvoke(
                 new Action(
                     () =>
                     {

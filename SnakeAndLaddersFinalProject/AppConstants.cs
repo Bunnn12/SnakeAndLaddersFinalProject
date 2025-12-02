@@ -13,6 +13,6 @@
         public const string LABEL_SIZE_10X10 = "10×10";
         public const string LABEL_SIZE_12X12 = "12×12";
 
-        public const int DEFAULT_TTL_MINUTES = 30;
+        public const int DEFAULT_EXPIRATION_MINUTES = 30;
     }
 }

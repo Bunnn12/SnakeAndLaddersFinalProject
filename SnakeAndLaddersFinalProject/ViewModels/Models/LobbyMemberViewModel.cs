@@ -10,168 +10,153 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
         public int UserId { get; }
         public string UserName { get; }
         public DateTime JoinedAt { get; }
-
         public string AvatarId { get; }
-
         public string CurrentSkinId { get; }
         public int? CurrentSkinUnlockedId { get; }
-
-        // Clave normalizada de skin (002, 003, etc.).
         public string SkinKey => SkinAssetHelper.NormalizeSkinKey(CurrentSkinId);
-
-        // Claves lógicas.
         public string TokenKey => SkinAssetHelper.ResolveAssets(CurrentSkinId).TokenKey;
         public string IdleKey => SkinAssetHelper.ResolveAssets(CurrentSkinId).IdleKey;
         public string SadKey => SkinAssetHelper.ResolveAssets(CurrentSkinId).SadKey;
-
-        // Imagen grande de la skin.
         public string SkinImagePath => SkinAssetHelper.GetSkinPathFromSkinId(CurrentSkinId);
-
-        // Imagen del token en tablero.
         public string TokenImagePath => SkinAssetHelper.GetTokenPathFromSkinId(CurrentSkinId);
 
-        private bool isHost;
-        private bool isLocalPlayer;
-        private bool isCurrentTurn;
+        private bool _isHost;
+        private bool _isLocalPlayer;
+        private bool _isCurrentTurn;
 
-        // Efectos de estado
-        private bool hasShield;
-        private int remainingShieldTurns;
-        private bool isFrozen;
-        private int remainingFrozenTurns;
+        private bool _hasShield;
+        private int _remainingShieldTurns;
+        private bool _isFrozen;
+        private int _remainingFrozenTurns;
 
-        private string effectsText;
+        private string _effectsText;
 
         public string EffectsText
         {
-            get { return effectsText; }
+            get { return _effectsText; }
             set
             {
-                if (string.Equals(effectsText, value, StringComparison.Ordinal))
+                if (string.Equals(_effectsText, value, StringComparison.Ordinal))
                 {
                     return;
                 }
 
-                effectsText = value;
+                _effectsText = value;
                 OnPropertyChanged();
             }
         }
 
         public bool IsCurrentTurn
         {
-            get { return isCurrentTurn; }
+            get { return _isCurrentTurn; }
             set
             {
-                if (isCurrentTurn == value)
+                if (_isCurrentTurn == value)
                 {
                     return;
                 }
 
-                isCurrentTurn = value;
+                _isCurrentTurn = value;
                 OnPropertyChanged();
             }
         }
 
         public bool IsLocalPlayer
         {
-            get { return isLocalPlayer; }
+            get { return _isLocalPlayer; }
             set
             {
-                if (isLocalPlayer == value)
+                if (_isLocalPlayer == value)
                 {
                     return;
                 }
 
-                isLocalPlayer = value;
+                _isLocalPlayer = value;
                 OnPropertyChanged();
             }
         }
 
         public bool IsHost
         {
-            get { return isHost; }
+            get { return _isHost; }
             set
             {
-                if (isHost == value)
+                if (_isHost == value)
                 {
                     return;
                 }
 
-                isHost = value;
+                _isHost = value;
                 OnPropertyChanged();
             }
         }
 
-        // ---- Nuevas propiedades para efectos ----
-
         public bool HasShield
         {
-            get { return hasShield; }
+            get { return _hasShield; }
             set
             {
-                if (hasShield == value)
+                if (_hasShield == value)
                 {
                     return;
                 }
 
-                hasShield = value;
+                _hasShield = value;
                 OnPropertyChanged();
             }
         }
 
         public int RemainingShieldTurns
         {
-            get { return remainingShieldTurns; }
+            get { return _remainingShieldTurns; }
             set
             {
-                if (remainingShieldTurns == value)
+                if (_remainingShieldTurns == value)
                 {
                     return;
                 }
 
-                remainingShieldTurns = value;
+                _remainingShieldTurns = value;
                 OnPropertyChanged();
             }
         }
 
         public bool IsFrozen
         {
-            get { return isFrozen; }
+            get { return _isFrozen; }
             set
             {
-                if (isFrozen == value)
+                if (_isFrozen == value)
                 {
                     return;
                 }
 
-                isFrozen = value;
+                _isFrozen = value;
                 OnPropertyChanged();
             }
         }
 
         public int RemainingFrozenTurns
         {
-            get { return remainingFrozenTurns; }
+            get { return _remainingFrozenTurns; }
             set
             {
-                if (remainingFrozenTurns == value)
+                if (_remainingFrozenTurns == value)
                 {
                     return;
                 }
 
-                remainingFrozenTurns = value;
+                _remainingFrozenTurns = value;
                 OnPropertyChanged();
             }
         }
-
-        // ---- Constructores ----
 
         public LobbyMemberViewModel(int userId, string userName, bool isHost, DateTime joinedAt)
         {
             UserId = userId;
             UserName = userName;
             JoinedAt = joinedAt;
-            this.isHost = isHost;
+            this._isHost = isHost;
         }
 
         public LobbyMemberViewModel(
@@ -182,6 +167,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
             string avatarId)
             : this(userId, userName, isHost, joinedAt, avatarId, null, null)
         {
+
         }
 
         public LobbyMemberViewModel(
@@ -197,7 +183,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
             UserName = userName;
             JoinedAt = joinedAt;
             AvatarId = avatarId;
-            this.isHost = isHost;
+            this._isHost = isHost;
             CurrentSkinId = currentSkinId;
             CurrentSkinUnlockedId = currentSkinUnlockedId;
         }

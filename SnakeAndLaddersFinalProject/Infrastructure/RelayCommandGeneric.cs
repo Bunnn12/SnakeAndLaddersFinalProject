@@ -5,32 +5,32 @@ namespace SnakeAndLaddersFinalProject.Infrastructure
 {
     public sealed class RelayCommand<T> : ICommand
     {
-        private readonly Action<T> execute;
-        private readonly Func<T, bool> canExecute;
+        private readonly Action<T> _execute;
+        private readonly Func<T, bool> _canExecute;
 
         public RelayCommand(Action<T> executeAction, Func<T, bool> canExecuteFunc = null)
         {
-            execute = executeAction ?? throw new ArgumentNullException(nameof(executeAction));
-            canExecute = canExecuteFunc;
+            _execute = executeAction ?? throw new ArgumentNullException(nameof(executeAction));
+            _canExecute = canExecuteFunc;
         }
 
         public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter)
         {
-            if (canExecute == null)
+            if (_canExecute == null)
             {
                 return true;
             }
 
             T converted = ConvertParameter(parameter);
-            return canExecute(converted);
+            return _canExecute(converted);
         }
 
         public void Execute(object parameter)
         {
             T converted = ConvertParameter(parameter);
-            execute(converted);
+            _execute(converted);
         }
 
         public void RaiseCanExecuteChanged()

@@ -37,7 +37,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string INSTAGRAM_HOST = "instagram.com";
         private const string FACEBOOK_HOST = "facebook.com";
         private const string TWITTER_HOST = "twitter.com";
-        private const string X_HOST = "x.com";
+        private const string X_HOST = "_x.com";
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(SocialProfilesViewModel));
 

@@ -11,7 +11,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class SignUpViewModel
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(SignUpViewModel));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(SignUpViewModel));
 
         private const int MIN_PASSWORD_LENGTH = 8;
         private const int PASSWORD_MAX_LENGTH = 510;
@@ -95,7 +95,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             catch (System.ServiceModel.EndpointNotFoundException)
             {
                 ShowError(T("UiEndpointNotFound"));
-                Logger.Warn("No se ha encontrado el endpoint");
+                _logger.Warn("No se ha encontrado el endpoint");
                 authClient.Abort();
             }
             catch (Exception ex)

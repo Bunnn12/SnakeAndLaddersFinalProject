@@ -15,7 +15,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private const string STATS_ENDPOINT_NAME = "BasicHttpBinding_IStatsService";
 
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(RankingViewModel));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(RankingViewModel));
 
         public ObservableCollection<PlayerRankingItemViewModel> Players { get; }
 
@@ -63,7 +63,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (FaultException faultException)
             {
-                Logger.Warn("FaultException al cargar el ranking.", faultException);
+                _logger.Warn("FaultException al cargar el ranking.", faultException);
 
                 MessageBox.Show(
                     "El servidor reportó un error al obtener el ranking:\n\n" + faultException.Message,
@@ -73,7 +73,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (CommunicationException communicationException)
             {
-                Logger.Error("CommunicationException al cargar el ranking.", communicationException);
+                _logger.Error("CommunicationException al cargar el ranking.", communicationException);
 
                 MessageBox.Show(
                     "No se pudo comunicar con el servidor para obtener el ranking.\n" +
@@ -84,7 +84,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception exception)
             {
-                Logger.Error("Error inesperado al cargar el ranking.", exception);
+                _logger.Error("Error inesperado al cargar el ranking.", exception);
 
                 MessageBox.Show(
                     "Ocurrió un error inesperado al cargar el ranking de jugadores.",

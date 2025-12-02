@@ -6,9 +6,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
 {
     public sealed class PlayerTokenViewModel : INotifyPropertyChanged
     {
-        private int currentCellIndex;
-        private double verticalOffset;
-        private double x;
+        private int _currentCellIndex;
+        private double _verticalOffset;
+        private double _x;
         private double y;
 
         public int UserId { get; }
@@ -17,46 +17,45 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
 
         public int CurrentCellIndex
         {
-            get { return currentCellIndex; }
+            get { return _currentCellIndex; }
             set
             {
-                if (currentCellIndex == value)
+                if (_currentCellIndex == value)
                 {
                     return;
                 }
 
-                currentCellIndex = value;
+                _currentCellIndex = value;
                 OnPropertyChanged();
             }
         }
 
         public double VerticalOffset
         {
-            get { return verticalOffset; }
+            get { return _verticalOffset; }
             set
             {
-                if (verticalOffset.Equals(value))
+                if (_verticalOffset.Equals(value))
                 {
                     return;
                 }
 
-                verticalOffset = value;
+                _verticalOffset = value;
                 OnPropertyChanged();
             }
         }
 
-        // coordenadas lógicas sobre el tablero (mismas unidades que las serpientes)
         public double X
         {
-            get { return x; }
+            get { return _x; }
             set
             {
-                if (x.Equals(value))
+                if (_x.Equals(value))
                 {
                     return;
                 }
 
-                x = value;
+                _x = value;
                 OnPropertyChanged();
             }
         }

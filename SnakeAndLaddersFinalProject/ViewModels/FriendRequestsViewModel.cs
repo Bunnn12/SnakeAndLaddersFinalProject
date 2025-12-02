@@ -12,7 +12,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class FriendRequestsViewModel
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(FriendRequestsViewModel));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(FriendRequestsViewModel));
 
         public ObservableCollection<FriendRequestItemDto> IncomingRequests { get; } =
             new ObservableCollection<FriendRequestItemDto>();
@@ -46,7 +46,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("Error loading friend requests.", ex);
+                _logger.Error("Error loading friend requests.", ex);
                 MessageBox.Show(Lang.errorLoadingRequestsText, Lang.errorTitle);
             }
         }
@@ -72,7 +72,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("Error accepting friend request.", ex);
+                _logger.Error("Error accepting friend request.", ex);
 
                 LoadData();
 
@@ -114,7 +114,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("Error rejecting friend request.", ex);
+                _logger.Error("Error rejecting friend request.", ex);
 
                 LoadData();
 
@@ -156,7 +156,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("Error canceling friend request.", ex);
+                _logger.Error("Error canceling friend request.", ex);
 
                 LoadData();
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
-using SnakeAndLaddersFinalProject.GameplayService;
 using SnakeAndLaddersFinalProject.Mappers;
 using SnakeAndLaddersFinalProject.ViewModels;
 using SnakeAndLaddersFinalProject.ViewModels.Models;
@@ -17,14 +16,14 @@ namespace SnakeAndLaddersFinalProject.Services
         private const int INVALID_USER_ID = 0;
         private const int FALLBACK_LOCAL_USER_ID = 1;
 
-        private static readonly ILog Logger =
+        private static readonly ILog _logger =
             LogManager.GetLogger(typeof(LobbyBoardService));
 
-        private readonly GameBoardClient gameBoardClient;
+        private readonly GameBoardClient _gameBoardClient;
 
         public LobbyBoardService(GameBoardClient gameBoardClient)
         {
-            this.gameBoardClient = gameBoardClient
+            this._gameBoardClient = gameBoardClient
                                    ?? throw new ArgumentNullException(nameof(gameBoardClient));
         }
 
@@ -59,11 +58,11 @@ namespace SnakeAndLaddersFinalProject.Services
 
             if (playerUserIds.Count == 0)
             {
-                Logger.Error("CreateBoardForHostAsync: no valid player IDs to create the board.");
+                _logger.Error("CreateBoardForHostAsync: no valid player IDs to create the board.");
                 return null;
             }
 
-            var boardDto = gameBoardClient.CreateBoard(
+            var boardDto = _gameBoardClient.CreateBoard(
                 lobbyId,
                 options.BoardSize,
                 enableBonusCells,
@@ -105,14 +104,14 @@ namespace SnakeAndLaddersFinalProject.Services
 
             for (int attempt = 1; attempt <= MAX_ATTEMPTS; attempt++)
             {
-                Logger.InfoFormat(
+                _logger.InfoFormat(
                     "TryCreateBoardForGuestWithRetryAsync: intento {0}/{1} para obtener tablero GameId={2} (cliente UserId={3}).",
                     attempt,
                     MAX_ATTEMPTS,
                     lobbyId,
                     currentUserId);
 
-                var boardDto = gameBoardClient.GetBoard(lobbyId);
+                var boardDto = _gameBoardClient.GetBoard(lobbyId);
 
                 if (boardDto != null)
                 {
@@ -129,7 +128,7 @@ namespace SnakeAndLaddersFinalProject.Services
 
                     var gameplayClient = new GameplayClient(boardViewModel);
 
-                    Logger.InfoFormat(
+                    _logger.InfoFormat(
                         "TryCreateBoardForGuestWithRetryAsync: inicializando gameplay GameId={0}, LocalUserId={1}.",
                         lobbyId,
                         localUserId);
@@ -141,7 +140,7 @@ namespace SnakeAndLaddersFinalProject.Services
                     return boardViewModel;
                 }
 
-                Logger.WarnFormat(
+                _logger.WarnFormat(
                     "TryCreateBoardForGuestWithRetryAsync: el servidor aún no tiene tablero para LobbyId {0} (intento {1}).",
                     lobbyId,
                     attempt);
@@ -149,7 +148,7 @@ namespace SnakeAndLaddersFinalProject.Services
                 await Task.Delay(RETRY_DELAY_MS).ConfigureAwait(false);
             }
 
-            Logger.WarnFormat(
+            _logger.WarnFormat(
                 "TryCreateBoardForGuestWithRetryAsync: el servidor no devolvió el tablero para LobbyId {0} tras varios intentos.",
                 lobbyId);
 
@@ -163,7 +162,7 @@ namespace SnakeAndLaddersFinalProject.Services
                 return currentUserId;
             }
 
-            Logger.Warn(
+            _logger.Warn(
                 "ResolveLocalUserIdForBoard: CurrentUserId no está establecido, se usará FALLBACK_LOCAL_USER_ID.");
 
             return FALLBACK_LOCAL_USER_ID;

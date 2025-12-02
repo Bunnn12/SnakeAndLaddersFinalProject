@@ -52,7 +52,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                     AlignmentY = AlignmentY.Center
                 };
 
-                // 'Root' VIENE de x:Name="Root" en el XAML
+                // 'Root' VIENE de _x:Name="Root" en el XAML
                 Root.Children.Clear();
                 Root.Children.Add(new Rectangle { Fill = _drawingBrush });
                 Root.Children.Add(new TextBlock
