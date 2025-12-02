@@ -155,10 +155,6 @@ dotnet_naming_rule.locals_and_parameters_should_be_camelcase.symbols = locals_an
 dotnet_naming_rule.locals_and_parameters_should_be_camelcase.style = camel_case_style
 dotnet_naming_rule.locals_and_parameters_should_be_camelcase.severity = warning
 
-# 8) Métodos de prueba: Test + PascalCase
-dotnet_naming_rule.test_methods_should_start_with_test.symbols = test_methods
-dotnet_naming_rule.test_methods_should_start_with_test.style = test_method_style
-dotnet_naming_rule.test_methods_should_start_with_test.severity = suggestion
 
 # 9) TODOS los métodos: PascalCase sin guiones bajos
 dotnet_naming_rule.methods_must_be_pascal_case_no_underscore.symbols = methods
