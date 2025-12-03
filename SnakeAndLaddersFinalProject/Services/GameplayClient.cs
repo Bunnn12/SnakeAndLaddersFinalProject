@@ -29,7 +29,10 @@ namespace SnakeAndLaddersFinalProject.Services
             _gameplayProxy = _channelFactory.CreateChannel();
         }
 
-        public Task<RollDiceResponseDto> GetRollDiceAsync(int gameId, int userId)
+        public Task<RollDiceResponseDto> GetRollDiceAsync(
+    int gameId,
+    int userId,
+    byte? diceSlotNumber)
         {
             return Task.Run(
                 () =>
@@ -37,12 +40,14 @@ namespace SnakeAndLaddersFinalProject.Services
                     var request = new RollDiceRequestDto
                     {
                         GameId = gameId,
-                        PlayerUserId = userId
+                        PlayerUserId = userId,
+                        DiceSlotNumber = diceSlotNumber 
                     };
 
                     return _gameplayProxy.RollDice(request);
                 });
         }
+
 
         public Task<GetGameStateResponseDto> GetGameStateAsync(int gameId)
         {

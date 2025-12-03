@@ -28,6 +28,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private const string UNKNOWN_ERROR_MESSAGE = "Unknown error.";
         private const string GAME_WINDOW_TITLE = "Juego";
+
+        private const byte MIN_DICE_SLOT = 1;
+        private const byte MAX_DICE_SLOT = 2;
+
         private const string ROLL_DICE_FAILURE_MESSAGE_PREFIX = "No se pudo tirar el dado: ";
         private const string ROLL_DICE_UNEXPECTED_ERROR_MESSAGE = "Ocurrió un error inesperado al tirar el dado.";
         private const string GAMEPLAY_CALLBACK_ERROR_LOG_MESSAGE = "Error al registrarse para callbacks de gameplay.";
@@ -51,8 +55,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private readonly GameBoardAnimationService animationService;
         private readonly DiceSpriteAnimator diceAnimator;
 
-
-
         private readonly AsyncCommand rollDiceCommand;
         private readonly AsyncCommand useItemFromSlot1Command;
         private readonly AsyncCommand useItemFromSlot2Command;
@@ -61,6 +63,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private readonly GameplayEventsHandler eventsHandler;
         private readonly RelayCommand<int> selectTargetUserCommand;
         private readonly RelayCommand<int> cancelItemUseCommand;
+
+        private readonly RelayCommand<int> selectDiceSlot1Command;
+        private readonly RelayCommand<int> selectDiceSlot2Command;
 
         private readonly int startCellIndex;
 
@@ -73,6 +78,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private bool isUseItemInProgress;
         private bool isTargetSelectionActive;
         private byte? pendingItemSlotNumber;
+
+        private byte? selectedDiceSlotNumber;
+        private bool isDiceSlot1Selected;
+        private bool isDiceSlot2Selected;
 
         private string lastItemNotification;
 
@@ -123,6 +132,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public ICommand CancelItemUseCommand
         {
             get { return cancelItemUseCommand; }
+        }
+
+        public ICommand SelectDiceSlot1Command
+        {
+            get { return selectDiceSlot1Command; }
+        }
+
+        public ICommand SelectDiceSlot2Command
+        {
+            get { return selectDiceSlot2Command; }
         }
 
         public DiceSpriteAnimator DiceAnimator
@@ -177,6 +196,36 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
 
                 lastItemNotification = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsDiceSlot1Selected
+        {
+            get { return isDiceSlot1Selected; }
+            private set
+            {
+                if (isDiceSlot1Selected == value)
+                {
+                    return;
+                }
+
+                isDiceSlot1Selected = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsDiceSlot2Selected
+        {
+            get { return isDiceSlot2Selected; }
+            private set
+            {
+                if (isDiceSlot2Selected == value)
+                {
+                    return;
+                }
+
+                isDiceSlot2Selected = value;
                 OnPropertyChanged();
             }
         }
@@ -239,6 +288,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 () => PrepareItemTargetSelectionAsync(3),
                 CanUseItem);
 
+            selectDiceSlot1Command = new RelayCommand<int>(
+                _ => OnDiceSlotSelected(MIN_DICE_SLOT),
+                _ => CanSelectDiceSlot(MIN_DICE_SLOT));
+
+            selectDiceSlot2Command = new RelayCommand<int>(
+                _ => OnDiceSlotSelected(MAX_DICE_SLOT),
+                _ => CanSelectDiceSlot(MAX_DICE_SLOT));
+
             selectTargetUserCommand = new RelayCommand<int>(
                 async userId => await OnTargetUserSelectedAsync(userId),
                 userId => IsTargetSelectionActive);
@@ -262,8 +319,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         }
 
         public async Task InitializeGameplayAsync(
-    IGameplayClient client,
-    string currentUserName)
+            IGameplayClient client,
+            string currentUserName)
         {
             if (client == null)
             {
@@ -278,10 +335,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             await JoinGameplayAsync(safeUserName).ConfigureAwait(false);
 
-            // 🔹 Aquí SÍ queremos posicionar fichas (setup inicial)
             await SyncGameStateAsync(true).ConfigureAwait(false);
         }
-
 
         private static void ValidateConstructorArguments(
             BoardDefinitionDto boardDefinition,
@@ -449,8 +504,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
+                byte? diceSlotNumber = selectedDiceSlotNumber;
+
                 RollDiceResponseDto response = await gameplayClient
-                    .GetRollDiceAsync(gameId, localUserId)
+                    .GetRollDiceAsync(gameId, localUserId, diceSlotNumber)
                     .ConfigureAwait(false);
 
                 if (response == null || !response.Success)
@@ -474,6 +531,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     return;
                 }
 
+                selectedDiceSlotNumber = null;
+                IsDiceSlot1Selected = false;
+                IsDiceSlot2Selected = false;
+
                 Logger.InfoFormat(
                     "RollDice request accepted. UserId={0}, From={1}, To={2}, Dice={3}",
                     localUserId,
@@ -481,7 +542,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     response.ToCellIndex,
                     response.DiceValue);
 
-                // 🔹 Aquí refrescamos tablero + inventario (ej. consumo del cohete)
                 if (gameplayClient != null)
                 {
                     await SyncGameStateAsync().ConfigureAwait(false);
@@ -513,6 +573,79 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
+        private bool HasDiceInSlot(byte slotNumber)
+        {
+            if (Inventory == null)
+            {
+                return false;
+            }
+
+            switch (slotNumber)
+            {
+                case MIN_DICE_SLOT:
+                    return Inventory.Slot1Dice != null && Inventory.Slot1Dice.Quantity > 0;
+
+                case MAX_DICE_SLOT:
+                    return Inventory.Slot2Dice != null && Inventory.Slot2Dice.Quantity > 0;
+
+                default:
+                    return false;
+            }
+        }
+
+        private bool CanSelectDiceSlot(byte slotNumber)
+        {
+            if (!IsMyTurn)
+            {
+                return false;
+            }
+
+            if (animationService.IsAnimating)
+            {
+                return false;
+            }
+
+            if (isRollRequestInProgress)
+            {
+                return false;
+            }
+
+            if (isUseItemInProgress)
+            {
+                return false;
+            }
+
+            if (IsTargetSelectionActive)
+            {
+                return false;
+            }
+
+            if (!HasDiceInSlot(slotNumber))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void OnDiceSlotSelected(byte slotNumber)
+        {
+            if (!HasDiceInSlot(slotNumber))
+            {
+                return;
+            }
+
+            selectedDiceSlotNumber = slotNumber;
+
+            IsDiceSlot1Selected = slotNumber == MIN_DICE_SLOT;
+            IsDiceSlot2Selected = slotNumber == MAX_DICE_SLOT;
+
+            LastItemNotification = string.Format(
+                "Dado del slot {0} seleccionado para el siguiente tiro.",
+                slotNumber);
+
+            RaiseAllCanExecuteChanged();
+        }
 
         private bool HasItemInSlot(byte slotNumber)
         {
@@ -590,7 +723,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     .UseItemAsync(gameId, localUserId, slotNumber, targetUserIdOrNull)
                     .ConfigureAwait(false);
 
-                // si decides usar Success en la respuesta, aquí lo manejas
                 if (response == null || !response.Success)
                 {
                     string failureReason = response != null && !string.IsNullOrWhiteSpace(response.FailureReason)
@@ -674,7 +806,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private Task SyncGameStateAsync()
         {
-            // Versión por defecto: NO toca posiciones (para no romper animaciones de dado)
             return SyncGameStateAsync(false);
         }
 
@@ -701,9 +832,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 await Application.Current.Dispatcher.InvokeAsync(
                     () =>
                     {
-                        // 🔹 Solo reposicionamos fichas si:
-                        //   - Aún no existen tokens (inicio)
-                        //   - O explícitamente queremos teleport (ítems)
                         if (forceUpdateTokenPositions || PlayerTokens.Count == 0)
                         {
                             foreach (TokenStateDto tokenState in stateResponse.Tokens)
@@ -720,7 +848,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                             }
                         }
 
-                        // 🔹 Siempre actualizamos textos de efectos
                         foreach (TokenStateDto tokenState in stateResponse.Tokens)
                         {
                             string effectsText = BuildEffectsText(tokenState);
@@ -745,10 +872,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     MessageBoxImage.Error);
             }
         }
-
-
-
-
 
         private static string BuildEffectsText(TokenStateDto tokenState)
         {
@@ -805,7 +928,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             Task handlerTask = eventsHandler.HandleServerTurnChangedAsync(turnInfo);
 
-            // 🔹 Después de que el server cambió de turno, recargamos estado
             if (gameplayClient != null)
             {
                 await SyncGameStateAsync();
@@ -813,8 +935,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             await handlerTask;
         }
-
-
 
         public Task HandleServerPlayerLeftAsync(PlayerLeftDto playerLeftInfo)
         {
@@ -848,7 +968,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 await SyncGameStateAsync(true);
             }
         }
-  private static string BuildItemUsedMessage(ItemUsedNotificationDto notification)
+
+        private static string BuildItemUsedMessage(ItemUsedNotificationDto notification)
         {
             string actor = string.Format("Jugador {0}", notification.UserId);
             string target = notification.TargetUserId.HasValue
@@ -912,7 +1033,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-
         private void RaiseAllCanExecuteChanged()
         {
             if (Application.Current == null || Application.Current.Dispatcher == null)
@@ -923,6 +1043,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 useItemFromSlot3Command.RaiseCanExecuteChanged();
                 selectTargetUserCommand.RaiseCanExecuteChanged();
                 cancelItemUseCommand.RaiseCanExecuteChanged();
+                selectDiceSlot1Command.RaiseCanExecuteChanged();
+                selectDiceSlot2Command.RaiseCanExecuteChanged();
                 return;
             }
 
@@ -934,6 +1056,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 useItemFromSlot3Command.RaiseCanExecuteChanged();
                 selectTargetUserCommand.RaiseCanExecuteChanged();
                 cancelItemUseCommand.RaiseCanExecuteChanged();
+                selectDiceSlot1Command.RaiseCanExecuteChanged();
+                selectDiceSlot2Command.RaiseCanExecuteChanged();
             }
             else
             {
@@ -947,6 +1071,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                             useItemFromSlot3Command.RaiseCanExecuteChanged();
                             selectTargetUserCommand.RaiseCanExecuteChanged();
                             cancelItemUseCommand.RaiseCanExecuteChanged();
+                            selectDiceSlot1Command.RaiseCanExecuteChanged();
+                            selectDiceSlot2Command.RaiseCanExecuteChanged();
                         }));
             }
         }

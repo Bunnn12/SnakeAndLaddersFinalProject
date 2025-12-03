@@ -6,6 +6,7 @@
       <xs:element minOccurs="0" name="GameId" type="xs:int" />
       <xs:element minOccurs="0" name="PlayerUserId" type="xs:int" />
       <xs:element minOccurs="0" name="CurrentCellIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="DiceSlotNumber" nillable="true" type="xs:unsignedByte" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="RollDiceRequestDto" nillable="true" type="tns:RollDiceRequestDto" />

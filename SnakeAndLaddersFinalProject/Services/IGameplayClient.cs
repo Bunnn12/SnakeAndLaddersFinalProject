@@ -9,7 +9,11 @@ namespace SnakeAndLaddersFinalProject.Services
 
         Task LeaveGameAsync(int gameId, int userId, string reason);
 
-        Task<RollDiceResponseDto> GetRollDiceAsync(int gameId, int playerUserId);
+        Task<RollDiceResponseDto> GetRollDiceAsync(
+            int gameId,
+            int playerUserId,
+            byte? diceSlotNumber);
+
 
         Task<GetGameStateResponseDto> GetGameStateAsync(int gameId);
 

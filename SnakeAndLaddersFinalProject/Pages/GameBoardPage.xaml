@@ -514,12 +514,12 @@
                         Command="{Binding DataContext.RollDiceCommand,
                                           Source={x:Reference GameBoardPageRoot}}" />
 
-                <!-- Inventario local -->
+                <!-- Inventario local: ítems -->
                 <StackPanel Orientation="Horizontal"
                             Margin="0,8,0,0"
                             HorizontalAlignment="Center">
 
-                    <!-- SLOT 1 -->
+                    <!-- SLOT 1 ITEM -->
                     <Button Width="64"
                             Height="48"
                             Background="Transparent"
@@ -544,7 +544,7 @@
                         </Grid>
                     </Button>
 
-                    <!-- SLOT 2 -->
+                    <!-- SLOT 2 ITEM -->
                     <Button Width="64"
                             Height="48"
                             Margin="4,0,0,0"
@@ -570,7 +570,7 @@
                         </Grid>
                     </Button>
 
-                    <!-- SLOT 3 -->
+                    <!-- SLOT 3 ITEM -->
                     <Button Width="64"
                             Height="48"
                             Margin="4,0,0,0"
@@ -598,12 +598,70 @@
 
                 </StackPanel>
 
+                <!-- NUEVO: barra de dados equipados -->
+                <StackPanel Orientation="Horizontal"
+                            Margin="0,6,0,0"
+                            HorizontalAlignment="Center">
+
+                    <!-- SLOT 1 DADO -->
+                    <Button Width="52"
+                            Height="42"
+                            Background="Transparent"
+                            BorderBrush="#EED9A066"
+                            BorderThickness="2"
+                            Command="{Binding DataContext.SelectDiceSlot1Command,
+                                              Source={x:Reference GameBoardPageRoot}}">
+                        <Grid>
+                            <Image Source="{Binding DataContext.Inventory.Slot1Dice.IconPath,
+                                                    Source={x:Reference GameBoardPageRoot}}"
+                                   Stretch="Uniform"
+                                   Margin="4" />
+                            <TextBlock Text="{Binding DataContext.Inventory.Slot1Dice.Quantity,
+                                                      Source={x:Reference GameBoardPageRoot},
+                                                      StringFormat=x{0}}"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Bottom"
+                                       Margin="2"
+                                       Foreground="#F5F1C5"
+                                       FontSize="11"
+                                       FontWeight="Bold" />
+                        </Grid>
+                    </Button>
+
+                    <!-- SLOT 2 DADO -->
+                    <Button Width="52"
+                            Height="42"
+                            Margin="4,0,0,0"
+                            Background="Transparent"
+                            BorderBrush="#EED9A066"
+                            BorderThickness="2"
+                            Command="{Binding DataContext.SelectDiceSlot2Command,
+                                              Source={x:Reference GameBoardPageRoot}}">
+                        <Grid>
+                            <Image Source="{Binding DataContext.Inventory.Slot2Dice.IconPath,
+                                                    Source={x:Reference GameBoardPageRoot}}"
+                                   Stretch="Uniform"
+                                   Margin="4" />
+                            <TextBlock Text="{Binding DataContext.Inventory.Slot2Dice.Quantity,
+                                                      Source={x:Reference GameBoardPageRoot},
+                                                      StringFormat=x{0}}"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Bottom"
+                                       Margin="2"
+                                       Foreground="#F5F1C5"
+                                       FontSize="11"
+                                       FontWeight="Bold" />
+                        </Grid>
+                    </Button>
+
+                </StackPanel>
+
             </StackPanel>
         </DataTemplate>
 
     </Page.Resources>
 
-    <!-- Atajos de teclado para usar ítems equipados -->
+    <!-- Atajos de teclado para usar ítems -->
     <Page.InputBindings>
         <KeyBinding Key="A"
                     Command="{Binding UseItemFromSlot1Command}" />

@@ -257,6 +257,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 foreach (InventoryDiceData diceData in snapshot.Dice)
                 {
+
+                    if (diceData.Quantity <= 0)
+                    {
+                        continue;
+                    }
+
                     Dice.Add(
                         new InventoryDiceViewModel
                         {
@@ -270,6 +276,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
 
                 RefreshDiceSlots();
+
             }
             catch (Exception ex)
             {
@@ -282,16 +289,27 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private void RefreshSlotItems()
         {
-            Slot1Item = Items.FirstOrDefault(i => i.SlotNumber == MIN_ITEM_SLOT);
-            Slot2Item = Items.FirstOrDefault(i => i.SlotNumber == 2);
-            Slot3Item = Items.FirstOrDefault(i => i.SlotNumber == MAX_ITEM_SLOT);
+            Slot1Item = Items.FirstOrDefault(
+                i => i.SlotNumber == MIN_ITEM_SLOT && i.Quantity > 0);
+
+            Slot2Item = Items.FirstOrDefault(
+                i => i.SlotNumber == 2 && i.Quantity > 0);
+
+            Slot3Item = Items.FirstOrDefault(
+                i => i.SlotNumber == MAX_ITEM_SLOT && i.Quantity > 0);
         }
+
+
 
         private void RefreshDiceSlots()
         {
-            Slot1Dice = Dice.FirstOrDefault(d => d.SlotNumber == MIN_DICE_SLOT);
-            Slot2Dice = Dice.FirstOrDefault(d => d.SlotNumber == MAX_DICE_SLOT);
+            Slot1Dice = Dice.FirstOrDefault(
+                d => d.SlotNumber == MIN_DICE_SLOT && d.Quantity > 0);
+
+            Slot2Dice = Dice.FirstOrDefault(
+                d => d.SlotNumber == MAX_DICE_SLOT && d.Quantity > 0);
         }
+
 
         private async Task SetItemSlotAsync(byte slotNumber)
         {

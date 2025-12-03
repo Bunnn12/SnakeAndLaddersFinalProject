@@ -31,6 +31,9 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int CurrentCellIndexField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<byte> DiceSlotNumberField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -76,6 +79,19 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
                 if ((this.CurrentCellIndexField.Equals(value) != true)) {
                     this.CurrentCellIndexField = value;
                     this.RaisePropertyChanged("CurrentCellIndex");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+        public System.Nullable<byte> DiceSlotNumber {
+            get {
+                return this.DiceSlotNumberField;
+            }
+            set {
+                if ((this.DiceSlotNumberField.Equals(value) != true)) {
+                    this.DiceSlotNumberField = value;
+                    this.RaisePropertyChanged("DiceSlotNumber");
                 }
             }
         }

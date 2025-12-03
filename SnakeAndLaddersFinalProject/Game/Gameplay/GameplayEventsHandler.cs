@@ -17,6 +17,8 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
         private const string TURN_CHANGED_ERROR_LOG_MESSAGE = "Error al procesar cambio de turno.";
         private const string PLAYER_LEFT_ERROR_LOG_MESSAGE = "Error al procesar PlayerLeft.";
 
+        private const int DEFAULT_DICE_FACE_FOR_ANIMATION = 1;
+
         private readonly GameBoardAnimationService _animationService;
         private readonly DiceSpriteAnimator _diceSpriteAnimator;
         private readonly AsyncCommand _rollDiceCommand;
@@ -85,8 +87,15 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
                 int toIndex = move.ToCellIndex;
                 int diceValue = move.DiceValue;
 
+                // 👇 Para la animación usamos siempre una cara válida (1–6)
+                int diceFaceForAnimation = Math.Abs(diceValue);
+                if (diceFaceForAnimation <= 0)
+                {
+                    diceFaceForAnimation = DEFAULT_DICE_FACE_FOR_ANIMATION;
+                }
+
                 await _diceSpriteAnimator
-                    .RollAsync(diceValue)
+                    .RollAsync(diceFaceForAnimation)
                     .ConfigureAwait(false);
 
                 await _animationService
@@ -100,11 +109,34 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
 
                         if (userId == _localUserId)
                         {
-                            string message = string.Format(
-                                "Sacaste {0} y avanzaste de {1} a {2}.",
-                                diceValue,
-                                fromIndex,
-                                toIndex);
+                            string message;
+
+                            if (diceValue > 0)
+                            {
+                                message = string.Format(
+                                    "Sacaste {0} y avanzaste de {1} a {2}.",
+                                    diceValue,
+                                    fromIndex,
+                                    toIndex);
+                            }
+                            else if (diceValue < 0)
+                            {
+                                // dado negativo: retrocede
+                                int steps = Math.Abs(diceValue);
+                                message = string.Format(
+                                    "Sacaste {0} y retrocediste de {1} a {2} ({3} casillas).",
+                                    diceValue,
+                                    fromIndex,
+                                    toIndex,
+                                    steps);
+                            }
+                            else
+                            {
+                                // por si algún día llega DiceValue = 0
+                                message = string.Format(
+                                    "No te moviste en este turno. Sigues en la casilla {0}.",
+                                    fromIndex);
+                            }
 
                             MessageBox.Show(
                                 message,
