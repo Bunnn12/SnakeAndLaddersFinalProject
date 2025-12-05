@@ -53,6 +53,7 @@
       <xs:element minOccurs="0" name="GameId" type="xs:int" />
       <xs:element minOccurs="0" name="IsFinished" type="xs:boolean" />
       <xs:element minOccurs="0" name="Tokens" nillable="true" type="tns:ArrayOfTokenStateDto" />
+      <xs:element minOccurs="0" name="WinnerUserId" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="GetGameStateResponseDto" nillable="true" type="tns:GetGameStateResponseDto" />

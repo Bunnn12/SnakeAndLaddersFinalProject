@@ -1,5 +1,4 @@
-﻿
-using SnakeAndLaddersFinalProject.GameplayService;
+﻿using SnakeAndLaddersFinalProject.GameplayService;
 using SnakeAndLaddersFinalProject.Infrastructure;
 using System;
 using System.ServiceModel;
@@ -30,9 +29,9 @@ namespace SnakeAndLaddersFinalProject.Services
         }
 
         public Task<RollDiceResponseDto> GetRollDiceAsync(
-    int gameId,
-    int userId,
-    byte? diceSlotNumber)
+            int gameId,
+            int userId,
+            byte? diceSlotNumber)
         {
             return Task.Run(
                 () =>
@@ -41,10 +40,20 @@ namespace SnakeAndLaddersFinalProject.Services
                     {
                         GameId = gameId,
                         PlayerUserId = userId,
-                        DiceSlotNumber = diceSlotNumber 
+                        DiceSlotNumber = diceSlotNumber
                     };
 
                     return _gameplayProxy.RollDice(request);
+                });
+        }
+
+        public Task RegisterTurnTimeoutAsync(int gameId, int userId)
+        {
+            
+            return Task.Run(
+                () =>
+                {
+                    _gameplayProxy.RegisterTurnTimeout(gameId);
                 });
         }
 
@@ -95,10 +104,9 @@ namespace SnakeAndLaddersFinalProject.Services
                 TargetUserId = targetUserId
             };
 
+            // Si tu proxy no tuviera UseItemAsync, cámbialo a Task.Run(() => _gameplayProxy.UseItem(request));
             return _gameplayProxy.UseItemAsync(request);
         }
-
-
 
         public void Dispose()
         {

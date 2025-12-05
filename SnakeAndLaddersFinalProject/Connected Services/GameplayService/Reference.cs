@@ -493,6 +493,9 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private SnakeAndLaddersFinalProject.GameplayService.TokenStateDto[] TokensField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int WinnerUserIdField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -551,6 +554,19 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
                 if ((object.ReferenceEquals(this.TokensField, value) != true)) {
                     this.TokensField = value;
                     this.RaisePropertyChanged("Tokens");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int WinnerUserId {
+            get {
+                return this.WinnerUserIdField;
+            }
+            set {
+                if ((this.WinnerUserIdField.Equals(value) != true)) {
+                    this.WinnerUserIdField = value;
+                    this.RaisePropertyChanged("WinnerUserId");
                 }
             }
         }
@@ -1560,6 +1576,12 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGameplayService/LeaveGame", ReplyAction="http://tempuri.org/IGameplayService/LeaveGameResponse")]
         System.Threading.Tasks.Task LeaveGameAsync(int gameId, int userId, string reason);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGameplayService/RegisterTurnTimeout", ReplyAction="http://tempuri.org/IGameplayService/RegisterTurnTimeoutResponse")]
+        void RegisterTurnTimeout(int gameId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGameplayService/RegisterTurnTimeout", ReplyAction="http://tempuri.org/IGameplayService/RegisterTurnTimeoutResponse")]
+        System.Threading.Tasks.Task RegisterTurnTimeoutAsync(int gameId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1644,6 +1666,14 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         
         public System.Threading.Tasks.Task LeaveGameAsync(int gameId, int userId, string reason) {
             return base.Channel.LeaveGameAsync(gameId, userId, reason);
+        }
+        
+        public void RegisterTurnTimeout(int gameId) {
+            base.Channel.RegisterTurnTimeout(gameId);
+        }
+        
+        public System.Threading.Tasks.Task RegisterTurnTimeoutAsync(int gameId) {
+            return base.Channel.RegisterTurnTimeoutAsync(gameId);
         }
     }
 }

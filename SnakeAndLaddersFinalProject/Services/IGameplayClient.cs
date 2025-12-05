@@ -14,6 +14,7 @@ namespace SnakeAndLaddersFinalProject.Services
             int playerUserId,
             byte? diceSlotNumber);
 
+        Task RegisterTurnTimeoutAsync(int gameId, int userId);
 
         Task<GetGameStateResponseDto> GetGameStateAsync(int gameId);
 
