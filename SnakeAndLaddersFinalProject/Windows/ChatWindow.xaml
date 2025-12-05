@@ -206,10 +206,37 @@
                                Stretch="UniformToFill" />
                     </DockPanel>
 
-                    <TextBlock Text="{Binding Text}"
-                               TextWrapping="Wrap"
-                               Margin="0,2,0,0"
-                               Foreground="#3B2718" />
+                    <!-- Contenido: texto o sticker -->
+                    <ContentControl Margin="0,2,0,0"
+                                    Content="{Binding}">
+                        <ContentControl.Style>
+                            <Style TargetType="ContentControl">
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Text}"
+                                                       TextWrapping="Wrap"
+                                                       Foreground="#3B2718" />
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSticker}" Value="True">
+                                        <Setter Property="ContentTemplate">
+                                            <Setter.Value>
+                                                <DataTemplate>
+                                                    <Image Width="64"
+                                                           Height="64"
+                                                           Stretch="Uniform"
+                                                           Source="{Binding StickerImagePath}" />
+                                                </DataTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
 
                     <TextBlock Text="{Binding SentAt, StringFormat=t}"
                                HorizontalAlignment="Right"

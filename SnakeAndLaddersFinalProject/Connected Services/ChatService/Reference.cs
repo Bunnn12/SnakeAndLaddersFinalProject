@@ -109,6 +109,12 @@ namespace SnakeAndLaddersFinalProject.ChatService {
         private int SenderIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string StickerCodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int StickerIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string TextField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -159,6 +165,32 @@ namespace SnakeAndLaddersFinalProject.ChatService {
                 if ((this.SenderIdField.Equals(value) != true)) {
                     this.SenderIdField = value;
                     this.RaisePropertyChanged("SenderId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string StickerCode {
+            get {
+                return this.StickerCodeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.StickerCodeField, value) != true)) {
+                    this.StickerCodeField = value;
+                    this.RaisePropertyChanged("StickerCode");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int StickerId {
+            get {
+                return this.StickerIdField;
+            }
+            set {
+                if ((this.StickerIdField.Equals(value) != true)) {
+                    this.StickerIdField = value;
+                    this.RaisePropertyChanged("StickerId");
                 }
             }
         }

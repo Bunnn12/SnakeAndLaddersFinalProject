@@ -5,6 +5,8 @@
       <xs:element minOccurs="0" name="Sender" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="SenderAvatarId" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="SenderId" type="xs:int" />
+      <xs:element minOccurs="0" name="StickerCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StickerId" type="xs:int" />
       <xs:element minOccurs="0" name="Text" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="TimestampUtc" type="xs:dateTime" />
     </xs:sequence>

@@ -15,7 +15,7 @@ namespace SnakeAndLaddersFinalProject.Windows
         private const string INVALID_LOBBY_ID_MESSAGE = "LobbyId inválido.";
         private const int WINDOW_MARGIN_PIXELS = 16;
 
-        private readonly ChatViewModel chatViewModel;
+        private readonly ChatViewModel _chatViewModel;
 
         public ChatWindow(int lobbyId)
         {
@@ -26,10 +26,10 @@ namespace SnakeAndLaddersFinalProject.Windows
 
             InitializeComponent();
 
-            chatViewModel = new ChatViewModel(lobbyId);
-            DataContext = chatViewModel;
+            _chatViewModel = new ChatViewModel(lobbyId);
+            DataContext = _chatViewModel;
 
-            chatViewModel.Messages.CollectionChanged += MessagesCollectionChanged;
+            _chatViewModel.Messages.CollectionChanged += MessagesCollectionChanged;
         }
 
         private async void ChatWindow_Loaded(object sender, RoutedEventArgs e)
@@ -52,17 +52,17 @@ namespace SnakeAndLaddersFinalProject.Windows
 
         private async Task InitializeChatAsync()
         {
-            await chatViewModel.InitializeAsync();
+            await _chatViewModel.InitializeAsync();
         }
 
         private void WindowUnloaded(object sender, RoutedEventArgs e)
         {
-            chatViewModel?.Dispose();
+            _chatViewModel?.Dispose();
         }
 
         private void MessagesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (!chatViewModel.IsAutoScrollEnabled)
+            if (!_chatViewModel.IsAutoScrollEnabled)
             {
                 return;
             }

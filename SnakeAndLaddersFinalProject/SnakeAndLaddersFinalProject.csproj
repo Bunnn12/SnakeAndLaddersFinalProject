@@ -304,6 +304,7 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MatchInvitationViewModel.cs" />
     <Compile Include="ViewModels\Models\LobbyMemberViewModel.cs" />
+    <Compile Include="ViewModels\Models\StickerModel.cs" />
     <Compile Include="ViewModels\PlayerRankingItemViewModel.cs" />
     <Compile Include="ViewModels\PlayerTokenViewModel.cs" />
     <Compile Include="ViewModels\ProfileStatsViewModel.cs" />
@@ -327,6 +328,9 @@
     </Compile>
     <Compile Include="Windows\SocialProfileLinkWindow.xaml.cs">
       <DependentUpon>SocialProfileLinkWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\StickerPickerWindow.xaml.cs">
+      <DependentUpon>StickerPickerWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="BasicWindow.xaml">
       <SubType>Designer</SubType>
@@ -461,6 +465,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\SocialProfileLinkWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\StickerPickerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -695,6 +703,9 @@
     </None>
     <None Include="Connected Services\ShopService\ShopService.wsdl" />
     <None Include="Connected Services\ShopService\SnakeAndLaddersFinalProject.ShopService.ShopRewardDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ShopService\SnakeAndLaddersFinalProject.ShopService.StickerDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\SocialProfileService\item.xsd">

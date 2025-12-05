@@ -2,6 +2,7 @@
 using System.ServiceModel;
 using System.Windows;
 using System.Windows.Threading;
+using log4net;
 using SnakeAndLaddersFinalProject.ChatService;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
@@ -9,13 +10,17 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     [CallbackBehavior(UseSynchronizationContext = false)]
     public sealed class ChatClientCallback : IChatServiceCallback
     {
-        private readonly ChatViewModel chatViewModel;
-        private readonly Dispatcher uiDispatcher;
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(ChatClientCallback));
+
+        private const string LOG_CONTEXT_CALLBACK = "ChatClientCallback.OnMessage";
+
+        private readonly ChatViewModel _chatViewModel;
+        private readonly Dispatcher _uiDispatcher;
 
         public ChatClientCallback(ChatViewModel chatViewModelValue)
         {
-            chatViewModel = chatViewModelValue ?? throw new ArgumentNullException(nameof(chatViewModelValue));
-            uiDispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
+            _chatViewModel = chatViewModelValue ?? throw new ArgumentNullException(nameof(chatViewModelValue));
+            _uiDispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
         }
 
         public void OnMessage(int lobbyId, ChatMessageDto message)
@@ -25,11 +30,20 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            uiDispatcher.BeginInvoke(
+            Logger.InfoFormat(
+                "{0}. LobbyId={1}, Sender={2}, Text='{3}', StickerId={4}, StickerCode='{5}'",
+                LOG_CONTEXT_CALLBACK,
+                lobbyId,
+                message.Sender,
+                message.Text,
+                message.StickerId,
+                message.StickerCode);
+
+            _uiDispatcher.BeginInvoke(
                 new Action(
                     () =>
                     {
-                        chatViewModel.AddIncoming(message);
+                        _chatViewModel.AddIncoming(message);
                     }));
         }
     }

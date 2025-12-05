@@ -5,22 +5,18 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class ChatMessageViewModel
     {
-        private const string DEFAULT_SENDER_NAME = "Unknown";
+        private const string EMPTY_TEXT = "";
 
         public string Sender { get; }
-
         public string Text { get; }
-
-        public DateTime TimestampUtc { get; }
-
+        public DateTime SentAt { get; }
         public bool IsMine { get; }
-
+        public string Header { get; }
         public string AvatarId { get; }
-
         public bool HasAvatar => !string.IsNullOrWhiteSpace(AvatarId);
 
-        public DateTime SentAt => TimestampUtc.ToLocalTime();
-        public string Header => Sender;
+        public bool IsSticker { get; }
+        public string StickerImagePath { get; }
 
         public ChatMessageViewModel(ChatMessageDto dto, string currentUserName)
         {
@@ -29,32 +25,30 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 throw new ArgumentNullException(nameof(dto));
             }
 
-            string safeSender = string.IsNullOrWhiteSpace(dto.Sender)
-                ? DEFAULT_SENDER_NAME
-                : dto.Sender;
+            Sender = dto.Sender ?? EMPTY_TEXT;
+            AvatarId = dto.SenderAvatarId ?? EMPTY_TEXT;
+            SentAt = dto.TimestampUtc.ToLocalTime();
 
-            Sender = safeSender;
-            Text = dto.Text ?? string.Empty;
-            TimestampUtc = dto.TimestampUtc;
-            AvatarId = dto.SenderAvatarId ?? string.Empty;
+            IsMine = !string.IsNullOrWhiteSpace(currentUserName)
+                     && string.Equals(Sender, currentUserName, StringComparison.OrdinalIgnoreCase);
 
-            IsMine =
-                !string.IsNullOrWhiteSpace(currentUserName) &&
-                string.Equals(
-                    Sender,
-                    currentUserName,
-                    StringComparison.OrdinalIgnoreCase);
-        }
+            Header = Sender;
 
-        public ChatMessageDto ToDto()
-        {
-            return new ChatMessageDto
+            bool hasSticker = dto.StickerId > 0
+                              && !string.IsNullOrWhiteSpace(dto.StickerCode);
+
+            IsSticker = hasSticker;
+
+            if (hasSticker)
             {
-                Sender = Sender ?? string.Empty,
-                Text = Text ?? string.Empty,
-                TimestampUtc = TimestampUtc,
-                SenderAvatarId = AvatarId ?? string.Empty
-            };
+                Text = EMPTY_TEXT;
+                StickerImagePath = ChatViewModel.BuildStickerAssetPath(dto.StickerCode);
+            }
+            else
+            {
+                Text = (dto.Text ?? EMPTY_TEXT).Trim();
+                StickerImagePath = string.Empty;
+            }
         }
     }
 }

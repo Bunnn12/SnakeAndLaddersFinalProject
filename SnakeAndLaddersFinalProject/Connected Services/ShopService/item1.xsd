@@ -13,4 +13,18 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ShopRewardDto" nillable="true" type="tns:ShopRewardDto" />
+  <xs:complexType name="ArrayOfStickerDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="StickerDto" nillable="true" type="tns:StickerDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStickerDto" nillable="true" type="tns:ArrayOfStickerDto" />
+  <xs:complexType name="StickerDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="StickerCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StickerId" type="xs:int" />
+      <xs:element minOccurs="0" name="StickerName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StickerDto" nillable="true" type="tns:StickerDto" />
 </xs:schema>

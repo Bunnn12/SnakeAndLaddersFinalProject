@@ -67,6 +67,12 @@
   <wsdl:message name="IShopService_GetCurrentCoins_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetCurrentCoinsResponse" />
   </wsdl:message>
+  <wsdl:message name="IShopService_GetUserStickers_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserStickers" />
+  </wsdl:message>
+  <wsdl:message name="IShopService_GetUserStickers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserStickersResponse" />
+  </wsdl:message>
   <wsdl:portType name="IShopService">
     <wsdl:operation name="PurchaseAvatarChest">
       <wsdl:input wsaw:Action="http://tempuri.org/IShopService/PurchaseAvatarChest" message="tns:IShopService_PurchaseAvatarChest_InputMessage" />
@@ -87,6 +93,10 @@
     <wsdl:operation name="GetCurrentCoins">
       <wsdl:input wsaw:Action="http://tempuri.org/IShopService/GetCurrentCoins" message="tns:IShopService_GetCurrentCoins_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IShopService/GetCurrentCoinsResponse" message="tns:IShopService_GetCurrentCoins_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserStickers">
+      <wsdl:input wsaw:Action="http://tempuri.org/IShopService/GetUserStickers" message="tns:IShopService_GetUserStickers_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IShopService/GetUserStickersResponse" message="tns:IShopService_GetUserStickers_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IShopService" type="tns:IShopService">
@@ -136,6 +146,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetUserStickers">
+      <soap:operation soapAction="http://tempuri.org/IShopService/GetUserStickers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="NetTcpBinding_IShopService" type="tns:IShopService">
     <wsp:PolicyReference URI="#NetTcpBinding_IShopService_policy" />
@@ -178,6 +197,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetCurrentCoins">
       <soap12:operation soapAction="http://tempuri.org/IShopService/GetCurrentCoins" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserStickers">
+      <soap12:operation soapAction="http://tempuri.org/IShopService/GetUserStickers" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

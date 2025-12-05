@@ -185,6 +185,83 @@ namespace SnakeAndLaddersFinalProject.ShopService {
         Item = 4,
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="StickerDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class StickerDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string StickerCodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int StickerIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string StickerNameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string StickerCode {
+            get {
+                return this.StickerCodeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.StickerCodeField, value) != true)) {
+                    this.StickerCodeField = value;
+                    this.RaisePropertyChanged("StickerCode");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int StickerId {
+            get {
+                return this.StickerIdField;
+            }
+            set {
+                if ((this.StickerIdField.Equals(value) != true)) {
+                    this.StickerIdField = value;
+                    this.RaisePropertyChanged("StickerId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string StickerName {
+            get {
+                return this.StickerNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.StickerNameField, value) != true)) {
+                    this.StickerNameField = value;
+                    this.RaisePropertyChanged("StickerName");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ShopService.IShopService")]
     public interface IShopService {
@@ -218,6 +295,12 @@ namespace SnakeAndLaddersFinalProject.ShopService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IShopService/GetCurrentCoins", ReplyAction="http://tempuri.org/IShopService/GetCurrentCoinsResponse")]
         System.Threading.Tasks.Task<int> GetCurrentCoinsAsync(string token);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IShopService/GetUserStickers", ReplyAction="http://tempuri.org/IShopService/GetUserStickersResponse")]
+        SnakeAndLaddersFinalProject.ShopService.StickerDto[] GetUserStickers(string token);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IShopService/GetUserStickers", ReplyAction="http://tempuri.org/IShopService/GetUserStickersResponse")]
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.ShopService.StickerDto[]> GetUserStickersAsync(string token);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -285,6 +368,14 @@ namespace SnakeAndLaddersFinalProject.ShopService {
         
         public System.Threading.Tasks.Task<int> GetCurrentCoinsAsync(string token) {
             return base.Channel.GetCurrentCoinsAsync(token);
+        }
+        
+        public SnakeAndLaddersFinalProject.ShopService.StickerDto[] GetUserStickers(string token) {
+            return base.Channel.GetUserStickers(token);
+        }
+        
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.ShopService.StickerDto[]> GetUserStickersAsync(string token) {
+            return base.Channel.GetUserStickersAsync(token);
         }
     }
 }
