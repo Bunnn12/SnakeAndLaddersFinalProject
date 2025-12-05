@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -31,9 +32,15 @@ namespace SnakeAndLaddersFinalProject.Windows
             chatViewModel.Messages.CollectionChanged += MessagesCollectionChanged;
         }
 
-        private void ChatWindow_Loaded(object sender, RoutedEventArgs e)
+        private async void ChatWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            var ownerWindow = Owner;
+            PositionRelativeToOwner();
+            await InitializeChatAsync();
+        }
+
+        private void PositionRelativeToOwner()
+        {
+            Window ownerWindow = Owner;
             if (ownerWindow == null)
             {
                 return;
@@ -41,6 +48,11 @@ namespace SnakeAndLaddersFinalProject.Windows
 
             Left = ownerWindow.Left + ownerWindow.Width - Width - WINDOW_MARGIN_PIXELS;
             Top = ownerWindow.Top + ownerWindow.Height - Height - WINDOW_MARGIN_PIXELS;
+        }
+
+        private async Task InitializeChatAsync()
+        {
+            await chatViewModel.InitializeAsync();
         }
 
         private void WindowUnloaded(object sender, RoutedEventArgs e)
@@ -61,22 +73,23 @@ namespace SnakeAndLaddersFinalProject.Windows
             }
 
             Dispatcher.BeginInvoke(
-                new Action(() =>
-                {
-                    try
+                new Action(
+                    () =>
                     {
-                        lvMessages.UpdateLayout();
-                        var lastItem = lvMessages.Items[lvMessages.Items.Count - 1];
-                        lvMessages.ScrollIntoView(lastItem);
+                        try
+                        {
+                            lvMessages.UpdateLayout();
+                            object lastItem = lvMessages.Items[lvMessages.Items.Count - 1];
+                            lvMessages.ScrollIntoView(lastItem);
 
-                        var scrollViewer = FindChild<ScrollViewer>(lvMessages);
-                        scrollViewer?.ScrollToEnd();
-                    }
-                    catch
-                    {
-                        // Intencionalmente ignorado: si falla el autoscroll no debe romper la ventana de chat.
-                    }
-                }),
+                            ScrollViewer scrollViewer = FindChild<ScrollViewer>(lvMessages);
+                            scrollViewer?.ScrollToEnd();
+                        }
+                        catch
+                        {
+                            
+                        }
+                    }),
                 DispatcherPriority.Background);
         }
 
@@ -92,13 +105,13 @@ namespace SnakeAndLaddersFinalProject.Windows
 
             for (int index = 0; index < childrenCount; index++)
             {
-                var child = VisualTreeHelper.GetChild(parent, index);
+                DependencyObject child = VisualTreeHelper.GetChild(parent, index);
                 if (child is T typedChild)
                 {
                     return typedChild;
                 }
 
-                var nestedChild = FindChild<T>(child);
+                T nestedChild = FindChild<T>(child);
                 if (nestedChild != null)
                 {
                     return nestedChild;
@@ -111,11 +124,12 @@ namespace SnakeAndLaddersFinalProject.Windows
         private void TaMessage_Loaded(object sender, RoutedEventArgs e)
         {
             Dispatcher.BeginInvoke(
-                new Action(() =>
-                {
-                    taMessage.Focus();
-                    Keyboard.Focus(taMessage);
-                }),
+                new Action(
+                    () =>
+                    {
+                        taMessage.Focus();
+                        Keyboard.Focus(taMessage);
+                    }),
                 DispatcherPriority.ContextIdle);
         }
 

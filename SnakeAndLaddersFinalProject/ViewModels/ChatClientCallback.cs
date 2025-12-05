@@ -9,13 +9,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     [CallbackBehavior(UseSynchronizationContext = false)]
     public sealed class ChatClientCallback : IChatServiceCallback
     {
-        private readonly ChatViewModel _chatViewModel;
-        private readonly Dispatcher _uiDispatcher;
+        private readonly ChatViewModel chatViewModel;
+        private readonly Dispatcher uiDispatcher;
 
         public ChatClientCallback(ChatViewModel chatViewModelValue)
         {
-            _chatViewModel = chatViewModelValue ?? throw new ArgumentNullException(nameof(chatViewModelValue));
-            _uiDispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
+            chatViewModel = chatViewModelValue ?? throw new ArgumentNullException(nameof(chatViewModelValue));
+            uiDispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
         }
 
         public void OnMessage(int lobbyId, ChatMessageDto message)
@@ -25,11 +25,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            _uiDispatcher.BeginInvoke(
+            uiDispatcher.BeginInvoke(
                 new Action(
                     () =>
                     {
-                        _chatViewModel.AddIncoming(message);
+                        chatViewModel.AddIncoming(message);
                     }));
         }
     }

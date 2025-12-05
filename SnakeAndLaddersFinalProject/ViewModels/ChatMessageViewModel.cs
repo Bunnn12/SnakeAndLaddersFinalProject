@@ -3,8 +3,10 @@ using SnakeAndLaddersFinalProject.ChatService;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
-    public sealed class ChatMessageVm
+    public sealed class ChatMessageViewModel
     {
+        private const string DEFAULT_SENDER_NAME = "Unknown";
+
         public string Sender { get; }
 
         public string Text { get; }
@@ -13,39 +15,45 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public bool IsMine { get; }
 
-        public string Header => $"{Sender}";
-
-        public DateTime SentAt => TimestampUtc.ToLocalTime();
-
         public string AvatarId { get; }
 
         public bool HasAvatar => !string.IsNullOrWhiteSpace(AvatarId);
 
-        public ChatMessageVm(ChatMessageDto dto, string currentUserName)
+        public DateTime SentAt => TimestampUtc.ToLocalTime();
+        public string Header => Sender;
+
+        public ChatMessageViewModel(ChatMessageDto dto, string currentUserName)
         {
             if (dto == null)
             {
                 throw new ArgumentNullException(nameof(dto));
             }
 
-            Sender = dto.Sender ?? string.Empty;
+            string safeSender = string.IsNullOrWhiteSpace(dto.Sender)
+                ? DEFAULT_SENDER_NAME
+                : dto.Sender;
+
+            Sender = safeSender;
             Text = dto.Text ?? string.Empty;
             TimestampUtc = dto.TimestampUtc;
-            AvatarId = dto.SenderAvatarId;
+            AvatarId = dto.SenderAvatarId ?? string.Empty;
 
             IsMine =
                 !string.IsNullOrWhiteSpace(currentUserName) &&
-                string.Equals(Sender, currentUserName, StringComparison.OrdinalIgnoreCase);
+                string.Equals(
+                    Sender,
+                    currentUserName,
+                    StringComparison.OrdinalIgnoreCase);
         }
 
         public ChatMessageDto ToDto()
         {
             return new ChatMessageDto
             {
-                Sender = Sender,
-                Text = Text,
+                Sender = Sender ?? string.Empty,
+                Text = Text ?? string.Empty,
                 TimestampUtc = TimestampUtc,
-                SenderAvatarId = AvatarId
+                SenderAvatarId = AvatarId ?? string.Empty
             };
         }
     }

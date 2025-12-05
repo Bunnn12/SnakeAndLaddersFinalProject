@@ -4,14 +4,14 @@
   <xs:complexType name="SendMessageRequest2">
     <xs:sequence>
       <xs:element minOccurs="0" name="AuthToken" nillable="true" type="xs:string" />
-      <xs:element name="LobbyId" type="xs:int" />
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" name="Message" nillable="true" type="q1:ChatMessageDto" />
+      <xs:element minOccurs="0" name="LobbyId" type="xs:int" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" minOccurs="0" name="Message" nillable="true" type="q1:ChatMessageDto" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="SendMessageRequest2" nillable="true" type="tns:SendMessageRequest2" />
   <xs:complexType name="SendMessageResponse2">
     <xs:sequence>
-      <xs:element name="Ok" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Ok" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="SendMessageResponse2" nillable="true" type="tns:SendMessageResponse2" />

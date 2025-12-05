@@ -25,8 +25,10 @@ namespace SnakeAndLaddersFinalProject.ChatService {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string AuthTokenField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int LobbyIdField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private SnakeAndLaddersFinalProject.ChatService.ChatMessageDto MessageField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -52,7 +54,7 @@ namespace SnakeAndLaddersFinalProject.ChatService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public int LobbyId {
             get {
                 return this.LobbyIdField;
@@ -65,7 +67,7 @@ namespace SnakeAndLaddersFinalProject.ChatService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public SnakeAndLaddersFinalProject.ChatService.ChatMessageDto Message {
             get {
                 return this.MessageField;
@@ -97,15 +99,19 @@ namespace SnakeAndLaddersFinalProject.ChatService {
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string SenderField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string SenderAvatarIdField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int SenderIdField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string TextField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime TimestampUtcField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -118,7 +124,7 @@ namespace SnakeAndLaddersFinalProject.ChatService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string Sender {
             get {
                 return this.SenderField;
@@ -144,7 +150,7 @@ namespace SnakeAndLaddersFinalProject.ChatService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public int SenderId {
             get {
                 return this.SenderIdField;
@@ -157,7 +163,7 @@ namespace SnakeAndLaddersFinalProject.ChatService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string Text {
             get {
                 return this.TextField;
@@ -170,7 +176,7 @@ namespace SnakeAndLaddersFinalProject.ChatService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime TimestampUtc {
             get {
                 return this.TimestampUtcField;
@@ -202,6 +208,7 @@ namespace SnakeAndLaddersFinalProject.ChatService {
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool OkField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -214,7 +221,7 @@ namespace SnakeAndLaddersFinalProject.ChatService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public bool Ok {
             get {
                 return this.OkField;

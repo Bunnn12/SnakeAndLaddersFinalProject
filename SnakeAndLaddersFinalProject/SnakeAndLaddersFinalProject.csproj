@@ -287,7 +287,7 @@
     <Compile Include="ViewModels\AvatarProfileOptionViewModel.cs" />
     <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\ChatClientCallback.cs" />
-    <Compile Include="ViewModels\ChatMessageVm.cs" />
+    <Compile Include="ViewModels\ChatMessageViewModel.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\CornerPlayersViewModel.cs" />
     <Compile Include="ViewModels\CreateMatchViewModel.cs" />
