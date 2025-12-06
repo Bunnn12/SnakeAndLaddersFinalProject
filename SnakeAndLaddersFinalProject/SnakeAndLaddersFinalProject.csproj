@@ -196,6 +196,7 @@
     <Compile Include="Infrastructure\ILobbyEventsHandler.cs" />
     <Compile Include="Infrastructure\RelayCommand.cs" />
     <Compile Include="Infrastructure\RelayCommandGeneric.cs" />
+    <Compile Include="Managers\ItemUsageManager.cs" />
     <Compile Include="Mappers\InventoryIconMapper.cs" />
     <Compile Include="Mappers\LobbyMapper.cs" />
     <Compile Include="Mappers\PlayerReportErrorMapper.cs" />
@@ -204,6 +205,9 @@
     </Compile>
     <Compile Include="Pages\FriendRequestsPage.xaml.cs">
       <DependentUpon>FriendRequestsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PodiumPage.xaml.cs">
+      <DependentUpon>PodiumPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ProfileStatsPage.xaml.cs">
       <DependentUpon>ProfileStatsPage.xaml</DependentUpon>
@@ -282,11 +286,14 @@
     <Compile Include="Utilities\AvatarPathUtility.cs" />
     <Compile Include="Utilities\BanPlayerHelper.cs" />
     <Compile Include="Utilities\ExceptionHandler.cs" />
+    <Compile Include="Utilities\GameTextBuilder.cs" />
     <Compile Include="Utilities\Loading.cs" />
     <Compile Include="Utilities\PageBackground.cs" />
+    <Compile Include="Utilities\PlayerActionGuard.cs" />
     <Compile Include="Utilities\SessionGuard.cs" />
     <Compile Include="Utilities\SkinAssetHelper.cs" />
     <Compile Include="Utilities\TextBoxCharCounterHelper.cs" />
+    <Compile Include="Utilities\TurnTimerTextFormatter.cs" />
     <Compile Include="Utilities\WidthToBoolConverter.cs" />
     <Compile Include="ViewModels\AvatarProfileOptionViewModel.cs" />
     <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
@@ -311,6 +318,8 @@
     <Compile Include="ViewModels\Models\StickerModel.cs" />
     <Compile Include="ViewModels\PlayerRankingItemViewModel.cs" />
     <Compile Include="ViewModels\PlayerTokenViewModel.cs" />
+    <Compile Include="ViewModels\PodiumPlayerViewModel.cs" />
+    <Compile Include="ViewModels\PodiumViewModel.cs" />
     <Compile Include="ViewModels\ProfileStatsViewModel.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="ViewModels\RankingViewModel.cs" />
@@ -403,6 +412,10 @@
     <Page Include="Pages\MatchListPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PodiumPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ProfilePage.xaml">
       <SubType>Designer</SubType>
