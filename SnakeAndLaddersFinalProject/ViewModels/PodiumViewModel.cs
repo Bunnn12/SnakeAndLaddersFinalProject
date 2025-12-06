@@ -11,6 +11,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     public sealed class PodiumViewModel : INotifyPropertyChanged
     {
         private const int MAX_PODIUM_PLAYERS = 3;
+        private const int FIRST_PLACE_INDEX = 0;
+        private const int SECOND_PLACE_INDEX = 1;
+        private const int THIRD_PLACE_INDEX = 2;
 
         private string title = "Resultados de la partida";
         private string winnerName = string.Empty;
@@ -57,6 +60,45 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
+        public PodiumPlayerViewModel FirstPlace
+        {
+            get
+            {
+                if (Players.Count > FIRST_PLACE_INDEX)
+                {
+                    return Players[FIRST_PLACE_INDEX];
+                }
+
+                return null;
+            }
+        }
+
+        public PodiumPlayerViewModel SecondPlace
+        {
+            get
+            {
+                if (Players.Count > SECOND_PLACE_INDEX)
+                {
+                    return Players[SECOND_PLACE_INDEX];
+                }
+
+                return null;
+            }
+        }
+
+        public PodiumPlayerViewModel ThirdPlace
+        {
+            get
+            {
+                if (Players.Count > THIRD_PLACE_INDEX)
+                {
+                    return Players[THIRD_PLACE_INDEX];
+                }
+
+                return null;
+            }
+        }
+
         public PodiumViewModel()
         {
             Players = new ObservableCollection<PodiumPlayerViewModel>();
@@ -64,7 +106,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         }
 
         /// <summary>
-        /// Ctor que usa tu GameBoardPage: winnerUserId + jugadores ordenados.
+        /// Ctor que usa GameBoardPage: winnerUserId + jugadores ordenados.
         /// </summary>
         public PodiumViewModel(
             int winnerUserId,
@@ -121,18 +163,20 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
             }
 
-            // Nombre efectivo del ganador
             string effectiveWinnerName = string.IsNullOrWhiteSpace(winnerDisplayName)
                 ? null
                 : winnerDisplayName.Trim();
 
-            // Si no nos pasaron nombre, al menos mostramos el Id
             if (effectiveWinnerName == null)
             {
                 effectiveWinnerName = string.Format("Jugador con Id {0}", winnerUserId);
             }
 
             WinnerName = effectiveWinnerName;
+
+            OnPropertyChanged(nameof(FirstPlace));
+            OnPropertyChanged(nameof(SecondPlace));
+            OnPropertyChanged(nameof(ThirdPlace));
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -144,7 +188,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            var args = new PropertyChangedEventArgs(propertyName);
+            PropertyChangedEventArgs args = new PropertyChangedEventArgs(propertyName);
             handler(this, args);
         }
     }

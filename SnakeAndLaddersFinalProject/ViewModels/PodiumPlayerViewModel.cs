@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace SnakeAndLaddersFinalProject.ViewModels.Models
@@ -7,10 +8,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
     {
         public int UserId { get; private set; }
 
-        // Nombre que usamos para mostrar
         public string DisplayName { get; private set; }
 
-        // Compatibilidad con código/XAML que usa UserName
         public string UserName
         {
             get { return DisplayName; }
@@ -21,6 +20,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
 
         private int coins;
         private bool isWinner;
+        private string skinImagePath = string.Empty;
 
         public string PositionText
         {
@@ -31,7 +31,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
                     return string.Empty;
                 }
 
-                return $"#{Position}";
+                return string.Format("#{0}", Position);
             }
         }
 
@@ -60,7 +60,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
                     return string.Empty;
                 }
 
-                return $"{Coins} monedas";
+                return string.Format("{0} monedas", Coins);
             }
         }
 
@@ -79,7 +79,22 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
             }
         }
 
-        // Ctor “normal” que estamos usando ahora
+        public string SkinImagePath
+        {
+            get { return skinImagePath; }
+            set
+            {
+                if (string.Equals(skinImagePath, value, StringComparison.Ordinal))
+                {
+                    return;
+                }
+
+                skinImagePath = value ?? string.Empty;
+                OnPropertyChanged();
+            }
+        }
+
+        // ctor “simple”
         public PodiumPlayerViewModel(int userId, string displayName, int position, int coins)
         {
             UserId = userId;
@@ -88,8 +103,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
             Coins = coins;
         }
 
-        // Ctor de 7 argumentos solo para ser compatible con el código viejo
-        // Puedes dejarlo así, aunque no uses todos los parámetros.
+        // ctor con skin
+        public PodiumPlayerViewModel(
+            int userId,
+            string displayName,
+            int position,
+            int coins,
+            string skinImagePath)
+            : this(userId, displayName, position, coins)
+        {
+            SkinImagePath = skinImagePath;
+        }
+
+        // ctor viejo de compatibilidad
         public PodiumPlayerViewModel(
             object arg1,
             object arg2,
@@ -101,10 +127,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
         {
             UserId = arg1 is int i ? i : 0;
             DisplayName = arg2 as string ?? string.Empty;
-
-            // Si el tercer parámetro era un bool “isWinner”
             IsWinner = arg3 is bool b && b;
-
             Position = arg4 is int p ? p : 0;
             Coins = arg5 is int c ? c : 0;
         }
@@ -113,9 +136,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(
-                this,
-                new PropertyChangedEventArgs(propertyName));
+            PropertyChangedEventHandler handler = PropertyChanged;
+
+            if (handler == null)
+            {
+                return;
+            }
+
+            handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

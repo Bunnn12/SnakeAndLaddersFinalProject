@@ -957,12 +957,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 bool isLocalPlayer = member.UserId == localUserId;
 
-                // 👇 usamos el ctor correcto: (userId, displayName, position, coins)
                 PodiumPlayerViewModel podiumPlayer = new PodiumPlayerViewModel(
                     member.UserId,
                     member.UserName,
                     position,
-                    0);
+                    0,
+                    member.SkinImagePath);
 
                 podiumPlayers.Add(podiumPlayer);
 
@@ -972,6 +972,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     break;
                 }
+            
+
         }
 
             if (podiumPlayers.Count == 0)
