@@ -167,6 +167,10 @@
     <Compile Include="Converters\SnakeCurveGeometryConverter.cs" />
     <Compile Include="Converters\SnakeHeadOffsetConverter.cs" />
     <Compile Include="Converters\TokensForCellConverter.cs" />
+    <Compile Include="Converters\TurnTimeToBrushConverter.cs" />
+    <Compile Include="Converters\TurnTimeToPieGeometryConverter.cs" />
+    <Compile Include="Converters\TurnTimeToScaleConverter.cs" />
+    <Compile Include="Converters\TurnTimeToStrokeDashConverter.cs" />
     <Compile Include="CreateMatchOptions.cs" />
     <Compile Include="DialogBasicWindow.xaml.cs">
       <DependentUpon>DialogBasicWindow.xaml</DependentUpon>

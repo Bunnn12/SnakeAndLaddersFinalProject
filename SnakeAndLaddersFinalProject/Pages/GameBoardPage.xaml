@@ -23,6 +23,10 @@
         <conv:SnakeCurveGeometryConverter x:Key="SnakeCurveGeometryConverter" />
         <conv:LadderGeometryConverter x:Key="LadderGeometryConverter" />
 
+        <!-- Timer visual sobre avatar -->
+        <conv:TurnTimeToBrushConverter x:Key="TurnTimeToBrushConverter" />
+        <conv:TurnTimeToPieGeometryConverter x:Key="TurnTimeToPieGeometryConverter" />
+
         <!-- Converter avatarId -> pack URI -->
         <utils:AvatarIdToPathConverter x:Key="AvatarIdToPathConverter" />
 
@@ -402,15 +406,17 @@
                                    Margin="4" />
                         </Border>
 
-                        <!-- Aro de color -->
+                        <!-- Aro de color + avatar + reloj -->
                         <Grid Width="44"
                               Height="44"
                               HorizontalAlignment="Right"
                               VerticalAlignment="Bottom"
                               Margin="0,0,-4,-4">
+                            <!-- aro -->
                             <Ellipse Stroke="{Binding UserId,
                                                       Converter={StaticResource PlayerColorConverter}}"
                                      StrokeThickness="3" />
+                            <!-- avatar -->
                             <Ellipse Margin="3">
                                 <Ellipse.Fill>
                                     <ImageBrush ImageSource="{Binding AvatarId,
@@ -418,6 +424,32 @@
                                                 Stretch="UniformToFill" />
                                 </Ellipse.Fill>
                             </Ellipse>
+                            <!-- pastel de tiempo -->
+                            <Grid HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  IsHitTestVisible="False">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsCurrentTurn}"
+                                                         Value="True">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                <Path Width="40"
+                                      Height="40"
+                                      Stretch="Fill"
+                                      Fill="{Binding DataContext.TurnTimerText,
+                                                     RelativeSource={RelativeSource AncestorType=Page},
+                                                     Converter={StaticResource TurnTimeToBrushConverter}}"
+                                      Opacity="0.55"
+                                      Data="{Binding DataContext.TurnTimerText,
+                                                     RelativeSource={RelativeSource AncestorType=Page},
+                                                     Converter={StaticResource TurnTimeToPieGeometryConverter}}" />
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Button>
@@ -470,15 +502,17 @@
                                    Margin="4" />
                         </Border>
 
-                        <!-- Aro de color -->
+                        <!-- Aro de color + avatar + reloj -->
                         <Grid Width="44"
                               Height="44"
                               HorizontalAlignment="Right"
                               VerticalAlignment="Bottom"
                               Margin="0,0,-4,-4">
+                            <!-- aro -->
                             <Ellipse Stroke="{Binding UserId,
                                                       Converter={StaticResource PlayerColorConverter}}"
                                      StrokeThickness="3" />
+                            <!-- avatar -->
                             <Ellipse Margin="3">
                                 <Ellipse.Fill>
                                     <ImageBrush ImageSource="{Binding AvatarId,
@@ -486,6 +520,32 @@
                                                 Stretch="UniformToFill" />
                                 </Ellipse.Fill>
                             </Ellipse>
+                            <!-- pastel de tiempo -->
+                            <Grid HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  IsHitTestVisible="False">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsCurrentTurn}"
+                                                         Value="True">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                <Path Width="44"
+                                      Height="44"
+                                      Stretch="Fill"
+                                      Fill="{Binding DataContext.TurnTimerText,
+                                                     RelativeSource={RelativeSource AncestorType=Page},
+                                                     Converter={StaticResource TurnTimeToBrushConverter}}"
+                                      Opacity="0.55"
+                                      Data="{Binding DataContext.TurnTimerText,
+                                                     RelativeSource={RelativeSource AncestorType=Page},
+                                                     Converter={StaticResource TurnTimeToPieGeometryConverter}}" />
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Button>
@@ -961,7 +1021,6 @@
 
         <!-- TopLeft -->
         <ContentControl Content="{Binding CornerPlayers.TopLeftPlayer}"
-                               
                         Grid.RowSpan="3"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
