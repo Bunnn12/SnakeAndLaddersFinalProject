@@ -1,14 +1,12 @@
-﻿using log4net;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Navigation;
+using System.Windows.Threading;
+using log4net;
 using SnakeAndLaddersFinalProject.AuthService;
 using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.ViewModels;
-using System;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Navigation;
-using System.Windows.Threading;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
@@ -18,7 +16,6 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private const int DEFAULT_RESEND_COOLDOWN_SECONDS = 45;
         private const int MIN_RESEND_SECONDS = 1;
-
         private const int VERIFICATION_CODE_LENGTH = 6;
 
         private const string KEY_BTN_RESEND_CODE_TEXT = "btnResendCodeText";
@@ -26,10 +23,8 @@ namespace SnakeAndLaddersFinalProject.Pages
         private DispatcherTimer _resendTimer;
         private int _remainingSeconds;
 
-        private EmailVerificationViewModel ViewModel
-        {
-            get { return DataContext as EmailVerificationViewModel; }
-        }
+        private EmailVerificationViewModel ViewModel =>
+            DataContext as EmailVerificationViewModel;
 
         public EmailVerificationPage()
             : this(new RegistrationDto
@@ -53,17 +48,32 @@ namespace SnakeAndLaddersFinalProject.Pages
             viewModel.ResendCooldownRequested += OnResendCooldownRequested;
             viewModel.NavigateToLoginRequested += OnNavigateToLoginRequested;
 
-            btnVerificateCode.Click += VerificateCode;
+            // Eventos UI (solo aquí, no en XAML)
+            btnVerificateCode.Click += VerifyCode;
             btnResendCode.Click += ResendCode;
-
-            DataObject.AddPastingHandler(txtCodeSended, TxtCodeSendedOnPaste);
+            btnBack.Click += BtnBack_Click;
 
             StartResendCooldown(DEFAULT_RESEND_COOLDOWN_SECONDS);
         }
 
-        private async void VerificateCode(object sender, RoutedEventArgs e)
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new LoginPage());
+        }
+
+        private async void VerifyCode(object sender, RoutedEventArgs e)
         {
             string code = (txtCodeSended.Text ?? string.Empty).Trim();
+
+            if (!IsValidVerificationCode(code))
+            {
+                MessageBox.Show(
+                    "Lang.errorVerificationCodeInvalid",
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
 
             var viewModel = ViewModel;
             if (viewModel == null)
@@ -95,7 +105,6 @@ namespace SnakeAndLaddersFinalProject.Pages
             try
             {
                 btnVerificateCode.IsEnabled = false;
-
                 NavigationService?.Navigate(new LoginPage());
             }
             catch (Exception ex)
@@ -123,10 +132,9 @@ namespace SnakeAndLaddersFinalProject.Pages
                 {
                     Interval = TimeSpan.FromSeconds(1)
                 };
+                _resendTimer.Tick += ResendTimerTick;
             }
 
-            _resendTimer.Tick -= ResendTimerTick;
-            _resendTimer.Tick += ResendTimerTick;
             _resendTimer.Start();
         }
 
@@ -153,62 +161,21 @@ namespace SnakeAndLaddersFinalProject.Pages
                 _remainingSeconds);
         }
 
-        private void TxtCodeSendedPreviewTextInput(object sender, TextCompositionEventArgs e)
+        private static bool IsValidVerificationCode(string code)
         {
-            if (string.IsNullOrEmpty(e.Text))
-            {
-                return;
-            }
-
-            for (int index = 0; index < e.Text.Length; index++)
-            {
-                if (!char.IsDigit(e.Text[index]))
-                {
-                    e.Handled = true;
-                    return;
-                }
-            }
-
-            var textBox = sender as TextBox;
-            if (textBox == null)
-            {
-                return;
-            }
-
-            if (textBox.Text.Length - textBox.SelectionLength >= VERIFICATION_CODE_LENGTH)
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void TxtCodeSendedOnPaste(object sender, DataObjectPastingEventArgs e)
-        {
-            if (!e.DataObject.GetDataPresent(DataFormats.UnicodeText))
-            {
-                e.CancelCommand();
-                return;
-            }
-
-            string pasted = e.DataObject.GetData(DataFormats.UnicodeText) as string ?? string.Empty;
-            pasted = pasted.Trim();
-
-            if (pasted.Length > VERIFICATION_CODE_LENGTH || !IsNumericCode(pasted))
-            {
-                e.CancelCommand();
-                return;
-            }
-        }
-
-        private static bool IsNumericCode(string value)
-        {
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrWhiteSpace(code))
             {
                 return false;
             }
 
-            for (int index = 0; index < value.Length; index++)
+            if (code.Length != VERIFICATION_CODE_LENGTH)
             {
-                if (!char.IsDigit(value[index]))
+                return false;
+            }
+
+            for (int index = 0; index < code.Length; index++)
+            {
+                if (!char.IsDigit(code[index]))
                 {
                     return false;
                 }

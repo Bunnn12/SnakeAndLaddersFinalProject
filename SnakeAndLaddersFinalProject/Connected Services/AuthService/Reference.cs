@@ -147,9 +147,6 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         private System.Nullable<System.DateTime> ExpiresAtUtcField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string MessageField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.Generic.Dictionary<string, string> MetaField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -157,9 +154,6 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool SuccessField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string TechnicalMessageField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string TokenField;
@@ -243,19 +237,6 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Message {
-            get {
-                return this.MessageField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
-                    this.MessageField = value;
-                    this.RaisePropertyChanged("Message");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Collections.Generic.Dictionary<string, string> Meta {
             get {
                 return this.MetaField;
@@ -290,19 +271,6 @@ namespace SnakeAndLaddersFinalProject.AuthService {
                 if ((this.SuccessField.Equals(value) != true)) {
                     this.SuccessField = value;
                     this.RaisePropertyChanged("Success");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string TechnicalMessage {
-            get {
-                return this.TechnicalMessageField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.TechnicalMessageField, value) != true)) {
-                    this.TechnicalMessageField = value;
-                    this.RaisePropertyChanged("TechnicalMessage");
                 }
             }
         }

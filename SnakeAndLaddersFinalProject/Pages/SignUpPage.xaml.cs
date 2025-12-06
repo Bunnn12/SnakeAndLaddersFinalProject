@@ -6,10 +6,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class SignUpPage : Page
     {
-        private SignUpViewModel ViewModel
-        {
-            get { return DataContext as SignUpViewModel; }
-        }
+        private SignUpViewModel ViewModel => DataContext as SignUpViewModel;
 
         public SignUpPage()
         {
@@ -29,14 +26,15 @@ namespace SnakeAndLaddersFinalProject.Pages
                 PlainPassword = pwdPassword.Password
             };
 
-            var registrationDto = await ViewModel.SignUpAsync(input);
+            SignUpViewModel.RegistrationResult result =
+                await ViewModel.SignUpAsync(input);
 
-            if (registrationDto == null)
+            if (!result.IsSuccess || result.Registration == null)
             {
                 return;
             }
 
-            NavigationService?.Navigate(new EmailVerificationPage(registrationDto));
+            NavigationService?.Navigate(new EmailVerificationPage(result.Registration));
         }
 
         private void Login(object sender, RoutedEventArgs e)

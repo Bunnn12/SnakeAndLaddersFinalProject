@@ -2,7 +2,6 @@
 using SnakeAndLaddersFinalProject.Utilities;
 using System;
 using System.Collections.Generic;
-
 using System.ServiceModel;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -18,7 +17,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const int PASSWORD_MIN_LENGTH = 8;
         private const int PASSWORD_MAX_LENGTH = 510;
 
-        private static readonly Regex _emailRegex =
+        private static readonly Regex EmailRegex =
             new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         public sealed class LoginServiceResult
@@ -31,49 +30,52 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             public bool HasAuthToken { get; set; }
 
-            public string Code { get; set; }
+            public string Code { get; set; } = string.Empty;
 
-            public Dictionary<string, string> Meta { get; set; }
+            public Dictionary<string, string> Meta { get; set; } = new Dictionary<string, string>();
         }
 
         public string[] ValidateLogin(string identifier, string password)
         {
             var errors = new List<string>();
 
-            if (string.IsNullOrWhiteSpace(identifier))
+            string normalizedIdentifier = (identifier ?? string.Empty).Trim();
+            string normalizedPassword = password ?? string.Empty;
+
+            if (string.IsNullOrWhiteSpace(normalizedIdentifier))
             {
                 errors.Add(T("UiIdentifierRequired"));
             }
             else
             {
-                if (identifier.Contains("@") && !_emailRegex.IsMatch(identifier))
+                if (normalizedIdentifier.Contains("@") && !EmailRegex.IsMatch(normalizedIdentifier))
                 {
                     errors.Add(T("UiEmailInvalid"));
                 }
 
-                if (identifier.Length < IDENTIFIER_MIN_LENGTH)
+                if (normalizedIdentifier.Length < IDENTIFIER_MIN_LENGTH)
                 {
                     errors.Add(T("UiIdentifierTooShort"));
                 }
 
-                if (identifier.Length > IDENTIFIER_MAX_LENGTH)
+                if (normalizedIdentifier.Length > IDENTIFIER_MAX_LENGTH)
                 {
                     errors.Add(T("UiIdentifierTooLong"));
                 }
             }
 
-            if (string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(normalizedPassword))
             {
                 errors.Add(T("UiPasswordRequired"));
             }
             else
             {
-                if (password.Length < PASSWORD_MIN_LENGTH)
+                if (normalizedPassword.Length < PASSWORD_MIN_LENGTH)
                 {
                     errors.Add(T("UiPasswordTooShort"));
                 }
 
-                if (password.Length > PASSWORD_MAX_LENGTH)
+                if (normalizedPassword.Length > PASSWORD_MAX_LENGTH)
                 {
                     errors.Add(T("UiPasswordTooLong"));
                 }
@@ -84,180 +86,86 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public async Task<LoginServiceResult> LoginAsync(string identifier, string password)
         {
+            var result = new LoginServiceResult();
+
+            string normalizedIdentifier = (identifier ?? string.Empty).Trim();
+            string normalizedPassword = password ?? string.Empty;
+
             var loginDto = new AuthService.LoginDto
             {
-                Email = identifier,
-                Password = password
+                Email = normalizedIdentifier,
+                Password = normalizedPassword
             };
 
             var authClient = new AuthService.AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
-            dynamic response = null;
 
             try
             {
-                response = await Task.Run(
-                        () => authClient.Login(loginDto))
+                AuthService.AuthResult response = await Task
+                    .Run(() => authClient.Login(loginDto))
                     .ConfigureAwait(true);
 
-                bool isSuccess;
-
-                try
+                if (response != null && response.Success)
                 {
-                    isSuccess = response?.Success == true;
-                }
-                catch
-                {
-                    isSuccess = false;
-                }
+                    SessionContext session = SessionContext.Current;
 
-                if (isSuccess)
-                {
-                    int userId;
-                    try
-                    {
-                        userId = (int)(response?.UserId ?? 0);
-                    }
-                    catch
-                    {
-                        userId = 0;
-                    }
-
-                    string displayName;
-                    try
-                    {
-                        displayName = (string)response?.DisplayName;
-                    }
-                    catch
-                    {
-                        displayName = null;
-                    }
-
-                    string profilePhotoId;
-                    try
-                    {
-                        profilePhotoId = (string)response?.ProfilePhotoId;
-                    }
-                    catch
-                    {
-                        profilePhotoId = null;
-                    }
-
-                    string token = TryGetToken(response);
-
-                    string currentSkinId;
-                    int? currentSkinUnlockedId;
-
-                    try
-                    {
-                        currentSkinId = (string)response?.CurrentSkinId;
-                    }
-                    catch
-                    {
-                        currentSkinId = null;
-                    }
-
-                    try
-                    {
-                        currentSkinUnlockedId = (int?)response?.CurrentSkinUnlockedId;
-                    }
-                    catch
-                    {
-                        currentSkinUnlockedId = null;
-                    }
-
-                    if (SessionContext.Current == null)
+                    if (session == null)
                     {
                         authClient.Close();
 
-                        return new LoginServiceResult
-                        {
-                            IsSuccess = false,
-                            IsGenericError = true
-                        };
+                        result.IsSuccess = false;
+                        result.IsGenericError = true;
+                        return result;
                     }
 
-                    SessionContext.Current.UserId = userId;
-                    SessionContext.Current.UserName =
-                        string.IsNullOrWhiteSpace(displayName) ? identifier : displayName;
-                    SessionContext.Current.Email = identifier.Contains("@") ? identifier : string.Empty;
-                    SessionContext.Current.ProfilePhotoId =
-                        AvatarIdHelper.NormalizeOrDefault(profilePhotoId);
-                    SessionContext.Current.AuthToken = token ?? string.Empty;
+                    int userId = response.UserId ?? 0;
+                    string displayName = response.DisplayName ?? string.Empty;
+                    string profilePhotoId = response.ProfilePhotoId ?? string.Empty;
+                    string token = response.Token ?? string.Empty;
 
-                    SessionContext.Current.CurrentSkinId = currentSkinId;
-                    SessionContext.Current.CurrentSkinUnlockedId = currentSkinUnlockedId;
+                    string currentSkinId = response.CurrentSkinId ?? string.Empty;
+                    int? currentSkinUnlockedId = response.CurrentSkinUnlockedId;
+
+                    session.UserId = userId;
+                    session.UserName =
+                        string.IsNullOrWhiteSpace(displayName) ? normalizedIdentifier : displayName;
+                    session.Email = normalizedIdentifier.Contains("@") ? normalizedIdentifier : string.Empty;
+                    session.ProfilePhotoId = AvatarIdHelper.NormalizeOrDefault(profilePhotoId);
+                    session.AuthToken = token;
+                    session.CurrentSkinId = currentSkinId;
+                    session.CurrentSkinUnlockedId = currentSkinUnlockedId;
 
                     authClient.Close();
 
-                    return new LoginServiceResult
-                    {
-                        IsSuccess = true,
-                        HasAuthToken = !string.IsNullOrWhiteSpace(SessionContext.Current.AuthToken)
-                    };
+                    result.IsSuccess = true;
+                    result.HasAuthToken = !string.IsNullOrWhiteSpace(session.AuthToken);
+                    return result;
                 }
 
-                string code;
-                Dictionary<string, string> meta;
-
-                try
-                {
-                    code = (string)response?.Code;
-                }
-                catch
-                {
-                    code = null;
-                }
-
-                try
-                {
-                    meta = response?.Meta as Dictionary<string, string>;
-                }
-                catch
-                {
-                    meta = null;
-                }
+                string code = response?.Code ?? string.Empty;
+                Dictionary<string, string> meta = response?.Meta ?? new Dictionary<string, string>();
 
                 authClient.Close();
 
-                return new LoginServiceResult
-                {
-                    IsSuccess = false,
-                    Code = code,
-                    Meta = meta
-                };
+                result.IsSuccess = false;
+                result.Code = code;
+                result.Meta = meta;
+
+                return result;
             }
             catch (EndpointNotFoundException)
             {
                 authClient.Abort();
 
-                return new LoginServiceResult
-                {
-                    IsEndpointNotFound = true
-                };
+                result.IsEndpointNotFound = true;
+                return result;
             }
             catch (Exception)
             {
                 authClient.Abort();
 
-                return new LoginServiceResult
-                {
-                    IsGenericError = true
-                };
-            }
-        }
-
-        private static string TryGetToken(dynamic response)
-        {
-            try
-            {
-                return (string)(response?.Token
-                                ?? response?.AuthToken
-                                ?? response?.SessionToken
-                                ?? response?.AccessToken);
-            }
-            catch
-            {
-                return null;
+                result.IsGenericError = true;
+                return result;
             }
         }
 

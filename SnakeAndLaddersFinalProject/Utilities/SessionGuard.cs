@@ -9,10 +9,9 @@ namespace SnakeAndLaddersFinalProject.Utilities
     {
         public static bool HasValidSession()
         {
-            var s = SessionContext.Current;
-            return s != null
-                   && s.IsAuthenticated
-                   && !string.IsNullOrWhiteSpace(s.AuthToken);
+            SessionContext session = SessionContext.Current;
+
+            return session.IsAuthenticated;
         }
     }
 }

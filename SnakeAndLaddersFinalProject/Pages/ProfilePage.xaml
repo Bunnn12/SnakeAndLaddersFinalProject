@@ -320,7 +320,8 @@
                                                        FontSize="18"
                                                        FontWeight="SemiBold"
                                                        Foreground="#5B2722"
-                                                       VerticalAlignment="Center" />
+                                                       VerticalAlignment="Center"
+                                                       Text="{Binding UserName}" />
                                         </Grid>
 
                                         <!-- Name -->
@@ -407,7 +408,8 @@
                                                      Grid.Column="2"
                                                      Height="40"
                                                      Style="{StaticResource RoundedTextBox}"
-                                                     IsReadOnly="True" Margin="10,0,-1,0" />
+                                                     IsReadOnly="True"
+                                                     Margin="10,0,-1,0" />
                                         </Grid>
 
                                         <!-- Social profiles -->
@@ -517,20 +519,21 @@
                                 </Button>
                             </StackPanel>
                         </Grid>
+
                         <!-- PICKER AVATARES -->
                         <Border x:Name="borderAvatarPicker"
-                            Grid.Row="2"
-                            Panel.ZIndex="20"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"
-                            Margin="0,24,0,0"
-                            Width="460"
-                            Background="#EE000000"
-                            BorderBrush="#99FFFFFF"
-                            BorderThickness="1"
-                            CornerRadius="12"
-                            Padding="14"
-                            Visibility="Collapsed">
+                                Grid.Row="2"
+                                Panel.ZIndex="20"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Margin="0,24,0,0"
+                                Width="460"
+                                Background="#EE000000"
+                                BorderBrush="#99FFFFFF"
+                                BorderThickness="1"
+                                CornerRadius="12"
+                                Padding="14"
+                                Visibility="Collapsed">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
@@ -545,61 +548,61 @@
                                     </Grid.ColumnDefinitions>
 
                                     <TextBlock Text="{x:Static language:Lang.lblSelectAvatarTitleText}"
-                       FontWeight="SemiBold"
-                       FontSize="18"
-                       VerticalAlignment="Center" />
+                                               FontWeight="SemiBold"
+                                               FontSize="18"
+                                               VerticalAlignment="Center" />
 
                                     <Button Grid.Column="1"
-                    Width="28"
-                    Height="28"
-                    Margin="6,0,0,0"
-                    Background="#44FFFFFF"
-                    BorderBrush="#FFFFC35B"
-                    BorderThickness="1.2"
-                    Cursor="Hand"
-                    Click="BtnCloseAvatarPicker_Click">
+                                            Width="28"
+                                            Height="28"
+                                            Margin="6,0,0,0"
+                                            Background="#44FFFFFF"
+                                            BorderBrush="#FFFFC35B"
+                                            BorderThickness="1.2"
+                                            Cursor="Hand"
+                                            Click="BtnCloseAvatarPicker_Click">
                                         <TextBlock Text="✕"
-                           FontSize="18"
-                           FontWeight="Bold"
-                           Foreground="#FFFFC35B"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center" />
+                                                   FontSize="18"
+                                                   FontWeight="Bold"
+                                                   Foreground="#FFFFC35B"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
                                     </Button>
                                 </Grid>
 
                                 <ScrollViewer Grid.Row="2"
-                      VerticalScrollBarVisibility="Auto">
+                                              VerticalScrollBarVisibility="Auto">
                                     <ItemsControl x:Name="avatarItemsControl"
-                          ItemsSource="{Binding AvatarOptions}">
+                                                  ItemsSource="{Binding AvatarOptions}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel Orientation="Horizontal"
-                                   ItemWidth="96"
-                                   ItemHeight="96"
-                                   Margin="0,4,0,0" />
+                                                           ItemWidth="96"
+                                                           ItemHeight="96"
+                                                           Margin="0,4,0,0" />
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
 
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Button Width="90"
-                                Height="90"
-                                Margin="4"
-                                Tag="{Binding}"
-                                Click="AvatarItem_Click"
-                                Background="Transparent"
-                                BorderBrush="Transparent"
-                                Cursor="Hand"
-                                IsEnabled="{Binding IsEnabled}">
+                                                        Height="90"
+                                                        Margin="4"
+                                                        Tag="{Binding}"
+                                                        Click="AvatarItem_Click"
+                                                        Background="Transparent"
+                                                        BorderBrush="Transparent"
+                                                        Cursor="Hand"
+                                                        IsEnabled="{Binding IsEnabled}">
                                                     <Border CornerRadius="10"
-                                    BorderThickness="1"
-                                    BorderBrush="#FFCCCCCC"
-                                    Padding="4"
-                                    Opacity="{Binding Opacity}">
+                                                            BorderThickness="1"
+                                                            BorderBrush="#FFCCCCCC"
+                                                            Padding="4"
+                                                            Opacity="{Binding Opacity}">
                                                         <Image Source="{Binding AvatarCode,
-                                                        Converter={StaticResource AvatarIdToPathConverter}}"
-                                       Stretch="UniformToFill"
-                                       RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                                                                Converter={StaticResource AvatarIdToPathConverter}}"
+                                                               Stretch="UniformToFill"
+                                                               RenderOptions.BitmapScalingMode="NearestNeighbor" />
                                                     </Border>
                                                 </Button>
                                             </DataTemplate>

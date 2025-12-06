@@ -13,13 +13,13 @@ namespace SnakeAndLaddersFinalProject.Authentication
         public event PropertyChangedEventHandler PropertyChanged;
 
         private int userId = USER_ID_NOT_SET;
+        private int coins;
         private string userName = string.Empty;
         private string email = string.Empty;
         private string authToken = string.Empty;
-        private string profilePhotoId;
-        private string currentSkinId;
+        private string profilePhotoId = string.Empty;
+        private string currentSkinId = string.Empty;
         private int? currentSkinUnlockedId;
-        private int coins;
 
         private SessionContext()
         {
@@ -55,6 +55,7 @@ namespace SnakeAndLaddersFinalProject.Authentication
                 OnPropertyChanged(nameof(Coins));
             }
         }
+
         public string UserName
         {
             get => userName;
@@ -111,7 +112,7 @@ namespace SnakeAndLaddersFinalProject.Authentication
                     return;
                 }
 
-                profilePhotoId = value;
+                profilePhotoId = value ?? string.Empty;
                 OnPropertyChanged(nameof(ProfilePhotoId));
             }
         }
@@ -126,7 +127,7 @@ namespace SnakeAndLaddersFinalProject.Authentication
                     return;
                 }
 
-                currentSkinId = value;
+                currentSkinId = value ?? string.Empty;
                 OnPropertyChanged(nameof(CurrentSkinId));
             }
         }
@@ -145,9 +146,11 @@ namespace SnakeAndLaddersFinalProject.Authentication
                 OnPropertyChanged(nameof(CurrentSkinUnlockedId));
             }
         }
+
         public bool IsAuthenticated =>
             UserId > USER_ID_NOT_SET &&
-            !string.IsNullOrWhiteSpace(UserName);
+            !string.IsNullOrWhiteSpace(UserName) &&
+            !string.IsNullOrWhiteSpace(AuthToken);
 
         private void OnPropertyChanged(string propertyName)
         {

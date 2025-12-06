@@ -11,7 +11,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class SignUpViewModel
     {
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(SignUpViewModel));
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(SignUpViewModel));
 
         private const int MIN_PASSWORD_LENGTH = 8;
         private const int PASSWORD_MAX_LENGTH = 510;
@@ -25,33 +25,53 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string AUTH_CODE_USERNAME_ALREADY_EXISTS = "Auth.UserNameAlreadyExists";
         private const string AUTH_CODE_INVALID_CREDENTIALS = "Auth.InvalidCredentials";
         private const string AUTH_CODE_THROTTLE_WAIT = "Auth.ThrottleWait";
-        private const string AUTH_CODE_NOT_REQUESTED = "Auth.NotRequested";
-        private const string AUTH_CODE_EXPIRED = "Auth.Expired";
-        private const string AUTH_CODE_INVALID = "Auth.Invalid";
+        private const string AUTH_CODE_NOT_REQUESTED = "Auth.CodeNotRequested";
+        private const string AUTH_CODE_EXPIRED = "Auth.CodeExpired";
+        private const string AUTH_CODE_INVALID = "Auth.CodeInvalid";
         private const string AUTH_CODE_EMAIL_SEND_FAILED = "Auth.EmailSendFailed";
 
         private const string META_KEY_SECONDS = "seconds";
+        private const string DEFAULT_THROTTLE_SECONDS_TEXT = "45";
 
         private const string AUTH_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IAuthService";
 
         public sealed class RegistrationInput
         {
-            public string Username { get; set; }
+            public string Username { get; set; } = string.Empty;
 
-            public string GivenName { get; set; }
+            public string GivenName { get; set; } = string.Empty;
 
-            public string FamilyName { get; set; }
+            public string FamilyName { get; set; } = string.Empty;
 
-            public string EmailAddress { get; set; }
+            public string EmailAddress { get; set; } = string.Empty;
 
-            public string PlainPassword { get; set; }
+            public string PlainPassword { get; set; } = string.Empty;
         }
 
-        public async Task<RegistrationDto> SignUpAsync(RegistrationInput rawInput)
+        public sealed class RegistrationResult
         {
+            public bool IsSuccess { get; set; }
+
+            public bool IsEndpointNotFound { get; set; }
+
+            public bool IsGenericError { get; set; }
+
+            public string Code { get; set; } = string.Empty;
+
+            public Dictionary<string, string> Meta { get; set; } = new Dictionary<string, string>();
+
+            public RegistrationDto Registration { get; set; }
+        }
+
+        public async Task<RegistrationResult> SignUpAsync(RegistrationInput rawInput)
+        {
+            var result = new RegistrationResult();
+
             if (rawInput == null)
             {
-                return null;
+                result.IsGenericError = true;
+                result.Code = AUTH_CODE_INVALID_CREDENTIALS;
+                return result;
             }
 
             RegistrationInput input = NormalizeParam(rawInput);
@@ -61,7 +81,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             if (errors.Any())
             {
                 ShowWarn(string.Join("\n", errors));
-                return null;
+                result.IsSuccess = false;
+                return result;
             }
 
             var registrationDto = new RegistrationDto
@@ -77,34 +98,47 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                AuthResult sendResult = await Task.Run(
-                    () => authClient.RequestEmailVerification(registrationDto.Email));
+                AuthResult sendResult = await Task
+                    .Run(() => authClient.RequestEmailVerification(registrationDto.Email))
+                    .ConfigureAwait(true);
 
                 if (!sendResult.Success)
                 {
                     ShowWarn(MapAuth(sendResult.Code, sendResult.Meta));
                     authClient.Close();
-                    return null;
+
+                    result.IsSuccess = false;
+                    result.Code = sendResult.Code ?? string.Empty;
+                    result.Meta = sendResult.Meta ?? new Dictionary<string, string>();
+                    return result;
                 }
 
                 ShowInfo(string.Format(T("UiVerificationSentFmt"), registrationDto.Email));
                 authClient.Close();
 
-                return registrationDto;
+                result.IsSuccess = true;
+                result.Registration = registrationDto;
+                result.Code = AUTH_CODE_OK;
+                return result;
             }
             catch (System.ServiceModel.EndpointNotFoundException)
             {
                 ShowError(T("UiEndpointNotFound"));
-                _logger.Warn("No se ha encontrado el endpoint");
+                Logger.Warn("No se ha encontrado el endpoint de AuthService.");
                 authClient.Abort();
+
+                result.IsEndpointNotFound = true;
+                return result;
             }
             catch (Exception ex)
             {
                 ShowError($"{T("UiGenericError")} {ex.Message}");
+                Logger.Error("Error inesperado al registrar usuario.", ex);
                 authClient.Abort();
-            }
 
-            return null;
+                result.IsGenericError = true;
+                return result;
+            }
         }
 
         private static RegistrationInput NormalizeParam(RegistrationInput input)
@@ -328,7 +362,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                         T("AuthThrottleWaitFmt"),
                         metaDictionary.TryGetValue(META_KEY_SECONDS, out string secondsText)
                             ? secondsText
-                            : "45");
+                            : DEFAULT_THROTTLE_SECONDS_TEXT);
 
                 case AUTH_CODE_NOT_REQUESTED:
                     return T("AuthCodeNotRequested");
