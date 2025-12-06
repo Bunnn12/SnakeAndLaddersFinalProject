@@ -682,56 +682,24 @@
         </Grid.RowDefinitions>
 
         <!-- Barra superior -->
-        <!-- Barra superior -->
         <Grid Grid.Row="0"
-      Margin="16">
+              Margin="16">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Horizontal"
-                Grid.Column="0">
+                        Grid.Column="0">
                 <TextBlock Text="Snakes &amp; Ladders"
-                   Foreground="White"
-                   FontSize="20"
-                   FontWeight="Bold" />
+                           Foreground="White"
+                           FontSize="20"
+                           FontWeight="Bold" />
                 <TextBlock Text="  -  Game Board"
-                   Foreground="White"
-                   FontSize="16"
-                   Margin="8,0,0,0" />
-            </StackPanel>
-
-            <!-- AQUÍ METEMOS EL TIMER -->
-            <StackPanel Grid.Column="1"
-                Orientation="Horizontal"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Margin="0,0,4,0">
-
-                <TextBlock Text="Tiempo de turno:"
-                   Foreground="#FFEFE2C4"
-                   FontSize="14"
-                   Margin="0,0,6,0"
-                   VerticalAlignment="Center" />
-
-                <Border Padding="8,2"
-                CornerRadius="8"
-                Background="#66000000"
-                BorderBrush="#FFE3C08C"
-                BorderThickness="1">
-                    <TextBlock Text="{Binding TurnTimerText}"
-                       Foreground="#FFFCE6B5"
-                       FontSize="16"
-                       FontWeight="Bold"
-                       VerticalAlignment="Center"
-                       TextAlignment="Center"
-                       MinWidth="60" />
-                </Border>
-
+                           Foreground="White"
+                           FontSize="16"
+                           Margin="8,0,0,0" />
             </StackPanel>
         </Grid>
-
 
         <!-- Tablero -->
         <Viewbox Grid.Row="1"
@@ -959,10 +927,41 @@
                     IsEnabled="{Binding IsTargetSelectionActive}" />
         </Grid>
 
+        <!-- TIMER CENTRAL -->
+        <Grid Grid.RowSpan="3"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Panel.ZIndex="80"
+              IsHitTestVisible="False">
+            <Border Padding="12,8"
+                    CornerRadius="16"
+                    Background="#CC000000"
+                    BorderBrush="#FFE3C08C"
+                    BorderThickness="2">
+                <StackPanel Orientation="Vertical"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="Tiempo de turno"
+                               Foreground="#FFEFE2C4"
+                               FontSize="14"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,4" />
+                    <TextBlock Text="{Binding TurnTimerText}"
+                               Foreground="#FFFCE6B5"
+                               FontSize="32"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               MinWidth="100" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
         <!-- Esquinas jugadores -->
 
         <!-- TopLeft -->
         <ContentControl Content="{Binding CornerPlayers.TopLeftPlayer}"
+                               
                         Grid.RowSpan="3"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"

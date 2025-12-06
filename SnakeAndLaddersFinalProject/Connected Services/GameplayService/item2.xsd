@@ -111,4 +111,11 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="OnTurnTimerUpdated">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay" minOccurs="0" name="timerInfo" nillable="true" type="q11:TurnTimerUpdateDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

@@ -61,6 +61,17 @@ namespace SnakeAndLaddersFinalProject.Services
             RunOnUiThreadAsync(() => _eventsHandler.HandleServerItemUsedAsync(notification));
         }
 
+        public void OnTurnTimerUpdated(TurnTimerUpdateDto timerInfo)
+        {
+            if (timerInfo == null)
+            {
+                return;
+            }
+
+            _ = _eventsHandler.HandleServerTurnTimerUpdatedAsync(timerInfo);
+        }
+
+
         private void RunOnUiThreadAsync(Func<Task> actionAsync)
         {
             if (actionAsync == null)

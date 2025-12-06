@@ -52,6 +52,7 @@
       <xs:element minOccurs="0" name="CurrentTurnUserId" type="xs:int" />
       <xs:element minOccurs="0" name="GameId" type="xs:int" />
       <xs:element minOccurs="0" name="IsFinished" type="xs:boolean" />
+      <xs:element minOccurs="0" name="RemainingTurnSeconds" type="xs:int" />
       <xs:element minOccurs="0" name="Tokens" nillable="true" type="tns:ArrayOfTokenStateDto" />
       <xs:element minOccurs="0" name="WinnerUserId" type="xs:int" />
     </xs:sequence>
@@ -138,4 +139,12 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="PlayerLeftDto" nillable="true" type="tns:PlayerLeftDto" />
+  <xs:complexType name="TurnTimerUpdateDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CurrentTurnUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="GameId" type="xs:int" />
+      <xs:element minOccurs="0" name="RemainingSeconds" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TurnTimerUpdateDto" nillable="true" type="tns:TurnTimerUpdateDto" />
 </xs:schema>

@@ -491,6 +491,9 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         private bool IsFinishedField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int RemainingTurnSecondsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private SnakeAndLaddersFinalProject.GameplayService.TokenStateDto[] TokensField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -541,6 +544,19 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
                 if ((this.IsFinishedField.Equals(value) != true)) {
                     this.IsFinishedField = value;
                     this.RaisePropertyChanged("IsFinished");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int RemainingTurnSeconds {
+            get {
+                return this.RemainingTurnSecondsField;
+            }
+            set {
+                if ((this.RemainingTurnSecondsField.Equals(value) != true)) {
+                    this.RemainingTurnSecondsField = value;
+                    this.RaisePropertyChanged("RemainingTurnSeconds");
                 }
             }
         }
@@ -1543,6 +1559,83 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="TurnTimerUpdateDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos.Gameplay")]
+    [System.SerializableAttribute()]
+    public partial class TurnTimerUpdateDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int CurrentTurnUserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int GameIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int RemainingSecondsField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int CurrentTurnUserId {
+            get {
+                return this.CurrentTurnUserIdField;
+            }
+            set {
+                if ((this.CurrentTurnUserIdField.Equals(value) != true)) {
+                    this.CurrentTurnUserIdField = value;
+                    this.RaisePropertyChanged("CurrentTurnUserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int GameId {
+            get {
+                return this.GameIdField;
+            }
+            set {
+                if ((this.GameIdField.Equals(value) != true)) {
+                    this.GameIdField = value;
+                    this.RaisePropertyChanged("GameId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int RemainingSeconds {
+            get {
+                return this.RemainingSecondsField;
+            }
+            set {
+                if ((this.RemainingSecondsField.Equals(value) != true)) {
+                    this.RemainingSecondsField = value;
+                    this.RaisePropertyChanged("RemainingSeconds");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="GameplayService.IGameplayService", CallbackContract=typeof(SnakeAndLaddersFinalProject.GameplayService.IGameplayServiceCallback))]
     public interface IGameplayService {
@@ -1598,6 +1691,9 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IGameplayService/OnPlayerLeft")]
         void OnPlayerLeft(SnakeAndLaddersFinalProject.GameplayService.PlayerLeftDto playerLeftInfo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IGameplayService/OnTurnTimerUpdated")]
+        void OnTurnTimerUpdated(SnakeAndLaddersFinalProject.GameplayService.TurnTimerUpdateDto timerInfo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

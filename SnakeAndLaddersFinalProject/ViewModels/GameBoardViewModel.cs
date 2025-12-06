@@ -19,7 +19,6 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
@@ -43,12 +42,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string SELECT_TARGET_PLAYER_MESSAGE = "Selecciona al jugador objetivo haciendo clic en su avatar.";
         private const string ITEM_USE_CANCELLED_MESSAGE = "Uso de ítem cancelado.";
 
-        private const int TURN_TIME_SECONDS = 120;
-        private const string DEFAULT_TURN_TIMER_TEXT = "02:00";
+        private const string DEFAULT_TURN_TIMER_TEXT = "00:30";
 
         private const string TIMEOUT_SKIP_MESSAGE = "Un jugador perdió su turno por tiempo.";
         private const string TIMEOUT_KICK_MESSAGE = "Un jugador fue expulsado de la partida por inactividad.";
-
 
         private const string DICE_ROLL_SPRITE_PATH = "pack://application:,,,/Assets/Images/Dice/DiceSpriteSheet.png";
         private const string DICE_FACE_BASE_PATH = "pack://application:,,,/Assets/Images/Dice/";
@@ -81,8 +78,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private int currentTurnUserId;
         private bool isMyTurn;
-        private readonly DispatcherTimer turnTimer;
-        private int remainingTurnSeconds;
 
         private string turnTimerText = DEFAULT_TURN_TIMER_TEXT;
 
@@ -196,7 +191,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 OnPropertyChanged();
             }
         }
-
 
         public bool IsTargetSelectionActive
         {
@@ -341,12 +335,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 this.localUserId,
                 UpdateTurnFromState);
 
-            turnTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1)
-            };
-            turnTimer.Tick += OnTurnTimerTick;
-
             TurnTimerText = DEFAULT_TURN_TIMER_TEXT;
         }
 
@@ -430,68 +418,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             tokenManager.ResetAllTokensToCell(startCellIndex);
         }
 
-        private void StartTurnTimer()
-        {
-            remainingTurnSeconds = TURN_TIME_SECONDS;
-            UpdateTurnTimerText(remainingTurnSeconds);
-
-            if (!turnTimer.IsEnabled)
-            {
-                turnTimer.Start();
-            }
-        }
-
-        private void StopTurnTimer()
-        {
-            if (turnTimer.IsEnabled)
-            {
-                turnTimer.Stop();
-            }
-
-            remainingTurnSeconds = 0;
-            UpdateTurnTimerText(remainingTurnSeconds);
-        }
-
-        private async void OnTurnTimerTick(object sender, EventArgs e)
-        {
-            if (remainingTurnSeconds <= 0)
-            {
-                StopTurnTimer();
-                UpdateTurnTimerText(0);
-
-                // Solo reportamos timeout si realmente era mi turno y tengo cliente
-                if (IsMyTurn && gameplayClient != null && !isRollRequestInProgress && !isUseItemInProgress)
-                {
-                    try
-                    {
-                        Logger.InfoFormat(
-                            "RegisterTurnTimeout: GameId={0}, UserId={1}",
-                            gameId,
-                            localUserId);
-
-                        await gameplayClient
-                            .RegisterTurnTimeoutAsync(gameId, localUserId)
-                            .ConfigureAwait(false);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error("Error al registrar timeout de turno.", ex);
-                        // No mostramos MessageBox aquí; el flujo se corrige cuando el server mande OnTurnChanged
-                    }
-                }
-
-                return;
-            }
-
-            remainingTurnSeconds--;
-            UpdateTurnTimerText(remainingTurnSeconds);
-        }
-
-        
-
-
-
-
         private void UpdateTurnTimerText(int seconds)
         {
             if (seconds <= 0)
@@ -505,7 +431,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             TurnTimerText = string.Format("{0:00}:{1:00}", minutes, remainingSeconds);
         }
-
 
         private async Task JoinGameplayAsync(string currentUserName)
         {
@@ -938,6 +863,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 UpdateTurnFromState(stateResponse.CurrentTurnUserId);
 
+                // Timer ahora lo controla el servidor; solo actualizamos el texto con el valor recibido
+                UpdateTurnTimerText(stateResponse.RemainingTurnSeconds);
+
                 if (stateResponse.Tokens == null)
                 {
                     return;
@@ -1047,17 +975,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             Task handlerTask = eventsHandler.HandleServerTurnChangedAsync(turnInfo);
 
-            bool isMyTurnAfter = turnInfo.CurrentTurnUserId == localUserId;
-
-            if (isMyTurnAfter)
-            {
-                StartTurnTimer();
-            }
-            else
-            {
-                StopTurnTimer();
-            }
-
             if (!string.IsNullOrWhiteSpace(turnInfo.Reason))
             {
                 string normalizedReason = turnInfo.Reason.Trim().ToUpperInvariant();
@@ -1096,7 +1013,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             await handlerTask;
         }
 
-
         public Task HandleServerPlayerLeftAsync(PlayerLeftDto playerLeftInfo)
         {
             Task handlerTask = eventsHandler.HandleServerPlayerLeftAsync(playerLeftInfo);
@@ -1128,6 +1044,21 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 await SyncGameStateAsync(true);
             }
+        }
+
+        public Task HandleServerTurnTimerUpdatedAsync(TurnTimerUpdateDto timerInfo)
+        {
+            if (timerInfo == null)
+            {
+                return Task.CompletedTask;
+            }
+
+            int seconds = timerInfo.RemainingSeconds;
+
+            Application.Current.Dispatcher.Invoke(
+                () => UpdateTurnTimerText(seconds));
+
+            return Task.CompletedTask;
         }
 
         private static string BuildItemUsedMessage(ItemUsedNotificationDto notification)

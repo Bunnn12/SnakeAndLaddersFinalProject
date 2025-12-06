@@ -85,6 +85,9 @@
   <wsdl:message name="IGameplayService_OnPlayerLeft_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:OnPlayerLeft" />
   </wsdl:message>
+  <wsdl:message name="IGameplayService_OnTurnTimerUpdated_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:OnTurnTimerUpdated" />
+  </wsdl:message>
   <wsdl:portType name="IGameplayService">
     <wsdl:operation name="RollDice">
       <wsdl:input wsaw:Action="http://tempuri.org/IGameplayService/RollDice" message="tns:IGameplayService_RollDice_InputMessage" />
@@ -121,6 +124,9 @@
     </wsdl:operation>
     <wsdl:operation name="OnPlayerLeft">
       <wsdl:output wsaw:Action="http://tempuri.org/IGameplayService/OnPlayerLeft" message="tns:IGameplayService_OnPlayerLeft_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OnTurnTimerUpdated">
+      <wsdl:output wsaw:Action="http://tempuri.org/IGameplayService/OnTurnTimerUpdated" message="tns:IGameplayService_OnTurnTimerUpdated_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="NetTcpBinding_IGameplayService" type="tns:IGameplayService">
@@ -200,6 +206,12 @@
     </wsdl:operation>
     <wsdl:operation name="OnPlayerLeft">
       <soap12:operation soapAction="http://tempuri.org/IGameplayService/OnPlayerLeft" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OnTurnTimerUpdated">
+      <soap12:operation soapAction="http://tempuri.org/IGameplayService/OnTurnTimerUpdated" style="document" />
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>

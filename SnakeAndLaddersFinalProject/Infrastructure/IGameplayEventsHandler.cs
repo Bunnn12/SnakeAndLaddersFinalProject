@@ -12,5 +12,8 @@ namespace SnakeAndLaddersFinalProject.Infrastructure
         Task HandleServerPlayerLeftAsync(PlayerLeftDto playerLeftInfo);
 
         Task HandleServerItemUsedAsync(ItemUsedNotificationDto notification);
+
+        Task HandleServerTurnTimerUpdatedAsync(TurnTimerUpdateDto timerInfo);
+
     }
 }
