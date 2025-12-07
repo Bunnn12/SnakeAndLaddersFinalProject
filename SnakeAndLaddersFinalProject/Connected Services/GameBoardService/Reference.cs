@@ -29,13 +29,13 @@ namespace SnakeAndLaddersFinalProject.GameBoardService {
         private string DifficultyField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool EnableBonusCellsField;
+        private bool EnableDiceCellsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool EnableTeleportCellsField;
+        private bool EnableItemCellsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool EnableTrapCellsField;
+        private bool EnableMessageCellsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int GameIdField;
@@ -80,40 +80,40 @@ namespace SnakeAndLaddersFinalProject.GameBoardService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool EnableBonusCells {
+        public bool EnableDiceCells {
             get {
-                return this.EnableBonusCellsField;
+                return this.EnableDiceCellsField;
             }
             set {
-                if ((this.EnableBonusCellsField.Equals(value) != true)) {
-                    this.EnableBonusCellsField = value;
-                    this.RaisePropertyChanged("EnableBonusCells");
+                if ((this.EnableDiceCellsField.Equals(value) != true)) {
+                    this.EnableDiceCellsField = value;
+                    this.RaisePropertyChanged("EnableDiceCells");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool EnableTeleportCells {
+        public bool EnableItemCells {
             get {
-                return this.EnableTeleportCellsField;
+                return this.EnableItemCellsField;
             }
             set {
-                if ((this.EnableTeleportCellsField.Equals(value) != true)) {
-                    this.EnableTeleportCellsField = value;
-                    this.RaisePropertyChanged("EnableTeleportCells");
+                if ((this.EnableItemCellsField.Equals(value) != true)) {
+                    this.EnableItemCellsField = value;
+                    this.RaisePropertyChanged("EnableItemCells");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool EnableTrapCells {
+        public bool EnableMessageCells {
             get {
-                return this.EnableTrapCellsField;
+                return this.EnableMessageCellsField;
             }
             set {
-                if ((this.EnableTrapCellsField.Equals(value) != true)) {
-                    this.EnableTrapCellsField = value;
-                    this.RaisePropertyChanged("EnableTrapCells");
+                if ((this.EnableMessageCellsField.Equals(value) != true)) {
+                    this.EnableMessageCellsField = value;
+                    this.RaisePropertyChanged("EnableMessageCells");
                 }
             }
         }
@@ -548,13 +548,13 @@ namespace SnakeAndLaddersFinalProject.GameBoardService {
         None = 0,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Bonus = 1,
+        Dice = 1,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Trap = 2,
+        Item = 2,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Teleport = 3,
+        Message = 3,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

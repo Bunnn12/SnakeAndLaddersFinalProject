@@ -6,9 +6,9 @@
     <xs:sequence>
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" minOccurs="0" name="BoardSize" type="q1:BoardSizeOption" />
       <xs:element minOccurs="0" name="Difficulty" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="EnableBonusCells" type="xs:boolean" />
-      <xs:element minOccurs="0" name="EnableTeleportCells" type="xs:boolean" />
-      <xs:element minOccurs="0" name="EnableTrapCells" type="xs:boolean" />
+      <xs:element minOccurs="0" name="EnableDiceCells" type="xs:boolean" />
+      <xs:element minOccurs="0" name="EnableItemCells" type="xs:boolean" />
+      <xs:element minOccurs="0" name="EnableMessageCells" type="xs:boolean" />
       <xs:element minOccurs="0" name="GameId" type="xs:int" />
       <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="PlayerUserIds" nillable="true" type="q2:ArrayOfint" />
     </xs:sequence>

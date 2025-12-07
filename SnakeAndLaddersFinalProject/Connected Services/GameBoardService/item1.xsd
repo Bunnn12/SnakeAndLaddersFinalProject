@@ -11,9 +11,9 @@
   <xs:simpleType name="SpecialCellType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="None" />
-      <xs:enumeration value="Bonus" />
-      <xs:enumeration value="Trap" />
-      <xs:enumeration value="Teleport" />
+      <xs:enumeration value="Dice" />
+      <xs:enumeration value="Item" />
+      <xs:enumeration value="Message" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="SpecialCellType" nillable="true" type="tns:SpecialCellType" />

@@ -21,7 +21,7 @@ namespace SnakeAndLaddersFinalProject
         None = 0,
         Dice = 1,
         Message = 2,
-        Trap = 4
+        Item = 4
     }
 
     public sealed class CreateMatchOptions

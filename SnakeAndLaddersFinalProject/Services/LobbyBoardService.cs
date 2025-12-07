@@ -46,9 +46,9 @@ namespace SnakeAndLaddersFinalProject.Services
 
             LobbyMapper.MapSpecialTileBooleans(
                 options.SpecialTiles,
-                out bool enableBonusCells,
-                out bool enableTrapCells,
-                out bool enableTeleportCells);
+                out bool enableDiceCells,
+                out bool enableItemCells,
+                out bool enableMessageCells);
 
             List<int> playerUserIds = members
                 .Where(m => m != null && m.UserId != INVALID_USER_ID)
@@ -65,9 +65,9 @@ namespace SnakeAndLaddersFinalProject.Services
             var boardDto = _gameBoardClient.CreateBoard(
                 lobbyId,
                 options.BoardSize,
-                enableBonusCells,
-                enableTrapCells,
-                enableTeleportCells,
+                enableDiceCells,
+                enableItemCells,
+                enableMessageCells,
                 options.Difficulty.ToString(),
                 playerUserIds);
 

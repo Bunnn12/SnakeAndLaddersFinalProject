@@ -19,9 +19,9 @@ namespace SnakeAndLaddersFinalProject.Services
         public BoardDefinitionDto CreateBoard(
             int gameId,
             ClientBoardSizeOption boardSize,
-            bool enableBonusCells,
-            bool enableTrapCells,
-            bool enableTeleportCells,
+            bool enableDiceCells,
+            bool enableItemCells,
+            bool enableMessageCells,
             string difficulty,
             IEnumerable<int> playerUserIds)
         {
@@ -51,9 +51,9 @@ namespace SnakeAndLaddersFinalProject.Services
                 {
                     GameId = gameId,
                     BoardSize = serviceBoardSize,
-                    EnableBonusCells = enableBonusCells,
-                    EnableTrapCells = enableTrapCells,
-                    EnableTeleportCells = enableTeleportCells,
+                    EnableDiceCells = enableDiceCells,
+                    EnableItemCells = enableItemCells,
+                    EnableTeleportCells = enableMessageCells,
                     Difficulty = difficulty,
                     PlayerUserIds = normalizedPlayers
                 };

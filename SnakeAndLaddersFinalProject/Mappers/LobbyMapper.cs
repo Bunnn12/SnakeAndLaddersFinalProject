@@ -67,13 +67,13 @@ namespace SnakeAndLaddersFinalProject.Mappers
 
         public static void MapSpecialTileBooleans(
             SpecialTileOptions options,
-            out bool enableBonus,
-            out bool enableTrap,
-            out bool enableTeleport)
+            out bool enableDice,
+            out bool enableItem,
+            out bool enableMessage)
         {
-            enableBonus = options.HasFlag(SpecialTileOptions.Dice);
-            enableTrap = options.HasFlag(SpecialTileOptions.Trap);
-            enableTeleport = options.HasFlag(SpecialTileOptions.Message);
+            enableDice = options.HasFlag(SpecialTileOptions.Dice);
+            enableItem = options.HasFlag(SpecialTileOptions.Item);
+            enableMessage = options.HasFlag(SpecialTileOptions.Message);
         }
     }
 }

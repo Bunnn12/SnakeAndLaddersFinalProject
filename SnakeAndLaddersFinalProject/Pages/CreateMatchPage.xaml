@@ -290,7 +290,7 @@
                                 </Border>
                             </CheckBox>
 
-                            <CheckBox x:Name="chkSpecialTrap" Margin="4">
+                            <CheckBox x:Name="chkSpecialItem" Margin="4">
                                 <Border Padding="12"
                                         BorderBrush="#DDDDDD"
                                         BorderThickness="1"

@@ -73,7 +73,7 @@
                          Color="#8B5A2B" />
 
         <!-- BONUS (verde) -->
-        <LinearGradientBrush x:Key="BrushBoardCellBonus"
+        <LinearGradientBrush x:Key="BrushBoardCellDice"
                              StartPoint="0,0"
                              EndPoint="1,1">
             <GradientStop Color="#C6F6D5" Offset="0.0" />
@@ -82,7 +82,7 @@
         </LinearGradientBrush>
 
         <!-- TRAMPA (rojo) -->
-        <LinearGradientBrush x:Key="BrushBoardCellTrap"
+        <LinearGradientBrush x:Key="BrushBoardCellItem"
                              StartPoint="0,0"
                              EndPoint="1,1">
             <GradientStop Color="#FED7D7" Offset="0.0" />
@@ -130,14 +130,14 @@
                             Value="{StaticResource BrushBoardCellBackgroundDark}" />
                 </DataTrigger>
 
-                <DataTrigger Binding="{Binding IsBonus}" Value="True">
+                <DataTrigger Binding="{Binding IsDice}" Value="True">
                     <Setter Property="Background"
-                            Value="{StaticResource BrushBoardCellBonus}" />
+                            Value="{StaticResource BrushBoardCellDice}" />
                 </DataTrigger>
 
-                <DataTrigger Binding="{Binding IsTrap}" Value="True">
+                <DataTrigger Binding="{Binding IsItem}" Value="True">
                     <Setter Property="Background"
-                            Value="{StaticResource BrushBoardCellTrap}" />
+                            Value="{StaticResource BrushBoardCellItem}" />
                 </DataTrigger>
 
                 <DataTrigger Binding="{Binding IsTeleport}" Value="True">
@@ -289,7 +289,7 @@
                                TextOptions.TextRenderingMode="Aliased"
                                TextOptions.TextFormattingMode="Display" />
 
-                    <!-- BONUS -->
+                    <!-- DICE -->
                     <Image Width="60"
                            Height="60"
                            HorizontalAlignment="Center"
@@ -299,7 +299,7 @@
                             <Style TargetType="Image">
                                 <Setter Property="Visibility" Value="Collapsed" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsBonus}" Value="True">
+                                    <DataTrigger Binding="{Binding IsDice}" Value="True">
                                         <Setter Property="Visibility" Value="Visible" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -317,7 +317,7 @@
                             <Style TargetType="Image">
                                 <Setter Property="Visibility" Value="Collapsed" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsTrap}" Value="True">
+                                    <DataTrigger Binding="{Binding IsItem}" Value="True">
                                         <Setter Property="Visibility" Value="Visible" />
                                     </DataTrigger>
                                 </Style.Triggers>

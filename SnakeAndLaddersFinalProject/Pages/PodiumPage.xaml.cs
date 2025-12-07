@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using SnakeAndLaddersFinalProject.ViewModels;
 
 namespace SnakeAndLaddersFinalProject.Pages
@@ -13,12 +14,50 @@ namespace SnakeAndLaddersFinalProject.Pages
         public PodiumPage()
         {
             InitializeComponent();
+            HookCloseRequested();
         }
 
         public PodiumPage(PodiumViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;
+            HookCloseRequested();
+        }
+
+        private void HookCloseRequested()
+        {
+            PodiumViewModel vm = ViewModel;
+
+            if (vm != null)
+            {
+                vm.CloseRequested = OnCloseRequested;
+            }
+
+            DataContextChanged += OnDataContextChanged;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            PodiumViewModel vm = e.NewValue as PodiumViewModel;
+
+            if (vm != null)
+            {
+                vm.CloseRequested = OnCloseRequested;
+            }
+        }
+
+        private void OnCloseRequested()
+        {
+            Page mainPage = new MainPage();
+
+            if (NavigationService != null)
+            {
+                NavigationService.Navigate(mainPage);
+                return;
+            }
+
+            BasicWindow window = Window.GetWindow(this) as BasicWindow;
+            window?.MainFrame?.Navigate(mainPage);
         }
     }
 }

@@ -118,9 +118,9 @@ namespace SnakeAndLaddersFinalProject.Pages
                 value |= SpecialTileOptions.Message;
             }
 
-            if (chkSpecialTrap.IsChecked == true)
+            if (chkSpecialItem.IsChecked == true)
             {
-                value |= SpecialTileOptions.Trap;
+                value |= SpecialTileOptions.Item;
             }
 
             return value;

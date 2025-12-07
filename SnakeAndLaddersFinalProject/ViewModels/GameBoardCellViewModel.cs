@@ -22,19 +22,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             get { return SpecialType != GameSpecialCellType.None; }
         }
 
-        public bool IsBonus
+        public bool IsDice
         {
-            get { return SpecialType == GameSpecialCellType.Bonus; }
+            get { return SpecialType == GameSpecialCellType.Dice; }
         }
 
-        public bool IsTrap
+        public bool IsItem
         {
-            get { return SpecialType == GameSpecialCellType.Trap; }
+            get { return SpecialType == GameSpecialCellType.Item; }
         }
 
-        public bool IsTeleport
+        public bool IsMessage
         {
-            get { return SpecialType == GameSpecialCellType.Teleport; }
+            get { return SpecialType == GameSpecialCellType.Message; }
         }
 
         public bool IsStart { get; }
@@ -66,14 +66,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 case ServiceSpecialCellType.None:
                     return GameSpecialCellType.None;
 
-                case ServiceSpecialCellType.Bonus:
-                    return GameSpecialCellType.Bonus;
+                case ServiceSpecialCellType.Dice:
+                    return GameSpecialCellType.Dice;
 
-                case ServiceSpecialCellType.Trap:
-                    return GameSpecialCellType.Trap;
+                case ServiceSpecialCellType.Item:
+                    return GameSpecialCellType.Item;
 
                 case ServiceSpecialCellType.Teleport:
-                    return GameSpecialCellType.Teleport;
+                    return GameSpecialCellType.Message;
 
                 default:
                     return GameSpecialCellType.None;
