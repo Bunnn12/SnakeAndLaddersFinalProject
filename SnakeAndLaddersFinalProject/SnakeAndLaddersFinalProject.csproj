@@ -627,6 +627,9 @@
     <None Include="Connected Services\GameplayService\item3.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Connected Services\GameplayService\item4.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\GameplayService\SnakeAndLaddersFinalProject.GameplayService.GetGameStateResponseDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

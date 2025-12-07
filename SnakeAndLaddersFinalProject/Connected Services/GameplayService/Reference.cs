@@ -145,6 +145,12 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Nullable<int> MessageIndexField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string GrantedItemCodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string GrantedDiceCodeField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -281,6 +287,32 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
                 if ((this.MessageIndexField.Equals(value) != true)) {
                     this.MessageIndexField = value;
                     this.RaisePropertyChanged("MessageIndex");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=10)]
+        public string GrantedItemCode {
+            get {
+                return this.GrantedItemCodeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.GrantedItemCodeField, value) != true)) {
+                    this.GrantedItemCodeField = value;
+                    this.RaisePropertyChanged("GrantedItemCode");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=11)]
+        public string GrantedDiceCode {
+            get {
+                return this.GrantedDiceCodeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.GrantedDiceCodeField, value) != true)) {
+                    this.GrantedDiceCodeField = value;
+                    this.RaisePropertyChanged("GrantedDiceCode");
                 }
             }
         }
@@ -905,6 +937,12 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         private int FromCellIndexField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string GrantedDiceCodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string GrantedItemCodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool HasExtraTurnField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -915,6 +953,9 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Nullable<int> MessageIndexField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private SnakeAndLaddersFinalProject.GameplayService.SpecialCellType SpecialCellTypeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int ToCellIndexField;
@@ -972,6 +1013,32 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string GrantedDiceCode {
+            get {
+                return this.GrantedDiceCodeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.GrantedDiceCodeField, value) != true)) {
+                    this.GrantedDiceCodeField = value;
+                    this.RaisePropertyChanged("GrantedDiceCode");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string GrantedItemCode {
+            get {
+                return this.GrantedItemCodeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.GrantedItemCodeField, value) != true)) {
+                    this.GrantedItemCodeField = value;
+                    this.RaisePropertyChanged("GrantedItemCode");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public bool HasExtraTurn {
             get {
                 return this.HasExtraTurnField;
@@ -1024,6 +1091,19 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public SnakeAndLaddersFinalProject.GameplayService.SpecialCellType SpecialCellType {
+            get {
+                return this.SpecialCellTypeField;
+            }
+            set {
+                if ((this.SpecialCellTypeField.Equals(value) != true)) {
+                    this.SpecialCellTypeField = value;
+                    this.RaisePropertyChanged("SpecialCellType");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public int ToCellIndex {
             get {
                 return this.ToCellIndexField;
@@ -1057,6 +1137,23 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="SpecialCellType", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers")]
+    public enum SpecialCellType : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        None = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Dice = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Item = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Message = 3,
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]

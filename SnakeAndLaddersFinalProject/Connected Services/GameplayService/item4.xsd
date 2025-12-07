@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Helpers" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="SpecialCellType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Dice" />
+      <xs:enumeration value="Item" />
+      <xs:enumeration value="Message" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SpecialCellType" nillable="true" type="tns:SpecialCellType" />
+</xs:schema>

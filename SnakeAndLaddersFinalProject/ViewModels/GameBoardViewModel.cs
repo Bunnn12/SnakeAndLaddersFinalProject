@@ -640,6 +640,40 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     return;
                 }
 
+                // 👇 AVISO: ÍTEM / DADO OBTENIDO
+                if (!string.IsNullOrWhiteSpace(response.GrantedItemCode) ||
+                    !string.IsNullOrWhiteSpace(response.GrantedDiceCode))
+                {
+                    await Application.Current.Dispatcher.InvokeAsync(
+                        () =>
+                        {
+                            string text = "¡Has obtenido ";
+
+                            if (!string.IsNullOrWhiteSpace(response.GrantedItemCode))
+                            {
+                                text += $"un ítem ({response.GrantedItemCode})";
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(response.GrantedDiceCode))
+                            {
+                                if (!string.IsNullOrWhiteSpace(response.GrantedItemCode))
+                                {
+                                    text += " y ";
+                                }
+
+                                text += $"un dado ({response.GrantedDiceCode})";
+                            }
+
+                            text += "!";
+
+                            MessageBox.Show(
+                                text,
+                                GAME_WINDOW_TITLE,
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+                        });
+                }
+
                 selectedDiceSlotNumber = null;
                 IsDiceSlot1Selected = false;
                 IsDiceSlot2Selected = false;
@@ -681,6 +715,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 RaiseAllCanExecuteChanged();
             }
         }
+
 
         private bool HasDiceInSlot(byte slotNumber)
         {

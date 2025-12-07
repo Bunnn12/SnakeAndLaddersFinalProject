@@ -26,6 +26,7 @@
     <MetadataFile FileName="item.disco" MetadataType="Disco" ID="d1c91d9a-612b-425d-9ed9-b1b87fd72757" SourceId="1" SourceUrl="http://localhost:8085/gameplay/?disco" />
     <MetadataFile FileName="GameplayService.wsdl" MetadataType="Wsdl" ID="965b4674-ecbe-4d99-b7e7-944d7f0032b3" SourceId="1" SourceUrl="http://localhost:8085/gameplay/?wsdl" />
     <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="61652fe4-bd8b-49f5-8425-de1c5f1939a1" SourceId="1" SourceUrl="http://localhost:8085/gameplay/?xsd=xsd1" />
+    <MetadataFile FileName="item4.xsd" MetadataType="Schema" ID="52d43217-d645-49d4-a597-f9cd0d7fb162" SourceId="1" SourceUrl="http://localhost:8085/gameplay/?xsd=xsd4" />
     <MetadataFile FileName="item2.xsd" MetadataType="Schema" ID="ae1793e4-de85-4210-bdb4-be06d1a6767e" SourceId="1" SourceUrl="http://localhost:8085/gameplay/?xsd=xsd0" />
     <MetadataFile FileName="item3.xsd" MetadataType="Schema" ID="b70c6d54-9b26-47c4-bb25-65ad0aa24554" SourceId="1" SourceUrl="http://localhost:8085/gameplay/?xsd=xsd3" />
   </Metadata>
