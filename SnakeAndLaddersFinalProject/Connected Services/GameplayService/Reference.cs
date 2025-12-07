@@ -142,6 +142,9 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ExtraInfoField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> MessageIndexField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -269,6 +272,19 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
             }
         }
         
+        [System.Runtime.Serialization.DataMemberAttribute(Order=9)]
+        public System.Nullable<int> MessageIndex {
+            get {
+                return this.MessageIndexField;
+            }
+            set {
+                if ((this.MessageIndexField.Equals(value) != true)) {
+                    this.MessageIndexField = value;
+                    this.RaisePropertyChanged("MessageIndex");
+                }
+            }
+        }
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -293,13 +309,13 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         Ladder = 2,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Bonus = 3,
+        Dice = 3,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Trap = 4,
+        Item = 4,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Teleport = 5,
+        Message = 5,
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -898,6 +914,9 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
         private string MessageField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> MessageIndexField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int ToCellIndexField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -987,6 +1006,19 @@ namespace SnakeAndLaddersFinalProject.GameplayService {
                 if ((object.ReferenceEquals(this.MessageField, value) != true)) {
                     this.MessageField = value;
                     this.RaisePropertyChanged("Message");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> MessageIndex {
+            get {
+                return this.MessageIndexField;
+            }
+            set {
+                if ((this.MessageIndexField.Equals(value) != true)) {
+                    this.MessageIndexField = value;
+                    this.RaisePropertyChanged("MessageIndex");
                 }
             }
         }

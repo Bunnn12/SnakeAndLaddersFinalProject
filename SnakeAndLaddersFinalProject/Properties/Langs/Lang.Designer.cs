@@ -124,15 +124,6 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a You must request a verification code before continuing.
-        /// </summary>
-        public static string AuthCodeNotRequested {
-            get {
-                return ResourceManager.GetString("AuthCodeNotRequested", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a This email address is already registered..
         /// </summary>
         public static string AuthEmailAlreadyExists {
@@ -1560,6 +1551,186 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string menuViewStatsText {
             get {
                 return ResourceManager.GetString("menuViewStatsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message10Text {
+            get {
+                return ResourceManager.GetString("Message10Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message11Text {
+            get {
+                return ResourceManager.GetString("Message11Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message12Text {
+            get {
+                return ResourceManager.GetString("Message12Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message13Text {
+            get {
+                return ResourceManager.GetString("Message13Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message14Text {
+            get {
+                return ResourceManager.GetString("Message14Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message15Text {
+            get {
+                return ResourceManager.GetString("Message15Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message16Text {
+            get {
+                return ResourceManager.GetString("Message16Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message17Text {
+            get {
+                return ResourceManager.GetString("Message17Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message18Text {
+            get {
+                return ResourceManager.GetString("Message18Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message19Text {
+            get {
+                return ResourceManager.GetString("Message19Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message1Text {
+            get {
+                return ResourceManager.GetString("Message1Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message20Text {
+            get {
+                return ResourceManager.GetString("Message20Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message2Text {
+            get {
+                return ResourceManager.GetString("Message2Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message3Text {
+            get {
+                return ResourceManager.GetString("Message3Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message4Text {
+            get {
+                return ResourceManager.GetString("Message4Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message5Text {
+            get {
+                return ResourceManager.GetString("Message5Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message6Text {
+            get {
+                return ResourceManager.GetString("Message6Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message7Text {
+            get {
+                return ResourceManager.GetString("Message7Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message8Text {
+            get {
+                return ResourceManager.GetString("Message8Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string Message9Text {
+            get {
+                return ResourceManager.GetString("Message9Text", resourceCulture);
             }
         }
         

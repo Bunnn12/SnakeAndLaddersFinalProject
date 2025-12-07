@@ -53,7 +53,7 @@ namespace SnakeAndLaddersFinalProject.Services
                     BoardSize = serviceBoardSize,
                     EnableDiceCells = enableDiceCells,
                     EnableItemCells = enableItemCells,
-                    EnableTeleportCells = enableMessageCells,
+                    EnableMessageCells = enableMessageCells,
                     Difficulty = difficulty,
                     PlayerUserIds = normalizedPlayers
                 };

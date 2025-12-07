@@ -91,7 +91,7 @@
         </LinearGradientBrush>
 
         <!-- TELEPORT (morado) -->
-        <LinearGradientBrush x:Key="BrushBoardCellTeleport"
+        <LinearGradientBrush x:Key="BrushBoardCellMessage"
                              StartPoint="0,0"
                              EndPoint="1,1">
             <GradientStop Color="#E9D8FD" Offset="0.0" />
@@ -140,9 +140,9 @@
                             Value="{StaticResource BrushBoardCellItem}" />
                 </DataTrigger>
 
-                <DataTrigger Binding="{Binding IsTeleport}" Value="True">
+                <DataTrigger Binding="{Binding IsMessage}" Value="True">
                     <Setter Property="Background"
-                            Value="{StaticResource BrushBoardCellTeleport}" />
+                            Value="{StaticResource BrushBoardCellMessage}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -335,7 +335,7 @@
                             <Style TargetType="Image">
                                 <Setter Property="Visibility" Value="Collapsed" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsTeleport}" Value="True">
+                                    <DataTrigger Binding="{Binding IsMessage}" Value="True">
                                         <Setter Property="Visibility" Value="Visible" />
                                     </DataTrigger>
                                 </Style.Triggers>

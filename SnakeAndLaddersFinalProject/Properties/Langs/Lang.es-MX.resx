@@ -744,9 +744,6 @@
   <data name="AuthCodeInvalid" xml:space="preserve">
     <value>El código de verificación no es válido.</value>
   </data>
-  <data name="AuthCodeNotRequested" xml:space="preserve">
-    <value>Debes solicitar un código de verificación antes de continuar</value>
-  </data>
   <data name="AuthEmailAlreadyExists" xml:space="preserve">
     <value>Esta dirección de correo electrónico ya está registrada.</value>
   </data>
@@ -827,5 +824,65 @@
   </data>
   <data name="warningTitle" xml:space="preserve">
     <value />
+  </data>
+  <data name="Message1Text" xml:space="preserve">
+    <value>Encontraste un bug crítico… el proyecto se atrasó. Retrocede 5 casillas.</value>
+  </data>
+  <data name="Message2Text" xml:space="preserve">
+    <value>Compilación exitosa. Avanzas con confianza. Avanza 4 casillas.</value>
+  </data>
+  <data name="Message3Text" xml:space="preserve">
+    <value>Merge conflict en tu rama. Qué vergüenza… retrocede 5 casillas.</value>
+  </data>
+  <data name="Message4Text" xml:space="preserve">
+    <value>Tu código pasó todas las pruebas unitarias. Bonus de calidad: avanza 4 casillas.</value>
+  </data>
+  <data name="Message5Text" xml:space="preserve">
+    <value>Tuviste que reinstalar Visual Studio. Pierdes tiempo valioso. retrocede 5 casillas</value>
+  </data>
+  <data name="Message6Text" xml:space="preserve">
+    <value>Acreditaste Fundamentos de Programación a la primera. Avanza 4 casillas.</value>
+  </data>
+  <data name="Message7Text" xml:space="preserve">
+    <value>IndexOutOfRangeException: accediste fuera del arreglo retrocede 5 casillas.</value>
+  </data>
+  <data name="Message8Text" xml:space="preserve">
+    <value>Encontraste un meme de programación que te dio fuerzas para continuar. Avanzas 4 casillas</value>
+  </data>
+  <data name="Message9Text" xml:space="preserve">
+    <value>Tu profe de tecnologías te abandono por irse a peru y te retrasaste en el poryecto retrocede 5 casillas</value>
+  </data>
+  <data name="Message10Text" xml:space="preserve">
+    <value>Terminaste un diagrama de secuencia. Avanza 4 casillas</value>
+  </data>
+  <data name="Message11Text" xml:space="preserve">
+    <value>NullReferenceException: avanzaste sin inicializar. Pierdes tu siguiente turno.</value>
+  </data>
+  <data name="Message12Text" xml:space="preserve">
+    <value>Tu equipo te dejó solo en el proyecto final. Eres el héroe que nadie pidió. ganaste un turno extra</value>
+  </data>
+  <data name="Message13Text" xml:space="preserve">
+    <value>Burnout detectado… toma un descanso obligatorio. Pierdes un turno.</value>
+  </data>
+  <data name="Message14Text" xml:space="preserve">
+    <value>Pasaste la materia más difícil del semestre. A celebrar. vuelve a tirar el dado</value>
+  </data>
+  <data name="Message15Text" xml:space="preserve">
+    <value>Te tocó debuggear código heredado sin documentacion… buena suerte. te dejamos descansar el siguiente turno</value>
+  </data>
+  <data name="Message16Text" xml:space="preserve">
+    <value>Pasaste tecnologías en UO. Eres un leyenda. Ganas un turno.</value>
+  </data>
+  <data name="Message17Text" xml:space="preserve">
+    <value>Te toco limpiar 1 dia de deuda técnica en sonarqube pierdes un turno.</value>
+  </data>
+  <data name="Message18Text" xml:space="preserve">
+    <value>Pasaste tecnologías con 6...pasar es pasar. vuelves a tirar</value>
+  </data>
+  <data name="Message19Text" xml:space="preserve">
+    <value>Recursaste programación. pierdes un turno</value>
+  </data>
+  <data name="Message20Text" xml:space="preserve">
+    <value>Eres full stack en prompts de chat gpt. Es tu mayor logro en la vida. ganas un turno</value>
   </data>
 </root>

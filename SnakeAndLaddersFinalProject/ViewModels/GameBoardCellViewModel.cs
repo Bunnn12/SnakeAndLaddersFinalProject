@@ -72,7 +72,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 case ServiceSpecialCellType.Item:
                     return GameSpecialCellType.Item;
 
-                case ServiceSpecialCellType.Teleport:
+                case ServiceSpecialCellType.Message:
                     return GameSpecialCellType.Message;
 
                 default:

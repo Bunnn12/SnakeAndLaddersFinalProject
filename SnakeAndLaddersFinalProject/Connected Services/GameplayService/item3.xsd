@@ -5,9 +5,9 @@
       <xs:enumeration value="None" />
       <xs:enumeration value="Snake" />
       <xs:enumeration value="Ladder" />
-      <xs:enumeration value="Bonus" />
-      <xs:enumeration value="Trap" />
-      <xs:enumeration value="Teleport" />
+      <xs:enumeration value="Dice" />
+      <xs:enumeration value="Item" />
+      <xs:enumeration value="Message" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="MoveEffectType" nillable="true" type="tns:MoveEffectType" />

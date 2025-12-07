@@ -21,6 +21,7 @@
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Enums" minOccurs="0" name="MoveResult" type="q1:MoveEffectType" />
       <xs:element minOccurs="0" name="UpdatedTokens" nillable="true" type="tns:ArrayOfTokenStateDto" />
       <xs:element minOccurs="0" name="ExtraInfo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MessageIndex" nillable="true" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="RollDiceResponseDto" nillable="true" type="tns:RollDiceResponseDto" />
@@ -88,6 +89,7 @@
       <xs:element minOccurs="0" name="HasExtraTurn" type="xs:boolean" />
       <xs:element minOccurs="0" name="HasWon" type="xs:boolean" />
       <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MessageIndex" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="ToCellIndex" type="xs:int" />
       <xs:element minOccurs="0" name="UserId" type="xs:int" />
     </xs:sequence>

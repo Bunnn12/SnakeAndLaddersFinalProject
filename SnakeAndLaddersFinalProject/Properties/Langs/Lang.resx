@@ -744,9 +744,6 @@
   <data name="AuthCodeInvalid" xml:space="preserve">
     <value>The verification code is not valid.</value>
   </data>
-  <data name="AuthCodeNotRequested" xml:space="preserve">
-    <value>You must request a verification code before continuing</value>
-  </data>
   <data name="AuthEmailAlreadyExists" xml:space="preserve">
     <value>This email address is already registered.</value>
   </data>
@@ -1052,5 +1049,65 @@
   </data>
   <data name="SocialProfileUnlinkError" xml:space="preserve">
     <value>An error occurred while unlinking the social network profile.</value>
+  </data>
+  <data name="Message1Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message2Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message3Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message4Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message5Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message6Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message7Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message8Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message9Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message10Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message11Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message12Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message13Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message14Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message15Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message16Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message17Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message18Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message19Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Message20Text" xml:space="preserve">
+    <value />
   </data>
 </root>

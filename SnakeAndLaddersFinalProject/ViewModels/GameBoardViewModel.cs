@@ -1009,11 +1009,50 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             PodiumRequested?.Invoke(podiumViewModel);
         }
 
-        public Task HandleServerPlayerMovedAsync(PlayerMoveResultDto move)
+        public async Task HandleServerPlayerMovedAsync(PlayerMoveResultDto move)
         {
+            if (move == null)
+            {
+                return;
+            }
+
             Task handlerTask = eventsHandler.HandleServerPlayerMovedAsync(move);
-            return handlerTask;
+
+            if (move.MessageIndex.HasValue)
+            {
+                int messageIndex = move.MessageIndex.Value;
+
+                // antes: "{0}MessageText"
+                string resourceKey = string.Format(
+                    "Message{0}Text",
+                    messageIndex);
+
+                string messageText = Lang.ResourceManager.GetString(resourceKey);
+
+                if (!string.IsNullOrWhiteSpace(messageText))
+                {
+                    await Application.Current.Dispatcher.InvokeAsync(
+                        () =>
+                        {
+                            MessageBox.Show(
+                                messageText,
+                                GAME_WINDOW_TITLE,
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+                        });
+                }
+                else
+                {
+                    Logger.WarnFormat(
+                        "No se encontró recurso de mensaje para key={0}.",
+                        resourceKey);
+                }
+            }
+
+            await handlerTask;
         }
+
+
 
         public async Task HandleServerTurnChangedAsync(TurnChangedDto turnInfo)
         {
