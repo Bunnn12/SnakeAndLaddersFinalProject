@@ -393,13 +393,24 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             lastServerEventUtc = DateTime.UtcNow;
 
-            serverInactivityTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(SERVER_INACTIVITY_CHECK_INTERVAL_SECONDS)
-            };
+            Dispatcher dispatcher = Application.Current != null
+                ? Application.Current.Dispatcher
+                : Dispatcher.CurrentDispatcher;
 
-            serverInactivityTimer.Tick += OnServerInactivityTimerTick;
-            serverInactivityTimer.Start();
+            serverInactivityTimer = new DispatcherTimer(
+                TimeSpan.FromSeconds(SERVER_INACTIVITY_CHECK_INTERVAL_SECONDS),
+                DispatcherPriority.Background,
+                OnServerInactivityTimerTick,
+                dispatcher);
+
+            Logger.InfoFormat(
+                "GameBoardViewModel creado. GameId={0}, LocalUserId={1}. InactivityTimer ON (Timeout={2}s, Interval={3}s, DispatcherThreadId={4}).",
+                gameId,
+                localUserId,
+                SERVER_INACTIVITY_TIMEOUT_SECONDS,
+                SERVER_INACTIVITY_CHECK_INTERVAL_SECONDS,
+                dispatcher.Thread.ManagedThreadId);
+
         }
 
         public Task InitializeInventoryAsync()
@@ -1285,6 +1296,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             ConnectionLostHandlerException.HandleConnectionLost();
         }
+
 
         public void Dispose()
         {
