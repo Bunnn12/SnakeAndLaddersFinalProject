@@ -180,6 +180,9 @@
     <Compile Include="Game\Board\BoardBuilder.cs" />
     <Compile Include="Game\Board\BoardBuildResult.cs" />
     <Compile Include="Game\Gameplay\GameplayEventsHandler.cs" />
+    <Compile Include="Game\Gameplay\PodiumBuilder.cs" />
+    <Compile Include="Managers\DiceRollManager.cs" />
+    <Compile Include="Managers\DiceSelectionManager.cs" />
     <Compile Include="Game\Inventory\IInventoryManager.cs" />
     <Compile Include="Game\Inventory\InventoryDiceData.cs" />
     <Compile Include="Game\Inventory\InventoryDiceSlotSelection.cs" />
@@ -196,7 +199,10 @@
     <Compile Include="Infrastructure\ILobbyEventsHandler.cs" />
     <Compile Include="Infrastructure\RelayCommand.cs" />
     <Compile Include="Infrastructure\RelayCommandGeneric.cs" />
+    <Compile Include="Managers\GameplayServerEventsRouter.cs" />
+    <Compile Include="Managers\GameStateSynchronizer.cs" />
     <Compile Include="Managers\ItemUsageManager.cs" />
+    <Compile Include="Managers\LobbyPlayersManager.cs" />
     <Compile Include="Mappers\InventoryIconMapper.cs" />
     <Compile Include="Mappers\LobbyMapper.cs" />
     <Compile Include="Mappers\PlayerReportErrorMapper.cs" />
@@ -291,6 +297,7 @@
     <Compile Include="Utilities\Loading.cs" />
     <Compile Include="Utilities\PageBackground.cs" />
     <Compile Include="Utilities\PlayerActionGuard.cs" />
+    <Compile Include="Utilities\ServerInactivityGuard.cs" />
     <Compile Include="Utilities\SessionGuard.cs" />
     <Compile Include="Utilities\SkinAssetHelper.cs" />
     <Compile Include="Utilities\TextBoxCharCounterHelper.cs" />

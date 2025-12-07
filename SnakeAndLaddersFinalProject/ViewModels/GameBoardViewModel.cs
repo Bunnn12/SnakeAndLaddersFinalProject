@@ -3,13 +3,14 @@ using SnakeAndLaddersFinalProject.Animation;
 using SnakeAndLaddersFinalProject.Game;
 using SnakeAndLaddersFinalProject.Game.Board;
 using SnakeAndLaddersFinalProject.Game.Gameplay;
+using SnakeAndLaddersFinalProject.Game.Inventory;
 using SnakeAndLaddersFinalProject.GameBoardService;
 using SnakeAndLaddersFinalProject.GameplayService;
 using SnakeAndLaddersFinalProject.Infrastructure;
+using SnakeAndLaddersFinalProject.Managers;
 using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.Services;
 using SnakeAndLaddersFinalProject.Utilities;
-using SnakeAndLaddersFinalProject.Managers;
 using SnakeAndLaddersFinalProject.ViewModels.Models;
 using System;
 using System.Collections.Generic;
@@ -62,7 +63,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private readonly int gameId;
         private readonly int localUserId;
 
-        private readonly Dictionary<int, System.Windows.Point> cellCentersByIndex;
+        private readonly Dictionary<int, Point> cellCentersByIndex;
         private readonly Dictionary<int, BoardLinkDto> linksByStartIndex;
 
         private readonly PlayerTokenManager tokenManager;
@@ -84,14 +85,18 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private readonly int startCellIndex;
 
         private readonly ItemUsageManager itemUsageController;
+        private readonly PodiumBuilder podiumBuilder;
+        private readonly DiceSelectionManager diceSelectionManager;
+        private readonly ServerInactivityGuard serverInactivityGuard;
+        private readonly GameStateSynchronizer gameStateSynchronizer;
+        private readonly DiceRollManager diceRollManager;
+        private readonly GameplayServerEventsRouter serverEventsRouter;
 
         private readonly Dictionary<int, string> userNamesById =
             new Dictionary<int, string>();
 
         private readonly List<LobbyMemberViewModel> lobbyMembers =
             new List<LobbyMemberViewModel>();
-
-        private readonly DispatcherTimer serverInactivityTimer;
 
         private IGameplayClient gameplayClient;
 
@@ -113,12 +118,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private string lastItemNotification;
 
         private bool hasGameFinished;
-        private bool hasNavigatedToPodium;
-
-        private DateTime lastServerEventUtc;
 
         public event Action<PodiumViewModel> PodiumRequested;
-        public event Action<int, int> NavigateToPodiumRequested; // gameId, winnerUserId
+        public event Action<int, int> NavigateToPodiumRequested;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public int Rows { get; }
@@ -280,10 +282,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         }
 
         public GameBoardViewModel(
-            BoardDefinitionDto boardDefinition,
-            int gameId,
-            int localUserId,
-            string currentUserName)
+    BoardDefinitionDto boardDefinition,
+    int gameId,
+    int localUserId,
+    string currentUserName)
         {
             ValidateConstructorArguments(boardDefinition, gameId, localUserId);
 
@@ -321,9 +323,36 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 DICE_ROLL_SPRITE_PATH,
                 DICE_FACE_BASE_PATH);
 
-            rollDiceCommand = new AsyncCommand(
-                RollDiceForLocalPlayerAsync,
-                CanRollDice);
+            podiumBuilder = new PodiumBuilder(Logger);
+
+            diceSelectionManager = new DiceSelectionManager(
+                MIN_DICE_SLOT,
+                MAX_DICE_SLOT,
+                HasDiceInSlot,
+                value => selectedDiceSlotNumber = value,
+                value => IsDiceSlot1Selected = value,
+                value => IsDiceSlot2Selected = value,
+                value => LastItemNotification = value);
+
+            // 🔴 OJO: YA NO creamos aquí GameplayEventsHandler con rollDiceCommand = null
+            // eventsHandler = new GameplayEventsHandler(... null ...);
+
+            itemUsageController = new ItemUsageManager(
+                this.gameId,
+                this.localUserId,
+                Inventory,
+                () => gameplayClient,
+                Logger,
+                () => isUseItemInProgress,
+                value => isUseItemInProgress = value,
+                () => IsTargetSelectionActive,
+                value => IsTargetSelectionActive = value,
+                () => pendingItemSlotNumber,
+                value => pendingItemSlotNumber = value,
+                value => LastItemNotification = value,
+                () => Inventory.InitializeAsync(),
+                () => SafeSyncGameStateAsync(true),
+                RaiseAllCanExecuteChanged);
 
             useItemFromSlot1Command = new AsyncCommand(
                 () => itemUsageController.PrepareItemTargetSelectionAsync(
@@ -344,12 +373,24 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 CanUseItem);
 
             selectDiceSlot1Command = new RelayCommand<int>(
-                _ => OnDiceSlotSelected(MIN_DICE_SLOT),
-                _ => CanSelectDiceSlot(MIN_DICE_SLOT));
+                _ => diceSelectionManager.SelectSlot(MIN_DICE_SLOT),
+                _ => diceSelectionManager.CanSelectSlot(
+                    MIN_DICE_SLOT,
+                    IsMyTurn,
+                    animationService.IsAnimating,
+                    isRollRequestInProgress,
+                    isUseItemInProgress,
+                    IsTargetSelectionActive));
 
             selectDiceSlot2Command = new RelayCommand<int>(
-                _ => OnDiceSlotSelected(MAX_DICE_SLOT),
-                _ => CanSelectDiceSlot(MAX_DICE_SLOT));
+                _ => diceSelectionManager.SelectSlot(MAX_DICE_SLOT),
+                _ => diceSelectionManager.CanSelectSlot(
+                    MAX_DICE_SLOT,
+                    IsMyTurn,
+                    animationService.IsAnimating,
+                    isRollRequestInProgress,
+                    isUseItemInProgress,
+                    IsTargetSelectionActive));
 
             selectTargetUserCommand = new RelayCommand<int>(
                 async userId => await itemUsageController.OnTargetUserSelectedAsync(
@@ -358,12 +399,67 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     USE_ITEM_FAILURE_MESSAGE_PREFIX,
                     USE_ITEM_UNEXPECTED_ERROR_MESSAGE,
                     GAME_WINDOW_TITLE),
-                userId => IsTargetSelectionActive);
+                _ => IsTargetSelectionActive);
 
             cancelItemUseCommand = new RelayCommand<int>(
                 _ => itemUsageController.CancelItemUse(ITEM_USE_CANCELLED_MESSAGE),
                 _ => IsTargetSelectionActive);
 
+            TurnTimerText = DEFAULT_TURN_TIMER_TEXT;
+
+            serverInactivityGuard = new ServerInactivityGuard(
+                Logger,
+                gameId,
+                localUserId,
+                SERVER_INACTIVITY_TIMEOUT_SECONDS,
+                SERVER_INACTIVITY_CHECK_INTERVAL_SECONDS,
+                Application.Current != null
+                    ? Application.Current.Dispatcher
+                    : Dispatcher.CurrentDispatcher);
+
+            serverInactivityGuard.TimeoutDetected += OnServerInactivityTimeoutDetected;
+            serverInactivityGuard.Start();
+
+            gameStateSynchronizer = new GameStateSynchronizer(
+                gameId,
+                Logger,
+                () => gameplayClient,
+                MarkServerEventReceived,
+                ApplyGameStateAsync,
+                HandleConnectionException,
+                GAME_STATE_SYNC_ERROR_LOG_MESSAGE,
+                Lang.errorTitle,
+                ShowMessage);
+
+            diceRollManager = new DiceRollManager(
+                gameId,
+                localUserId,
+                diceSelectionManager,
+                () => gameplayClient,
+                Logger,
+                () => IsMyTurn,
+                () => animationService.IsAnimating,
+                () => isRollRequestInProgress,
+                () => isUseItemInProgress,
+                () => IsTargetSelectionActive,
+                value => isRollRequestInProgress = value,
+                RaiseAllCanExecuteChanged,
+                () => SafeSyncGameStateAsync(false),
+                SafeInitializeInventoryAsync,
+                MarkServerEventReceived,
+                HandleConnectionException,
+                ShowMessage,
+                UNKNOWN_ERROR_MESSAGE,
+                ROLL_DICE_FAILURE_MESSAGE_PREFIX,
+                ROLL_DICE_UNEXPECTED_ERROR_MESSAGE,
+                GAME_WINDOW_TITLE);
+
+            // ✅ Ahora sí creamos el comando de tirar dado, ya existe diceRollManager
+            rollDiceCommand = new AsyncCommand(
+                () => diceRollManager.RollDiceForLocalPlayerAsync(),
+                () => diceRollManager.CanRollDice());
+
+            // ✅ Ahora sí creamos GameplayEventsHandler con un rollDiceCommand válido
             eventsHandler = new GameplayEventsHandler(
                 animationService,
                 diceAnimator,
@@ -372,46 +468,21 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 this.localUserId,
                 UpdateTurnFromState);
 
-            itemUsageController = new ItemUsageManager(
-                this.gameId,
-                this.localUserId,
+            // ✅ Y después el router, usando el eventsHandler correcto
+            serverEventsRouter = new GameplayServerEventsRouter(
+                eventsHandler,
+                gameStateSynchronizer,
                 Inventory,
-                () => gameplayClient,
                 Logger,
-                () => isUseItemInProgress,
-                value => isUseItemInProgress = value,
-                () => IsTargetSelectionActive,
-                value => IsTargetSelectionActive = value,
-                () => pendingItemSlotNumber,
-                value => pendingItemSlotNumber = value,
+                MarkServerEventReceived,
+                ShowMessage,
                 value => LastItemNotification = value,
-                () => Inventory.InitializeAsync(),
-                () => SyncGameStateAsync(true),
-                RaiseAllCanExecuteChanged);
-
-            TurnTimerText = DEFAULT_TURN_TIMER_TEXT;
-
-            lastServerEventUtc = DateTime.UtcNow;
-
-            Dispatcher dispatcher = Application.Current != null
-                ? Application.Current.Dispatcher
-                : Dispatcher.CurrentDispatcher;
-
-            serverInactivityTimer = new DispatcherTimer(
-                TimeSpan.FromSeconds(SERVER_INACTIVITY_CHECK_INTERVAL_SECONDS),
-                DispatcherPriority.Background,
-                OnServerInactivityTimerTick,
-                dispatcher);
-
-            Logger.InfoFormat(
-                "GameBoardViewModel creado. GameId={0}, LocalUserId={1}. InactivityTimer ON (Timeout={2}s, Interval={3}s, DispatcherThreadId={4}).",
-                gameId,
-                localUserId,
-                SERVER_INACTIVITY_TIMEOUT_SECONDS,
-                SERVER_INACTIVITY_CHECK_INTERVAL_SECONDS,
-                dispatcher.Thread.ManagedThreadId);
-
+                seconds => UpdateTurnTimerText(seconds),
+                TIMEOUT_SKIP_MESSAGE,
+                TIMEOUT_KICK_MESSAGE,
+                GAME_WINDOW_TITLE);
         }
+
 
         public Task InitializeInventoryAsync()
         {
@@ -434,8 +505,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 : currentUserName.Trim();
 
             await JoinGameplayAsync(safeUserName).ConfigureAwait(false);
-
-            await SyncGameStateAsync(true).ConfigureAwait(false);
+            await SafeSyncGameStateAsync(true).ConfigureAwait(false);
         }
 
         private static void ValidateConstructorArguments(
@@ -493,7 +563,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public ReadOnlyCollection<PodiumPlayerViewModel> BuildPodiumPlayers(int winnerUserId)
         {
-            var result = new List<PodiumPlayerViewModel>();
+            List<PodiumPlayerViewModel> result = new List<PodiumPlayerViewModel>();
 
             if (lobbyMembers.Count == 0)
             {
@@ -580,24 +650,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                if (HandleConnectionException(
+                        ex,
+                        "Connection lost while joining gameplay."))
                 {
-                    Logger.Error("Connection lost while joining gameplay.", ex);
-                    ConnectionLostHandlerException.HandleConnectionLost();
                     return;
                 }
 
                 Logger.Error(GAMEPLAY_CALLBACK_ERROR_LOG_MESSAGE, ex);
 
-                await Application.Current.Dispatcher.InvokeAsync(
-                    () =>
-                    {
-                        MessageBox.Show(
-                            GAMEPLAY_CALLBACK_ERROR_LOG_MESSAGE,
-                            GAME_WINDOW_TITLE,
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error);
-                    });
+                ShowMessage(
+                    GAMEPLAY_CALLBACK_ERROR_LOG_MESSAGE,
+                    GAME_WINDOW_TITLE,
+                    MessageBoxImage.Error);
             }
         }
 
@@ -611,25 +676,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             return serverIndex;
         }
 
-        private bool CanRollDice()
-        {
-            Logger.InfoFormat(
-                "CanRollDice: gameId={0}, localUserId={1}, currentTurnUserId={2}, isMyTurn={3}, isAnimating={4}, isRollRequestInProgress={5}",
-                gameId,
-                localUserId,
-                currentTurnUserId,
-                IsMyTurn,
-                animationService.IsAnimating,
-                isRollRequestInProgress);
-
-            return PlayerActionGuard.CanRollDice(
-                IsMyTurn,
-                animationService.IsAnimating,
-                isRollRequestInProgress,
-                isUseItemInProgress,
-                IsTargetSelectionActive);
-        }
-
         private bool CanUseItem()
         {
             return PlayerActionGuard.CanUseItem(
@@ -638,129 +684,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 isRollRequestInProgress,
                 isUseItemInProgress,
                 IsTargetSelectionActive);
-        }
-
-        private async Task RollDiceForLocalPlayerAsync()
-        {
-            if (isRollRequestInProgress)
-            {
-                return;
-            }
-
-            isRollRequestInProgress = true;
-            RaiseAllCanExecuteChanged();
-
-            try
-            {
-                byte? diceSlotNumber = selectedDiceSlotNumber;
-
-                RollDiceResponseDto response = await gameplayClient
-                    .GetRollDiceAsync(gameId, localUserId, diceSlotNumber)
-                    .ConfigureAwait(false);
-
-                if (response == null || !response.Success)
-                {
-                    string failureReason = response != null && !string.IsNullOrWhiteSpace(response.FailureReason)
-                        ? response.FailureReason
-                        : UNKNOWN_ERROR_MESSAGE;
-
-                    Logger.Warn("RollDice failed: " + failureReason);
-
-                    await Application.Current.Dispatcher.InvokeAsync(
-                        () =>
-                        {
-                            MessageBox.Show(
-                                ROLL_DICE_FAILURE_MESSAGE_PREFIX + failureReason,
-                                GAME_WINDOW_TITLE,
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Warning);
-                        });
-
-                    return;
-                }
-
-                MarkServerEventReceived();
-
-                if (!string.IsNullOrWhiteSpace(response.GrantedItemCode) ||
-                    !string.IsNullOrWhiteSpace(response.GrantedDiceCode))
-                {
-                    await Application.Current.Dispatcher.InvokeAsync(
-                        () =>
-                        {
-                            string text = "¡Has obtenido ";
-
-                            if (!string.IsNullOrWhiteSpace(response.GrantedItemCode))
-                            {
-                                text += string.Format("un ítem ({0})", response.GrantedItemCode);
-                            }
-
-                            if (!string.IsNullOrWhiteSpace(response.GrantedDiceCode))
-                            {
-                                if (!string.IsNullOrWhiteSpace(response.GrantedItemCode))
-                                {
-                                    text += " y ";
-                                }
-
-                                text += string.Format("un dado ({0})", response.GrantedDiceCode);
-                            }
-
-                            text += "!";
-
-                            MessageBox.Show(
-                                text,
-                                GAME_WINDOW_TITLE,
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Information);
-                        });
-                }
-
-                selectedDiceSlotNumber = null;
-                IsDiceSlot1Selected = false;
-                IsDiceSlot2Selected = false;
-
-                Logger.InfoFormat(
-                    "RollDice request accepted. UserId={0}, From={1}, To={2}, Dice={3}",
-                    localUserId,
-                    response.FromCellIndex,
-                    response.ToCellIndex,
-                    response.DiceValue);
-
-                if (gameplayClient != null)
-                {
-                    await SyncGameStateAsync().ConfigureAwait(false);
-                }
-
-                if (Inventory != null)
-                {
-                    await Inventory.InitializeAsync().ConfigureAwait(false);
-                }
-            }
-            catch (Exception ex)
-            {
-                if (ConnectionLostHandlerException.IsConnectionException(ex))
-                {
-                    Logger.Error("Connection lost while rolling dice.", ex);
-                    ConnectionLostHandlerException.HandleConnectionLost();
-                    return;
-                }
-
-                Logger.Error(ROLL_DICE_UNEXPECTED_ERROR_MESSAGE, ex);
-
-                await Application.Current.Dispatcher.InvokeAsync(
-                    () =>
-                    {
-                        MessageBox.Show(
-                            ROLL_DICE_UNEXPECTED_ERROR_MESSAGE,
-                            GAME_WINDOW_TITLE,
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error);
-                    });
-            }
-            finally
-            {
-                isRollRequestInProgress = false;
-                RaiseAllCanExecuteChanged();
-            }
         }
 
         private bool HasDiceInSlot(byte slotNumber)
@@ -783,118 +706,81 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        private bool CanSelectDiceSlot(byte slotNumber)
+        private Task SafeSyncGameStateAsync(bool forceUpdateTokenPositions = false)
         {
-            bool hasDiceInSlot = HasDiceInSlot(slotNumber);
-
-            return PlayerActionGuard.CanSelectDiceSlot(
-                IsMyTurn,
-                animationService.IsAnimating,
-                isRollRequestInProgress,
-                isUseItemInProgress,
-                IsTargetSelectionActive,
-                hasDiceInSlot);
+            return gameStateSynchronizer.SyncGameStateAsync(forceUpdateTokenPositions);
         }
 
-        private void OnDiceSlotSelected(byte slotNumber)
+        private Task SafeInitializeInventoryAsync()
         {
-            if (!HasDiceInSlot(slotNumber))
+            if (Inventory == null)
+            {
+                return Task.CompletedTask;
+            }
+
+            return Inventory.InitializeAsync();
+        }
+
+        private async Task ApplyGameStateAsync(
+            GetGameStateResponseDto stateResponse,
+            bool forceUpdateTokenPositions)
+        {
+            if (stateResponse == null)
             {
                 return;
             }
 
-            selectedDiceSlotNumber = slotNumber;
+            UpdateTurnFromState(stateResponse.CurrentTurnUserId);
+            UpdateTurnTimerText(stateResponse.RemainingTurnSeconds);
 
-            IsDiceSlot1Selected = slotNumber == MIN_DICE_SLOT;
-            IsDiceSlot2Selected = slotNumber == MAX_DICE_SLOT;
+            ShowPodiumFromState(stateResponse);
 
-            LastItemNotification = string.Format(
-                "Dado del slot {0} seleccionado para el siguiente tiro.",
-                slotNumber);
-
-            RaiseAllCanExecuteChanged();
-        }
-
-        private Task SyncGameStateAsync()
-        {
-            return SyncGameStateAsync(false);
-        }
-
-        private async Task SyncGameStateAsync(bool forceUpdateTokenPositions)
-        {
-            try
+            if (stateResponse.Tokens == null)
             {
-                GetGameStateResponseDto stateResponse = await gameplayClient
-                    .GetGameStateAsync(gameId)
-                    .ConfigureAwait(false);
-
-                if (stateResponse == null)
-                {
-                    return;
-                }
-
-                MarkServerEventReceived();
-
-                UpdateTurnFromState(stateResponse.CurrentTurnUserId);
-                UpdateTurnTimerText(stateResponse.RemainingTurnSeconds);
-
-                ShowPodiumFromState(stateResponse);
-
-                if (stateResponse.Tokens == null)
-                {
-                    return;
-                }
-
-                await Application.Current.Dispatcher.InvokeAsync(
-                    () =>
-                    {
-                        if (forceUpdateTokenPositions || PlayerTokens.Count == 0)
-                        {
-                            foreach (TokenStateDto tokenState in stateResponse.Tokens)
-                            {
-                                int userId = tokenState.UserId;
-                                int cellIndexVisual = MapServerIndexToVisual(tokenState.CellIndex);
-
-                                PlayerTokenViewModel playerToken =
-                                    tokenManager.GetOrCreateTokenForUser(userId, cellIndexVisual);
-
-                                tokenManager.UpdateTokenPositionFromCell(
-                                    playerToken,
-                                    cellIndexVisual);
-                            }
-                        }
-
-                        foreach (TokenStateDto tokenState in stateResponse.Tokens)
-                        {
-                            string effectsText = GameTextBuilder.BuildEffectsText(tokenState);
-                            CornerPlayers.UpdateEffectsText(tokenState.UserId, effectsText);
-                        }
-                    });
+                return;
             }
-            catch (Exception ex)
-            {
-                if (ConnectionLostHandlerException.IsConnectionException(ex))
+
+            await Application.Current.Dispatcher.InvokeAsync(
+                () =>
                 {
-                    Logger.Error("Connection lost while syncing game state.", ex);
-                    ConnectionLostHandlerException.HandleConnectionLost();
-                    return;
+                    UpdateTokensFromState(
+                        stateResponse,
+                        forceUpdateTokenPositions);
+                });
+        }
+
+        private void UpdateTokensFromState(
+            GetGameStateResponseDto stateResponse,
+            bool forceUpdateTokenPositions)
+        {
+            if (stateResponse.Tokens == null)
+            {
+                return;
+            }
+
+            if (forceUpdateTokenPositions || PlayerTokens.Count == 0)
+            {
+                foreach (TokenStateDto tokenState in stateResponse.Tokens)
+                {
+                    int userId = tokenState.UserId;
+                    int cellIndexVisual = MapServerIndexToVisual(tokenState.CellIndex);
+
+                    PlayerTokenViewModel playerToken =
+                        tokenManager.GetOrCreateTokenForUser(userId, cellIndexVisual);
+
+                    tokenManager.UpdateTokenPositionFromCell(
+                        playerToken,
+                        cellIndexVisual);
                 }
+            }
 
-                ExceptionHandler.Handle(
-                    ex,
-                    string.Format(
-                        "{0}.{1}",
-                        nameof(GameBoardViewModel),
-                        nameof(SyncGameStateAsync)),
-                    Logger);
-
-                MessageBox.Show(
-                    GAME_STATE_SYNC_ERROR_LOG_MESSAGE,
-                    Lang.errorTitle,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+            foreach (TokenStateDto tokenState in stateResponse.Tokens)
+            {
+                string effectsText = GameTextBuilder.BuildEffectsText(tokenState);
+                CornerPlayers.UpdateEffectsText(tokenState.UserId, effectsText);
             }
         }
+
         private void UpdateTurnFromState(int currentTurnUserIdFromServer)
         {
             currentTurnUserId = currentTurnUserIdFromServer;
@@ -915,399 +801,136 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private void ShowPodiumFromState(GetGameStateResponseDto stateResponse)
         {
-            Logger.Info("ShowPodiumFromState: inicio.");
-
-            if (stateResponse == null)
-            {
-                Logger.Warn("ShowPodiumFromState: stateResponse es null.");
-                return;
-            }
-
-            Logger.InfoFormat(
-                "ShowPodiumFromState: IsFinished={0}, Tokens={1}, WinnerUserId={2}",
-                stateResponse.IsFinished,
-                stateResponse.Tokens == null ? -1 : stateResponse.Tokens.Length,
-                stateResponse.WinnerUserId);
-
             if (!stateResponse.IsFinished)
             {
-                Logger.Info("ShowPodiumFromState: la partida NO está terminada todavía (IsFinished = false).");
                 return;
             }
 
             if (hasGameFinished)
             {
-                Logger.Info("ShowPodiumFromState: hasGameFinished ya era true, no se vuelve a procesar.");
                 return;
             }
 
             if (PodiumRequested == null)
             {
-                Logger.Warn("ShowPodiumFromState: nadie está suscrito a PodiumRequested.");
                 return;
             }
 
-            if (stateResponse.Tokens == null || stateResponse.Tokens.Length == 0)
+            PodiumViewModel podiumViewModel = podiumBuilder.BuildPodium(
+                stateResponse,
+                CornerPlayers);
+
+            if (podiumViewModel == null)
             {
-                Logger.Warn("ShowPodiumFromState: no hay tokens en el estado para armar el podio.");
                 return;
             }
 
             hasGameFinished = true;
-
-            var allMembers = new List<LobbyMemberViewModel>();
-
-            if (CornerPlayers != null)
-            {
-                if (CornerPlayers.TopLeftPlayer != null)
-                {
-                    allMembers.Add(CornerPlayers.TopLeftPlayer);
-                }
-
-                if (CornerPlayers.TopRightPlayer != null)
-                {
-                    allMembers.Add(CornerPlayers.TopRightPlayer);
-                }
-
-                if (CornerPlayers.BottomLeftPlayer != null)
-                {
-                    allMembers.Add(CornerPlayers.BottomLeftPlayer);
-                }
-
-                if (CornerPlayers.BottomRightPlayer != null)
-                {
-                    allMembers.Add(CornerPlayers.BottomRightPlayer);
-                }
-            }
-
-            allMembers = allMembers
-                .GroupBy(m => m.UserId)
-                .Select(g => g.First())
-                .ToList();
-
-            if (allMembers.Count == 0)
-            {
-                return;
-            }
-
-            List<TokenStateDto> orderedTokens = stateResponse.Tokens
-                .OrderByDescending(t => t.CellIndex)
-                .ToList();
-
-            var podiumPlayers = new List<PodiumPlayerViewModel>();
-            int position = 1;
-
-            foreach (TokenStateDto token in orderedTokens)
-            {
-                LobbyMemberViewModel member = allMembers
-                    .FirstOrDefault(m => m.UserId == token.UserId);
-
-                if (member == null)
-                {
-                    continue;
-                }
-
-                PodiumPlayerViewModel podiumPlayer = new PodiumPlayerViewModel(
-                    member.UserId,
-                    member.UserName,
-                    position,
-                    0,
-                    member.SkinImagePath);
-
-                podiumPlayers.Add(podiumPlayer);
-
-                position++;
-
-                if (position > 3)
-                {
-                    break;
-                }
-            }
-
-            if (podiumPlayers.Count == 0)
-            {
-                return;
-            }
-
-            string winnerName = "Desconocido";
-            int winnerUserId = stateResponse.WinnerUserId;
-
-            if (winnerUserId > 0)
-            {
-                LobbyMemberViewModel winnerMember = allMembers
-                    .FirstOrDefault(m => m.UserId == winnerUserId);
-
-                if (winnerMember != null)
-                {
-                    winnerName = winnerMember.UserName;
-                }
-            }
-            else
-            {
-                winnerUserId = podiumPlayers[0].UserId;
-                winnerName = podiumPlayers[0].UserName;
-            }
-
-            var podiumViewModel = new PodiumViewModel();
-            podiumViewModel.Initialize(
-                winnerUserId,
-                winnerName,
-                podiumPlayers.AsReadOnly());
-
-            PodiumRequested?.Invoke(podiumViewModel);
+            PodiumRequested.Invoke(podiumViewModel);
         }
 
-        public async Task HandleServerPlayerMovedAsync(PlayerMoveResultDto move)
+        public Task HandleServerPlayerMovedAsync(PlayerMoveResultDto move)
         {
-            if (move == null)
-            {
-                return;
-            }
-
-            MarkServerEventReceived();
-
-            Task handlerTask = eventsHandler.HandleServerPlayerMovedAsync(move);
-
-            if (move.MessageIndex.HasValue)
-            {
-                int messageIndex = move.MessageIndex.Value;
-
-                string resourceKey = string.Format(
-                    "Message{0}Text",
-                    messageIndex);
-
-                string messageText = Lang.ResourceManager.GetString(resourceKey);
-
-                if (!string.IsNullOrWhiteSpace(messageText))
-                {
-                    await Application.Current.Dispatcher.InvokeAsync(
-                        () =>
-                        {
-                            MessageBox.Show(
-                                messageText,
-                                GAME_WINDOW_TITLE,
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Information);
-                        });
-                }
-                else
-                {
-                    Logger.WarnFormat(
-                        "No se encontró recurso de mensaje para key={0}.",
-                        resourceKey);
-                }
-            }
-
-            await handlerTask;
+            return serverEventsRouter.HandlePlayerMovedAsync(move);
         }
 
-        public async Task HandleServerTurnChangedAsync(TurnChangedDto turnInfo)
+        public Task HandleServerTurnChangedAsync(TurnChangedDto turnInfo)
         {
-            if (turnInfo == null)
-            {
-                return;
-            }
-
-            MarkServerEventReceived();
-
-            Task handlerTask = eventsHandler.HandleServerTurnChangedAsync(turnInfo);
-
-            if (!string.IsNullOrWhiteSpace(turnInfo.Reason))
-            {
-                string normalizedReason = turnInfo.Reason.Trim().ToUpperInvariant();
-
-                if (normalizedReason == "TIMEOUT_SKIP")
-                {
-                    await Application.Current.Dispatcher.InvokeAsync(
-                        () =>
-                        {
-                            MessageBox.Show(
-                                TIMEOUT_SKIP_MESSAGE,
-                                GAME_WINDOW_TITLE,
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Information);
-                        });
-                }
-                else if (normalizedReason == "TIMEOUT_KICK")
-                {
-                    await Application.Current.Dispatcher.InvokeAsync(
-                        () =>
-                        {
-                            MessageBox.Show(
-                                TIMEOUT_KICK_MESSAGE,
-                                GAME_WINDOW_TITLE,
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Information);
-                        });
-                }
-            }
-
-            if (gameplayClient != null)
-            {
-                await SyncGameStateAsync();
-            }
-
-            await handlerTask;
+            return serverEventsRouter.HandleTurnChangedAsync(turnInfo);
         }
 
-        public async Task HandleServerPlayerLeftAsync(PlayerLeftDto playerLeftInfo)
+        public Task HandleServerPlayerLeftAsync(PlayerLeftDto playerLeftInfo)
         {
-            if (playerLeftInfo == null)
-            {
-                return;
-            }
-
-            MarkServerEventReceived();
-
-            Logger.InfoFormat(
-                "HandleServerPlayerLeftAsync: GameId={0}, UserId={1}, Reason={2}",
-                playerLeftInfo.GameId,
-                playerLeftInfo.UserId,
-                playerLeftInfo.Reason);
-
-            Task handlerTask = eventsHandler.HandleServerPlayerLeftAsync(playerLeftInfo);
-
-            if (gameplayClient != null)
-            {
-                await SyncGameStateAsync().ConfigureAwait(false);
-            }
-
-            await handlerTask.ConfigureAwait(false);
+            return serverEventsRouter.HandlePlayerLeftAsync(playerLeftInfo);
         }
 
-        public async Task HandleServerItemUsedAsync(ItemUsedNotificationDto notification)
+        public Task HandleServerItemUsedAsync(ItemUsedNotificationDto notification)
         {
-            if (notification == null)
-            {
-                return;
-            }
-
-            MarkServerEventReceived();
-
-            Logger.InfoFormat(
-                "HandleServerItemUsedAsync: GameId={0}, ItemCode={1}, UserId={2}, TargetUserId={3}",
-                notification.GameId,
-                notification.ItemCode,
-                notification.UserId,
-                notification.TargetUserId);
-
-            LastItemNotification = GameTextBuilder.BuildItemUsedMessage(notification);
-
-            if (Inventory != null)
-            {
-                await Inventory.InitializeAsync();
-            }
-
-            if (gameplayClient != null)
-            {
-                await SyncGameStateAsync(true);
-            }
+            return serverEventsRouter.HandleItemUsedAsync(notification);
         }
 
         public Task HandleServerTurnTimerUpdatedAsync(TurnTimerUpdateDto timerInfo)
         {
-            if (timerInfo == null)
-            {
-                return Task.CompletedTask;
-            }
-
-            MarkServerEventReceived();
-
-            int seconds = timerInfo.RemainingSeconds;
-
-            Application.Current.Dispatcher.Invoke(
-                () => UpdateTurnTimerText(seconds));
-
-            return Task.CompletedTask;
+            return serverEventsRouter.HandleTurnTimerUpdatedAsync(timerInfo);
         }
 
         private void RaiseAllCanExecuteChanged()
         {
             if (Application.Current == null || Application.Current.Dispatcher == null)
             {
-                rollDiceCommand.RaiseCanExecuteChanged();
-                useItemFromSlot1Command.RaiseCanExecuteChanged();
-                useItemFromSlot2Command.RaiseCanExecuteChanged();
-                useItemFromSlot3Command.RaiseCanExecuteChanged();
-                selectTargetUserCommand.RaiseCanExecuteChanged();
-                cancelItemUseCommand.RaiseCanExecuteChanged();
-                selectDiceSlot1Command.RaiseCanExecuteChanged();
-                selectDiceSlot2Command.RaiseCanExecuteChanged();
+                RaiseCanExecuteChangedOnCommands();
                 return;
             }
 
             if (Application.Current.Dispatcher.CheckAccess())
             {
-                rollDiceCommand.RaiseCanExecuteChanged();
-                useItemFromSlot1Command.RaiseCanExecuteChanged();
-                useItemFromSlot2Command.RaiseCanExecuteChanged();
-                useItemFromSlot3Command.RaiseCanExecuteChanged();
-                selectTargetUserCommand.RaiseCanExecuteChanged();
-                cancelItemUseCommand.RaiseCanExecuteChanged();
-                selectDiceSlot1Command.RaiseCanExecuteChanged();
-                selectDiceSlot2Command.RaiseCanExecuteChanged();
+                RaiseCanExecuteChangedOnCommands();
             }
             else
             {
                 Application.Current.Dispatcher.BeginInvoke(
-                    new Action(
-                        () =>
-                        {
-                            rollDiceCommand.RaiseCanExecuteChanged();
-                            useItemFromSlot1Command.RaiseCanExecuteChanged();
-                            useItemFromSlot2Command.RaiseCanExecuteChanged();
-                            useItemFromSlot3Command.RaiseCanExecuteChanged();
-                            selectTargetUserCommand.RaiseCanExecuteChanged();
-                            cancelItemUseCommand.RaiseCanExecuteChanged();
-                            selectDiceSlot1Command.RaiseCanExecuteChanged();
-                            selectDiceSlot2Command.RaiseCanExecuteChanged();
-                        }));
+                    new Action(RaiseCanExecuteChangedOnCommands));
             }
+        }
+
+        private void RaiseCanExecuteChangedOnCommands()
+        {
+            rollDiceCommand.RaiseCanExecuteChanged();
+            useItemFromSlot1Command.RaiseCanExecuteChanged();
+            useItemFromSlot2Command.RaiseCanExecuteChanged();
+            useItemFromSlot3Command.RaiseCanExecuteChanged();
+            selectTargetUserCommand.RaiseCanExecuteChanged();
+            cancelItemUseCommand.RaiseCanExecuteChanged();
+            selectDiceSlot1Command.RaiseCanExecuteChanged();
+            selectDiceSlot2Command.RaiseCanExecuteChanged();
         }
 
         private void MarkServerEventReceived()
         {
-            lastServerEventUtc = DateTime.UtcNow;
+            serverInactivityGuard.MarkServerEventReceived();
         }
 
-        private void OnServerInactivityTimerTick(object sender, EventArgs e)
+        private void OnServerInactivityTimeoutDetected()
         {
-            DateTime now = DateTime.UtcNow;
-            double secondsWithoutEvents = (now - lastServerEventUtc).TotalSeconds;
-
-            Logger.InfoFormat(
-                "ServerInactivityTick: GameId={0}, LocalUserId={1}, SecondsWithoutEvents={2}",
-                gameId,
-                localUserId,
-                secondsWithoutEvents);
-
-            if (secondsWithoutEvents < SERVER_INACTIVITY_TIMEOUT_SECONDS)
-            {
-                return;
-            }
-
-            serverInactivityTimer.Stop();
-
-            Logger.ErrorFormat(
-                "Server inactivity detected. GameId={0}, LocalUserId={1}, SecondsWithoutEvents={2}",
-                gameId,
-                localUserId,
-                secondsWithoutEvents);
-
             ConnectionLostHandlerException.HandleConnectionLost();
         }
 
+        private static void ShowMessage(
+            string message,
+            string title,
+            MessageBoxImage image)
+        {
+            Application.Current.Dispatcher.Invoke(
+                () =>
+                {
+                    MessageBox.Show(
+                        message,
+                        title,
+                        MessageBoxButton.OK,
+                        image);
+                });
+        }
+
+        private bool HandleConnectionException(Exception ex, string logContext)
+        {
+            if (!ConnectionLostHandlerException.IsConnectionException(ex))
+            {
+                return false;
+            }
+
+            Logger.Error(logContext, ex);
+            ConnectionLostHandlerException.HandleConnectionLost();
+            return true;
+        }
 
         public void Dispose()
         {
-            if (serverInactivityTimer != null)
+            if (serverInactivityGuard != null)
             {
-                serverInactivityTimer.Stop();
-                serverInactivityTimer.Tick -= OnServerInactivityTimerTick;
+                serverInactivityGuard.TimeoutDetected -= OnServerInactivityTimeoutDetected;
+                serverInactivityGuard.Dispose();
             }
         }
-
-
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
