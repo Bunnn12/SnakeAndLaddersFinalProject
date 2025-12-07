@@ -20,10 +20,11 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
-    public sealed class GameBoardViewModel : INotifyPropertyChanged, IGameplayEventsHandler
+    public sealed class GameBoardViewModel : INotifyPropertyChanged, IGameplayEventsHandler, IDisposable
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(GameBoardViewModel));
 
@@ -55,6 +56,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string DICE_ROLL_SPRITE_PATH = "pack://application:,,,/Assets/Images/Dice/DiceSpriteSheet.png";
         private const string DICE_FACE_BASE_PATH = "pack://application:,,,/Assets/Images/Dice/";
 
+        private const int SERVER_INACTIVITY_TIMEOUT_SECONDS = 45;
+        private const int SERVER_INACTIVITY_CHECK_INTERVAL_SECONDS = 5;
+
         private readonly int gameId;
         private readonly int localUserId;
 
@@ -81,6 +85,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private readonly ItemUsageManager itemUsageController;
 
+        private readonly Dictionary<int, string> userNamesById =
+            new Dictionary<int, string>();
+
+        private readonly List<LobbyMemberViewModel> lobbyMembers =
+            new List<LobbyMemberViewModel>();
+
+        private readonly DispatcherTimer serverInactivityTimer;
+
         private IGameplayClient gameplayClient;
 
         private int currentTurnUserId;
@@ -100,20 +112,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private string lastItemNotification;
 
-        private readonly Dictionary<int, string> userNamesById =
-    new Dictionary<int, string>();
-
-        private readonly List<LobbyMemberViewModel> lobbyMembers =
-            new List<LobbyMemberViewModel>();
-
-        // 🔹 PODIO
         private bool hasGameFinished;
-        public event Action<PodiumViewModel> PodiumRequested;
-
         private bool hasNavigatedToPodium;
 
-        public event Action<int, int> NavigateToPodiumRequested; // gameId, winnerUserId
+        private DateTime lastServerEventUtc;
 
+        public event Action<PodiumViewModel> PodiumRequested;
+        public event Action<int, int> NavigateToPodiumRequested; // gameId, winnerUserId
         public event PropertyChangedEventHandler PropertyChanged;
 
         public int Rows { get; }
@@ -385,6 +390,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 RaiseAllCanExecuteChanged);
 
             TurnTimerText = DEFAULT_TURN_TIMER_TEXT;
+
+            lastServerEventUtc = DateTime.UtcNow;
+
+            serverInactivityTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(SERVER_INACTIVITY_CHECK_INTERVAL_SECONDS)
+            };
+
+            serverInactivityTimer.Tick += OnServerInactivityTimerTick;
+            serverInactivityTimer.Start();
         }
 
         public Task InitializeInventoryAsync()
@@ -454,7 +469,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             CornerPlayers.InitializeFromLobbyMembers(members);
         }
 
-
         public string ResolveUserDisplayName(int userId)
         {
             if (userNamesById.TryGetValue(userId, out string name) &&
@@ -463,7 +477,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return name.Trim();
             }
 
-            return $"Jugador {userId}";
+            return string.Format("Jugador {0}", userId);
         }
 
         public ReadOnlyCollection<PodiumPlayerViewModel> BuildPodiumPlayers(int winnerUserId)
@@ -475,7 +489,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return new ReadOnlyCollection<PodiumPlayerViewModel>(result);
             }
 
-            // 1) Ganador
             LobbyMemberViewModel winner =
                 lobbyMembers.FirstOrDefault(m => m.UserId == winnerUserId);
 
@@ -489,7 +502,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                         0));
             }
 
-            // 2) Resto de jugadores (hasta 3 en total)
             foreach (LobbyMemberViewModel member in lobbyMembers)
             {
                 if (member.UserId == winnerUserId)
@@ -514,9 +526,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             return new ReadOnlyCollection<PodiumPlayerViewModel>(result);
         }
-
-
-
 
         public void InitializeTokensFromLobbyMembers(IList<LobbyMemberViewModel> lobbyMembers)
         {
@@ -555,10 +564,29 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     gameId,
                     localUserId,
                     currentUserName);
+
+                MarkServerEventReceived();
             }
             catch (Exception ex)
             {
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    Logger.Error("Connection lost while joining gameplay.", ex);
+                    ConnectionLostHandlerException.HandleConnectionLost();
+                    return;
+                }
+
                 Logger.Error(GAMEPLAY_CALLBACK_ERROR_LOG_MESSAGE, ex);
+
+                await Application.Current.Dispatcher.InvokeAsync(
+                    () =>
+                    {
+                        MessageBox.Show(
+                            GAMEPLAY_CALLBACK_ERROR_LOG_MESSAGE,
+                            GAME_WINDOW_TITLE,
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    });
             }
         }
 
@@ -640,7 +668,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     return;
                 }
 
-                // 👇 AVISO: ÍTEM / DADO OBTENIDO
+                MarkServerEventReceived();
+
                 if (!string.IsNullOrWhiteSpace(response.GrantedItemCode) ||
                     !string.IsNullOrWhiteSpace(response.GrantedDiceCode))
                 {
@@ -651,7 +680,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                             if (!string.IsNullOrWhiteSpace(response.GrantedItemCode))
                             {
-                                text += $"un ítem ({response.GrantedItemCode})";
+                                text += string.Format("un ítem ({0})", response.GrantedItemCode);
                             }
 
                             if (!string.IsNullOrWhiteSpace(response.GrantedDiceCode))
@@ -661,7 +690,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                                     text += " y ";
                                 }
 
-                                text += $"un dado ({response.GrantedDiceCode})";
+                                text += string.Format("un dado ({0})", response.GrantedDiceCode);
                             }
 
                             text += "!";
@@ -697,6 +726,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    Logger.Error("Connection lost while rolling dice.", ex);
+                    ConnectionLostHandlerException.HandleConnectionLost();
+                    return;
+                }
+
                 Logger.Error(ROLL_DICE_UNEXPECTED_ERROR_MESSAGE, ex);
 
                 await Application.Current.Dispatcher.InvokeAsync(
@@ -715,7 +751,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 RaiseAllCanExecuteChanged();
             }
         }
-
 
         private bool HasDiceInSlot(byte slotNumber)
         {
@@ -787,10 +822,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     return;
                 }
 
+                MarkServerEventReceived();
+
                 UpdateTurnFromState(stateResponse.CurrentTurnUserId);
                 UpdateTurnTimerText(stateResponse.RemainingTurnSeconds);
 
-                // 👇 AQUÍ LLAMAMOS AL MÉTODO DEL PODIO
                 ShowPodiumFromState(stateResponse);
 
                 if (stateResponse.Tokens == null)
@@ -826,6 +862,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    Logger.Error("Connection lost while syncing game state.", ex);
+                    ConnectionLostHandlerException.HandleConnectionLost();
+                    return;
+                }
+
                 ExceptionHandler.Handle(
                     ex,
                     string.Format(
@@ -841,42 +884,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     MessageBoxImage.Error);
             }
         }
-
-
-        private async Task HandleGameFinishedAsync(GetGameStateResponseDto stateResponse)
-        {
-            if (stateResponse == null)
-            {
-                return;
-            }
-
-            if (hasNavigatedToPodium)
-            {
-                return;
-            }
-
-            hasNavigatedToPodium = true;
-
-            int winnerUserId = stateResponse.WinnerUserId;
-
-            await Application.Current.Dispatcher.InvokeAsync(
-                () =>
-                {
-                    string message = "La partida ha terminado.";
-
-                    if (winnerUserId > 0)
-                    {
-                        message = string.Format(
-                            "La partida ha terminado. Ganó el jugador con Id {0}.",
-                            winnerUserId);
-                    }
-
-                    NavigateToPodiumRequested?.Invoke(gameId, winnerUserId);
-                });
-        }
-
-
-
         private void UpdateTurnFromState(int currentTurnUserIdFromServer)
         {
             currentTurnUserId = currentTurnUserIdFromServer;
@@ -895,7 +902,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             CornerPlayers.UpdateCurrentTurn(currentTurnUserId);
         }
 
-        // 🔹 LÓGICA DEL PODIO
         private void ShowPodiumFromState(GetGameStateResponseDto stateResponse)
         {
             Logger.Info("ShowPodiumFromState: inicio.");
@@ -990,8 +996,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     continue;
                 }
 
-                bool isLocalPlayer = member.UserId == localUserId;
-
                 PodiumPlayerViewModel podiumPlayer = new PodiumPlayerViewModel(
                     member.UserId,
                     member.UserName,
@@ -1007,9 +1011,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     break;
                 }
-            
-
-        }
+            }
 
             if (podiumPlayers.Count == 0)
             {
@@ -1051,13 +1053,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
+            MarkServerEventReceived();
+
             Task handlerTask = eventsHandler.HandleServerPlayerMovedAsync(move);
 
             if (move.MessageIndex.HasValue)
             {
                 int messageIndex = move.MessageIndex.Value;
 
-                // antes: "{0}MessageText"
                 string resourceKey = string.Format(
                     "Message{0}Text",
                     messageIndex);
@@ -1087,14 +1090,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             await handlerTask;
         }
 
-
-
         public async Task HandleServerTurnChangedAsync(TurnChangedDto turnInfo)
         {
             if (turnInfo == null)
             {
                 return;
             }
+
+            MarkServerEventReceived();
 
             Task handlerTask = eventsHandler.HandleServerTurnChangedAsync(turnInfo);
 
@@ -1136,10 +1139,29 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             await handlerTask;
         }
 
-        public Task HandleServerPlayerLeftAsync(PlayerLeftDto playerLeftInfo)
+        public async Task HandleServerPlayerLeftAsync(PlayerLeftDto playerLeftInfo)
         {
+            if (playerLeftInfo == null)
+            {
+                return;
+            }
+
+            MarkServerEventReceived();
+
+            Logger.InfoFormat(
+                "HandleServerPlayerLeftAsync: GameId={0}, UserId={1}, Reason={2}",
+                playerLeftInfo.GameId,
+                playerLeftInfo.UserId,
+                playerLeftInfo.Reason);
+
             Task handlerTask = eventsHandler.HandleServerPlayerLeftAsync(playerLeftInfo);
-            return handlerTask;
+
+            if (gameplayClient != null)
+            {
+                await SyncGameStateAsync().ConfigureAwait(false);
+            }
+
+            await handlerTask.ConfigureAwait(false);
         }
 
         public async Task HandleServerItemUsedAsync(ItemUsedNotificationDto notification)
@@ -1148,6 +1170,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 return;
             }
+
+            MarkServerEventReceived();
 
             Logger.InfoFormat(
                 "HandleServerItemUsedAsync: GameId={0}, ItemCode={1}, UserId={2}, TargetUserId={3}",
@@ -1175,6 +1199,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 return Task.CompletedTask;
             }
+
+            MarkServerEventReceived();
 
             int seconds = timerInfo.RemainingSeconds;
 
@@ -1227,6 +1253,49 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                         }));
             }
         }
+
+        private void MarkServerEventReceived()
+        {
+            lastServerEventUtc = DateTime.UtcNow;
+        }
+
+        private void OnServerInactivityTimerTick(object sender, EventArgs e)
+        {
+            DateTime now = DateTime.UtcNow;
+            double secondsWithoutEvents = (now - lastServerEventUtc).TotalSeconds;
+
+            Logger.InfoFormat(
+                "ServerInactivityTick: GameId={0}, LocalUserId={1}, SecondsWithoutEvents={2}",
+                gameId,
+                localUserId,
+                secondsWithoutEvents);
+
+            if (secondsWithoutEvents < SERVER_INACTIVITY_TIMEOUT_SECONDS)
+            {
+                return;
+            }
+
+            serverInactivityTimer.Stop();
+
+            Logger.ErrorFormat(
+                "Server inactivity detected. GameId={0}, LocalUserId={1}, SecondsWithoutEvents={2}",
+                gameId,
+                localUserId,
+                secondsWithoutEvents);
+
+            ConnectionLostHandlerException.HandleConnectionLost();
+        }
+
+        public void Dispose()
+        {
+            if (serverInactivityTimer != null)
+            {
+                serverInactivityTimer.Stop();
+                serverInactivityTimer.Tick -= OnServerInactivityTimerTick;
+            }
+        }
+
+
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

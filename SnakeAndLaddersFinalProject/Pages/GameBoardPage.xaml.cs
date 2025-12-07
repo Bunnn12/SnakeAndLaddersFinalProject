@@ -91,12 +91,25 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            currentViewModel.PodiumRequested -= OnPodiumRequested;
-            currentViewModel.NavigateToPodiumRequested -= OnNavigateToPodiumRequested;
-
-            Logger.Info("GameBoardPage: desuscrito de eventos del ViewModel.");
-
+            GameBoardViewModel vm = currentViewModel;
             currentViewModel = null;
+
+            vm.PodiumRequested -= OnPodiumRequested;
+            vm.NavigateToPodiumRequested -= OnNavigateToPodiumRequested;
+
+            Logger.Info("GameBoardPage: desuscrito de eventos del ViewModel. Llamando a Dispose().");
+
+            if (vm is IDisposable disposable)
+            {
+                try
+                {
+                    disposable.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("Error al hacer Dispose() del GameBoardViewModel.", ex);
+                }
+            }
         }
 
         private void OnPodiumRequested(PodiumViewModel podiumViewModel)
@@ -120,6 +133,9 @@ namespace SnakeAndLaddersFinalProject.Pages
                 Application.Current.Dispatcher.Invoke(
                     () =>
                     {
+                        // Cerramos correctamente el VM antes de navegar
+                        DetachFromViewModel();
+
                         PodiumPage podiumPage = new PodiumPage(podiumViewModel);
 
                         if (NavigationService != null)
@@ -137,7 +153,6 @@ namespace SnakeAndLaddersFinalProject.Pages
                 Logger.Error("Error al navegar a la página de podio desde PodiumRequested.", ex);
             }
         }
-
 
         private void OnNavigateToPodiumRequested(int gameId, int winnerUserId)
         {
@@ -162,6 +177,9 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 PodiumViewModel podiumViewModel = new PodiumViewModel();
                 podiumViewModel.Initialize(winnerUserId, winnerName, podiumPlayers);
+
+                // Cerramos correctamente el VM antes de navegar
+                DetachFromViewModel();
 
                 PodiumPage podiumPage = new PodiumPage(podiumViewModel);
 

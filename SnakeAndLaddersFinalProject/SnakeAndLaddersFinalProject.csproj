@@ -285,6 +285,7 @@
     <Compile Include="Utilities\AvatarIdToPathConverter.cs" />
     <Compile Include="Utilities\AvatarPathUtility.cs" />
     <Compile Include="Utilities\BanPlayerHelper.cs" />
+    <Compile Include="Utilities\ConnectionLostHandlerException.cs" />
     <Compile Include="Utilities\ExceptionHandler.cs" />
     <Compile Include="Utilities\GameTextBuilder.cs" />
     <Compile Include="Utilities\Loading.cs" />
