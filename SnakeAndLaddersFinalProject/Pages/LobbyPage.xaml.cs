@@ -12,7 +12,6 @@ using SnakeAndLaddersFinalProject.Policies;
 using SnakeAndLaddersFinalProject.Utilities;
 using SnakeAndLaddersFinalProject.Properties.Langs;
 
-
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class LobbyPage : Page
@@ -54,8 +53,12 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             viewModel.NavigateToBoardRequested -= OnNavigateToBoardRequested;
             viewModel.NavigateToBoardRequested += OnNavigateToBoardRequested;
+
             viewModel.CurrentUserKickedFromLobby -= OnCurrentUserKickedFromLobby;
             viewModel.CurrentUserKickedFromLobby += OnCurrentUserKickedFromLobby;
+
+            viewModel.NavigateToMainPageRequested -= OnNavigateToMainPageRequested;
+            viewModel.NavigateToMainPageRequested += OnNavigateToMainPageRequested;
 
             try
             {
@@ -99,6 +102,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             viewModel.NavigateToBoardRequested -= OnNavigateToBoardRequested;
             viewModel.CurrentUserKickedFromLobby -= OnCurrentUserKickedFromLobby;
+            viewModel.NavigateToMainPageRequested -= OnNavigateToMainPageRequested;
         }
 
         private void OnCurrentUserKickedFromLobby()
@@ -108,7 +112,6 @@ namespace SnakeAndLaddersFinalProject.Pages
                 BanPlayerHelper.HandleBanAndNavigateToLogin(
                     this,
                     Lang.LobbyBannedAndKickedText);
-
             }
             catch (Exception ex)
             {
@@ -120,7 +123,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             if (boardViewModel == null)
             {
-                _logger.Warn("Se recibió una solicitud de navegación al tablero sin shopViewModelInstance.");
+                _logger.Warn("Se recibió una solicitud de navegación al tablero sin boardViewModel.");
                 return;
             }
 
@@ -164,11 +167,31 @@ namespace SnakeAndLaddersFinalProject.Pages
                     Lang.errorTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
-
             }
         }
 
+        private void OnNavigateToMainPageRequested()
+        {
+            try
+            {
+                if (NavigationService != null)
+                {
+                    NavigationService.Navigate(new MainPage());
+                    return;
+                }
 
+                var currentWindow = Window.GetWindow(this);
+                var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
+                if (mainFrame != null)
+                {
+                    mainFrame.Navigate(new MainPage());
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Error al navegar de LobbyPage hacia MainPage.", ex);
+            }
+        }
 
         private void OpenChat(object sender, RoutedEventArgs e)
         {
@@ -401,6 +424,5 @@ namespace SnakeAndLaddersFinalProject.Pages
                 _logger.Error("Error al validar la apertura del menú contextual del miembro del lobby.", ex);
             }
         }
-
     }
 }

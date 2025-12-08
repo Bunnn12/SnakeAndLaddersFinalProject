@@ -25,6 +25,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         private const string DEFAULT_GUEST_SKIN_ID = "001";
 
         private const string AUTH_CODE_THROTTLE_WAIT = "Auth.ThrottleWait";
+        private const string AUTH_CODE_SESSION_ALREADY_ACTIVE = "Auth.SessionAlreadyActive";
 
         private const string META_KEY_SECONDS = "seconds";
         private const string META_KEY_SANCTION_TYPE = "sanctionType";
@@ -248,6 +249,9 @@ namespace SnakeAndLaddersFinalProject.Pages
                     }
 
                     return Lang.AuthBannedGeneric;
+
+                case AUTH_CODE_SESSION_ALREADY_ACTIVE:
+                    return "Lang.AuthSessionAlreadyActive";
 
                 default:
                     return Lang.AuthServerError;

@@ -3,7 +3,6 @@ using SnakeAndLaddersFinalProject.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
@@ -14,11 +13,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private const int IDENTIFIER_MIN_LENGTH = 1;
         private const int IDENTIFIER_MAX_LENGTH = 90;
-        private const int PASSWORD_MIN_LENGTH = 8;
+        private const int PASSWORD_MIN_LENGTH = 1;   // en login solo exigimos que no esté vacío
         private const int PASSWORD_MAX_LENGTH = 510;
-
-        private static readonly Regex _emailRegex =
-            new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         public sealed class LoginServiceResult
         {
@@ -39,45 +35,80 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             var errors = new List<string>();
 
-            string normalizedIdentifier = (identifier ?? string.Empty).Trim();
-            string normalizedPassword = password ?? string.Empty;
+            string normalizedIdentifier = InputValidator.Normalize(identifier);
+            string normalizedPassword = InputValidator.Normalize(password);
 
-            if (string.IsNullOrWhiteSpace(normalizedIdentifier))
+            // ===== IDENTIFICADOR (email o username) =====
+            if (!InputValidator.IsRequired(normalizedIdentifier))
             {
                 errors.Add(T("UiIdentifierRequired"));
             }
             else
             {
-                if (normalizedIdentifier.Contains("@") && !_emailRegex.IsMatch(normalizedIdentifier))
+                if (!InputValidator.IsLengthInRange(
+                        normalizedIdentifier,
+                        IDENTIFIER_MIN_LENGTH,
+                        IDENTIFIER_MAX_LENGTH))
                 {
-                    errors.Add(T("UiEmailInvalid"));
+                    if (normalizedIdentifier.Length < IDENTIFIER_MIN_LENGTH)
+                    {
+                        errors.Add(T("UiIdentifierTooShort"));
+                    }
+                    else
+                    {
+                        errors.Add(T("UiIdentifierTooLong"));
+                    }
                 }
-
-                if (normalizedIdentifier.Length < IDENTIFIER_MIN_LENGTH)
+                else if (normalizedIdentifier.Contains("@"))
                 {
-                    errors.Add(T("UiIdentifierTooShort"));
+                    // email
+                    if (!InputValidator.IsValidEmail(normalizedIdentifier))
+                    {
+                        errors.Add(T("UiEmailInvalid"));
+                    }
                 }
-
-                if (normalizedIdentifier.Length > IDENTIFIER_MAX_LENGTH)
+                else
                 {
-                    errors.Add(T("UiIdentifierTooLong"));
+                    // username / identificador (permite chino, dígitos, algunos símbolos seguros)
+                    if (!InputValidator.IsIdentifierText(
+                            normalizedIdentifier,
+                            IDENTIFIER_MIN_LENGTH,
+                            IDENTIFIER_MAX_LENGTH))
+                    {
+                        errors.Add(T("UiIdentifierInvalid"));
+                    }
                 }
             }
 
-            if (string.IsNullOrWhiteSpace(normalizedPassword))
+            // ===== PASSWORD (login: NO fuerza formato fuerte) =====
+            if (!InputValidator.IsRequired(normalizedPassword))
             {
                 errors.Add(T("UiPasswordRequired"));
             }
             else
             {
-                if (normalizedPassword.Length < PASSWORD_MIN_LENGTH)
+                if (!InputValidator.IsLengthInRange(
+                        normalizedPassword,
+                        PASSWORD_MIN_LENGTH,
+                        PASSWORD_MAX_LENGTH))
                 {
-                    errors.Add(T("UiPasswordTooShort"));
+                    if (normalizedPassword.Length < PASSWORD_MIN_LENGTH)
+                    {
+                        errors.Add(T("UiPasswordTooShort"));
+                    }
+                    else
+                    {
+                        errors.Add(T("UiPasswordTooLong"));
+                    }
                 }
-
-                if (normalizedPassword.Length > PASSWORD_MAX_LENGTH)
+                else if (!InputValidator.IsSafeText(
+                             normalizedPassword,
+                             PASSWORD_MIN_LENGTH,
+                             PASSWORD_MAX_LENGTH,
+                             allowNewLines: false))
                 {
-                    errors.Add(T("UiPasswordTooLong"));
+                    // sin formato fuerte, solo texto “seguro”
+                    errors.Add(T("UiPasswordInvalid"));
                 }
             }
 
@@ -88,8 +119,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             var result = new LoginServiceResult();
 
-            string normalizedIdentifier = (identifier ?? string.Empty).Trim();
-            string normalizedPassword = password ?? string.Empty;
+            string normalizedIdentifier = InputValidator.Normalize(identifier);
+            string normalizedPassword = InputValidator.Normalize(password);
 
             var loginDto = new AuthService.LoginDto
             {

@@ -1,13 +1,14 @@
-﻿using System;
+﻿using log4net;
+using SnakeAndLaddersFinalProject.SocialProfileService;
+using SnakeAndLaddersFinalProject.UserService;
+using SnakeAndLaddersFinalProject.Utilities;
+using SnakeAndLaddersFinalProject.ViewModels;
+using SnakeAndLaddersFinalProject.Windows;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Navigation;
-using log4net;
-using SnakeAndLaddersFinalProject.SocialProfileService;
-using SnakeAndLaddersFinalProject.UserService;
-using SnakeAndLaddersFinalProject.ViewModels;
-using SnakeAndLaddersFinalProject.Windows;
 using Lang = SnakeAndLaddersFinalProject.Properties.Langs.Lang;
 
 namespace SnakeAndLaddersFinalProject.Pages
@@ -406,6 +407,42 @@ namespace SnakeAndLaddersFinalProject.Pages
         private void MenuTwitterLinkToggle(object sender, RoutedEventArgs e)
         {
             ToggleSocialLink(SocialNetworkType.Twitter, _socialProfilesViewModel.Twitter);
+        }
+
+        private async void Logout(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                await AuthClientHelper.LogoutAsync().ConfigureAwait(true);
+
+                var loginPage = new LoginPage();
+
+                if (NavigationService != null)
+                {
+                    NavigationService.Navigate(loginPage);
+                    return;
+                }
+
+                var navigationWindow = Application.Current.MainWindow as NavigationWindow;
+                if (navigationWindow != null)
+                {
+                    navigationWindow.Navigate(loginPage);
+                }
+                else
+                {
+                    Application.Current.MainWindow.Content = loginPage;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Unexpected error while logging out from ProfilePage.", ex);
+
+                MessageBox.Show(
+                    Lang.UiGenericError,
+                    Lang.UiTitleError,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
         }
 
         private void ToggleSocialLink(SocialNetworkType network, SocialProfileItemViewModel item)

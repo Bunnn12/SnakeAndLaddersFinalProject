@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Net.Mail;
 using System.Runtime.CompilerServices;
 using System.ServiceModel;
 using System.Threading.Tasks;
@@ -51,7 +50,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const int PASSWORD_MAX_LENGTH = 510;
         private const int PASSWORD_MIN_LENGTH = 8;
         private const int EMAIL_MAX_LENGTH = 200;
+        private const int EMAIL_MIN_LENGTH = 5;
         private const int VERIFICATION_CODE_MAX_LENGTH = 6;
+        private const int VERIFICATION_CODE_MIN_LENGTH = 6;
 
         private string _email = string.Empty;
         private string _verificationCode = string.Empty;
@@ -134,21 +135,24 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public async Task SendCodeAsync()
         {
-            string trimmedEmail = (Email ?? string.Empty).Trim();
+            string normalizedEmail = InputValidator.Normalize(Email);
 
-            if (string.IsNullOrWhiteSpace(trimmedEmail))
+            if (!InputValidator.IsRequired(normalizedEmail))
             {
                 ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_GENERIC_ERROR));
                 return;
             }
 
-            if (trimmedEmail.Length > EMAIL_MAX_LENGTH)
+            if (!InputValidator.IsLengthInRange(
+                    normalizedEmail,
+                    EMAIL_MIN_LENGTH,
+                    EMAIL_MAX_LENGTH))
             {
                 ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_INVALID_EMAIL_FORMAT));
                 return;
             }
 
-            if (!IsEmailFormatValid(trimmedEmail))
+            if (!InputValidator.IsValidEmail(normalizedEmail))
             {
                 ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_INVALID_EMAIL_FORMAT));
                 return;
@@ -161,7 +165,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 _logger.Info("Requesting password change verification code (forgot password).");
 
                 AuthResult result = await Task.Run(
-                    () => authClient.RequestPasswordChangeCode(trimmedEmail));
+                    () => authClient.RequestPasswordChangeCode(normalizedEmail));
 
                 authClient.Close();
 
@@ -214,28 +218,26 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public async Task ChangePasswordAsync()
         {
-            string trimmedEmail = (Email ?? string.Empty).Trim();
-            string trimmedCode = (VerificationCode ?? string.Empty).Trim();
+            string normalizedEmail = InputValidator.Normalize(Email);
+            string normalizedCode = InputValidator.Normalize(VerificationCode);
 
             string newPasswordLocal = (NewPassword ?? string.Empty).Trim();
             string confirmPasswordLocal = (ConfirmPassword ?? string.Empty).Trim();
 
-            if (string.IsNullOrWhiteSpace(trimmedEmail)
-                || string.IsNullOrWhiteSpace(newPasswordLocal)
-                || string.IsNullOrWhiteSpace(confirmPasswordLocal)
-                || string.IsNullOrWhiteSpace(trimmedCode))
+            if (!InputValidator.IsRequired(normalizedEmail)
+                || !InputValidator.IsRequired(newPasswordLocal)
+                || !InputValidator.IsRequired(confirmPasswordLocal)
+                || !InputValidator.IsRequired(normalizedCode))
             {
                 ShowError(UI_CHANGE_PASSWORD_GENERIC_ERROR);
                 return;
             }
 
-            if (trimmedEmail.Length > EMAIL_MAX_LENGTH)
-            {
-                ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_INVALID_EMAIL_FORMAT));
-                return;
-            }
-
-            if (!IsEmailFormatValid(trimmedEmail))
+            if (!InputValidator.IsLengthInRange(
+                    normalizedEmail,
+                    EMAIL_MIN_LENGTH,
+                    EMAIL_MAX_LENGTH)
+                || !InputValidator.IsValidEmail(normalizedEmail))
             {
                 ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_INVALID_EMAIL_FORMAT));
                 return;
@@ -247,19 +249,28 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            if (newPasswordLocal.Length > PASSWORD_MAX_LENGTH)
+            if (!InputValidator.IsLengthInRange(
+                    newPasswordLocal,
+                    PASSWORD_MIN_LENGTH,
+                    PASSWORD_MAX_LENGTH))
             {
                 ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_WEAK_PASSWORD));
                 return;
             }
 
-            if (!IsPasswordStrong(newPasswordLocal))
+            if (!InputValidator.IsStrongPassword(
+                    newPasswordLocal,
+                    PASSWORD_MIN_LENGTH,
+                    PASSWORD_MAX_LENGTH))
             {
                 ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_WEAK_PASSWORD));
                 return;
             }
 
-            if (!IsVerificationCodeValid(trimmedCode))
+            if (!InputValidator.IsNumericCode(
+                    normalizedCode,
+                    VERIFICATION_CODE_MIN_LENGTH,
+                    VERIFICATION_CODE_MAX_LENGTH))
             {
                 ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_CODE_INVALID));
                 return;
@@ -267,9 +278,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             ChangePasswordRequestDto request = new ChangePasswordRequestDto
             {
-                Email = trimmedEmail,
+                Email = normalizedEmail,
                 NewPassword = newPasswordLocal,
-                VerificationCode = trimmedCode
+                VerificationCode = normalizedCode
             };
 
             AuthServiceClient authClient = new AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
@@ -419,81 +430,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
 
             return seconds;
-        }
-
-        private static bool IsPasswordStrong(string password)
-        {
-            if (string.IsNullOrEmpty(password))
-            {
-                return false;
-            }
-
-            if (password.Length < PASSWORD_MIN_LENGTH || password.Length > PASSWORD_MAX_LENGTH)
-            {
-                return false;
-            }
-
-            bool hasUpper = false;
-            bool hasLower = false;
-            bool hasSpecial = false;
-
-            foreach (char character in password)
-            {
-                if (char.IsUpper(character))
-                {
-                    hasUpper = true;
-                    continue;
-                }
-
-                if (char.IsLower(character))
-                {
-                    hasLower = true;
-                    continue;
-                }
-
-                if (!char.IsLetterOrDigit(character))
-                {
-                    hasSpecial = true;
-                }
-            }
-
-            return hasUpper && hasLower && hasSpecial;
-        }
-
-        private static bool IsVerificationCodeValid(string code)
-        {
-            if (string.IsNullOrWhiteSpace(code))
-            {
-                return false;
-            }
-
-            if (code.Length > VERIFICATION_CODE_MAX_LENGTH)
-            {
-                return false;
-            }
-
-            for (int index = 0; index < code.Length; index++)
-            {
-                if (!char.IsDigit(code[index]))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private static bool IsEmailFormatValid(string email)
-        {
-            try
-            {
-                MailAddress address = new MailAddress(email);
-                return string.Equals(address.Address, email, StringComparison.OrdinalIgnoreCase);
-            }
-            catch
-            {
-                return false;
-            }
         }
 
         private static string GetLocalizedString(string key)

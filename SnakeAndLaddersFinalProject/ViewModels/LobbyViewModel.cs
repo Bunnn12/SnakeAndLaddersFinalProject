@@ -29,13 +29,23 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private static readonly ILog _logger = LogManager.GetLogger(typeof(LobbyViewModel));
 
         private const int MIN_VALID_USER_ID = 1;
+
+        private const int LOBBY_CODE_MIN_LENGTH = 4;
+        private const int LOBBY_CODE_MAX_LENGTH = 32;
+
         private const string STATUS_CREATE_REQUIRES_LOGIN =
             "Debes iniciar sesión para crear un lobby.";
+
+        private const string LOBBY_CREATE_FAILED_MESSAGE =
+            "No se pudo crear el lobby. Intenta de nuevo más tarde.";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public event Action<GameBoardViewModel> NavigateToBoardRequested;
         public event Action CurrentUserKickedFromLobby;
+
+        // nuevo evento para regresar a MainPage al dejar lobby
+        public event Action NavigateToMainPageRequested;
 
         private readonly GameBoardClient _gameBoardClient;
         private readonly LobbyClient _lobbyClient;
@@ -87,9 +97,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             _lobbyBoardService = new LobbyBoardService(_gameBoardClient);
 
             CreateLobbyCommand = new AsyncCommand(CreateLobbyAsync);
-            JoinLobbyCommand = new AsyncCommand(
-                JoinLobbyAsync,
-                () => !string.IsNullOrWhiteSpace(CodeInput));
+            JoinLobbyCommand = new AsyncCommand(JoinLobbyAsync, CanJoinLobby);
 
             JoinPublicLobbyCommand = new AsyncCommand(
                 JoinPublicLobbyAsync,
@@ -259,7 +267,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private async Task CreateLobbyAsync()
         {
-            // Evita mandar HostUserId inválido al server
             if (CurrentUserId < MIN_VALID_USER_ID)
             {
                 StatusText = STATUS_CREATE_REQUIRES_LOGIN;
@@ -301,6 +308,21 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 };
 
                 var response = await client.CreateGameAsync(request);
+
+                if (!IsValidCreatedLobby(response))
+                {
+                    StatusText = LobbyMessages.STATUS_CREATE_ERROR_PREFIX + LOBBY_CREATE_FAILED_MESSAGE;
+
+                    MessageBox.Show(
+                        LOBBY_CREATE_FAILED_MESSAGE,
+                        Lang.errorTitle,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+
+                    ResetLobbyState(StatusText);
+                    return;
+                }
+
                 ApplyCreatedLobby(response);
             }
             catch (Exception ex)
@@ -322,10 +344,26 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
+        private bool CanJoinLobby()
+        {
+            return TryNormalizeLobbyCode(CodeInput, out _);
+        }
+
+        private static bool TryNormalizeLobbyCode(string code, out string normalizedCode)
+        {
+            normalizedCode = InputValidator.Normalize(code);
+
+            bool isValid = InputValidator.IsIdentifierText(
+                normalizedCode,
+                LOBBY_CODE_MIN_LENGTH,
+                LOBBY_CODE_MAX_LENGTH);
+
+            return isValid;
+        }
+
         private async Task JoinLobbyAsync()
         {
-            var code = (CodeInput ?? string.Empty).Trim();
-            if (string.IsNullOrWhiteSpace(code))
+            if (!TryNormalizeLobbyCode(CodeInput, out string normalizedCode))
             {
                 return;
             }
@@ -341,7 +379,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 var joinResult = client.JoinLobby(new JoinLobbyRequest
                 {
-                    CodigoPartida = code,
+                    CodigoPartida = normalizedCode,
                     UserId = CurrentUserId,
                     UserName = CurrentUserName,
                     AvatarId = profilePhotoId,
@@ -472,6 +510,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 ResetLobbyState(message);
 
+                NavigateToMainPageRequested?.Invoke();
+
                 await Task.CompletedTask;
             }
             catch (Exception ex)
@@ -522,12 +562,29 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        private void ApplyCreatedLobby(CreateGameResponse response)
+        private static bool IsValidCreatedLobby(CreateGameResponse response)
         {
             if (response == null)
             {
-                return;
+                return false;
             }
+
+            if (response.PartidaId <= LobbyMessages.LOBBY_ID_NOT_SET)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(response.CodigoPartida))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void ApplyCreatedLobby(CreateGameResponse response)
+        {
+            // En este punto ya pasó por IsValidCreatedLobby en CreateLobbyAsync.
 
             LobbyId = response.PartidaId;
             CodigoPartida = response.CodigoPartida;
@@ -583,7 +640,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             LobbyStatus = info.Status.ToString();
             ExpiresAtUtc = info.ExpiresAtUtc;
 
-            // Si el server ya lo marca cerrado o la fecha ya pasó, sacar al usuario.
             if (info.Status == ServerLobbyStatus.Closed || IsLobbyExpired(ExpiresAtUtc))
             {
                 StatusText = LobbyMessages.STATUS_LOBBY_CLOSED;

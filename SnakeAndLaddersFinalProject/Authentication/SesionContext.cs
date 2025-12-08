@@ -156,5 +156,17 @@ namespace SnakeAndLaddersFinalProject.Authentication
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        public void Clear()
+        {
+            UserId = USER_ID_NOT_SET;
+            Coins = 0;
+            UserName = string.Empty;
+            Email = string.Empty;
+            AuthToken = string.Empty;
+            ProfilePhotoId = string.Empty;
+            CurrentSkinId = string.Empty;
+            CurrentSkinUnlockedId = null;
+        }
+
     }
 }

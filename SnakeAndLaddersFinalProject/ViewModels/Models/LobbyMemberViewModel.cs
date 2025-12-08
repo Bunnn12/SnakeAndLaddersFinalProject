@@ -14,9 +14,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
         public string CurrentSkinId { get; }
         public int? CurrentSkinUnlockedId { get; }
         public string SkinKey => SkinAssetHelper.NormalizeSkinKey(CurrentSkinId);
-        public string TokenKey => SkinAssetHelper.ResolveSkinAssetsFromKey(CurrentSkinId).TokenKey;
-        public string IdleKey => SkinAssetHelper.ResolveSkinAssetsFromKey(CurrentSkinId).IdleKey;
-        public string SadKey => SkinAssetHelper.ResolveSkinAssetsFromKey(CurrentSkinId).SadKey;
+        public string TokenKey => SkinAssetHelper.ResolveAssets(CurrentSkinId).TokenKey;
+        public string IdleKey => SkinAssetHelper.ResolveAssets(CurrentSkinId).IdleKey;
+        public string SadKey => SkinAssetHelper.ResolveAssets(CurrentSkinId).SadKey;
         public string SkinImagePath => SkinAssetHelper.GetSkinPathFromSkinId(CurrentSkinId);
         public string TokenImagePath => SkinAssetHelper.GetTokenPathFromSkinId(CurrentSkinId);
 
@@ -183,7 +183,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
             UserName = userName;
             JoinedAt = joinedAt;
             AvatarId = avatarId;
-            _isHost = isHost;
+            this._isHost = isHost;
             CurrentSkinId = currentSkinId;
             CurrentSkinUnlockedId = currentSkinUnlockedId;
         }

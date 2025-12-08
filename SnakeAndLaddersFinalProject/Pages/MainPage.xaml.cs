@@ -14,6 +14,7 @@ namespace SnakeAndLaddersFinalProject.Pages
     {
         private const string USER_SERVICE_ENDPOINT_CONFIGURATION_NAME = "NetTcpBinding_IUserService";
         private const int DEFAULT_COINS = 0;
+        private const int HOST_USER_ID_THRESHOLD = 0;
 
         private static readonly ILog _logger = LogManager.GetLogger(typeof(MainPage));
 
@@ -31,6 +32,90 @@ namespace SnakeAndLaddersFinalProject.Pages
             InitializeCoins();
 
             DataContext = SessionContext.Current;
+
+            Loaded += MainPage_Loaded;
+        }
+
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            ApplyHostRestrictionsIfNeeded();
+        }
+
+        private void ApplyHostRestrictionsIfNeeded()
+        {
+            SessionContext session = SessionContext.Current;
+
+            if (session == null)
+            {
+                return;
+            }
+
+            int userId = session.UserId;
+
+            // Negativos = host/guest especial
+            bool isHostUser = userId < HOST_USER_ID_THRESHOLD;
+
+            if (!isHostUser)
+            {
+                return;
+            }
+
+            // Deshabilitar todos los botones de menú…
+            if (btnBack != null)
+            {
+                btnBack.IsEnabled = false;
+            }
+
+            if (btnSettings != null)
+            {
+                btnSettings.IsEnabled = false;
+            }
+
+            if (btnCreateMatch != null)
+            {
+                btnCreateMatch.IsEnabled = false;
+            }
+
+            if (btnFriends != null)
+            {
+                btnFriends.IsEnabled = false;
+            }
+
+            if (btnShop != null)
+            {
+                btnShop.IsEnabled = false;
+            }
+
+            if (btnInventory != null)
+            {
+                btnInventory.IsEnabled = false;
+            }
+
+            if (btnSkins != null)
+            {
+                btnSkins.IsEnabled = false;
+            }
+
+            if (btnProfile != null)
+            {
+                btnProfile.IsEnabled = false;
+            }
+
+            if (btnRanking != null)
+            {
+                btnRanking.IsEnabled = false;
+            }
+
+            // …menos “Unirse a partida” y el textbox del código
+            if (btnJoinMatch != null)
+            {
+                btnJoinMatch.IsEnabled = true;
+            }
+
+            if (txtJoinCode != null)
+            {
+                txtJoinCode.IsEnabled = true;
+            }
         }
 
         private void InitializeCoins()

@@ -41,4 +41,11 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ChangePasswordRequestDto" nillable="true" type="tns:ChangePasswordRequestDto" />
+  <xs:complexType name="LogoutRequestDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Token" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LogoutRequestDto" nillable="true" type="tns:LogoutRequestDto" />
 </xs:schema>

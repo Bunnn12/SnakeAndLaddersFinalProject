@@ -14,7 +14,8 @@ namespace SnakeAndLaddersFinalProject
     
     public sealed partial class BasicWindow : Window
     {
-       
+        private bool _isClosingHandled;
+
 
         private static readonly IReadOnlyDictionary<string, string> Backgrounds =
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -32,11 +33,28 @@ namespace SnakeAndLaddersFinalProject
 
         private async void BasicWindow_Closing(object sender, CancelEventArgs e)
         {
-            
+            if (_isClosingHandled)
+            {
+                return;
+            }
+
+            _isClosingHandled = true;
+
+            // 1) Salir silenciosamente del lobby si aplica
             if (MainFrame.Content is LobbyPage lobbyPage &&
                 lobbyPage.DataContext is LobbyViewModel vm)
             {
-                await vm.TryLeaveLobbySilentlyAsync();
+                await vm.TryLeaveLobbySilentlyAsync().ConfigureAwait(true);
+            }
+
+            // 2) Logout en el servidor (si hay token)
+            try
+            {
+                await AuthClientHelper.LogoutAsync().ConfigureAwait(true);
+            }
+            catch
+            {
+                // ya estamos cerrando la app, no mostramos nada
             }
         }
 

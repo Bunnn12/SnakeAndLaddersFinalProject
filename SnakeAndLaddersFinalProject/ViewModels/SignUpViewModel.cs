@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using log4net;
 using SnakeAndLaddersFinalProject.AuthService;
+using SnakeAndLaddersFinalProject.Utilities;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
@@ -18,6 +18,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const int USERNAME_MAX_LENGTH = 90;
         private const int NAME_MAX_LENGTH = 90;
         private const int EMAIL_MAX_LENGTH = 200;
+        private const int NAME_MIN_LENGTH = 1;
+        private const int USERNAME_MIN_LENGTH = 1;
+        private const int EMAIL_MIN_LENGTH = 5;
 
         private const string AUTH_CODE_OK = "Auth.Ok";
         private const string AUTH_CODE_EMAIL_REQUIRED = "Auth.EmailRequired";
@@ -145,10 +148,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             return new RegistrationInput
             {
-                Username = (input.Username ?? string.Empty).Trim(),
-                GivenName = (input.GivenName ?? string.Empty).Trim(),
-                FamilyName = (input.FamilyName ?? string.Empty).Trim(),
-                EmailAddress = (input.EmailAddress ?? string.Empty).Trim().ToLowerInvariant(),
+                Username = InputValidator.Normalize(input.Username),
+                GivenName = InputValidator.Normalize(input.GivenName),
+                FamilyName = InputValidator.Normalize(input.FamilyName),
+                EmailAddress = InputValidator
+                    .Normalize(input.EmailAddress)
+                    .ToLowerInvariant(),
                 PlainPassword = input.PlainPassword ?? string.Empty
             };
         }
@@ -157,151 +162,132 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             var errors = new List<string>();
 
-            if (string.IsNullOrWhiteSpace(input.GivenName))
+            // ===== NOMBRE =====
+            string normalizedFirstName = input.GivenName;
+
+            if (!InputValidator.IsRequired(normalizedFirstName))
             {
                 errors.Add(Globalization("UiFirstNameRequired"));
             }
             else
             {
-                if (input.GivenName.Length > NAME_MAX_LENGTH)
+                if (!InputValidator.IsLengthInRange(
+                        normalizedFirstName,
+                        NAME_MIN_LENGTH,
+                        NAME_MAX_LENGTH))
                 {
                     errors.Add(Globalization("UiFirstNameTooLong"));
                 }
-
-                if (!IsLettersOnly(input.GivenName))
+                else if (!InputValidator.IsLettersText(
+                             normalizedFirstName,
+                             NAME_MIN_LENGTH,
+                             NAME_MAX_LENGTH))
                 {
                     errors.Add(Globalization("UiFirstNameLettersOnly"));
                 }
             }
 
-            if (string.IsNullOrWhiteSpace(input.FamilyName))
+            // ===== APELLIDOS =====
+            string normalizedLastName = input.FamilyName;
+
+            if (!InputValidator.IsRequired(normalizedLastName))
             {
                 errors.Add(Globalization("UiLastNameRequired"));
             }
             else
             {
-                if (input.FamilyName.Length > NAME_MAX_LENGTH)
+                if (!InputValidator.IsLengthInRange(
+                        normalizedLastName,
+                        NAME_MIN_LENGTH,
+                        NAME_MAX_LENGTH))
                 {
                     errors.Add(Globalization("UiLastNameTooLong"));
                 }
-
-                if (!IsLettersOnly(input.FamilyName))
+                else if (!InputValidator.IsLettersText(
+                             normalizedLastName,
+                             NAME_MIN_LENGTH,
+                             NAME_MAX_LENGTH))
                 {
                     errors.Add(Globalization("UiLastNameLettersOnly"));
                 }
             }
 
-            if (string.IsNullOrWhiteSpace(input.Username))
+            // ===== USERNAME =====
+            string normalizedUsername = input.Username;
+
+            if (!InputValidator.IsRequired(normalizedUsername))
             {
                 errors.Add(Globalization("UiUserNameRequired"));
             }
-            else if (input.Username.Length > USERNAME_MAX_LENGTH)
+            else
             {
-                errors.Add(Globalization("UiUserNameTooLong"));
+                if (!InputValidator.IsLengthInRange(
+                        normalizedUsername,
+                        USERNAME_MIN_LENGTH,
+                        USERNAME_MAX_LENGTH))
+                {
+                    errors.Add(Globalization("UiUserNameTooLong"));
+                }
+                else if (!InputValidator.IsIdentifierText(
+                             normalizedUsername,
+                             USERNAME_MIN_LENGTH,
+                             USERNAME_MAX_LENGTH))
+                {
+                    // Si tienes un texto tipo "UiUserNameInvalid" úsalo;
+                    // si no, puedes reaprovechar uno genérico.
+                    errors.Add(Globalization("UiUserNameInvalid"));
+                }
             }
 
-            if (string.IsNullOrWhiteSpace(input.EmailAddress))
+            // ===== EMAIL =====
+            string normalizedEmail = input.EmailAddress;
+
+            if (!InputValidator.IsRequired(normalizedEmail))
             {
                 errors.Add(Globalization("UiEmailRequired"));
             }
             else
             {
-                if (input.EmailAddress.Length > EMAIL_MAX_LENGTH)
+                if (!InputValidator.IsLengthInRange(
+                        normalizedEmail,
+                        EMAIL_MIN_LENGTH,
+                        EMAIL_MAX_LENGTH))
                 {
                     errors.Add(Globalization("UiEmailTooLong"));
                 }
-                else if (!Regex.IsMatch(input.EmailAddress, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                else if (!InputValidator.IsValidEmail(normalizedEmail))
                 {
                     errors.Add(Globalization("UiEmailInvalid"));
                 }
             }
 
-            if (string.IsNullOrWhiteSpace(input.PlainPassword))
+            // ===== PASSWORD =====
+            string password = input.PlainPassword;
+
+            if (!InputValidator.IsRequired(password))
             {
                 errors.Add(Globalization("UiPasswordRequired"));
             }
             else
             {
-                if (input.PlainPassword.Length > PASSWORD_MAX_LENGTH)
+                if (!InputValidator.IsLengthInRange(
+                        password,
+                        MIN_PASSWORD_LENGTH,
+                        PASSWORD_MAX_LENGTH))
                 {
-                    errors.Add(Globalization("UiPasswordTooLong"));
+                    if (password.Length > PASSWORD_MAX_LENGTH)
+                    {
+                        errors.Add(Globalization("UiPasswordTooLong"));
+                    }
                 }
 
-                if (!IsPasswordStrong(input.PlainPassword))
+                if (!InputValidator.IsStrongPassword(password, MIN_PASSWORD_LENGTH, PASSWORD_MAX_LENGTH))
                 {
                     errors.Add(string.Format(Globalization("UiPasswordWeak"), MIN_PASSWORD_LENGTH));
                 }
             }
 
             return errors.ToArray();
-        }
-
-        private static bool IsLettersOnly(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                return false;
-            }
-
-            for (int index = 0; index < value.Length; index++)
-            {
-                char character = value[index];
-
-                if (char.IsLetter(character))
-                {
-                    continue;
-                }
-
-                if (char.IsWhiteSpace(character))
-                {
-                    continue;
-                }
-
-                return false;
-            }
-
-            return true;
-        }
-
-        private static bool IsPasswordStrong(string password)
-        {
-            if (string.IsNullOrEmpty(password))
-            {
-                return false;
-            }
-
-            if (password.Length < MIN_PASSWORD_LENGTH || password.Length > PASSWORD_MAX_LENGTH)
-            {
-                return false;
-            }
-
-            bool hasUpper = false;
-            bool hasLower = false;
-            bool hasSpecial = false;
-
-            for (int index = 0; index < password.Length; index++)
-            {
-                char character = password[index];
-
-                if (char.IsUpper(character))
-                {
-                    hasUpper = true;
-                    continue;
-                }
-
-                if (char.IsLower(character))
-                {
-                    hasLower = true;
-                    continue;
-                }
-
-                if (!char.IsLetterOrDigit(character))
-                {
-                    hasSpecial = true;
-                }
-            }
-
-            return hasUpper && hasLower && hasSpecial;
         }
 
         private static string Globalization(string key)

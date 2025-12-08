@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.Windows;
 using log4net;
 using SnakeAndLaddersFinalProject.SocialProfileService;
+using SnakeAndLaddersFinalProject.Utilities;
 using Lang = SnakeAndLaddersFinalProject.Properties.Langs.Lang;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
@@ -43,6 +44,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string INSTAGRAM_URL = "https://www.instagram.com/";
         private const string FACEBOOK_URL = "https://www.facebook.com/";
         private const string TWITTER_URL = "https://_x.com/";
+
+        private const int PROFILE_LINK_MIN_LENGTH = 5;
+        private const int PROFILE_LINK_MAX_LENGTH = 512;
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(SocialProfilesViewModel));
 
@@ -92,9 +96,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return false;
             }
 
-            string trimmedProfileLink = profileLink == null ? string.Empty : profileLink.Trim();
+            string normalizedProfileLink = InputValidator.Normalize(profileLink);
 
-            if (string.IsNullOrWhiteSpace(trimmedProfileLink))
+            if (!InputValidator.IsRequired(normalizedProfileLink))
             {
                 MessageBox.Show(
                     Lang.SocialProfileLinkEmptyWarn,
@@ -104,7 +108,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return false;
             }
 
-            if (!IsValidProfileLink(network, trimmedProfileLink))
+            if (!IsValidProfileLink(network, normalizedProfileLink))
             {
                 MessageBox.Show(
                     Lang.SocialProfileInvalidUrlWarn,
@@ -122,7 +126,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     UserId = userId,
                     Network = network,
-                    ProfileLink = trimmedProfileLink
+                    ProfileLink = normalizedProfileLink
                 };
 
                 SocialProfileDto result = client.LinkSocialProfile(request);
@@ -291,23 +295,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private static bool IsValidProfileLink(SocialNetworkType network, string profileLink)
         {
-            if (string.IsNullOrWhiteSpace(profileLink))
+            if (!InputValidator.IsUrl(profileLink, PROFILE_LINK_MIN_LENGTH, PROFILE_LINK_MAX_LENGTH))
             {
                 return false;
             }
 
-            string trimmed = profileLink.Trim();
+            string normalized = InputValidator.Normalize(profileLink);
 
-            if (!Uri.TryCreate(trimmed, UriKind.Absolute, out Uri uri))
+            if (!Uri.TryCreate(normalized, UriKind.Absolute, out Uri uri))
             {
                 return false;
             }
 
-            if (!string.Equals(uri.Scheme, Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase))
-            {
-                return false;
-            }
-
+            // Ya sabemos que es http/https y sin caracteres peligrosos por IsValidUrl
             string host = uri.Host ?? string.Empty;
 
             switch (network)
@@ -410,11 +410,23 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return false;
             }
 
+            string normalizedProfileLink = InputValidator.Normalize(item.ProfileLink);
+
+            if (!IsValidProfileLink(network, normalizedProfileLink))
+            {
+                MessageBox.Show(
+                    Lang.SocialProfileInvalidUrlWarn,
+                    Lang.UiTitleWarning,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return false;
+            }
+
             try
             {
                 var startInfo = new ProcessStartInfo
                 {
-                    FileName = item.ProfileLink,
+                    FileName = normalizedProfileLink,
                     UseShellExecute = true
                 };
 

@@ -73,6 +73,12 @@
   <wsdl:message name="IAuthService_RequestPasswordChangeCode_OutputMessage">
     <wsdl:part name="parameters" element="tns:RequestPasswordChangeCodeResponse" />
   </wsdl:message>
+  <wsdl:message name="IAuthService_Logout_InputMessage">
+    <wsdl:part name="parameters" element="tns:Logout" />
+  </wsdl:message>
+  <wsdl:message name="IAuthService_Logout_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LogoutResponse" />
+  </wsdl:message>
   <wsdl:portType name="IAuthService">
     <wsdl:operation name="Register">
       <wsdl:input wsaw:Action="http://tempuri.org/IAuthService/Register" message="tns:IAuthService_Register_InputMessage" />
@@ -97,6 +103,10 @@
     <wsdl:operation name="RequestPasswordChangeCode">
       <wsdl:input wsaw:Action="http://tempuri.org/IAuthService/RequestPasswordChangeCode" message="tns:IAuthService_RequestPasswordChangeCode_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IAuthService/RequestPasswordChangeCodeResponse" message="tns:IAuthService_RequestPasswordChangeCode_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAuthService/Logout" message="tns:IAuthService_Logout_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAuthService/LogoutResponse" message="tns:IAuthService_Logout_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IAuthService" type="tns:IAuthService">
@@ -148,6 +158,15 @@
     </wsdl:operation>
     <wsdl:operation name="RequestPasswordChangeCode">
       <soap:operation soapAction="http://tempuri.org/IAuthService/RequestPasswordChangeCode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <soap:operation soapAction="http://tempuri.org/IAuthService/Logout" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -213,6 +232,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <soap12:operation soapAction="http://tempuri.org/IAuthService/Logout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="AuthService">
     <wsdl:port name="BasicHttpBinding_IAuthService" binding="tns:BasicHttpBinding_IAuthService">
@@ -223,7 +251,7 @@
       <wsa10:EndpointReference>
         <wsa10:Address>net.tcp://localhost:8095/auth/</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
-          <Upn>LAP-ASTRID\reino</Upn>
+          <Upn>LAPTOPIRENE\irene</Upn>
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>

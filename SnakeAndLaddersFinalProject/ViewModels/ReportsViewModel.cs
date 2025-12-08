@@ -13,6 +13,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private static readonly ILog _logger = LogManager.GetLogger(typeof(ReportsViewModel));
 
         private const int MIN_REGISTERED_USER_ID = 1;
+        private const int MIN_REASON_LENGTH = 5;
+        private const int MAX_REASON_LENGTH = 500;
+
+        private const string PLAYER_REPORT_SERVICE_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IPlayerReportService";
 
         private const string REASON_KEY_HARASSMENT = "Harassment";
         private const string REASON_KEY_INAPPROPRIATE_LANGUAGE = "InappropriateLanguage";
@@ -47,8 +51,24 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public bool HandlePredefinedReason(string reasonKey)
         {
+            if (string.IsNullOrWhiteSpace(reasonKey))
+            {
+                return false;
+            }
+
             string displayText = ResolveDisplayText(reasonKey);
-            string internalText = displayText;
+            string internalText = InputValidator.Normalize(displayText);
+
+            bool isValidReason = InputValidator.IsSafeText(
+                internalText,
+                MIN_REASON_LENGTH,
+                MAX_REASON_LENGTH,
+                allowNewLines: false);
+
+            if (!isValidReason)
+            {
+                return false;
+            }
 
             bool isConfirmed = ShowConfirmDialog(displayText);
             if (!isConfirmed)
@@ -62,18 +82,26 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public bool HandleCustomReason(string customComment)
         {
-            if (string.IsNullOrWhiteSpace(customComment))
+            string normalizedComment = InputValidator.Normalize(customComment);
+
+            bool isValidReason = InputValidator.IsSafeText(
+                normalizedComment,
+                MIN_REASON_LENGTH,
+                MAX_REASON_LENGTH,
+                allowNewLines: false);
+
+            if (!isValidReason)
             {
                 return false;
             }
 
-            bool isConfirmed = ShowConfirmDialog(customComment);
+            bool isConfirmed = ShowConfirmDialog(normalizedComment);
             if (!isConfirmed)
             {
                 return false;
             }
 
-            SendReport(customComment);
+            SendReport(normalizedComment);
             return true;
         }
 
@@ -132,7 +160,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             };
 
             var client = new PlayerReportService.PlayerReportServiceClient(
-                "BasicHttpBinding_IPlayerReportService");
+                PLAYER_REPORT_SERVICE_ENDPOINT_CONFIGURATION_NAME);
 
             try
             {

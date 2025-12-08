@@ -161,37 +161,7 @@
                 <!-- Barra inferior -->
                 <StackPanel Grid.Row="4"
                             Orientation="Horizontal"
-                            HorizontalAlignment="Center">
-                    <Button x:Name="btnFriends"
-                            Content="{x:Static language:Lang.btnFriendsText}"
-                            Width="115"
-                            Height="30"
-                            Margin="0,0,8,0"
-                            Click="Friends" />
-                    <Button x:Name="btnShop"
-                            Content="{x:Static language:Lang.btnShopText}"
-                            Width="106"
-                            Height="30"
-                            Margin="0,0,8,0"
-                            Click="Shop" />
-                    <Button x:Name="btnInventory"
-                            Content="{x:Static language:Lang.btnInventoryText}"
-                            Width="107"
-                            Height="30"
-                            Margin="0,0,8,0"
-                            Click="Inventory" />
-                    <Button x:Name="btnSkins"
-                            Content="{x:Static language:Lang.btnSkinsText}"
-                            Width="105"
-                            Height="30"
-                            Margin="0,0,8,0"
-                            Click="Skins" />
-                    <Button x:Name="btnProfile"
-                            Content="{x:Static language:Lang.btnProfileText}"
-                            Width="103"
-                            Height="30"
-                            Click="Profile" />
-                </StackPanel>
+                            HorizontalAlignment="Center"/>
             </Grid>
         </Border>
     </Grid>

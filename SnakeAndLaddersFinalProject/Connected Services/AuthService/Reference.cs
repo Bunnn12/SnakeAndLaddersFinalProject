@@ -449,6 +449,67 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="LogoutRequestDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class LogoutRequestDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string TokenField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Token {
+            get {
+                return this.TokenField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TokenField, value) != true)) {
+                    this.TokenField = value;
+                    this.RaisePropertyChanged("Token");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserId {
+            get {
+                return this.UserIdField;
+            }
+            set {
+                if ((this.UserIdField.Equals(value) != true)) {
+                    this.UserIdField = value;
+                    this.RaisePropertyChanged("UserId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="AuthService.IAuthService")]
     public interface IAuthService {
@@ -488,6 +549,12 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/RequestPasswordChangeCode", ReplyAction="http://tempuri.org/IAuthService/RequestPasswordChangeCodeResponse")]
         System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> RequestPasswordChangeCodeAsync(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/Logout", ReplyAction="http://tempuri.org/IAuthService/LogoutResponse")]
+        SnakeAndLaddersFinalProject.AuthService.AuthResult Logout(SnakeAndLaddersFinalProject.AuthService.LogoutRequestDto request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthService/Logout", ReplyAction="http://tempuri.org/IAuthService/LogoutResponse")]
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> LogoutAsync(SnakeAndLaddersFinalProject.AuthService.LogoutRequestDto request);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -563,6 +630,14 @@ namespace SnakeAndLaddersFinalProject.AuthService {
         
         public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> RequestPasswordChangeCodeAsync(string email) {
             return base.Channel.RequestPasswordChangeCodeAsync(email);
+        }
+        
+        public SnakeAndLaddersFinalProject.AuthService.AuthResult Logout(SnakeAndLaddersFinalProject.AuthService.LogoutRequestDto request) {
+            return base.Channel.Logout(request);
+        }
+        
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.AuthService.AuthResult> LogoutAsync(SnakeAndLaddersFinalProject.AuthService.LogoutRequestDto request) {
+            return base.Channel.LogoutAsync(request);
         }
     }
 }

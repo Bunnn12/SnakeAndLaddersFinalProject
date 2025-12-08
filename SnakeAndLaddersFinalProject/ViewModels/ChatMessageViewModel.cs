@@ -1,21 +1,37 @@
 ﻿using System;
 using SnakeAndLaddersFinalProject.ChatService;
+using SnakeAndLaddersFinalProject.Utilities;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class ChatMessageViewModel
     {
         private const string EMPTY_TEXT = "";
+
         private const int MIN_VALID_STICKER_ID = 1;
+
+        private const int SENDER_MIN_LENGTH = 1;
+        private const int SENDER_MAX_LENGTH = 90;
+
+        private const int CHAT_TEXT_MIN_LENGTH = 0;
+        private const int CHAT_TEXT_MAX_LENGTH = 500;
+
         public string Sender { get; }
+
         public string Text { get; }
+
         public DateTime SentAt { get; }
+
         public bool IsMine { get; }
+
         public string Header { get; }
+
         public string AvatarId { get; }
+
         public bool HasAvatar => !string.IsNullOrWhiteSpace(AvatarId);
 
         public bool IsSticker { get; }
+
         public string StickerImagePath { get; }
 
         public ChatMessageViewModel(ChatMessageDto chatMessageDto, string currentUserName)
@@ -25,7 +41,23 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 throw new ArgumentNullException(nameof(chatMessageDto));
             }
 
-            Sender = chatMessageDto.Sender ?? EMPTY_TEXT;
+            // ===== Sender =====
+            string rawSender = chatMessageDto.Sender ?? EMPTY_TEXT;
+            string normalizedSender = InputValidator.Normalize(rawSender);
+
+            // Si viene algo muy raro/potencialmente malicioso lo vaciamos
+            if (!InputValidator.IsIdentifierText(
+                    normalizedSender,
+                    SENDER_MIN_LENGTH,
+                    SENDER_MAX_LENGTH))
+            {
+                Sender = EMPTY_TEXT;
+            }
+            else
+            {
+                Sender = normalizedSender;
+            }
+
             AvatarId = chatMessageDto.SenderAvatarId ?? EMPTY_TEXT;
             SentAt = chatMessageDto.TimestampUtc.ToLocalTime();
 
@@ -46,7 +78,23 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             else
             {
-                Text = (chatMessageDto.Text ?? EMPTY_TEXT).Trim();
+                string rawText = chatMessageDto.Text ?? EMPTY_TEXT;
+                string normalizedText = InputValidator.Normalize(rawText);
+
+                // Solo aceptamos texto "seguro": sin controles raros, sin < >
+                if (!InputValidator.IsSafeText(
+                        normalizedText,
+                        CHAT_TEXT_MIN_LENGTH,
+                        CHAT_TEXT_MAX_LENGTH,
+                        allowNewLines: true))
+                {
+                    Text = EMPTY_TEXT;
+                }
+                else
+                {
+                    Text = normalizedText;
+                }
+
                 StickerImagePath = EMPTY_TEXT;
             }
         }
