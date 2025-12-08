@@ -9,6 +9,7 @@ using System.Windows.Navigation;
 using SnakeAndLaddersFinalProject.Authentication;
 using SnakeAndLaddersFinalProject.Utilities;
 using SnakeAndLaddersFinalProject.ViewModels;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
@@ -20,9 +21,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         private const int GUEST_ID_MIN_VALUE = 1;
         private const int GUEST_ID_MAX_EXCLUSIVE = 1_000_000;
 
-        private const string GUEST_NAME_PREFIX = "Guest";
         private const string GUEST_TOKEN_PREFIX = "GUEST-";
-
         private const string DEFAULT_GUEST_SKIN_ID = "001";
 
         private const string AUTH_CODE_THROTTLE_WAIT = "Auth.ThrottleWait";
@@ -33,14 +32,6 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private const string BAN_DATE_DISPLAY_FORMAT = "dd/MM/yyyy HH:mm";
         private const string DEFAULT_THROTTLE_SECONDS_TEXT = "45";
-
-        private const string ICON_KIND_WARNING = "warning";
-        private const string ICON_KIND_INFO = "info";
-        private const string ICON_KIND_ERROR = "error";
-
-        private const string ICON_URI_WARNING = "pack://application:,,,/Assets/Icons/warning.png";
-        private const string ICON_URI_INFO = "pack://application:,,,/Assets/Icons/info.png";
-        private const string ICON_URI_ERROR = "pack://application:,,,/Assets/Icons/error.png";
 
         private const int LOGIN_LOADING_DELAY_MILLISECONDS = 200;
 
@@ -102,7 +93,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             LoginViewModel viewModel = ViewModel;
             if (viewModel == null)
             {
-                ShowError(T("UiGenericError"));
+                ShowError(Lang.UiGenericError);
                 return;
             }
 
@@ -123,14 +114,14 @@ namespace SnakeAndLaddersFinalProject.Pages
             if (result.IsEndpointNotFound)
             {
                 NavigateToLoginPage();
-                ShowError(T("UiEndpointNotFound"));
+                ShowError(Lang.UiEndpointNotFound);
                 return;
             }
 
             if (result.IsGenericError)
             {
                 NavigateToLoginPage();
-                ShowError(T("UiGenericError"));
+                ShowError(Lang.UiGenericError);
                 return;
             }
 
@@ -140,8 +131,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 if (!result.HasAuthToken)
                 {
-                    ShowWarn(
-                        "Sesión iniciada, pero el servicio no devolvió token. Algunas funciones pueden no estar disponibles.");
+                    ShowWarn(Lang.UiSessionTokenMissingWarn);
                 }
 
                 return;
@@ -192,40 +182,22 @@ namespace SnakeAndLaddersFinalProject.Pages
             return mainFrame != null;
         }
 
-        private static string T(string key) =>
-            Globalization.LocalizationManager.Current[key];
-
-        private void ShowWarn(string message) =>
-            ShowDialog(T("UiTitleWarning"), message, GetIcon(ICON_KIND_WARNING));
-
-        private void ShowInfo(string message) =>
-            ShowDialog(T("UiTitleInfo"), message, GetIcon(ICON_KIND_INFO));
-
-        private void ShowError(string message) =>
-            ShowDialog(T("UiTitleError"), message, GetIcon(ICON_KIND_ERROR));
-
-        private void ShowDialog(string title, string message, string iconPackUri)
+        private void ShowWarn(string message)
         {
-            Window owner = Window.GetWindow(this) ?? Application.Current?.MainWindow;
-            _ = DialogBasicWindow.Show(owner, title, message, DialogButtons.Ok, iconPackUri);
+            MessageBox.Show(
+                message,
+                Lang.UiTitleWarning,
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
         }
 
-        private static string GetIcon(string kind)
+        private void ShowError(string message)
         {
-            switch (kind)
-            {
-                case ICON_KIND_WARNING:
-                    return ICON_URI_WARNING;
-
-                case ICON_KIND_INFO:
-                    return ICON_URI_INFO;
-
-                case ICON_KIND_ERROR:
-                    return ICON_URI_ERROR;
-
-                default:
-                    return ICON_URI_INFO;
-            }
+            MessageBox.Show(
+                message,
+                Lang.UiTitleError,
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
 
         private static string MapAuth(string code, Dictionary<string, string> meta)
@@ -235,47 +207,47 @@ namespace SnakeAndLaddersFinalProject.Pages
             switch (code)
             {
                 case "Auth.Ok":
-                    return T("AuthOk");
+                    return Lang.AuthOk;
 
                 case "Auth.EmailRequired":
-                    return T("AuthEmailRequired");
+                    return Lang.AuthEmailRequired;
 
                 case "Auth.EmailAlreadyExists":
-                    return T("AuthEmailAlreadyExists");
+                    return Lang.AuthEmailAlreadyExists;
 
                 case "Auth.UserNameAlreadyExists":
-                    return T("AuthUserNameAlreadyExists");
+                    return Lang.AuthUserNameAlreadyExists;
 
                 case "Auth.InvalidCredentials":
-                    return T("AuthInvalidCredentials");
+                    return Lang.AuthInvalidCredentials;
 
                 case AUTH_CODE_THROTTLE_WAIT:
                     return string.Format(
-                        T("Auth_ThrottleWaitFmt"),
+                        Lang.Auth_ThrottleWaitFmt,
                         metaDictionary.TryGetValue(META_KEY_SECONDS, out string secondsText)
                             ? secondsText
                             : DEFAULT_THROTTLE_SECONDS_TEXT);
 
                 case "Auth.CodeNotRequested":
-                    return T("AuthCodeNotRequested");
+                    return Lang.AuthCodeNotRequested;
 
                 case "Auth.CodeExpired":
-                    return T("AuthCodeExpired");
+                    return Lang.AuthCodeExpired;
 
                 case "Auth.CodeInvalid":
-                    return T("AuthCodeInvalid");
+                    return Lang.AuthCodeInvalid;
 
                 case "Auth.EmailSendFailed":
-                    return T("AuthEmailSendFailed");
+                    return Lang.AuthEmailSendFailed;
 
                 case "Auth.AccountDeleted":
-                    return T("AuthAccountDeleted");
+                    return Lang.AuthAccountDeleted;
 
                 case "Auth.Banned":
                     if (metaDictionary.TryGetValue(META_KEY_SANCTION_TYPE, out string sanctionType) &&
                         string.Equals(sanctionType, "S4", StringComparison.OrdinalIgnoreCase))
                     {
-                        return T("AuthBannedPermanent");
+                        return Lang.AuthBannedPermanent;
                     }
 
                     if (metaDictionary.TryGetValue(META_KEY_BAN_ENDS_AT_UTC, out string rawDate) &&
@@ -283,14 +255,14 @@ namespace SnakeAndLaddersFinalProject.Pages
                     {
                         DateTime local = banEndsUtc.ToLocalTime();
                         return string.Format(
-                            T("AuthBannedUntilFmt"),
+                            Lang.AuthBannedUntilFmt,
                             local.ToString(BAN_DATE_DISPLAY_FORMAT));
                     }
 
-                    return T("AuthBannedGeneric");
+                    return Lang.AuthBannedGeneric;
 
                 default:
-                    return T("AuthServerError");
+                    return Lang.AuthServerError;
             }
         }
 
@@ -314,12 +286,13 @@ namespace SnakeAndLaddersFinalProject.Pages
                 SessionContext session = SessionContext.Current;
                 if (session == null)
                 {
-                    ShowError(T("UiGenericError"));
+                    ShowError(Lang.UiGenericError);
                     return;
                 }
 
                 int suffix = GuestRandom.Next(GUEST_SUFFIX_MIN_VALUE, GUEST_SUFFIX_MAX_EXCLUSIVE);
-                string guestName = $"{GUEST_NAME_PREFIX}{suffix:D2}";
+
+                string guestName = string.Format("{0}{1:D2}", Lang.UiGuestNamePrefix, suffix);
 
                 int guestRandomId = GuestRandom.Next(GUEST_ID_MIN_VALUE, GUEST_ID_MAX_EXCLUSIVE);
                 int guestUserId = guestRandomId * -1;
@@ -336,7 +309,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch
             {
-                ShowError("Unexpected error while navigating.");
+                ShowError(Lang.UiUnexpectedNavigationError);
             }
         }
 
@@ -351,7 +324,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             NavigationService?.Navigate(new ChangePasswordPage());
         }
 
-        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        private void Settings(object sender, RoutedEventArgs e)
         {
             if (TryGetMainFrame(out Frame mainFrame))
             {

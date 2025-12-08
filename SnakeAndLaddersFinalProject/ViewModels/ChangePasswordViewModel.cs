@@ -186,7 +186,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 string userMessage = ExceptionHandler.Handle(
                     ex,
-                    "ChangePasswordPage.BtnSendCode_Click.EndpointNotFound",
+                    "ChangePasswordPage.SendCode.EndpointNotFound",
                     Logger);
 
                 MessageBox.Show(
@@ -201,7 +201,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 string userMessage = ExceptionHandler.Handle(
                     ex,
-                    "ChangePasswordPage.BtnSendCode_Click",
+                    "ChangePasswordPage.SendCode",
                     Logger);
 
                 MessageBox.Show(
@@ -306,7 +306,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 string userMessage = ExceptionHandler.Handle(
                     ex,
-                    "ChangePasswordPage.BtnChangePassword_Click.EndpointNotFound",
+                    "ChangePasswordPage.ChangePassword.EndpointNotFound",
                     Logger);
 
                 MessageBox.Show(
@@ -321,7 +321,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 string userMessage = ExceptionHandler.Handle(
                     ex,
-                    "ChangePasswordPage.BtnChangePassword_Click",
+                    "ChangePasswordPage.ChangePassword",
                     Logger);
 
                 MessageBox.Show(

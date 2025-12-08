@@ -387,7 +387,7 @@
                         Margin="0,-24,8,0"
                         Style="{StaticResource BtnIcon}"
                         ToolTip="{x:Static language:Lang.lblFriendsListTitle}"
-                        Click="BtnFriends_Click">
+                        Click="Friends">
                         <Image Width="120"
                            Height="80"
                            Source="/Assets/Images/Icons/FriendsIcon.png"
@@ -401,7 +401,7 @@
                                 Margin="8,-24,8,0"
                                 Style="{StaticResource BtnIcon}"
                                 ToolTip="{x:Static language:Lang.btnShopText}"
-                                Click="BtnShop_Click">
+                                Click="Shop">
                             <Image Width="96"
                                    Height="76"
                                    Source="/Assets/Images/Icons/StoreIcon.png"
@@ -442,7 +442,7 @@
                             Margin="8,-24,8,0"
                             Style="{StaticResource BtnIcon}"
                             ToolTip="{x:Static language:Lang.btnProfileText}"
-                            Click="BtnProfile_Click">
+                            Click="Profile">
                             <Ellipse Width="88"
                              Height="88"
                              HorizontalAlignment="Center"
@@ -471,7 +471,7 @@
                     VerticalAlignment="Center"
                     Margin="32,0,0,0"
                     ToolTip="{x:Static language:Lang.btnRankingText}"
-                    Click="BtnRanking_Click">
+                    Click="Ranking">
                     <Image Width="138"
                        Height="109"
                        Source="/Assets/Images/Icons/RankingIcon.png"

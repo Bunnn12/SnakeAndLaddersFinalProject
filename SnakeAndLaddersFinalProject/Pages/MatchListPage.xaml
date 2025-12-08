@@ -94,7 +94,7 @@
                             Width="127"
                             Height="30"
                             Margin="0,0,8,0"
-                            Click="BtnBack_Click" />
+                            Click="Back" />
 
                     <Grid Grid.Column="1" />
 
@@ -103,7 +103,7 @@
                             Content="{x:Static language:Lang.btnSettingsText}"
                             Width="121"
                             Height="30"
-                            Click="BtnSettings_Click" />
+                            Click="Settings" />
                 </Grid>
 
                 <!-- Buscar por código -->
@@ -128,7 +128,7 @@
                             Content="{x:Static language:Lang.btnJoinMatchText}"
                             Width="140"
                             Height="30"
-                            Click="BtnJoinByCode_Click" />
+                            Click="JoinByCode" />
                 </StackPanel>
 
                 <!-- LISTA DE PARTIDAS -->
@@ -167,30 +167,30 @@
                             Width="115"
                             Height="30"
                             Margin="0,0,8,0"
-                            Click="BtnFriends_Click" />
+                            Click="Friends" />
                     <Button x:Name="btnShop"
                             Content="{x:Static language:Lang.btnShopText}"
                             Width="106"
                             Height="30"
                             Margin="0,0,8,0"
-                            Click="BtnShop_Click" />
+                            Click="Shop" />
                     <Button x:Name="btnInventory"
                             Content="{x:Static language:Lang.btnInventoryText}"
                             Width="107"
                             Height="30"
                             Margin="0,0,8,0"
-                            Click="BtnInventory_Click" />
+                            Click="Inventory" />
                     <Button x:Name="btnSkins"
                             Content="{x:Static language:Lang.btnSkinsText}"
                             Width="105"
                             Height="30"
                             Margin="0,0,8,0"
-                            Click="BtnSkins_Click" />
+                            Click="Skins" />
                     <Button x:Name="btnProfile"
                             Content="{x:Static language:Lang.btnProfileText}"
                             Width="103"
                             Height="30"
-                            Click="BtnProfile_Click" />
+                            Click="Profile" />
                 </StackPanel>
             </Grid>
         </Border>

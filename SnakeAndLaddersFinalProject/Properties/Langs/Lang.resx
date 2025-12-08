@@ -1110,4 +1110,49 @@
   <data name="Message20Text" xml:space="preserve">
     <value />
   </data>
+  <data name="AuthCodeNotRequested" xml:space="preserve">
+    <value>A verification code has not been requested yet. Please request a code first</value>
+  </data>
+  <data name="AuthOk" xml:space="preserve">
+    <value>Operation completed successfully</value>
+  </data>
+  <data name="autoAcceptedFriendText" xml:space="preserve">
+    <value>This user had already sent you a friend request, you are now friends</value>
+  </data>
+  <data name="ChatNoActiveLobbyWarnText" xml:space="preserve">
+    <value>There is no active lobby yet. Create or join one before opening the chat</value>
+  </data>
+  <data name="GameBoardOpenErrorText" xml:space="preserve">
+    <value>The game board could not be opened.</value>
+  </data>
+  <data name="LobbyBannedAndKickedText" xml:space="preserve">
+    <value>You have been banned and removed from the game</value>
+  </data>
+  <data name="LobbyInitErrorText" xml:space="preserve">
+    <value>The lobby could not be initialized.</value>
+  </data>
+  <data name="MainPageErrorLoadingCoinsText" xml:space="preserve">
+    <value>An error occurred while loading your coins.</value>
+  </data>
+  <data name="PodiumDefaultPlayerNameFmt" xml:space="preserve">
+    <value>Player {0}</value>
+  </data>
+  <data name="ReportsWindowOpenErrorText" xml:space="preserve">
+    <value>An error occurred while trying to open the reports window.</value>
+  </data>
+  <data name="UiGuestNamePrefix" xml:space="preserve">
+    <value>Guest</value>
+  </data>
+  <data name="UiJoinMatchCodeRequired" xml:space="preserve">
+    <value>Please enter the match code</value>
+  </data>
+  <data name="UiJoinMatchTitle" xml:space="preserve">
+    <value>Join match</value>
+  </data>
+  <data name="UiLoadingText" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="WindowTitleGameBoard" xml:space="preserve">
+    <value>Snakes &amp; Ladders - Game Board</value>
+  </data>
 </root>

@@ -343,7 +343,7 @@
                                                     <DataTemplate>
                                                         <Button Content="{x:Static language:Lang.btnAcceptText}"
                                                                 Padding="8,4"
-                                                                Click="BtnAccept_Click"/>
+                                                                Click="AcceptRequest"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -352,7 +352,7 @@
                                                     <DataTemplate>
                                                         <Button Content="{x:Static language:Lang.btnRejectText}"
                                                                 Padding="8,4"
-                                                                Click="BtnReject_Click"/>
+                                                                Click="RejectRequest"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -378,7 +378,7 @@
                                                     <DataTemplate>
                                                         <Button Content="{x:Static language:Lang.btnCancelText}"
                                                                 Padding="8,4"
-                                                                Click="BtnCancel_Click"/>
+                                                                Click="CancelRequest"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>

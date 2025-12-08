@@ -303,6 +303,7 @@
     <Compile Include="Utilities\TextBoxCharCounterHelper.cs" />
     <Compile Include="Utilities\TurnTimerTextFormatter.cs" />
     <Compile Include="Utilities\WidthToBoolConverter.cs" />
+    <Compile Include="ViewModels\AddFriendsViewModel.cs" />
     <Compile Include="ViewModels\AvatarProfileOptionViewModel.cs" />
     <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\ChatClientCallback.cs" />

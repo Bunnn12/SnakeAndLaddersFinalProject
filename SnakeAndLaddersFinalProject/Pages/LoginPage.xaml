@@ -212,7 +212,7 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Style="{x:Null}"
-                    Margin="0,30,138,0" Click="btnSettings_Click"/>
+                    Margin="0,30,138,0" Click="Settings"/>
 
             <!-- Login: subrayado fijo; el click solo muestra 'press' y vuelve -->
             <ToggleButton x:Name="btnNavLogin"

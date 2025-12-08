@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 using IOPath = System.IO.Path;
 
 namespace SnakeAndLaddersFinalProject.Pages
@@ -52,17 +53,16 @@ namespace SnakeAndLaddersFinalProject.Pages
                     AlignmentY = AlignmentY.Center
                 };
 
-                // 'Root' VIENE de _x:Name="Root" en el XAML
                 Root.Children.Clear();
                 Root.Children.Add(new Rectangle { Fill = _drawingBrush });
                 Root.Children.Add(new TextBlock
                 {
-                    Text = "Loading . . . ",
+                    Text = Lang.UiLoadingText,
                     Foreground = Brushes.White,
                     FontSize = 28,
                     FontWeight = System.Windows.FontWeights.SemiBold,
-                    HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-                    VerticalAlignment = System.Windows.VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
                     Margin = new Thickness(0, 40, 0, 0)
                 });
             }
@@ -72,12 +72,12 @@ namespace SnakeAndLaddersFinalProject.Pages
                 Root.Children.Add(new Rectangle { Fill = Brushes.Black });
                 Root.Children.Add(new TextBlock
                 {
-                    Text = "Loading...",
+                    Text = Lang.UiLoadingText,
                     Foreground = Brushes.White,
                     FontSize = 28,
-                    FontWeight = System.Windows.FontWeights.SemiBold,
-                    HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-                    VerticalAlignment = System.Windows.VerticalAlignment.Center
+                    FontWeight = FontWeights.SemiBold,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
                 });
             }
         }

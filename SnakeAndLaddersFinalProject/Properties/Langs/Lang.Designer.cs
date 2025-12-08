@@ -124,6 +124,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a A verification code has not been requested yet. Please request a code first.
+        /// </summary>
+        public static string AuthCodeNotRequested {
+            get {
+                return ResourceManager.GetString("AuthCodeNotRequested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a This email address is already registered..
         /// </summary>
         public static string AuthEmailAlreadyExists {
@@ -160,6 +169,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Operation completed successfully.
+        /// </summary>
+        public static string AuthOk {
+            get {
+                return ResourceManager.GetString("AuthOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a A server error occurred while processing your request..
         /// </summary>
         public static string AuthServerError {
@@ -183,6 +201,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string AuthUserNameAlreadyExists {
             get {
                 return ResourceManager.GetString("AuthUserNameAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a This user had already sent you a friend request, you are now friends.
+        /// </summary>
+        public static string autoAcceptedFriendText {
+            get {
+                return ResourceManager.GetString("autoAcceptedFriendText", resourceCulture);
             }
         }
         
@@ -565,6 +592,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a There is no active lobby yet. Create or join one before opening the chat.
+        /// </summary>
+        public static string ChatNoActiveLobbyWarnText {
+            get {
+                return ResourceManager.GetString("ChatNoActiveLobbyWarnText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Chat.
         /// </summary>
         public static string chatTittle {
@@ -732,6 +768,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string friendRequestSentText {
             get {
                 return ResourceManager.GetString("friendRequestSentText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The game board could not be opened..
+        /// </summary>
+        public static string GameBoardOpenErrorText {
+            get {
+                return ResourceManager.GetString("GameBoardOpenErrorText", resourceCulture);
             }
         }
         
@@ -1528,6 +1573,33 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a You have been banned and removed from the game.
+        /// </summary>
+        public static string LobbyBannedAndKickedText {
+            get {
+                return ResourceManager.GetString("LobbyBannedAndKickedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The lobby could not be initialized..
+        /// </summary>
+        public static string LobbyInitErrorText {
+            get {
+                return ResourceManager.GetString("LobbyInitErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred while loading your coins..
+        /// </summary>
+        public static string MainPageErrorLoadingCoinsText {
+            get {
+                return ResourceManager.GetString("MainPageErrorLoadingCoinsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Delete account.
         /// </summary>
         public static string menuDeleteAccountText {
@@ -1749,6 +1821,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string OtherReasonWindowTitle {
             get {
                 return ResourceManager.GetString("OtherReasonWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Player {0}.
+        /// </summary>
+        public static string PodiumDefaultPlayerNameFmt {
+            get {
+                return ResourceManager.GetString("PodiumDefaultPlayerNameFmt", resourceCulture);
             }
         }
         
@@ -2082,6 +2163,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string reportReasonWindowTitle {
             get {
                 return ResourceManager.GetString("reportReasonWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred while trying to open the reports window..
+        /// </summary>
+        public static string ReportsWindowOpenErrorText {
+            get {
+                return ResourceManager.GetString("ReportsWindowOpenErrorText", resourceCulture);
             }
         }
         
@@ -2698,6 +2788,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Guest.
+        /// </summary>
+        public static string UiGuestNamePrefix {
+            get {
+                return ResourceManager.GetString("UiGuestNamePrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Username or email is required..
         /// </summary>
         public static string UiIdentifierRequired {
@@ -2806,6 +2905,24 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Please enter the match code.
+        /// </summary>
+        public static string UiJoinMatchCodeRequired {
+            get {
+                return ResourceManager.GetString("UiJoinMatchCodeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Join match.
+        /// </summary>
+        public static string UiJoinMatchTitle {
+            get {
+                return ResourceManager.GetString("UiJoinMatchTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Last name can only contain letters..
         /// </summary>
         public static string UiLastNameLettersOnly {
@@ -2829,6 +2946,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string UiLastNameTooLong {
             get {
                 return ResourceManager.GetString("UiLastNameTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Loading....
+        /// </summary>
+        public static string UiLoadingText {
+            get {
+                return ResourceManager.GetString("UiLoadingText", resourceCulture);
             }
         }
         
@@ -3036,6 +3162,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string warningTitle {
             get {
                 return ResourceManager.GetString("warningTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Snakes &amp; Ladders - Game Board.
+        /// </summary>
+        public static string WindowTitleGameBoard {
+            get {
+                return ResourceManager.GetString("WindowTitleGameBoard", resourceCulture);
             }
         }
     }

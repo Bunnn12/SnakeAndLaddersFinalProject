@@ -13,7 +13,6 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class FriendRequestsPage : Page
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(FriendRequestsPage));
 
         private FriendRequestsViewModel ViewModel
         {
@@ -40,7 +39,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             ViewModel?.LoadData();
         }
 
-        private void BtnAccept_Click(object sender, RoutedEventArgs e)
+        private void AcceptRequest(object sender, RoutedEventArgs e)
         {
             if (!SessionGuard.HasValidSession())
             {
@@ -55,7 +54,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             ViewModel?.AcceptRequest(requestItem);
         }
 
-        private void BtnReject_Click(object sender, RoutedEventArgs e)
+        private void RejectRequest(object sender, RoutedEventArgs e)
         {
             if (!SessionGuard.HasValidSession())
             {
@@ -70,7 +69,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             ViewModel?.RejectRequest(requestItem);
         }
 
-        private void BtnCancel_Click(object sender, RoutedEventArgs e)
+        private void CancelRequest(object sender, RoutedEventArgs e)
         {
             if (!SessionGuard.HasValidSession())
             {

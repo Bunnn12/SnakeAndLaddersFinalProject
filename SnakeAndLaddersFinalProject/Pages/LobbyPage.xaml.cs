@@ -82,8 +82,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                 Logger.Error("Error inicializando LobbyPage.", ex);
 
                 MessageBox.Show(
-                    "No fue posible inicializar el lobby.",
-                    "Lobby",
+                    Lang.LobbyInitErrorText,
+                    Lang.lblLobby,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -107,7 +107,8 @@ namespace SnakeAndLaddersFinalProject.Pages
             {
                 BanPlayerHelper.HandleBanAndNavigateToLogin(
                     this,
-                    "Has sido baneado y expulsado del juego.");
+                    Lang.LobbyBannedAndKickedText);
+
             }
             catch (Exception ex)
             {
@@ -149,7 +150,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                     Owner = currentWindow,
                     ShowsNavigationUI = false,
                     Content = boardPage,
-                    Title = "Snakes & Ladders - Game Board"
+                    Title = Lang.WindowTitleGameBoard
                 };
 
                 navigationWindow.Show();
@@ -159,10 +160,11 @@ namespace SnakeAndLaddersFinalProject.Pages
                 Logger.Error("Error al navegar hacia GameBoardPage.", ex);
 
                 MessageBox.Show(
-                    "No fue posible abrir el tablero de juego.",
-                    "Error",
+                    Lang.GameBoardOpenErrorText,
+                    Lang.errorTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
+
             }
         }
 
@@ -177,8 +179,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                 if (lobbyViewModel == null)
                 {
                     MessageBox.Show(
-                        "No se encontró el contexto del lobby.",
-                        "Chat",
+                        Lang.UiInviteFriendLobbyContextMissing,
+                        Lang.chatTittle,
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning);
 
@@ -190,8 +192,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                 if (lobbyId <= 0)
                 {
                     MessageBox.Show(
-                        "Aún no hay un lobby activo. Crea o únete antes de abrir el chat.",
-                        "Chat",
+                        Lang.ChatNoActiveLobbyWarnText,
+                        Lang.chatTittle,
                         MessageBoxButton.OK,
                         MessageBoxImage.Information);
 
@@ -369,8 +371,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                 Logger.Error("Error al abrir ReportsWindow desde LobbyPage.", ex);
 
                 MessageBox.Show(
-                    "Ocurrió un error al intentar abrir la ventana de reportes.",
-                    "Reportes",
+                    Lang.ReportsWindowOpenErrorText,
+                    Lang.reportUserTittle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }

@@ -6,6 +6,7 @@ using SnakeAndLaddersFinalProject.ViewModels;
 using SnakeAndLaddersFinalProject.ViewModels.Models;
 using SnakeAndLaddersFinalProject.Windows;
 using System.Collections.ObjectModel;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
@@ -133,7 +134,6 @@ namespace SnakeAndLaddersFinalProject.Pages
                 Application.Current.Dispatcher.Invoke(
                     () =>
                     {
-                        // Cerramos correctamente el VM antes de navegar
                         DetachFromViewModel();
 
                         PodiumPage podiumPage = new PodiumPage(podiumViewModel);
@@ -167,7 +167,8 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 string winnerName = vm != null
                     ? vm.ResolveUserDisplayName(winnerUserId)
-                    : string.Format("Jugador {0}", winnerUserId);
+                    : string.Format(Lang.PodiumDefaultPlayerNameFmt, winnerUserId);
+
 
                 ReadOnlyCollection<PodiumPlayerViewModel> podiumPlayers =
                     vm != null
@@ -178,7 +179,6 @@ namespace SnakeAndLaddersFinalProject.Pages
                 PodiumViewModel podiumViewModel = new PodiumViewModel();
                 podiumViewModel.Initialize(winnerUserId, winnerName, podiumPlayers);
 
-                // Cerramos correctamente el VM antes de navegar
                 DetachFromViewModel();
 
                 PodiumPage podiumPage = new PodiumPage(podiumViewModel);

@@ -332,12 +332,12 @@
                                           MinRowHeight="52"
                                           SelectionMode="Single"
                                           SelectionUnit="FullRow"
-                                          PreviewKeyDown="TvFriends_PreviewKeyDown">
+                                          PreviewKeyDown="TvFriendsPreviewKeyDown">
 
                                     <DataGrid.RowStyle>
                                         <Style TargetType="DataGridRow">
                                             <EventSetter Event="MouseDoubleClick"
-                                                         Handler="TvFriends_RowDoubleClick"/>
+                                                         Handler="TvFriendsRowDoubleClick"/>
                                         </Style>
                                     </DataGrid.RowStyle>
 
@@ -354,14 +354,14 @@
                                                 <DataTemplate>
                                                     <Button x:Name="btnFriendMenu"
                     Style="{StaticResource BtnIcon}"
-                    Click="BtnFriendMenu_Click"
+                    Click="FriendMenu"
                     ToolTip="poner tooltip, opciones amigos">
                                                         <Button.ContextMenu>
                                                             <ContextMenu>
                                                                 <MenuItem Header="{x:Static language:Lang.lblProfileStatsTitle}"
-                  Click="ContextViewStats_Click" />
+                  Click="ViewStats" />
                                                                 <MenuItem Header="{x:Static language:Lang.btnUnfriendText}"
-                  Click="ContextUnfriend_Click" />
+                  Click="Unfriend" />
                                                             </ContextMenu>
                                                         </Button.ContextMenu>
 
@@ -389,12 +389,12 @@
                                             Content="{x:Static language:Lang.btnAddFriendText}"
                                             Style="{StaticResource PrimaryActionButtonStyle}"
                                             Margin="6"
-                                            Click="BtnAddFriends_Click"/>
+                                            Click="AddFriends"/>
                                     <Button x:Name="btnFriendRequests"
                                             Content="{x:Static language:Lang.btnFriendRequestsText}"
                                             Style="{StaticResource SecondaryActionButtonStyle}"
                                             Margin="6"
-                                            Click="BtnFriendRequests_Click"/>
+                                            Click="FriendRequests"/>
                                 </StackPanel>
                             </Grid>
 

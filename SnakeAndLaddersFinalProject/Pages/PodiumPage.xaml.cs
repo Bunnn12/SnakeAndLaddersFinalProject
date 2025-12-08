@@ -38,11 +38,11 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            PodiumViewModel vm = e.NewValue as PodiumViewModel;
+            PodiumViewModel viewModel = e.NewValue as PodiumViewModel;
 
-            if (vm != null)
+            if (viewModel != null)
             {
-                vm.CloseRequested = OnCloseRequested;
+                viewModel.CloseRequested = OnCloseRequested;
             }
         }
 

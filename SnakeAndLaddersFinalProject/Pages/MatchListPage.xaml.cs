@@ -1,6 +1,7 @@
 ﻿using log4net;
 using SnakeAndLaddersFinalProject.Authentication;
 using SnakeAndLaddersFinalProject.Navigation;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.ViewModels;
 using System;
 using System.Windows;
@@ -12,20 +13,14 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class MatchListPage : Page
     {
-        private const string MESSAGE_JOIN_CODE_REQUIRED = "Escribe el código de la partida.";
-        private const string TITLE_JOIN_MATCH = "Unirse";
-
         private static readonly ILog Logger = LogManager.GetLogger(typeof(MatchListPage));
-
 
         public MatchListPage()
         {
             InitializeComponent();
 
-            DataContext = new LobbyViewModel(); // 👈 aquí vive PublicLobbies
+            DataContext = new LobbyViewModel();
         }
-
-        // ------------ navegación base ------------
 
         private Frame FindMainFrame()
         {
@@ -78,8 +73,8 @@ namespace SnakeAndLaddersFinalProject.Pages
             if (string.IsNullOrWhiteSpace(joinCode))
             {
                 MessageBox.Show(
-                    MESSAGE_JOIN_CODE_REQUIRED,
-                    TITLE_JOIN_MATCH,
+                    Lang.UiJoinMatchCodeRequired,
+                    Lang.UiJoinMatchTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
                 return;
@@ -94,8 +89,6 @@ namespace SnakeAndLaddersFinalProject.Pages
             NavigateToLobby(navigationArgs);
         }
 
-        // --------- Unirse haciendo doble clic en la lista ---------
-
         private void TvMatchListMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (tvMatchList.SelectedItem == null)
@@ -103,7 +96,6 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            // Supongamos que tus filas son de tipo LobbySummaryViewModel
             dynamic selected = tvMatchList.SelectedItem;
             string joinCode = selected?.CodigoPartida as string;
 
@@ -121,30 +113,27 @@ namespace SnakeAndLaddersFinalProject.Pages
             NavigateToLobby(navigationArgs);
         }
 
-        // ------------ handlers UI ------------
-
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        private void Back(object sender, RoutedEventArgs e)
         {
             var mainPage = new MainPage();
             NavigateToPage(mainPage);
         }
 
-        private void BtnSettings_Click(object sender, RoutedEventArgs e)
+        private void Settings(object sender, RoutedEventArgs e)
         {
-            // si tienes una página de settings, navega ahí
             var settingsPage = new SettingsPage();
             NavigateToPage(settingsPage);
         }
 
-        private void BtnJoinByCode_Click(object sender, RoutedEventArgs e)
+        private void JoinByCode(object sender, RoutedEventArgs e)
         {
-            string joinCode = txtFindMatch.Text?.Trim();
+            string joinCode = txtFindMatch.Text?.Trim() ?? string.Empty;
 
             if (string.IsNullOrWhiteSpace(joinCode))
             {
                 MessageBox.Show(
-                    MESSAGE_JOIN_CODE_REQUIRED,
-                    TITLE_JOIN_MATCH,
+                    Lang.UiJoinMatchCodeRequired,
+                    Lang.UiJoinMatchTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
                 return;
@@ -159,40 +148,39 @@ namespace SnakeAndLaddersFinalProject.Pages
             NavigateToLobby(navigationArgs);
         }
 
-        private void BtnFriends_Click(object sender, RoutedEventArgs e)
+        private void Friends(object sender, RoutedEventArgs e)
         {
             var friendsListPage = new FriendsListPage();
             NavigateToPage(friendsListPage);
         }
 
-        private void BtnShop_Click(object sender, RoutedEventArgs e)
+        private void Shop(object sender, RoutedEventArgs e)
         {
             var shopPage = new ShopPage();
             NavigateToPage(shopPage);
         }
 
-        private void BtnInventory_Click(object sender, RoutedEventArgs e)
+        private void Inventory(object sender, RoutedEventArgs e)
         {
             var inventoryPage = new InventoryPage();
             NavigateToPage(inventoryPage);
         }
 
-        private void BtnSkins_Click(object sender, RoutedEventArgs e)
+        private void Skins(object sender, RoutedEventArgs e)
         {
             var skinsPage = new SkinsPage();
             NavigateToPage(skinsPage);
         }
 
-        private void BtnProfile_Click(object sender, RoutedEventArgs e)
+        private void Profile(object sender, RoutedEventArgs e)
         {
             var session = SessionContext.Current;
 
             if (session == null || !session.IsAuthenticated)
             {
                 MessageBox.Show(
-                    "Iniciaste sesión como invitado, no puedes acceder al perfil.\n\n" +
-                    "Si deseas usar un perfil, crea una cuenta :).",
-                    "Perfil no disponible",
+                    Lang.ProfileGuestNotAllowedText,
+                    Lang.ProfileGuestNotAllowedTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
                 return;

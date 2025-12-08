@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.ServiceModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,8 +6,8 @@ using System.Windows.Threading;
 using log4net;
 using SnakeAndLaddersFinalProject.FriendsService;
 using SnakeAndLaddersFinalProject.Properties.Langs;
-using SnakeAndLaddersFinalProject.Services;
 using SnakeAndLaddersFinalProject.Utilities;
+using SnakeAndLaddersFinalProject.ViewModels;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
@@ -18,32 +16,35 @@ namespace SnakeAndLaddersFinalProject.Pages
         private static readonly ILog Logger = LogManager.GetLogger(typeof(AddFriendsPage));
 
         private const int DEBOUNCE_MS = 250;
-        private const int SEARCH_MAX_RESULTS = 20;
-        private const int MIN_SEARCH_TERM_LENGTH = 2;
-
-        private const string AUTO_ACCEPTED_FRIEND_MESSAGE =
-            "This user had already sended a friend request to you, both now are friends";
-
-        private readonly ObservableCollection<UserBriefDto> _searchResults =
-            new ObservableCollection<UserBriefDto>();
 
         private readonly DispatcherTimer _searchDebounceTimer;
+
+        private AddFriendsViewModel ViewModel
+        {
+            get { return DataContext as AddFriendsViewModel; }
+        }
 
         public AddFriendsPage()
         {
             InitializeComponent();
 
-            tvSearchResults.ItemsSource = _searchResults;
+            DataContext = new AddFriendsViewModel(Logger);
 
             if (!SessionGuard.HasValidSession())
             {
                 return;
             }
 
+            if (ViewModel != null)
+            {
+                tvSearchResults.ItemsSource = ViewModel.SearchResults;
+            }
+
             _searchDebounceTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(DEBOUNCE_MS)
             };
+
             _searchDebounceTimer.Tick += (_, __) =>
             {
                 _searchDebounceTimer.Stop();
@@ -76,40 +77,13 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            term = (term ?? string.Empty).Trim();
-            if (term.Length < MIN_SEARCH_TERM_LENGTH)
+            var vm = ViewModel;
+            if (vm == null)
             {
-                _searchResults.Clear();
                 return;
             }
 
-            try
-            {
-                using (var friendsApi = new FriendsApi())
-                {
-                    _searchResults.Clear();
-
-                    foreach (UserBriefDto user in friendsApi.SearchUsers(term, SEARCH_MAX_RESULTS))
-                    {
-                        _searchResults.Add(user);
-                    }
-                }
-            }
-            
-            catch (Exception ex)
-            {
-                
-                string userMessage = ExceptionHandler.Handle(
-                    ex,
-                    $"{nameof(AddFriendsPage)}.{nameof(RunSearch)}",
-                    Logger);
-
-                MessageBox.Show(
-                    userMessage,
-                    Lang.errorTitle,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-            }
+            vm.RunSearch(term);
         }
 
         private void AddFriend(object sender, RoutedEventArgs e)
@@ -124,41 +98,13 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            try
+            var vm = ViewModel;
+            if (vm == null)
             {
-                using (var friendsApi = new FriendsApi())
-                {
-                    FriendLinkDto link = friendsApi.SendFriendRequest(user.UserId);
-                    _searchResults.Remove(user);
-
-                    if (link != null && link.Status == FriendRequestStatus.Accepted)
-                    {
-                        MessageBox.Show(
-                            AUTO_ACCEPTED_FRIEND_MESSAGE,
-                            Lang.infoTitle);
-                    }
-                    else
-                    {
-                        MessageBox.Show(
-                            Lang.friendRequestSentText,
-                            Lang.infoTitle);
-                    }
-                }
+                return;
             }
 
-            catch (Exception ex)
-            {
-                string userMessage = ExceptionHandler.Handle(
-                    ex,
-                    $"{nameof(AddFriendsPage)}.{nameof(AddFriend)}",
-                    Logger);
-
-                MessageBox.Show(
-                    userMessage,
-                    Lang.errorTitle,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-            }
+            vm.AddFriend(user);
         }
 
         private void Back(object sender, RoutedEventArgs e)

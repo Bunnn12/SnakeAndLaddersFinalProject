@@ -14,11 +14,10 @@ namespace SnakeAndLaddersFinalProject.Pages
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(EmailVerificationPage));
 
-        private const int DEFAULT_RESEND_COOLDOWN_SECONDS = 45;
+        private const int DEFAULT_RESEND_COOLDOWN_SECONDS = 50;
         private const int MIN_RESEND_SECONDS = 1;
         private const int VERIFICATION_CODE_LENGTH = 6;
 
-        private const string KEY_BTN_RESEND_CODE_TEXT = "btnResendCodeText";
 
         private DispatcherTimer _resendTimer;
         private int _remainingSeconds;
@@ -47,16 +46,14 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             viewModel.ResendCooldownRequested += OnResendCooldownRequested;
             viewModel.NavigateToLoginRequested += OnNavigateToLoginRequested;
-
-            // Eventos UI (solo aquí, no en XAML)
             btnVerificateCode.Click += VerifyCode;
             btnResendCode.Click += ResendCode;
-            btnBack.Click += BtnBack_Click;
+            btnBack.Click += Back;
 
             StartResendCooldown(DEFAULT_RESEND_COOLDOWN_SECONDS);
         }
 
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        private void Back(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new LoginPage());
         }
@@ -68,7 +65,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             if (!IsValidVerificationCode(code))
             {
                 MessageBox.Show(
-                    "Lang.errorVerificationCodeInvalid",
+                    Lang.AuthCodeInvalid,
                     Lang.errorTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
@@ -109,10 +106,10 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al navegar a Login desde EmailVerificationPage.", ex);
+                Logger.Error("Error while navigating to Login from EmailVerificationPage.", ex);
 
                 MessageBox.Show(
-                    Lang.errorTitle,
+                    Lang.UiUnexpectedNavigationError,
                     Lang.errorTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -146,7 +143,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             {
                 _resendTimer.Stop();
                 btnResendCode.IsEnabled = true;
-                btnResendCode.Content = T(KEY_BTN_RESEND_CODE_TEXT);
+                btnResendCode.Content = Lang.btnResendCodeText; 
             }
             else
             {
@@ -157,7 +154,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         private void UpdateResendButtonContent()
         {
             btnResendCode.Content = string.Format(
-                T(KEY_BTN_RESEND_CODE_TEXT),
+                Lang.UiResendCodeInFmt,   
                 _remainingSeconds);
         }
 
@@ -184,9 +181,5 @@ namespace SnakeAndLaddersFinalProject.Pages
             return true;
         }
 
-        private static string T(string key)
-        {
-            return Globalization.LocalizationManager.Current[key];
-        }
     }
 }

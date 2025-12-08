@@ -126,7 +126,7 @@
                                     Background="Transparent"
                                     BorderBrush="Transparent"
                                     Cursor="Hand"
-                                    Click="BtnBack_Click"
+                                    Click="Back"
                                     ToolTip="{x:Static language:Lang.btnBackText}">
                                 <Image Source="/Assets/Images/Icons/BackIcon.png"
                                        Width="32"
@@ -147,7 +147,7 @@
                                     Margin="8,6,8,6"
                                     Padding="18,8"
                                     Cursor="Hand"
-                                    Click="BtnEditar_Click">
+                                    Click="EditProfile">
                                 <Button.Background>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                                         <GradientStop Color="#FFFA9A22" Offset="0" />
@@ -177,7 +177,7 @@
                                     Height="30"
                                     Background="Transparent"
                                     BorderBrush="Transparent"
-                                    Click="BtnMenu_Click"
+                                    Click="MenuClick"
                                     Cursor="Hand">
                                 <StackPanel Orientation="Vertical"
                                             HorizontalAlignment="Center"
@@ -191,21 +191,21 @@
                                     <ContextMenu x:Name="cmAccountMenu">
                                         <MenuItem x:Name="miViewStats"
                                                   Header="{x:Static language:Lang.menuViewStatsText}"
-                                                  Click="MenuViewStats_Click" />
+                                                  Click="MenuViewStats" />
                                         <Separator />
                                         <MenuItem x:Name="miInstagramLinkToggle"
                                                   Header="{x:Static language:Lang.ProfileNetworkInstagramText}"
-                                                  Click="MenuInstagramLinkToggle_Click" />
+                                                  Click="MenuInstagramLinkToggle" />
                                         <MenuItem x:Name="miFacebookLinkToggle"
                                                   Header="{x:Static language:Lang.ProfileNetworkFacebookText}"
-                                                  Click="MenuFacebookLinkToggle_Click" />
+                                                  Click="MenuFacebookLinkToggle" />
                                         <MenuItem x:Name="miTwitterLinkToggle"
                                                   Header="{x:Static language:Lang.ProfileNetworkTwitterText}"
-                                                  Click="MenuTwitterLinkToggle_Click" />
+                                                  Click="MenuTwitterLinkToggle" />
                                         <Separator />
                                         <MenuItem x:Name="miDeleteAccount"
                                                   Header="{x:Static language:Lang.menuDeleteAccountText}"
-                                                  Click="MenuDeleteAccount_Click" />
+                                                  Click="MenuDeleteAccount" />
                                     </ContextMenu>
                                 </Button.ContextMenu>
                             </Button>
@@ -279,7 +279,7 @@
                                                 FontSize="18"
                                                 FontWeight="Bold"
                                                 Content="{x:Static language:Lang.btnChangeAvatarText}"
-                                                Click="BtnChangeAvatar_Click">
+                                                Click="ChangeAvatar">
                                             <Button.Background>
                                                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                                                     <GradientStop Color="#FFFFC45A" Offset="0" />
@@ -474,7 +474,7 @@
                                                                FontSize="16"
                                                                Foreground="#5B2722">
                                                         <Hyperlink x:Name="lnkTwitterProfile"
-                                                                   Click="LnkTwitterProfile_Click">
+                                                                   Click="LnkTwitterProfile">
                                                             <Run Text="{x:Static language:Lang.ProfileSocialNotLinkedText}" />
                                                         </Hyperlink>
                                                     </TextBlock>
@@ -495,7 +495,7 @@
                                         Width="110"
                                         Height="40"
                                         Margin="0,0,10,0"
-                                        Click="BtnGuardar_Click"
+                                        Click="SaveChanges"
                                         IsEnabled="False"
                                         FontSize="18">
                                     <Button.Background>
@@ -508,7 +508,7 @@
                                         Content="{x:Static language:Lang.btnCancelText}"
                                         Width="110"
                                         Height="40"
-                                        Click="BtnCancelar_Click"
+                                        Click="Cancel"
                                         IsEnabled="False"
                                         FontSize="18">
                                     <Button.Background>
@@ -560,7 +560,7 @@
                                             BorderBrush="#FFFFC35B"
                                             BorderThickness="1.2"
                                             Cursor="Hand"
-                                            Click="BtnCloseAvatarPicker_Click">
+                                            Click="CloseAvatarPicker">
                                         <TextBlock Text="✕"
                                                    FontSize="18"
                                                    FontWeight="Bold"

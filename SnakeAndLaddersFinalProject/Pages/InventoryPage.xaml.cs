@@ -6,9 +6,6 @@ using SnakeAndLaddersFinalProject.ViewModels;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
-    /// <summary>
-    /// Lógica de interacción para InventoryPage.xaml
-    /// </summary>
     public partial class InventoryPage : Page
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(InventoryPage));

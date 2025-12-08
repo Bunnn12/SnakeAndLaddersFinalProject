@@ -92,12 +92,12 @@ namespace SnakeAndLaddersFinalProject.Pages
             borderEditBanner.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void BtnEditar_Click(object sender, RoutedEventArgs e)
+        private void EditProfile(object sender, RoutedEventArgs e)
         {
             SetEditMode(true);
         }
 
-        private void BtnCancelar_Click(object sender, RoutedEventArgs e)
+        private void Cancel(object sender, RoutedEventArgs e)
         {
             var viewModel = ViewModel;
             if (viewModel?.LoadedAccount != null)
@@ -109,7 +109,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             SetEditMode(false);
         }
 
-        private void BtnGuardar_Click(object sender, RoutedEventArgs e)
+        private void SaveChanges(object sender, RoutedEventArgs e)
         {
             var viewModel = ViewModel;
             if (viewModel?.LoadedAccount == null)
@@ -137,7 +137,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             SetEditMode(false);
         }
 
-        private void BtnMenu_Click(object sender, RoutedEventArgs e)
+        private void MenuClick(object sender, RoutedEventArgs e)
         {
             if (btnMenu.ContextMenu != null)
             {
@@ -146,7 +146,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void MenuDeleteAccount_Click(object sender, RoutedEventArgs e)
+        private void MenuDeleteAccount(object sender, RoutedEventArgs e)
         {
             var viewModel = ViewModel;
             if (viewModel?.LoadedAccount == null)
@@ -173,7 +173,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             viewModel.TryDeactivateAccount();
         }
 
-        private void MenuViewStats_Click(object sender, RoutedEventArgs e)
+        private void MenuViewStats(object sender, RoutedEventArgs e)
         {
             var statsPage = new ProfileStatsPage();
 
@@ -194,7 +194,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void BtnChangeAvatar_Click(object sender, RoutedEventArgs e)
+        private void ChangeAvatar(object sender, RoutedEventArgs e)
         {
             borderAvatarPicker.Visibility =
                 borderAvatarPicker.Visibility == Visibility.Visible
@@ -202,7 +202,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                     : Visibility.Visible;
         }
 
-        private void BtnCloseAvatarPicker_Click(object sender, RoutedEventArgs e)
+        private void CloseAvatarPicker(object sender, RoutedEventArgs e)
         {
             borderAvatarPicker.Visibility = Visibility.Collapsed;
         }
@@ -261,7 +261,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             borderAvatarPicker.Visibility = Visibility.Collapsed;
         }
 
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        private void Back(object sender, RoutedEventArgs e)
         {
             if (NavigationService != null && NavigationService.CanGoBack)
             {
@@ -558,12 +558,12 @@ namespace SnakeAndLaddersFinalProject.Pages
             OpenSavedProfile(SocialNetworkType.Facebook);
         }
 
-        private void LnkTwitterProfile_Click(object sender, RoutedEventArgs e)
+        private void LnkTwitterProfile(object sender, RoutedEventArgs e)
         {
             OpenSavedProfile(SocialNetworkType.Twitter);
         }
 
-        private void MenuInstagramLinkToggle_Click(object sender, RoutedEventArgs e)
+        private void MenuInstagramLinkToggle(object sender, RoutedEventArgs e)
         {
             var item = socialProfilesViewModel.Instagram;
 
@@ -577,7 +577,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void MenuFacebookLinkToggle_Click(object sender, RoutedEventArgs e)
+        private void MenuFacebookLinkToggle(object sender, RoutedEventArgs e)
         {
             var item = socialProfilesViewModel.Facebook;
 
@@ -591,7 +591,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void MenuTwitterLinkToggle_Click(object sender, RoutedEventArgs e)
+        private void MenuTwitterLinkToggle(object sender, RoutedEventArgs e)
         {
             var item = socialProfilesViewModel.Twitter;
 

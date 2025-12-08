@@ -5,6 +5,7 @@ using System.Windows.Navigation;
 using log4net;
 using SnakeAndLaddersFinalProject.Authentication;
 using SnakeAndLaddersFinalProject.Navigation;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.UserService;
 
 namespace SnakeAndLaddersFinalProject.Pages
@@ -13,12 +14,6 @@ namespace SnakeAndLaddersFinalProject.Pages
     {
         private const string USER_SERVICE_ENDPOINT_CONFIGURATION_NAME = "NetTcpBinding_IUserService";
         private const int DEFAULT_COINS = 0;
-
-        private const string MESSAGE_JOIN_CODE_REQUIRED = "Escribe el código de la partida.";
-        private const string TITLE_JOIN_MATCH = "Unirse";
-
-        private const string MESSAGE_ERROR_LOADING_COINS = "Ocurrió un error al cargar tus monedas.";
-        private const string TITLE_ERROR = "Error";
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(MainPage));
 
@@ -57,7 +52,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 var account = client.GetProfileByUsername(userName);
                 if (account != null)
                 {
-                    SessionContext.Current.Coins = account.Coins; 
+                    SessionContext.Current.Coins = account.Coins;
                 }
 
                 client.Close();
@@ -76,8 +71,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                 }
 
                 MessageBox.Show(
-                    MESSAGE_ERROR_LOADING_COINS,
-                    TITLE_ERROR,
+                    Lang.MainPageErrorLoadingCoinsText,
+                    Lang.errorTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -122,41 +117,33 @@ namespace SnakeAndLaddersFinalProject.Pages
             NavigateToPage(createMatchPage);
         }
 
-
         private void JoinMatch(object sender, RoutedEventArgs e)
         {
             var matchListPage = new MatchListPage();
             NavigateToPage(matchListPage);
         }
 
-
-        private void BtnRanking_Click(object sender, RoutedEventArgs e)
+        private void Ranking(object sender, RoutedEventArgs e)
         {
             var rankingPage = new RankingPage();
             NavigateToPage(rankingPage);
         }
 
-        private void BtnFriends_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
-        {
-            //por si se necesita en el futuro.
-        }
-
-        private void BtnFriends_Click(object sender, RoutedEventArgs e)
+        private void Friends(object sender, RoutedEventArgs e)
         {
             var friendsListPage = new FriendsListPage();
             NavigateToPage(friendsListPage);
         }
 
-        private void BtnProfile_Click(object sender, RoutedEventArgs e)
+        private void Profile(object sender, RoutedEventArgs e)
         {
             var session = SessionContext.Current;
 
             if (session == null || !session.IsAuthenticated)
             {
                 MessageBox.Show(
-                    "Iniciaste sesión como invitado, no puedes acceder al perfil.\n\n" +
-                    "Si deseas usar un perfil, crea una cuenta :).",
-                    "Perfil no disponible",
+                    Lang.ProfileGuestNotAllowedText,
+                    Lang.ProfileGuestNotAllowedTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
             }
@@ -167,7 +154,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void BtnShop_Click(object sender, RoutedEventArgs e)
+        private void Shop(object sender, RoutedEventArgs e)
         {
             var shopPage = new ShopPage();
             NavigateToPage(shopPage);

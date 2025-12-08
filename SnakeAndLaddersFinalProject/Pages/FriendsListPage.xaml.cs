@@ -39,7 +39,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             ViewModel?.LoadFriends();
         }
 
-        private void TvFriends_RowDoubleClick(object sender, MouseButtonEventArgs e)
+        private void TvFriendsRowDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (!SessionGuard.HasValidSession())
             {
@@ -52,7 +52,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void TvFriends_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void TvFriendsPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (!SessionGuard.HasValidSession())
             {
@@ -69,7 +69,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void BtnFriendMenu_Click(object sender, RoutedEventArgs e)
+        private void FriendMenu(object sender, RoutedEventArgs e)
         {
             if (!SessionGuard.HasValidSession())
             {
@@ -94,22 +94,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void BtnUnfriend_Click(object sender, RoutedEventArgs e)
-        {
-            if (!SessionGuard.HasValidSession())
-            {
-                return;
-            }
-
-            if (!(((FrameworkElement)sender).DataContext is FriendListItemDto friendItem))
-            {
-                return;
-            }
-
-            ViewModel?.UnfriendDirect(friendItem);
-        }
-
-        private void ContextUnfriend_Click(object sender, RoutedEventArgs e)
+        private void Unfriend(object sender, RoutedEventArgs e)
         {
             if (!SessionGuard.HasValidSession())
             {
@@ -122,7 +107,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void ContextViewStats_Click(object sender, RoutedEventArgs e)
+        private void ViewStats(object sender, RoutedEventArgs e)
         {
             if (!SessionGuard.HasValidSession())
             {
@@ -154,12 +139,12 @@ namespace SnakeAndLaddersFinalProject.Pages
             NavigationService?.Navigate(statsPage);
         }
 
-        private void BtnAddFriends_Click(object sender, RoutedEventArgs e)
+        private void AddFriends(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new AddFriendsPage());
         }
 
-        private void BtnFriendRequests_Click(object sender, RoutedEventArgs e)
+        private void FriendRequests(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new FriendRequestsPage());
         }

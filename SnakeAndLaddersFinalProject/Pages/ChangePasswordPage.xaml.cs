@@ -14,9 +14,6 @@ namespace SnakeAndLaddersFinalProject.Pages
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(ChangePasswordPage));
 
-        private const string UI_NO_BACK_PAGE = "UiNoBackPage";
-        private const string UI_TITLE_WARNING = "UiTitleWarning";
-
         private ChangePasswordViewModel ViewModel
         {
             get { return DataContext as ChangePasswordViewModel; }
@@ -55,7 +52,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             vm.PasswordChangedSuccessfully -= OnPasswordChangedSuccessfully;
         }
 
-        private async void BtnSendCode_Click(object sender, RoutedEventArgs e)
+        private async void SendCode(object sender, RoutedEventArgs e)
         {
             var vm = ViewModel;
             if (vm == null)
@@ -68,7 +65,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             await vm.SendCodeAsync();
         }
 
-        private async void BtnChangePassword_Click(object sender, RoutedEventArgs e)
+        private async void ChangePassword(object sender, RoutedEventArgs e)
         {
             var vm = ViewModel;
             if (vm == null)
@@ -84,7 +81,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             await vm.ChangePasswordAsync();
         }
 
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        private void Back(object sender, RoutedEventArgs e)
         {
             if (NavigationService != null && NavigationService.CanGoBack)
             {
@@ -93,13 +90,14 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
 
             MessageBox.Show(
-                Globalization.LocalizationManager.Current[UI_NO_BACK_PAGE],
-                Globalization.LocalizationManager.Current[UI_TITLE_WARNING],
+                Lang.UiNoBackPage,
+                Lang.warningTitle,
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
+
         }
 
-        private void TxtVerificationCode_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void VerificationCodePreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (!IsAllDigits(e.Text))
             {
@@ -107,7 +105,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void TxtVerificationCode_TextChanged(object sender, TextChangedEventArgs e)
+        private void VerificationCodeTextChanged(object sender, TextChangedEventArgs e)
         {
             var textBox = (TextBox)sender;
             string text = textBox.Text ?? string.Empty;
@@ -132,7 +130,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void TxtVerificationCode_OnPaste(object sender, DataObjectPastingEventArgs e)
+        private void VerificationCodeOnPaste(object sender, DataObjectPastingEventArgs e)
         {
             if (!e.SourceDataObject.GetDataPresent(DataFormats.Text, true))
             {
@@ -189,7 +187,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al navegar al Login después de cambiar la contraseña.", ex);
+                Logger.Error(Lang.UiUnexpectedNavigationError, ex);
             }
         }
 
