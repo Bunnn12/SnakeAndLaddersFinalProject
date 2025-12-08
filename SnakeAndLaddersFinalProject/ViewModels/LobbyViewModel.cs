@@ -4,12 +4,11 @@ using SnakeAndLaddersFinalProject.GameplayService;
 using SnakeAndLaddersFinalProject.Infrastructure;
 using SnakeAndLaddersFinalProject.LobbyService;
 using SnakeAndLaddersFinalProject.Mappers;
-
 using SnakeAndLaddersFinalProject.Policies;
 using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.Services;
-using SnakeAndLaddersFinalProject.ViewModels.Models;
 using SnakeAndLaddersFinalProject.Utilities;
+using SnakeAndLaddersFinalProject.ViewModels.Models;
 using ServerLobbyStatus = SnakeAndLaddersFinalProject.LobbyService.LobbyStatus;
 using System;
 using System.Collections.Generic;
@@ -28,6 +27,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     public sealed class LobbyViewModel : INotifyPropertyChanged, ILobbyEventsHandler
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(LobbyViewModel));
+
+        private const int MIN_VALID_USER_ID = 1;
+        private const string STATUS_CREATE_REQUIRES_LOGIN =
+            "Debes iniciar sesión para crear un lobby.";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -209,8 +212,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private void InitializeCurrentUser()
         {
             var sessionContext = SessionContext.Current;
-            if (sessionContext != null && sessionContext.UserId != LobbyMessages.INVALID_USER_ID)
+            if (sessionContext != null && sessionContext.UserId >= MIN_VALID_USER_ID)
             {
+                CurrentUserId = sessionContext.UserId;
                 CurrentUserName = string.IsNullOrWhiteSpace(sessionContext.UserName)
                     ? Lang.ProfileUnknownUserNameText
                     : sessionContext.UserName.Trim();
@@ -218,8 +222,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            var fallbackName = $"{Lang.UiGuestNamePrefix}-{Environment.UserName}-{Process.GetCurrentProcess().Id}";
+            var fallbackName = string.Format(
+                "{0}-{1}-{2}",
+                Lang.UiGuestNamePrefix,
+                Environment.UserName,
+                Process.GetCurrentProcess().Id);
+
             CurrentUserName = fallbackName;
+            // Guests siguen usando ID negativo para distinguirlos en cliente
             CurrentUserId = -Math.Abs(fallbackName.GetHashCode());
         }
 
@@ -249,6 +259,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private async Task CreateLobbyAsync()
         {
+            // Evita mandar HostUserId inválido al server
+            if (CurrentUserId < MIN_VALID_USER_ID)
+            {
+                StatusText = STATUS_CREATE_REQUIRES_LOGIN;
+                return;
+            }
+
             try
             {
                 var client = LobbyProxy;
@@ -294,7 +311,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     _logger);
 
                 MessageBox.Show(
-                    userMessage,
+                    userMessage + LobbyMessages.STATUS_CREATE_ERROR_PREFIX,
                     Lang.errorTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -340,21 +357,26 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 if (joinResult.Lobby == null)
                 {
-                    StatusText = LobbyMessages.STATUS_JOIN_FAILED_PREFIX + LobbyMessages.STATUS_LOBBY_CLOSED;
+                    StatusText = LobbyMessages.STATUS_JOIN_FAILED_PREFIX +
+                                 LobbyMessages.STATUS_LOBBY_CLOSED;
                     return;
                 }
 
                 if (IsLobbyExpired(joinResult.Lobby.ExpiresAtUtc))
                 {
-                    StatusText = LobbyMessages.STATUS_JOIN_FAILED_PREFIX + LobbyMessages.STATUS_LOBBY_CLOSED;
+                    StatusText = LobbyMessages.STATUS_JOIN_FAILED_PREFIX +
+                                 LobbyMessages.STATUS_LOBBY_CLOSED;
                     return;
                 }
 
                 ApplyLobbyInfo(joinResult.Lobby);
 
                 StatusText = string.Format(
-                    Lang.LobbyJoinSuccessFmt, CodigoPartida, HostUserName,
-                    Members.Count, MaxPlayers);
+                    Lang.LobbyJoinSuccessFmt,
+                    CodigoPartida,
+                    HostUserName,
+                    Members.Count,
+                    MaxPlayers);
 
                 await Task.CompletedTask;
             }
@@ -393,10 +415,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 });
 
                 StatusText = result.Message ??
-                     (result.Success
-                         ? Lang.LobbyStartMatchInProgressText
-                         : Lang.LobbyStartMatchFailedText);
-
+                             (result.Success
+                                 ? Lang.LobbyStartMatchInProgressText
+                                 : Lang.LobbyStartMatchFailedText);
 
                 if (!result.Success)
                 {
@@ -544,7 +565,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 CodigoPartida,
                 MaxPlayers,
                 ExpiresAtUtc.ToString("HH:mm"));
-
         }
 
         private void ApplyLobbyInfo(LobbyInfo info)
@@ -563,13 +583,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             LobbyStatus = info.Status.ToString();
             ExpiresAtUtc = info.ExpiresAtUtc;
 
+            // Si el server ya lo marca cerrado o la fecha ya pasó, sacar al usuario.
             if (info.Status == ServerLobbyStatus.Closed || IsLobbyExpired(ExpiresAtUtc))
             {
                 StatusText = LobbyMessages.STATUS_LOBBY_CLOSED;
                 ResetLobbyState(StatusText);
                 return;
             }
-
 
             Members.SynchronizeWith(
                 info.Players,
@@ -591,6 +611,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 StatusText = Lang.LobbyKickedWithoutReasonText;
                 CurrentUserKickedFromLobby?.Invoke();
                 ResetLobbyState(StatusText);
+                return;
             }
 
             var boardSize = LobbyMapper.MapBoardSize(info.BoardSide);
@@ -802,7 +823,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                     CurrentUserKickedFromLobby?.Invoke();
                     ResetLobbyState(StatusText);
-
                 }));
 
             return Task.CompletedTask;
