@@ -19,12 +19,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string REASON_KEY_TOXIC_BEHAVIOR = "ToxicBehavior";
         private const string REASON_KEY_EXPLOITING = "Exploiting";
 
-        private const string REPORT_UNKNOWN_USER_DISPLAY_NAME_TEXT_KEY = "Lang.ReportUnknownUserDisplayName";
-        private const string REPORT_CONFIRM_MESSAGE_FORMAT_TEXT_KEY = "Lang.ReportConfirmMessageFormat";
-        private const string REPORT_SENT_SUCCESSFULLY_MESSAGE_TEXT_KEY = "Lang.ReportSentSuccessfullyMessage";
-        private const string REPORT_ENDPOINT_NOT_FOUND_MESSAGE_TEXT_KEY = "Lang.ReportEndpointNotFoundMessage";
-        private const string REPORT_GENERIC_ERROR_MESSAGE_TEXT_KEY = "Lang.ReportGenericErrorMessage";
-
         public int ReporterUserId { get; set; }
 
         public int ReportedUserId { get; set; }
@@ -111,11 +105,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private bool ShowConfirmDialog(string reasonText)
         {
             string targetName = string.IsNullOrWhiteSpace(ReportedUserName)
-                ? REPORT_UNKNOWN_USER_DISPLAY_NAME_TEXT_KEY
+                ? Lang.ReportUnknownUserDisplayName
                 : ReportedUserName;
 
-            string message =
-                $"¿Confirma que desea reportar a **{targetName}** por el siguiente motivo: **{reasonText}**? ({REPORT_CONFIRM_MESSAGE_FORMAT_TEXT_KEY})";
+            string message = string.Format(
+                Lang.ReportConfirmMessageFormat,
+                targetName,
+                reasonText);
 
             MessageBoxResult result = MessageBox.Show(
                 message,
@@ -144,7 +140,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 client.Close();
 
                 MessageBox.Show(
-                    REPORT_SENT_SUCCESSFULLY_MESSAGE_TEXT_KEY,
+                    Lang.ReportSentSuccessfullyMessage,
                     Lang.reportUserTittle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -170,7 +166,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 _logger.Error("Endpoint not found while sending report.", ex);
 
                 MessageBox.Show(
-                    REPORT_ENDPOINT_NOT_FOUND_MESSAGE_TEXT_KEY,
+                    Lang.ReportEndpointNotFoundMessage,
                     Lang.reportUserTittle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -179,13 +175,18 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                string message = ExceptionHandler.Handle(
+                string technicalMessage = ExceptionHandler.Handle(
                     ex,
                     $"{nameof(ReportsViewModel)}.{nameof(SendReport)}",
                     _logger);
 
+                string userMessage = string.Format(
+                    "{0} {1}",
+                    Lang.ReportGenericErrorMessage,
+                    technicalMessage);
+
                 MessageBox.Show(
-                    REPORT_GENERIC_ERROR_MESSAGE_TEXT_KEY + " " + message,
+                    userMessage,
                     Lang.errorTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);

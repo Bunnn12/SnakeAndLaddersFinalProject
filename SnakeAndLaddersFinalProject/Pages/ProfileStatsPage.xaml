@@ -93,7 +93,7 @@
                                     Background="Transparent"
                                     BorderBrush="Transparent"
                                     Cursor="Hand"
-                                    Click="BtnBack_Click"
+                                    Click="Back"
                                     ToolTip="{x:Static language:Lang.btnBackText}">
                                 <Image Source="/Assets/Images/Icons/BackIcon.png"
                                        Width="32"

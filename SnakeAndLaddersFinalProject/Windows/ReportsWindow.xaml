@@ -202,7 +202,7 @@
                                 FontWeight="Bold"
                                 Content="X"
                                 Cursor="Hand"
-                                Click="BtnClose_Click"/>
+                                Click="Close"/>
                     </Grid>
 
                     <!-- Label: motivo del reporte -->
@@ -221,31 +221,31 @@
                             Style="{StaticResource ReasonButtonStyle}"
                             Content="{x:Static language:Lang.btnHarassmentText}"
                             Tag="Harassment"
-                            Click="ReasonButton_Click"/>    
+                            Click="Reason"/>    
 
                         <Button x:Name="btnInappropriateLanguage"
                             Style="{StaticResource ReasonButtonStyle}"
                             Content="{x:Static language:Lang.btnInappropiateLangText}"
                             Tag="InappropriateLanguage"
-                            Click="ReasonButton_Click"/>
+                            Click="Reason"/>
 
                         <Button x:Name="btnToxicBehavior"
                             Style="{StaticResource ReasonButtonStyle}"
                             Content="{x:Static language:Lang.btnToxicBehaviorText}"
                             Tag="ToxicBehavior"
-                            Click="ReasonButton_Click"/>
+                            Click="Reason"/>
 
                         <Button x:Name="btnExploiting"
                             Style="{StaticResource ReasonButtonStyle}"
                             Content="{x:Static language:Lang.btnExploitingText}"
                             Tag="Exploiting"
-                            Click="ReasonButton_Click"/>
+                            Click="Reason"/>
 
                         <Button x:Name="btnOtherReason"
                             Style="{StaticResource ReasonButtonStyle}"
                             Content="{x:Static language:Lang.btnOtherReasonText}"
                             Tag="Other"
-                            Click="ReasonButton_Click"/>
+                            Click="Reason"/>
                     </StackPanel>
 
 

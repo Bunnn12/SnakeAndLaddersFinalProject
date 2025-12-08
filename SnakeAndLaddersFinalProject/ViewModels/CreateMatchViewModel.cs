@@ -4,14 +4,13 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using log4net;
 using SnakeAndLaddersFinalProject.Navigation;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class CreateMatchViewModel : INotifyPropertyChanged
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(CreateMatchViewModel));
-
-        private const string STATUS_CREATE_ERROR_PREFIX = "Ocurrió un error al crear la partida: ";
 
         private BoardSizeOption _boardSize = BoardSizeOption.TenByTen;
         private DifficultyOption _difficulty = DifficultyOption.Medium;
@@ -125,7 +124,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             try
             {
-                var options = new CreateMatchOptions
+                CreateMatchOptions options = new CreateMatchOptions
                 {
                     BoardSize = BoardSize,
                     Difficulty = Difficulty,
@@ -134,18 +133,18 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     Players = Players
                 };
 
-                var args = new LobbyNavigationArgs
+                LobbyNavigationArgs lobbyNavigationArgs = new LobbyNavigationArgs
                 {
                     Mode = LobbyEntryMode.Create,
                     CreateOptions = options
                 };
 
-                NavigateToLobbyRequested?.Invoke(this, args);
+                NavigateToLobbyRequested?.Invoke(this, lobbyNavigationArgs);
             }
             catch (Exception ex)
             {
                 _logger.Error("Error al preparar la navegación al lobby.", ex);
-                ErrorMessage = STATUS_CREATE_ERROR_PREFIX + ex.Message;
+                ErrorMessage = string.Format(Lang.CreateMatchErrorFmt, ex.Message);
             }
         }
 

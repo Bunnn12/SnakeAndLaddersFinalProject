@@ -592,6 +592,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Invalid lobby identifier.
+        /// </summary>
+        public static string ChatInvalidLobbyIdText {
+            get {
+                return ResourceManager.GetString("ChatInvalidLobbyIdText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a There is no active lobby yet. Create or join one before opening the chat.
         /// </summary>
         public static string ChatNoActiveLobbyWarnText {
@@ -646,6 +655,33 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The connection to the server was lost. You will be returned to the login screen.
+        /// </summary>
+        public static string ConnectionLostMessage {
+            get {
+                return ResourceManager.GetString("ConnectionLostMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Connection lost.
+        /// </summary>
+        public static string ConnectionLostTitle {
+            get {
+                return ResourceManager.GetString("ConnectionLostTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred while creating the match: {0}.
+        /// </summary>
+        public static string CreateMatchErrorFmt {
+            get {
+                return ResourceManager.GetString("CreateMatchErrorFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Error accepting the request.
         /// </summary>
         public static string errorAcceptingRequestText {
@@ -673,11 +709,56 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred while loading player stats. Please try again later..
+        /// </summary>
+        public static string errorLoadingProfileStatsText {
+            get {
+                return ResourceManager.GetString("errorLoadingProfileStatsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Could not load requests.
         /// </summary>
         public static string errorLoadingRequestsText {
             get {
                 return ResourceManager.GetString("errorLoadingRequestsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Unable to load stats. Invalid user identifier..
+        /// </summary>
+        public static string errorProfileStatsInvalidUserIdText {
+            get {
+                return ResourceManager.GetString("errorProfileStatsInvalidUserIdText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Could not communicate with the server to retrieve the ranking..
+        /// </summary>
+        public static string errorRankingCommunicationText {
+            get {
+                return ResourceManager.GetString("errorRankingCommunicationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The server reported an error while retrieving the ranking:{0}{1}.
+        /// </summary>
+        public static string errorRankingServerFaultTextFmt {
+            get {
+                return ResourceManager.GetString("errorRankingServerFaultTextFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An unexpected error occurred while loading the player ranking. Please try again later..
+        /// </summary>
+        public static string errorRankingUnexpectedText {
+            get {
+                return ResourceManager.GetString("errorRankingUnexpectedText", resourceCulture);
             }
         }
         
@@ -763,6 +844,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a This friend request no longer exists or has already been processed..
+        /// </summary>
+        public static string friendRequestNoLongerExistsText {
+            get {
+                return ResourceManager.GetString("friendRequestNoLongerExistsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Friend request sent.
         /// </summary>
         public static string friendRequestSentText {
@@ -772,11 +862,272 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Remove this user from your friends list?.
+        /// </summary>
+        public static string FriendUnfriendConfirmText {
+            get {
+                return ResourceManager.GetString("FriendUnfriendConfirmText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Confirm action.
+        /// </summary>
+        public static string FriendUnfriendConfirmTitle {
+            get {
+                return ResourceManager.GetString("FriendUnfriendConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The game board could not be opened..
         /// </summary>
         public static string GameBoardOpenErrorText {
             get {
                 return ResourceManager.GetString("GameBoardOpenErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred while registering for gameplay callbacks.
+        /// </summary>
+        public static string GameCallbackRegistrationErrorText {
+            get {
+                return ResourceManager.GetString("GameCallbackRegistrationErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Player {0}.
+        /// </summary>
+        public static string GameDefaultPlayerNameFmt {
+            get {
+                return ResourceManager.GetString("GameDefaultPlayerNameFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Could not roll the dice:.
+        /// </summary>
+        public static string GameDiceRollFailurePrefixText {
+            get {
+                return ResourceManager.GetString("GameDiceRollFailurePrefixText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An unexpected error occurred while rolling the dice..
+        /// </summary>
+        public static string GameDiceRollUnexpectedErrorText {
+            get {
+                return ResourceManager.GetString("GameDiceRollUnexpectedErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Dice in slot {0} selected for the next roll.
+        /// </summary>
+        public static string GameDiceSlotSelectedFmt {
+            get {
+                return ResourceManager.GetString("GameDiceSlotSelectedFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Frozen ({0}).
+        /// </summary>
+        public static string GameEffectsFrozenFmt {
+            get {
+                return ResourceManager.GetString("GameEffectsFrozenFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Rocket ready.
+        /// </summary>
+        public static string GameEffectsRocketReadyText {
+            get {
+                return ResourceManager.GetString("GameEffectsRocketReadyText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a •.
+        /// </summary>
+        public static string GameEffectsSeparatorText {
+            get {
+                return ResourceManager.GetString("GameEffectsSeparatorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Shield ({0}).
+        /// </summary>
+        public static string GameEffectsShieldFmt {
+            get {
+                return ResourceManager.GetString("GameEffectsShieldFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} tried to use Anchor on {1}, but they are already on the starting cell.
+        /// </summary>
+        public static string GameItemAnchorBlockedFmt {
+            get {
+                return ResourceManager.GetString("GameItemAnchorBlockedFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} used Anchor..
+        /// </summary>
+        public static string GameItemAnchorUsedFmt {
+            get {
+                return ResourceManager.GetString("GameItemAnchorUsedFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} used Anchor on {1}.
+        /// </summary>
+        public static string GameItemAnchorUsedOnPlayerFmt {
+            get {
+                return ResourceManager.GetString("GameItemAnchorUsedOnPlayerFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} froze {1}.
+        /// </summary>
+        public static string GameItemFreezeAppliedFmt {
+            get {
+                return ResourceManager.GetString("GameItemFreezeAppliedFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} tried to freeze {1}, but their shield blocked it..
+        /// </summary>
+        public static string GameItemFreezeBlockedFmt {
+            get {
+                return ResourceManager.GetString("GameItemFreezeBlockedFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} used Freeze..
+        /// </summary>
+        public static string GameItemFreezeUsedFmt {
+            get {
+                return ResourceManager.GetString("GameItemFreezeUsedFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} used an item.
+        /// </summary>
+        public static string GameItemGenericUsedFmt {
+            get {
+                return ResourceManager.GetString("GameItemGenericUsedFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} tried to use Rocket on {1}, but their shield blocked it.
+        /// </summary>
+        public static string GameItemRocketBlockedFmt {
+            get {
+                return ResourceManager.GetString("GameItemRocketBlockedFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} used Rocket.
+        /// </summary>
+        public static string GameItemRocketUsedFmt {
+            get {
+                return ResourceManager.GetString("GameItemRocketUsedFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} activated Shield.
+        /// </summary>
+        public static string GameItemShieldUsedFmt {
+            get {
+                return ResourceManager.GetString("GameItemShieldUsedFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Item use was cancelled..
+        /// </summary>
+        public static string GameItemUseCancelledText {
+            get {
+                return ResourceManager.GetString("GameItemUseCancelledText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Could not use the item:.
+        /// </summary>
+        public static string GameItemUseFailurePrefixText {
+            get {
+                return ResourceManager.GetString("GameItemUseFailurePrefixText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred while using the item..
+        /// </summary>
+        public static string GameItemUseUnexpectedErrorText {
+            get {
+                return ResourceManager.GetString("GameItemUseUnexpectedErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Select the target player by clicking their avatar..
+        /// </summary>
+        public static string GameSelectTargetPlayerText {
+            get {
+                return ResourceManager.GetString("GameSelectTargetPlayerText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred while synchronizing the game state.
+        /// </summary>
+        public static string GameStateSyncErrorText {
+            get {
+                return ResourceManager.GetString("GameStateSyncErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a A player was removed from the match due to inactivity.
+        /// </summary>
+        public static string GameTimeoutKickPlayerText {
+            get {
+                return ResourceManager.GetString("GameTimeoutKickPlayerText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a A player missed their turn due to time.
+        /// </summary>
+        public static string GameTimeoutSkipTurnText {
+            get {
+                return ResourceManager.GetString("GameTimeoutSkipTurnText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An unknown error occurred.
+        /// </summary>
+        public static string GameUnknownErrorText {
+            get {
+                return ResourceManager.GetString("GameUnknownErrorText", resourceCulture);
             }
         }
         
@@ -1384,6 +1735,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Unknown player.
+        /// </summary>
+        public static string lblProfileUnknownUserText {
+            get {
+                return ResourceManager.GetString("lblProfileUnknownUserText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Username.
         /// </summary>
         public static string lblProfileUserNameCaptionText {
@@ -1398,6 +1758,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string lblRankingFooterText {
             get {
                 return ResourceManager.GetString("lblRankingFooterText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Ranking.
+        /// </summary>
+        public static string lblRankingTitle {
+            get {
+                return ResourceManager.GetString("lblRankingTitle", resourceCulture);
             }
         }
         
@@ -1573,6 +1942,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a No Frame named &apos;MainFrame&apos; was found in the window..
+        /// </summary>
+        public static string LoadingMainFrameNotFoundError {
+            get {
+                return ResourceManager.GetString("LoadingMainFrameNotFoundError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a You have been banned and removed from the game.
         /// </summary>
         public static string LobbyBannedAndKickedText {
@@ -1582,11 +1960,65 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Lobby created. Code {0}. Limit {1}. Expires at {2} UTC.
+        /// </summary>
+        public static string LobbyCreatedStatusFmt {
+            get {
+                return ResourceManager.GetString("LobbyCreatedStatusFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The lobby could not be initialized..
         /// </summary>
         public static string LobbyInitErrorText {
             get {
                 return ResourceManager.GetString("LobbyInitErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Joined {0}. Host: {1}. {2}/{3}.
+        /// </summary>
+        public static string LobbyJoinSuccessFmt {
+            get {
+                return ResourceManager.GetString("LobbyJoinSuccessFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You have been removed from the lobby..
+        /// </summary>
+        public static string LobbyKickedWithoutReasonText {
+            get {
+                return ResourceManager.GetString("LobbyKickedWithoutReasonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You have been removed from the lobby: {0}.
+        /// </summary>
+        public static string LobbyKickedWithReasonFmt {
+            get {
+                return ResourceManager.GetString("LobbyKickedWithReasonFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The match could not be started.
+        /// </summary>
+        public static string LobbyStartMatchFailedText {
+            get {
+                return ResourceManager.GetString("LobbyStartMatchFailedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Starting match....
+        /// </summary>
+        public static string LobbyStartMatchInProgressText {
+            get {
+                return ResourceManager.GetString("LobbyStartMatchInProgressText", resourceCulture);
             }
         }
         
@@ -1816,6 +2248,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The report reason must have at least {0} characters..
+        /// </summary>
+        public static string OtherReasonMinLengthMessageFmt {
+            get {
+                return ResourceManager.GetString("OtherReasonMinLengthMessageFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Other reason .
         /// </summary>
         public static string OtherReasonWindowTitle {
@@ -1825,11 +2266,47 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a {0} coins.
+        /// </summary>
+        public static string PodiumCoinsFmt {
+            get {
+                return ResourceManager.GetString("PodiumCoinsFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Player {0}.
         /// </summary>
         public static string PodiumDefaultPlayerNameFmt {
             get {
                 return ResourceManager.GetString("PodiumDefaultPlayerNameFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a #{0}.
+        /// </summary>
+        public static string PodiumPositionFmt {
+            get {
+                return ResourceManager.GetString("PodiumPositionFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Match results.
+        /// </summary>
+        public static string PodiumTitleDefault {
+            get {
+                return ResourceManager.GetString("PodiumTitleDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Player with Id {0}.
+        /// </summary>
+        public static string PodiumWinnerFallbackFmt {
+            get {
+                return ResourceManager.GetString("PodiumWinnerFallbackFmt", resourceCulture);
             }
         }
         
@@ -1942,6 +2419,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The name cannot be in blank, please enter your name to continue.
+        /// </summary>
+        public static string ProfileFirstNameRequiredText {
+            get {
+                return ResourceManager.GetString("ProfileFirstNameRequiredText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a First name cannot be longer than {0} characters..
         /// </summary>
         public static string ProfileFirstNameTooLongFmt {
@@ -1983,6 +2469,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string ProfileLastNameInvalidCharsText {
             get {
                 return ResourceManager.GetString("ProfileLastNameInvalidCharsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The lastname cannot be in blank, please enter your lastname to continue.
+        /// </summary>
+        public static string ProfileLastNameRequiredText {
+            get {
+                return ResourceManager.GetString("ProfileLastNameRequiredText", resourceCulture);
             }
         }
         
@@ -2068,6 +2563,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Unknown.
+        /// </summary>
+        public static string ProfileUnknownUserNameText {
+            get {
+                return ResourceManager.GetString("ProfileUnknownUserNameText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The profile could not be updated..
         /// </summary>
         public static string ProfileUpdateErrorText {
@@ -2122,6 +2626,24 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Do you want to report {0} for the following reason: {1}?.
+        /// </summary>
+        public static string ReportConfirmMessageFormat {
+            get {
+                return ResourceManager.GetString("ReportConfirmMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The report service is not available. Please try again later..
+        /// </summary>
+        public static string ReportEndpointNotFoundMessage {
+            get {
+                return ResourceManager.GetString("ReportEndpointNotFoundMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a You have already reported this player recently. Please wait for the sanction to be processed before reporting again..
         /// </summary>
         public static string ReportErrorDuplicate {
@@ -2158,11 +2680,29 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The report cannot be sent because the current context is not valid.
+        /// </summary>
+        public static string ReportInvalidContextMessage {
+            get {
+                return ResourceManager.GetString("ReportInvalidContextMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Report reason.
         /// </summary>
         public static string reportReasonWindowTitle {
             get {
                 return ResourceManager.GetString("reportReasonWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your report has been sent successfully..
+        /// </summary>
+        public static string ReportSentSuccessfullyMessage {
+            get {
+                return ResourceManager.GetString("ReportSentSuccessfullyMessage", resourceCulture);
             }
         }
         
@@ -2176,11 +2716,38 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Unknown user.
+        /// </summary>
+        public static string ReportUnknownUserDisplayName {
+            get {
+                return ResourceManager.GetString("ReportUnknownUserDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Report user.
         /// </summary>
         public static string reportUserTittle {
             get {
                 return ResourceManager.GetString("reportUserTittle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The selected language could not be applied..
+        /// </summary>
+        public static string SettingsLanguageApplyError {
+            get {
+                return ResourceManager.GetString("SettingsLanguageApplyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The language could not be initialized.
+        /// </summary>
+        public static string SettingsLanguageInitError {
+            get {
+                return ResourceManager.GetString("SettingsLanguageInitError", resourceCulture);
             }
         }
         
@@ -2518,6 +3085,78 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred while releasing video resources.
+        /// </summary>
+        public static string StartCleanupErrorText {
+            get {
+                return ResourceManager.GetString("StartCleanupErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The sound file could not be found:{0}{1}.
+        /// </summary>
+        public static string StartSoundFileNotFoundFmt {
+            get {
+                return ResourceManager.GetString("StartSoundFileNotFoundFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred while playing the sound..
+        /// </summary>
+        public static string StartSoundPlayErrorText {
+            get {
+                return ResourceManager.GetString("StartSoundPlayErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The video file could not be found:{0}{1}.
+        /// </summary>
+        public static string StartVideoFileNotFoundFmt {
+            get {
+                return ResourceManager.GetString("StartVideoFileNotFoundFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The intro video could not be loaded. Please try again later..
+        /// </summary>
+        public static string StartVideoLoadFailedText {
+            get {
+                return ResourceManager.GetString("StartVideoLoadFailedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Video could not be loaded.
+        /// </summary>
+        public static string StartVideoLoadFailedTitle {
+            get {
+                return ResourceManager.GetString("StartVideoLoadFailedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Video not available.
+        /// </summary>
+        public static string StartVideoNotAvailableTitle {
+            get {
+                return ResourceManager.GetString("StartVideoNotAvailableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No video file was found to play.
+        /// </summary>
+        public static string StartVideoNotFoundText {
+            get {
+                return ResourceManager.GetString("StartVideoNotFoundText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Common sticker chest.
         /// </summary>
         public static string stickerCommonTitle {
@@ -2559,6 +3198,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string String1AuthOk {
             get {
                 return ResourceManager.GetString("String1AuthOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0}/{1}.
+        /// </summary>
+        public static string TextBoxCharCounterFmt {
+            get {
+                return ResourceManager.GetString("TextBoxCharCounterFmt", resourceCulture);
             }
         }
         
@@ -2716,6 +3364,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a A communication error occurred while contacting the server.
+        /// </summary>
+        public static string UiCommunicationError {
+            get {
+                return ResourceManager.GetString("UiCommunicationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Invalid email..
         /// </summary>
         public static string UiEmailInvalid {
@@ -2824,6 +3481,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Some fields contain invalid data. Please review your input..
+        /// </summary>
+        public static string UiInvalidInput {
+            get {
+                return ResourceManager.GetString("UiInvalidInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The invitation could not be sent..
         /// </summary>
         public static string UiInviteFriendFailureDefault {
@@ -2905,6 +3571,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a An input/output error occurred while processing files or data..
+        /// </summary>
+        public static string UiIoError {
+            get {
+                return ResourceManager.GetString("UiIoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Please enter the match code.
         /// </summary>
         public static string UiJoinMatchCodeRequired {
@@ -2977,11 +3652,47 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a An error occurred while trying to go back.
+        /// </summary>
+        public static string UiNavigationBackError {
+            get {
+                return ResourceManager.GetString("UiNavigationBackError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a There is no navigation history or return action defined..
+        /// </summary>
+        public static string UiNavigationNoHistory {
+            get {
+                return ResourceManager.GetString("UiNavigationNoHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a A network error occurred. Please check your connection.
+        /// </summary>
+        public static string UiNetworkError {
+            get {
+                return ResourceManager.GetString("UiNetworkError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a No previous page..
         /// </summary>
         public static string UiNoBackPage {
             get {
                 return ResourceManager.GetString("UiNoBackPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The operation was canceled..
+        /// </summary>
+        public static string UiOperationCanceled {
+            get {
+                return ResourceManager.GetString("UiOperationCanceled", resourceCulture);
             }
         }
         
@@ -3022,11 +3733,38 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Password must be at least {0} characters long and contain at least one uppercase letter, one lowercase letter, and one special character..
+        /// </summary>
+        public static string UiPasswordWeak {
+            get {
+                return ResourceManager.GetString("UiPasswordWeak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Resend in {0}s.
         /// </summary>
         public static string UiResendCodeInFmt {
             get {
                 return ResourceManager.GetString("UiResendCodeInFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a A security error occurred while processing your request.
+        /// </summary>
+        public static string UiSecurityError {
+            get {
+                return ResourceManager.GetString("UiSecurityError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The service reported an error while processing your request..
+        /// </summary>
+        public static string UiServiceError {
+            get {
+                return ResourceManager.GetString("UiServiceError", resourceCulture);
             }
         }
         
@@ -3081,6 +3819,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string UiShopRequiresToken {
             get {
                 return ResourceManager.GetString("UiShopRequiresToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The operation timed out.
+        /// </summary>
+        public static string UiTimeout {
+            get {
+                return ResourceManager.GetString("UiTimeout", resourceCulture);
             }
         }
         

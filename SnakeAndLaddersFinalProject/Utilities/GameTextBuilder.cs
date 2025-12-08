@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SnakeAndLaddersFinalProject.GameplayService;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 
 namespace SnakeAndLaddersFinalProject.Game.Gameplay
 {
@@ -8,92 +9,85 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
     {
         public static string BuildEffectsText(TokenStateDto tokenState)
         {
-            var parts = new List<string>();
+            List<string> effectTexts = new List<string>();
 
             if (tokenState.HasShield && tokenState.RemainingShieldTurns > 0)
             {
-                parts.Add(string.Format("Escudo ({0})", tokenState.RemainingShieldTurns));
+                effectTexts.Add(string.Format(Lang.GameEffectsShieldFmt, tokenState.RemainingShieldTurns));
             }
 
             if (tokenState.RemainingFrozenTurns > 0)
             {
-                parts.Add(string.Format("Congelado ({0})", tokenState.RemainingFrozenTurns));
+                effectTexts.Add(string.Format(Lang.GameEffectsFrozenFmt, tokenState.RemainingFrozenTurns));
             }
 
             if (tokenState.HasPendingRocketBonus)
             {
-                parts.Add("Propulsor listo");
+                effectTexts.Add(Lang.GameEffectsRocketReadyText);
             }
 
-            if (parts.Count == 0)
+            if (effectTexts.Count == 0)
             {
                 return string.Empty;
             }
 
-            return string.Join(" • ", parts);
+            return string.Join(Lang.GameEffectsSeparatorText, effectTexts);
         }
 
         public static string BuildItemUsedMessage(ItemUsedNotificationDto notification)
         {
-            string actor = string.Format("Jugador {0}", notification.UserId);
-            string target = notification.TargetUserId.HasValue
-                ? string.Format("Jugador {0}", notification.TargetUserId.Value)
+            string actorPlayer = string.Format(Lang.PodiumDefaultPlayerNameFmt, notification.UserId);
+            string targetPlayer = notification.TargetUserId.HasValue
+                ? string.Format(Lang.PodiumDefaultPlayerNameFmt, notification.TargetUserId.Value)
                 : null;
 
-            ItemEffectResultDto effect = notification.EffectResult;
-            bool blockedByShield = effect != null && effect.WasBlockedByShield;
-            bool noMovement = effect != null && effect.FromCellIndex == effect.ToCellIndex;
+            ItemEffectResultDto effectResult = notification.EffectResult;
+            bool isBlockedByShield = effectResult != null && effectResult.WasBlockedByShield;
+            bool isWithNoMovement = effectResult != null && effectResult.FromCellIndex == effectResult.ToCellIndex;
 
             switch (notification.ItemCode)
             {
                 case "IT_ROCKET":
-                    if (blockedByShield && target != null)
+                    if (isBlockedByShield && targetPlayer != null)
                     {
                         return string.Format(
-                            "{0} intentó usar Cohete contra {1}, pero el escudo lo bloqueó.",
-                            actor,
-                            target);
+                            Lang.GameItemRocketBlockedFmt,actorPlayer,targetPlayer);
                     }
 
-                    return string.Format("{0} usó Cohete.", actor);
+                    return string.Format(Lang.GameItemRocketUsedFmt, actorPlayer);
 
                 case "IT_ANCHOR":
-                    if (noMovement && target != null)
+                    if (isWithNoMovement && targetPlayer != null)
                     {
                         return string.Format(
-                            "{0} intentó usar Ancla sobre {1}, pero ya está en la casilla inicial.",
-                            actor,
-                            target);
+                            Lang.GameItemAnchorBlockedFmt, actorPlayer,targetPlayer);
                     }
 
-                    if (target == null)
+                    if (targetPlayer == null)
                     {
-                        return string.Format("{0} usó Ancla.", actor);
+                        return string.Format( Lang.GameItemAnchorUsedFmt, actorPlayer);
                     }
 
-                    return string.Format("{0} usó Ancla contra {1}.", actor, target);
+                    return string.Format(Lang.GameItemAnchorUsedOnPlayerFmt, actorPlayer, targetPlayer);
 
                 case "IT_FREEZE":
-                    if (blockedByShield && target != null)
+                    if (isBlockedByShield && targetPlayer != null)
                     {
-                        return string.Format(
-                            "{0} intentó congelar a {1}, pero el escudo lo bloqueó.",
-                            actor,
-                            target);
+                        return string.Format(Lang.GameItemFreezeBlockedFmt, actorPlayer, targetPlayer);
                     }
 
-                    if (target == null)
+                    if (targetPlayer == null)
                     {
-                        return string.Format("{0} usó Congelar.", actor);
+                        return string.Format(Lang.GameItemFreezeUsedFmt, actorPlayer);
                     }
 
-                    return string.Format("{0} congeló a {1}.", actor, target);
+                    return string.Format(Lang.GameItemFreezeAppliedFmt, actorPlayer, targetPlayer);
 
                 case "IT_SHIELD":
-                    return string.Format("{0} activó Escudo.", actor);
+                    return string.Format(Lang.GameItemShieldUsedFmt, actorPlayer);
 
                 default:
-                    return string.Format("{0} usó un ítem.", actor);
+                    return string.Format(Lang.GameItemGenericUsedFmt, actorPlayer);
             }
         }
     }

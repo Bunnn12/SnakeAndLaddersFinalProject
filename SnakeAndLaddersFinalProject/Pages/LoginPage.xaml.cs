@@ -35,7 +35,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private const int LOGIN_LOADING_DELAY_MILLISECONDS = 200;
 
-        private static readonly Random GuestRandom = new Random();
+        private static readonly Random _guestRandom = new Random();
 
         private LoginViewModel ViewModel => DataContext as LoginViewModel;
 
@@ -55,18 +55,6 @@ namespace SnakeAndLaddersFinalProject.Pages
             if (btnSignUp != null)
             {
                 btnSignUp.IsChecked = false;
-            }
-        }
-
-        private void TextBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-        }
-
-        private void PwdPasswordKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                Login(btnLogin, new RoutedEventArgs());
             }
         }
 
@@ -290,11 +278,11 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                int suffix = GuestRandom.Next(GUEST_SUFFIX_MIN_VALUE, GUEST_SUFFIX_MAX_EXCLUSIVE);
+                int suffix = _guestRandom.Next(GUEST_SUFFIX_MIN_VALUE, GUEST_SUFFIX_MAX_EXCLUSIVE);
 
                 string guestName = string.Format("{0}{1:D2}", Lang.UiGuestNamePrefix, suffix);
 
-                int guestRandomId = GuestRandom.Next(GUEST_ID_MIN_VALUE, GUEST_ID_MAX_EXCLUSIVE);
+                int guestRandomId = _guestRandom.Next(GUEST_ID_MIN_VALUE, GUEST_ID_MAX_EXCLUSIVE);
                 int guestUserId = guestRandomId * -1;
 
                 session.UserId = guestUserId;

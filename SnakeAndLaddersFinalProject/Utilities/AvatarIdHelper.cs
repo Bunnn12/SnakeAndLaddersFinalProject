@@ -48,30 +48,5 @@ namespace SnakeAndLaddersFinalProject.Utilities
             string normalizedAvatarId = Normalize(avatarId);
             return IsValid(normalizedAvatarId) ? normalizedAvatarId : DEFAULT_AVATAR_ID;
         }
-
-        public static string MapFromDb(string dbValue)
-        {
-            string normalizedDbValue = Normalize(dbValue);
-            return IsValid(normalizedDbValue) ? normalizedDbValue : DEFAULT_AVATAR_ID;
-        }
-
-        public static string MapToDb(string appValue)
-        {
-            string normalizedAppValue = Normalize(appValue);
-
-            if (normalizedAppValue == null)
-            {
-                return null;
-            }
-
-            if (!IsValid(normalizedAppValue))
-            {
-                throw new ArgumentException(
-                    "Avatar id must have format 'A' followed by 4 digits (example: A0001).",
-                    nameof(appValue));
-            }
-
-            return normalizedAppValue;
-        }
     }
 }

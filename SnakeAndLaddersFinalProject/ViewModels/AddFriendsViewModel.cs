@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using log4net;
 using SnakeAndLaddersFinalProject.FriendsService;
 using SnakeAndLaddersFinalProject.Properties.Langs;
@@ -18,21 +14,21 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const int SEARCH_MAX_RESULTS = 20;
         private const int MIN_SEARCH_TERM_LENGTH = 2;
 
-        private readonly ILog logger;
+        private readonly ILog _logger;
 
         public ObservableCollection<UserBriefDto> SearchResults { get; }
 
         public AddFriendsViewModel(ILog logger)
         {
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
             SearchResults = new ObservableCollection<UserBriefDto>();
         }
 
-        public void RunSearch(string term)
+        public void RunSearch(string searchTerm)
         {
-            term = (term ?? string.Empty).Trim();
+            searchTerm = (searchTerm ?? string.Empty).Trim();
 
-            if (term.Length < MIN_SEARCH_TERM_LENGTH)
+            if (searchTerm.Length < MIN_SEARCH_TERM_LENGTH)
             {
                 SearchResults.Clear();
                 return;
@@ -40,11 +36,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                using (var friendsApi = new FriendsApi())
+                using (FriendsApi friendsApi = new FriendsApi())
                 {
                     SearchResults.Clear();
 
-                    foreach (UserBriefDto user in friendsApi.SearchUsers(term, SEARCH_MAX_RESULTS))
+                    foreach (UserBriefDto user in friendsApi.SearchUsers(searchTerm, SEARCH_MAX_RESULTS))
                     {
                         SearchResults.Add(user);
                     }
@@ -55,7 +51,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 string userMessage = ExceptionHandler.Handle(
                     ex,
                     $"{nameof(AddFriendsViewModel)}.{nameof(RunSearch)}",
-                    logger);
+                    _logger);
 
                 MessageBox.Show(
                     userMessage,
@@ -74,12 +70,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                using (var friendsApi = new FriendsApi())
+                using (FriendsApi friendsApi = new FriendsApi())
                 {
-                    FriendLinkDto link = friendsApi.SendFriendRequest(user.UserId);
+                    FriendLinkDto friendLink = friendsApi.SendFriendRequest(user.UserId);
                     SearchResults.Remove(user);
 
-                    if (link != null && link.Status == FriendRequestStatus.Accepted)
+                    if (friendLink != null && friendLink.Status == FriendRequestStatus.Accepted)
                     {
                         MessageBox.Show(
                             Lang.autoAcceptedFriendText,
@@ -98,7 +94,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 string userMessage = ExceptionHandler.Handle(
                     ex,
                     $"{nameof(AddFriendsViewModel)}.{nameof(AddFriend)}",
-                    logger);
+                    _logger);
 
                 MessageBox.Show(
                     userMessage,

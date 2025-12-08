@@ -13,10 +13,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class FriendsListViewModel
     {
-        private const string CONFIRM_UNFRIEND_TITLE = "Confirm action";
-        private const string CONFIRM_UNFRIEND_MESSAGE = "Remove this user from your friends list?";
-        private const string GENERIC_ERROR_TITLE = "Error";
-
         private static readonly ILog _logger = LogManager.GetLogger(typeof(FriendsListViewModel));
 
         public ObservableCollection<FriendListItemDto> Friends { get; } =
@@ -31,7 +27,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                using (var friendsApi = new FriendsApi())
+                using (FriendsApi friendsApi = new FriendsApi())
                 {
                     Friends.Clear();
 
@@ -60,8 +56,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            string title = TryGetLangOr(CONFIRM_UNFRIEND_TITLE, Lang.btnUnfriendText);
-            string message = TryGetLangOr(CONFIRM_UNFRIEND_MESSAGE, "Lang.confirmUnfriendText");
+            string title = Lang.FriendUnfriendConfirmTitle;
+            string message = Lang.FriendUnfriendConfirmText;
 
             MessageBoxResult result = MessageBox.Show(
                 message,
@@ -92,9 +88,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             catch (Exception ex)
             {
                 _logger.Error("Error removing friend.", ex);
-                MessageBox.Show(
-                    Lang.errorRemovingFriendText ?? GENERIC_ERROR_TITLE,
-                    Lang.errorTitle);
+                MessageBox.Show(Lang.errorRemovingFriendText, Lang.errorTitle);
             }
         }
 
@@ -112,7 +106,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                using (var friendsApi = new FriendsApi())
+                using (FriendsApi friendsApi = new FriendsApi())
                 {
                     friendsApi.Remove(friendItem.FriendLinkId);
                 }
@@ -125,11 +119,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 _logger.Error("Error removing friend.", ex);
                 MessageBox.Show(Lang.errorRemovingFriendText, Lang.errorTitle);
             }
-        }
-
-        private static string TryGetLangOr(string fallback, string language)
-        {
-            return string.IsNullOrWhiteSpace(language) ? fallback : language;
         }
     }
 }

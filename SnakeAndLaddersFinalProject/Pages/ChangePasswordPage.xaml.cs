@@ -12,7 +12,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class ChangePasswordPage : Page
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(ChangePasswordPage));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ChangePasswordPage));
 
         private ChangePasswordViewModel ViewModel
         {
@@ -31,54 +31,54 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var vm = ViewModel;
-            if (vm == null)
+            var viewModel = ViewModel;
+            if (viewModel == null)
             {
                 return;
             }
 
-            vm.PasswordChangedSuccessfully -= OnPasswordChangedSuccessfully;
-            vm.PasswordChangedSuccessfully += OnPasswordChangedSuccessfully;
+            viewModel.PasswordChangedSuccessfully -= OnPasswordChangedSuccessfully;
+            viewModel.PasswordChangedSuccessfully += OnPasswordChangedSuccessfully;
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            var vm = ViewModel;
-            if (vm == null)
+            var viewModel = ViewModel;
+            if (viewModel == null)
             {
                 return;
             }
 
-            vm.PasswordChangedSuccessfully -= OnPasswordChangedSuccessfully;
+            viewModel.PasswordChangedSuccessfully -= OnPasswordChangedSuccessfully;
         }
 
         private async void SendCode(object sender, RoutedEventArgs e)
         {
-            var vm = ViewModel;
-            if (vm == null)
+            var viewModel = ViewModel;
+            if (viewModel == null)
             {
                 return;
             }
 
-            vm.Email = (txtEmail.Text ?? string.Empty).Trim();
+            viewModel.Email = (txtEmail.Text ?? string.Empty).Trim();
 
-            await vm.SendCodeAsync();
+            await viewModel.SendCodeAsync();
         }
 
         private async void ChangePassword(object sender, RoutedEventArgs e)
         {
-            var vm = ViewModel;
-            if (vm == null)
+            var viewModel = ViewModel;
+            if (viewModel == null)
             {
                 return;
             }
 
-            vm.Email = (txtEmail.Text ?? string.Empty).Trim();
-            vm.VerificationCode = (txtVerificationCode.Text ?? string.Empty).Trim();
-            vm.NewPassword = (pwdNewPassword.Password ?? string.Empty).Trim();
-            vm.ConfirmPassword = (pwdConfirmPassword.Password ?? string.Empty).Trim();
+            viewModel.Email = (txtEmail.Text ?? string.Empty).Trim();
+            viewModel.VerificationCode = (txtVerificationCode.Text ?? string.Empty).Trim();
+            viewModel.NewPassword = (pwdNewPassword.Password ?? string.Empty).Trim();
+            viewModel.ConfirmPassword = (pwdConfirmPassword.Password ?? string.Empty).Trim();
 
-            await vm.ChangePasswordAsync();
+            await viewModel.ChangePasswordAsync();
         }
 
         private void Back(object sender, RoutedEventArgs e)
@@ -187,7 +187,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                Logger.Error(Lang.UiUnexpectedNavigationError, ex);
+                _logger.Error(Lang.UiUnexpectedNavigationError, ex);
             }
         }
 

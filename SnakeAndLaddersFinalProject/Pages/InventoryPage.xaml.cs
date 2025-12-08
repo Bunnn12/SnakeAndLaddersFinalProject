@@ -35,7 +35,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void OnMainMenuClick(object sender, RoutedEventArgs e)
+        private void OnMainMenu(object sender, RoutedEventArgs e)
         {
             NavigationService?.GoBack();
         }

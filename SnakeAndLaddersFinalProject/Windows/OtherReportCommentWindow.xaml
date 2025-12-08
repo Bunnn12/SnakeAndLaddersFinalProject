@@ -140,12 +140,12 @@
                 <Button x:Name="btnOk"
                         Style="{StaticResource PrimaryPixelButtonStyle}"
                         Content="{x:Static language:Lang.btnAcceptText}"
-                        Click="BtnOk_Click"/>
+                        Click="Accept"/>
 
                 <Button x:Name="btnCancel"
                         Style="{StaticResource SecondaryPixelButtonStyle}"
                         Content="{x:Static language:Lang.btnCancelText}"
-                        Click="BtnCancel_Click"/>
+                        Click="Cancel"/>
             </StackPanel>
         </Grid>
     </Border>

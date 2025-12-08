@@ -377,7 +377,7 @@
             <!-- Botón Sign Up (centrado aprox) -->
             <Button x:Name="btnSignUp"
                     Content="{x:Static language:Lang.btnSignUpText}"
-                    Click="SignUp"
+                    Click="GoSignUp"
                     Style="{StaticResource LoginButtonStyle}"
                     Width="126"
                     Height="23"

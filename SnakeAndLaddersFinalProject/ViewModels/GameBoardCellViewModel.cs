@@ -41,22 +41,22 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public bool IsFinal { get; }
 
-        public GameBoardCellViewModel(BoardCellDto dto)
+        public GameBoardCellViewModel(BoardCellDto boardCellDto)
         {
-            if (dto == null)
+            if (boardCellDto == null)
             {
-                throw new ArgumentNullException(nameof(dto));
+                throw new ArgumentNullException(nameof(boardCellDto));
             }
 
-            Index = dto.Index;
-            Row = dto.Row;
-            Column = dto.Column;
-            IsDark = dto.IsDark;
+            Index = boardCellDto.Index;
+            Row = boardCellDto.Row;
+            Column = boardCellDto.Column;
+            IsDark = boardCellDto.IsDark;
 
-            SpecialType = MapSpecialType(dto.SpecialType);
+            SpecialType = MapSpecialType(boardCellDto.SpecialType);
 
-            IsStart = dto.IsStart;
-            IsFinal = dto.IsFinal;
+            IsStart = boardCellDto.IsStart;
+            IsFinal = boardCellDto.IsFinal;
         }
 
         private static GameSpecialCellType MapSpecialType(ServiceSpecialCellType source)

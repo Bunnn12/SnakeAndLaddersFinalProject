@@ -37,7 +37,7 @@ namespace SnakeAndLaddersFinalProject.Windows
             }
         }
 
-        private void BtnOk_Click(object sender, RoutedEventArgs e)
+        private void Accept(object sender, RoutedEventArgs e)
         {
             string value = txtProfileLink.Text == null ? string.Empty : txtProfileLink.Text.Trim();
 
@@ -56,7 +56,7 @@ namespace SnakeAndLaddersFinalProject.Windows
             Close();
         }
 
-        private void BtnCancel_Click(object sender, RoutedEventArgs e)
+        private void Cancel(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
             Close();

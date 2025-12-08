@@ -2,16 +2,13 @@
 
 namespace SnakeAndLaddersFinalProject.Utilities
 {
-    /// <summary>
-    /// Solo utilidades de verificación. No navega, no muestra diálogos.
-    /// </summary>
     public static class SessionGuard
     {
         public static bool HasValidSession()
         {
-            SessionContext session = SessionContext.Current;
+            SessionContext sessionContext = SessionContext.Current;
 
-            return session.IsAuthenticated;
+            return sessionContext != null && sessionContext.IsAuthenticated;
         }
     }
 }

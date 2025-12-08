@@ -6,6 +6,7 @@ namespace SnakeAndLaddersFinalProject.Models
     {
         private const string EMPTY_TEXT = "";
         private const string EMPTY_IMAGE_PATH = "";
+        private const int MIN_VALID_STICKER_ID = 1;
 
         public int StickerId { get; private set; }
 
@@ -17,7 +18,7 @@ namespace SnakeAndLaddersFinalProject.Models
 
         public StickerModel(int stickerId, string stickerCode, string name, string imagePath)
         {
-            if (stickerId <= 0)
+            if (stickerId <= MIN_VALID_STICKER_ID)
             {
                 throw new ArgumentOutOfRangeException(nameof(stickerId));
             }

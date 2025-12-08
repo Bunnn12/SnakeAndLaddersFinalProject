@@ -104,7 +104,6 @@ namespace SnakeAndLaddersFinalProject.Services
                 TargetUserId = targetUserId
             };
 
-            // Si tu proxy no tuviera UseItemAsync, cámbialo a Task.Run(() => _gameplayProxy.UseItem(request));
             return _gameplayProxy.UseItemAsync(request);
         }
 

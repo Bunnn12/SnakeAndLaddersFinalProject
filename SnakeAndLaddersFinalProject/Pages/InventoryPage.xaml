@@ -44,7 +44,7 @@
                         Background="Transparent"
                         Foreground="#F5F1C5"
                         FontSize="16"
-                        Click="OnMainMenuClick" />
+                        Click="OnMainMenu" />
                 <TextBlock Text="{x:Static language:Lang.btnInventoryText}"
                            FontSize="20"
                            FontWeight="Bold"

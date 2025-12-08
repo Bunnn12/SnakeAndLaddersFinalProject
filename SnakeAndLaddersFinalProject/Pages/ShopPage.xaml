@@ -187,7 +187,7 @@
                                         Style="{StaticResource BtnIcon}"
                                         Width="60"
                                         Height="60"
-                                        Click="btnSettings_Click"
+                                        Click="Settings"
                                         ToolTip="{x:Static language:Lang.btnSettingsText}">
                                     <Image Source="/Assets/Images/Icons/SettingsIcon.png"
                                            Width="36"
@@ -228,7 +228,7 @@
                                                         HorizontalAlignment="Right"
                                                         VerticalAlignment="Top"
                                                         Margin="0,0,0,4"
-                                                        Click="btnAvatarCommonInfo_Click" />
+                                                        Click="AvatarCommonInfo" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgAvatarCommonChest"
                                                            Height="109"
@@ -255,7 +255,7 @@
                                                             HorizontalAlignment="Center"
                                                             Padding="6,2"
                                                             FontSize="18"
-                                                            Click="btnAvatarCommonBuy_Click" />
+                                                            Click="AvatarCommonBuy" />
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
@@ -275,7 +275,7 @@
                                                         HorizontalAlignment="Right"
                                                         VerticalAlignment="Top"
                                                         Margin="0,0,0,4"
-                                                        Click="btnAvatarEpicInfo_Click" />
+                                                        Click="AvatarEpicInfo" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgAvatarEpicChest"
                                                            Height="109"
@@ -302,7 +302,7 @@
                                                             HorizontalAlignment="Center"
                                                             Padding="6,2"
                                                             FontSize="18"
-                                                            Click="btnAvatarEpicBuy_Click" />
+                                                            Click="AvatarEpicBuy" />
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
@@ -322,7 +322,7 @@
                                                         HorizontalAlignment="Right"
                                                         VerticalAlignment="Top"
                                                         Margin="0,0,0,4"
-                                                        Click="btnAvatarLegendaryInfo_Click" />
+                                                        Click="AvatarLegendaryInfo" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgAvatarLegendaryChest"
                                                            Height="109"
@@ -349,7 +349,7 @@
                                                             HorizontalAlignment="Center"
                                                             Padding="6,2"
                                                             FontSize="18"
-                                                            Click="btnAvatarLegendaryBuy_Click" />
+                                                            Click="AvatarLegendaryBuy" />
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
@@ -381,7 +381,7 @@
                                                         HorizontalAlignment="Right"
                                                         VerticalAlignment="Top"
                                                         Margin="0,0,0,4"
-                                                        Click="btnStickerCommonInfo_Click" />
+                                                        Click="StickerCommonInfo" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgStickerCommonChest"
                                                            Height="109"
@@ -408,7 +408,7 @@
                                                             HorizontalAlignment="Center"
                                                             Padding="6,2"
                                                             FontSize="18"
-                                                            Click="btnStickerCommonBuy_Click" />
+                                                            Click="StickerCommonBuy" />
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
@@ -428,7 +428,7 @@
                                                         HorizontalAlignment="Right"
                                                         VerticalAlignment="Top"
                                                         Margin="0,0,0,4"
-                                                        Click="btnStickerEpicInfo_Click" />
+                                                        Click="StickerEpicInfo" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgStickerEpicChest"
                                                            Height="109"
@@ -455,7 +455,7 @@
                                                             HorizontalAlignment="Center"
                                                             Padding="6,2"
                                                             FontSize="18"
-                                                            Click="btnStickerEpicBuy_Click" />
+                                                            Click="StickerEpicBuy" />
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
@@ -475,7 +475,7 @@
                                                         HorizontalAlignment="Right"
                                                         VerticalAlignment="Top"
                                                         Margin="0,0,0,4"
-                                                        Click="btnStickerLegendaryInfo_Click" />
+                                                        Click="StickerLegendaryInfo" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgStickerLegendaryChest"
                                                            Height="109"
@@ -502,7 +502,7 @@
                                                             HorizontalAlignment="Center"
                                                             Padding="6,2"
                                                             FontSize="18"
-                                                            Click="btnStickerLegendaryBuy_Click" />
+                                                            Click="StickerLegendaryBuy" />
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
@@ -534,7 +534,7 @@
                                                         HorizontalAlignment="Right"
                                                         VerticalAlignment="Top"
                                                         Margin="0,0,0,4"
-                                                        Click="btnDiceNegativeInfo_Click" />
+                                                        Click="DiceNegativeInfo" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgDiceNegative"
                                                            Height="80"
@@ -561,7 +561,7 @@
                                                             HorizontalAlignment="Center"
                                                             Padding="6,2"
                                                             FontSize="18"
-                                                            Click="btnDiceNegativeBuy_Click" />
+                                                            Click="DiceNegativeBuy" />
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
@@ -581,7 +581,7 @@
                                                         HorizontalAlignment="Right"
                                                         VerticalAlignment="Top"
                                                         Margin="0,0,0,4"
-                                                        Click="btnDice123Info_Click" />
+                                                        Click="Dice123Info" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgDice123"
                                                            Height="80"
@@ -608,7 +608,7 @@
                                                             HorizontalAlignment="Center"
                                                             Padding="6,2"
                                                             FontSize="18"
-                                                            Click="btnDice123Buy_Click" />
+                                                            Click="Dice123Buy" />
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
@@ -628,7 +628,7 @@
                                                         HorizontalAlignment="Right"
                                                         VerticalAlignment="Top"
                                                         Margin="0,0,0,4"
-                                                        Click="btnDice456Info_Click" />
+                                                        Click="Dice456Info" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgDice456"
                                                            Height="80"
@@ -655,7 +655,7 @@
                                                             HorizontalAlignment="Center"
                                                             Padding="6,2"
                                                             FontSize="18"
-                                                            Click="btnDice456Buy_Click" />
+                                                            Click="Dice456Buy" />
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
@@ -685,7 +685,7 @@
                                                     HorizontalAlignment="Right"
                                                     VerticalAlignment="Top"
                                                     Margin="0,0,0,4"
-                                                    Click="btnItemChestInfo_Click" />
+                                                    Click="ItemChestInfo" />
                                             <StackPanel VerticalAlignment="Center">
                                                 <Image x:Name="imgItemChest"
                                                        Height="80"
@@ -712,7 +712,7 @@
                                                         HorizontalAlignment="Center"
                                                         Padding="6,2"
                                                         FontSize="18"
-                                                        Click="btnItemChestBuy_Click" />
+                                                        Click="ItemChestBuy" />
                                             </StackPanel>
                                         </Grid>
                                     </Border>

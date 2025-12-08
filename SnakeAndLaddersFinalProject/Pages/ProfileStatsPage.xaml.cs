@@ -12,7 +12,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class ProfileStatsPage : Page
     {
-        private readonly bool isOwnProfile;
+        private readonly bool _isOwnProfile;
 
         private ProfileStatsViewModel ViewModel
         {
@@ -23,14 +23,14 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             InitializeComponent();
 
-            isOwnProfile = true;
+            _isOwnProfile = true;
             DataContext = ProfileStatsViewModel.CreateForCurrentUser();
         }
         public ProfileStatsPage(int userId, string username, string avatarId)
         {
             InitializeComponent();
 
-            isOwnProfile = false;
+            _isOwnProfile = false;
             DataContext = ProfileStatsViewModel.CreateForOtherUser(userId, username, avatarId);
         }
 
@@ -53,7 +53,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             DataContext = currentDataContext;
         }
 
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        private void Back(object sender, RoutedEventArgs e)
         {
             if (NavigationService != null && NavigationService.CanGoBack)
             {
@@ -68,7 +68,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            Page fallbackPage = isOwnProfile
+            Page fallbackPage = _isOwnProfile
                 ? (Page)new ProfilePage()
                 : new MainPage();
 

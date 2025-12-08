@@ -17,7 +17,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const int MAX_LAST_NAME_LENGTH = 255;
         private const int MAX_DESCRIPTION_LENGTH = 500;
 
-        private const string NAME_ALLOWED_PATTERN = @"^[\p{L}\p{M}0-9 .,'\-]*$";
+        private const string NAME_ALLOWED_PATTERN = @"^[\p{L}\p{M} .,'\-]*$";
 
         private static readonly ILog _logger = LogManager.GetLogger(typeof(ProfileViewModel));
 
@@ -167,6 +167,29 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             lastName = lastName ?? string.Empty;
             description = description ?? string.Empty;
 
+            if (string.IsNullOrWhiteSpace(firstName))
+            {
+                MessageBox.Show(
+                    Lang.ProfileFirstNameRequiredText,
+                    Lang.UiTitleWarning,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+
+                return false;
+            }
+
+            // ===== Apellido requerido =====
+            if (string.IsNullOrWhiteSpace(lastName))
+            {
+                MessageBox.Show(
+                    Lang.ProfileLastNameRequiredText,
+                    Lang.UiTitleWarning,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+
+                return false;
+            }
+
             if (firstName.Length > MAX_FIRST_NAME_LENGTH)
             {
                 MessageBox.Show(
@@ -178,8 +201,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return false;
             }
 
-            if (!string.IsNullOrEmpty(firstName) &&
-                !Regex.IsMatch(firstName, NAME_ALLOWED_PATTERN))
+            if (!Regex.IsMatch(firstName, NAME_ALLOWED_PATTERN))
             {
                 MessageBox.Show(
                     Lang.ProfileFirstNameInvalidCharsText,
@@ -199,8 +221,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return false;
             }
 
-            if (!string.IsNullOrEmpty(lastName) &&
-                !Regex.IsMatch(lastName, NAME_ALLOWED_PATTERN))
+            if (!Regex.IsMatch(lastName, NAME_ALLOWED_PATTERN))
             {
                 MessageBox.Show(
                     Lang.ProfileLastNameInvalidCharsText,

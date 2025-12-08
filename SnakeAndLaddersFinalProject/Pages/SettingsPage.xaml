@@ -1,41 +1,231 @@
 ﻿<Page x:Class="SnakeAndLaddersFinalProject.Pages.SettingsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
-      Title="SettingsPage">
+      mc:Ignorable="d"
+      Title="SettingsPage"
+      d:DesignWidth="1280"
+      d:DesignHeight="720"
+      SnapsToDevicePixels="True"
+      UseLayoutRounding="True"
+      TextOptions.TextRenderingMode="Aliased"
+      Background="Transparent">
 
-    <Grid>
-        <Label x:Name="lblTitle" Content="{x:Static language:Lang.btnSettingsText}" HorizontalAlignment="Center" Margin="0,52,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblSound" Content="{x:Static language:Lang.lblSound}" HorizontalAlignment="Left" Margin="203,119,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblMusic" Content="{x:Static language:Lang.lblMusic}" HorizontalAlignment="Left" Margin="203,199,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblLanguag" Content="{x:Static language:Lang.lblLanguage}" HorizontalAlignment="Left" Margin="203,266,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cmbLanguage"
-          HorizontalAlignment="Left" Margin="400,266,0,0"
-          VerticalAlignment="Top" Width="220"
-          SelectionChanged="Language_SelectionChanged">
-            <ComboBoxItem Tag="es-MX">Español (México)</ComboBoxItem>
-            <ComboBoxItem Tag="en-US">English (US)</ComboBoxItem>
-            <ComboBoxItem Tag="pt-BR">Português (Brasil)</ComboBoxItem>
-            <ComboBoxItem Tag="zh-CN">中文 (简体)</ComboBoxItem>
-        </ComboBox>
+    <Page.Resources>
 
-        <!-- Si tienes recursos Lang: usa esto -->
-        <Button x:Name="btnBack"
-        Content="regresar"  
-            Width="110" Height="32"
-        HorizontalAlignment="Left" VerticalAlignment="Top" Margin="16,16,0,0"
-        Click="BtnBackClick" />
+        <!-- Sombra suave -->
+        <DropShadowEffect x:Key="ShadowSoft"
+                          BlurRadius="10"
+                          ShadowDepth="0"
+                          Direction="270"
+                          Opacity="0.6"
+                          Color="#22000000" />
 
+        <!-- Paleta tipo tablón / panel -->
+        <SolidColorBrush x:Key="BrushSettingsPanelBackground" Color="#FFF9F0" />
+        <SolidColorBrush x:Key="BrushSettingsPanelBorder" Color="#D3A772" />
+        <SolidColorBrush x:Key="BrushSettingsInnerBackground" Color="#FFEED4" />
+        <SolidColorBrush x:Key="BrushSettingsInnerBorder" Color="#D0893A" />
 
-            <Slider HorizontalAlignment="Left" Margin="400,207,0,0" VerticalAlignment="Top" Width="120"/>
-        <Slider HorizontalAlignment="Left" Margin="400,127,0,0" VerticalAlignment="Top" Width="120"/>
-        
+        <!-- Texto -->
+        <FontFamily x:Key="Font.SettingsMain">Bahnschrift SemiBold</FontFamily>
+        <SolidColorBrush x:Key="BrushSettingsText" Color="#3B2718" />
 
+        <!-- Panel principal (estilo tipo MatchInvitationWindow, pero grande) -->
+        <Style x:Key="SettingsPanelStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource BrushSettingsPanelBackground}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BrushSettingsPanelBorder}" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="24" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="MinWidth" Value="900" />
+            <Setter Property="MinHeight" Value="460" />
+            <Setter Property="Effect" Value="{StaticResource ShadowSoft}" />
+        </Style>
 
+        <!-- Panel interno -->
+        <Style x:Key="SettingsInnerPanelStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource BrushSettingsInnerBackground}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BrushSettingsInnerBorder}" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="16" />
+        </Style>
+
+        <!-- Título grande -->
+        <Style x:Key="LblSettingsTitleStyle" TargetType="Label">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="Impact" />
+            <Setter Property="FontSize" Value="40" />
+            <Setter Property="Foreground" Value="{StaticResource BrushSettingsText}" />
+            <Setter Property="Padding" Value="4" />
+        </Style>
+
+        <!-- Etiquetas de campo -->
+        <Style x:Key="SettingsLabelStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="{StaticResource Font.SettingsMain}" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Foreground" Value="{StaticResource BrushSettingsText}" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Botón back igual al de RankingPage -->
+        <Style x:Key="BtnBackRanking" TargetType="Button">
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Height" Value="80" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+
+    </Page.Resources>
+
+    <Grid Background="Transparent">
+
+        <Viewbox Stretch="Uniform"
+                 StretchDirection="Both">
+            <Grid Width="1280"
+                  Height="720"
+                  Background="Transparent"
+                  Margin="24">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- CABECERA -->
+                <Grid Grid.Row="0"
+                      Margin="0,0,0,24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Botón volver -->
+                    <Button x:Name="btnBack"
+                            Grid.Column="0"
+                            Style="{StaticResource BtnBackRanking}"
+                            Click="Back">
+                        <Image Source="/Assets/Images/Icons/BackIcon.png"
+                               Width="48"
+                               Height="48"
+                               Stretch="Fill"
+                               RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                    </Button>
+
+                    <!-- Título de la página -->
+                    <Border Grid.Column="1"
+                            CornerRadius="10"
+                            BorderBrush="{StaticResource BrushSettingsPanelBorder}"
+                            BorderThickness="4"
+                            Padding="40,8"
+                            HorizontalAlignment="Center"
+                            Effect="{StaticResource ShadowSoft}"
+                            Background="#FF59320B"
+                            Width="640">
+                        <Label x:Name="lblTitle"
+                               Content="{x:Static language:Lang.btnSettingsText}"
+                               Style="{StaticResource LblSettingsTitleStyle}" />
+                    </Border>
+                </Grid>
+
+                <!-- CONTENIDO PRINCIPAL -->
+                <Grid Grid.Row="1"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center">
+                    <Border Style="{StaticResource SettingsPanelStyle}"
+                            Width="400"
+                            Height="100">
+                        <Border Style="{StaticResource SettingsInnerPanelStyle}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="16" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="16" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <!-- Sonido -->
+                                <Grid Grid.Row="0"
+                                      Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="3*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label x:Name="lblSound"
+                                           Grid.Column="0"
+                                           Content="{x:Static language:Lang.lblSound}"
+                                           Style="{StaticResource SettingsLabelStyle}" />
+
+                                    <Slider x:Name="sldSound"
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center"
+                                            Margin="8,0,0,0"
+                                            Minimum="0"
+                                            Maximum="100"
+                                            Value="100" />
+                                </Grid>
+
+                                <!-- Música -->
+                                <Grid Grid.Row="2"
+                                      Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="3*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label x:Name="lblMusic"
+                                           Grid.Column="0"
+                                           Content="{x:Static language:Lang.lblMusic}"
+                                           Style="{StaticResource SettingsLabelStyle}" />
+
+                                    <Slider x:Name="sldMusic"
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center"
+                                            Margin="8,0,0,0"
+                                            Minimum="0"
+                                            Maximum="100"
+                                            Value="100" />
+                                </Grid>
+
+                                <!-- Idioma -->
+                                <Grid Grid.Row="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="3*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label x:Name="lblLanguag"
+                                           Grid.Column="0"
+                                           Content="{x:Static language:Lang.lblLanguage}"
+                                           Style="{StaticResource SettingsLabelStyle}" />
+
+                                    <ComboBox x:Name="cmbLanguage"
+                                              Grid.Column="1"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Center"
+                                              Margin="8,0,0,0"
+                                              SelectionChanged="LanguageSelectionChanged">
+                                        <ComboBoxItem Tag="es-MX">Español (México)</ComboBoxItem>
+                                        <ComboBoxItem Tag="en-US">English (US)</ComboBoxItem>
+                                        <ComboBoxItem Tag="pt-BR">Português (Brasil)</ComboBoxItem>
+                                        <ComboBoxItem Tag="zh-CN">中文 (简体)</ComboBoxItem>
+                                    </ComboBox>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Viewbox>
     </Grid>
 </Page>

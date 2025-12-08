@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.ServiceModel;
 using System.Windows;
 using log4net;
@@ -38,6 +39,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string FACEBOOK_HOST = "facebook.com";
         private const string TWITTER_HOST = "twitter.com";
         private const string X_HOST = "_x.com";
+
+        private const string INSTAGRAM_URL = "https://www.instagram.com/";
+        private const string FACEBOOK_URL = "https://www.facebook.com/";
+        private const string TWITTER_URL = "https://_x.com/";
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(SocialProfilesViewModel));
 
@@ -348,6 +353,84 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
 
             return true;
+        }
+
+        public bool TryOpenNetworkHome(SocialNetworkType network)
+        {
+            string url;
+
+            switch (network)
+            {
+                case SocialNetworkType.Instagram:
+                    url = INSTAGRAM_URL;
+                    break;
+                case SocialNetworkType.Facebook:
+                    url = FACEBOOK_URL;
+                    break;
+                case SocialNetworkType.Twitter:
+                    url = TWITTER_URL;
+                    break;
+                default:
+                    return false;
+            }
+
+            try
+            {
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                };
+
+                Process.Start(startInfo);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error opening browser for social network home.", ex);
+                MessageBox.Show(
+                    Lang.SocialBrowserOpenError,
+                    Lang.UiTitleError,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return false;
+            }
+        }
+
+        public bool TryOpenSavedProfile(SocialNetworkType network)
+        {
+            var item = GetItem(network);
+            if (item == null || !item.IsLinked || string.IsNullOrWhiteSpace(item.ProfileLink))
+            {
+                MessageBox.Show(
+                    Lang.SocialNetworkNotLinkedInfo,
+                    Lang.UiTitleInfo,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return false;
+            }
+
+            try
+            {
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = item.ProfileLink,
+                    UseShellExecute = true
+                };
+
+                Process.Start(startInfo);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error opening social profile link.", ex);
+                MessageBox.Show(
+                    Lang.SocialProfileOpenError,
+                    Lang.UiTitleError,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return false;
+            }
         }
     }
 }

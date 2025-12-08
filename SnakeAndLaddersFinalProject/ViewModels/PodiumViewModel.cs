@@ -15,15 +15,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const int SECOND_PLACE_INDEX = 1;
         private const int THIRD_PLACE_INDEX = 2;
 
-        private string title = "Resultados de la partida";
-        private string winnerName = string.Empty;
+        private const string KEY_PODIUM_TITLE_DEFAULT = "PodiumTitleDefault";
+        private const string KEY_PODIUM_WINNER_FALLBACK_FMT = "PodiumWinnerFallbackFmt";
+
+        private string _title;
+        private string _winnerName = string.Empty;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        /// Acción externa para navegar fuera del podio (volver al lobby, menú, etc.).
-        /// La configura el shell / ventana principal.
-        /// </summary>
         public Action CloseRequested { get; set; }
 
         public ObservableCollection<PodiumPlayerViewModel> Players { get; }
@@ -32,30 +31,30 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public string Title
         {
-            get { return title; }
+            get { return _title; }
             set
             {
-                if (string.Equals(title, value, StringComparison.Ordinal))
+                if (string.Equals(_title, value, StringComparison.Ordinal))
                 {
                     return;
                 }
 
-                title = value ?? string.Empty;
+                _title = value ?? string.Empty;
                 OnPropertyChanged();
             }
         }
 
         public string WinnerName
         {
-            get { return winnerName; }
+            get { return _winnerName; }
             set
             {
-                if (string.Equals(winnerName, value, StringComparison.Ordinal))
+                if (string.Equals(_winnerName, value, StringComparison.Ordinal))
                 {
                     return;
                 }
 
-                winnerName = value ?? string.Empty;
+                _winnerName = value ?? string.Empty;
                 OnPropertyChanged();
             }
         }
@@ -103,11 +102,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             Players = new ObservableCollection<PodiumPlayerViewModel>();
             CloseCommand = new RelayCommand(_ => CloseRequested?.Invoke());
+
+            Title = T(KEY_PODIUM_TITLE_DEFAULT);
         }
 
-        /// <summary>
-        /// Ctor que usa GameBoardPage: winnerUserId + jugadores ordenados.
-        /// </summary>
         public PodiumViewModel(
             int winnerUserId,
             ReadOnlyCollection<PodiumPlayerViewModel> orderedPlayers)
@@ -116,9 +114,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             Initialize(winnerUserId, orderedPlayers);
         }
 
-        /// <summary>
-        /// Inicializa sin nombre explícito del ganador.
-        /// </summary>
         public void Initialize(
             int winnerUserId,
             ReadOnlyCollection<PodiumPlayerViewModel> orderedPlayers)
@@ -126,9 +121,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             Initialize(winnerUserId, null, orderedPlayers);
         }
 
-        /// <summary>
-        /// Inicializa con nombre opcional del ganador.
-        /// </summary>
         public void Initialize(
             int winnerUserId,
             string winnerDisplayName,
@@ -169,7 +161,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             if (effectiveWinnerName == null)
             {
-                effectiveWinnerName = string.Format("Jugador con Id {0}", winnerUserId);
+                effectiveWinnerName = string.Format(
+                    T(KEY_PODIUM_WINNER_FALLBACK_FMT),
+                    winnerUserId);
             }
 
             WinnerName = effectiveWinnerName;
@@ -177,6 +171,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             OnPropertyChanged(nameof(FirstPlace));
             OnPropertyChanged(nameof(SecondPlace));
             OnPropertyChanged(nameof(ThirdPlace));
+        }
+
+        private static string T(string key)
+        {
+            return Globalization.LocalizationManager.Current[key];
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -11,7 +11,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class SignUpViewModel
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(SignUpViewModel));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(SignUpViewModel));
 
         private const int MIN_PASSWORD_LENGTH = 8;
         private const int PASSWORD_MAX_LENGTH = 510;
@@ -113,7 +113,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     return result;
                 }
 
-                ShowInfo(string.Format(T("UiVerificationSentFmt"), registrationDto.Email));
+                ShowInfo(string.Format(Globalization("UiVerificationSentFmt"), registrationDto.Email));
                 authClient.Close();
 
                 result.IsSuccess = true;
@@ -123,8 +123,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (System.ServiceModel.EndpointNotFoundException)
             {
-                ShowError(T("UiEndpointNotFound"));
-                Logger.Warn("No se ha encontrado el endpoint de AuthService.");
+                ShowError(Globalization("UiEndpointNotFound"));
+                _logger.Warn("No se ha encontrado el endpoint de AuthService.");
                 authClient.Abort();
 
                 result.IsEndpointNotFound = true;
@@ -132,8 +132,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                ShowError($"{T("UiGenericError")} {ex.Message}");
-                Logger.Error("Error inesperado al registrar usuario.", ex);
+                ShowError($"{Globalization("UiGenericError")} {ex.Message}");
+                _logger.Error("Error inesperado al registrar usuario.", ex);
                 authClient.Abort();
 
                 result.IsGenericError = true;
@@ -159,77 +159,77 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             if (string.IsNullOrWhiteSpace(input.GivenName))
             {
-                errors.Add(T("UiFirstNameRequired"));
+                errors.Add(Globalization("UiFirstNameRequired"));
             }
             else
             {
                 if (input.GivenName.Length > NAME_MAX_LENGTH)
                 {
-                    errors.Add("El nombre no puede tener más de 90 caracteres.");
+                    errors.Add(Globalization("UiFirstNameTooLong"));
                 }
 
                 if (!IsLettersOnly(input.GivenName))
                 {
-                    errors.Add("El nombre sólo puede contener letras.");
+                    errors.Add(Globalization("UiFirstNameLettersOnly"));
                 }
             }
 
             if (string.IsNullOrWhiteSpace(input.FamilyName))
             {
-                errors.Add(T("UiLastNameRequired"));
+                errors.Add(Globalization("UiLastNameRequired"));
             }
             else
             {
                 if (input.FamilyName.Length > NAME_MAX_LENGTH)
                 {
-                    errors.Add("El apellido no puede tener más de 90 caracteres.");
+                    errors.Add(Globalization("UiLastNameTooLong"));
                 }
 
                 if (!IsLettersOnly(input.FamilyName))
                 {
-                    errors.Add("El apellido sólo puede contener letras.");
+                    errors.Add(Globalization("UiLastNameLettersOnly"));
                 }
             }
 
             if (string.IsNullOrWhiteSpace(input.Username))
             {
-                errors.Add(T("UiUserNameRequired"));
+                errors.Add(Globalization("UiUserNameRequired"));
             }
             else if (input.Username.Length > USERNAME_MAX_LENGTH)
             {
-                errors.Add("El nombre de usuario no puede tener más de 90 caracteres.");
+                errors.Add(Globalization("UiUserNameTooLong"));
             }
 
             if (string.IsNullOrWhiteSpace(input.EmailAddress))
             {
-                errors.Add(T("UiEmailRequired"));
+                errors.Add(Globalization("UiEmailRequired"));
             }
             else
             {
                 if (input.EmailAddress.Length > EMAIL_MAX_LENGTH)
                 {
-                    errors.Add("El correo electrónico no puede tener más de 200 caracteres.");
+                    errors.Add(Globalization("UiEmailTooLong"));
                 }
                 else if (!Regex.IsMatch(input.EmailAddress, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
                 {
-                    errors.Add(T("UiEmailInvalid"));
+                    errors.Add(Globalization("UiEmailInvalid"));
                 }
             }
 
             if (string.IsNullOrWhiteSpace(input.PlainPassword))
             {
-                errors.Add("La contraseña no puede estar vacía.");
+                errors.Add(Globalization("UiPasswordRequired"));
             }
             else
             {
                 if (input.PlainPassword.Length > PASSWORD_MAX_LENGTH)
                 {
-                    errors.Add("La contraseña no puede tener más de 510 caracteres.");
+                    errors.Add(Globalization("UiPasswordTooLong"));
                 }
 
                 if (!IsPasswordStrong(input.PlainPassword))
                 {
-                    errors.Add("LA CONTRASEÑA DEBE TENER MINIMO 8 CARACTERES, 1 LETRA MAYUSCULA Y UNA MINUSCULA Y UN CARACTER ESPECIAL");
+                    errors.Add(string.Format(Globalization("UiPasswordWeak"), MIN_PASSWORD_LENGTH));
                 }
             }
 
@@ -304,16 +304,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             return hasUpper && hasLower && hasSpecial;
         }
 
-        private static string T(string key)
+        private static string Globalization(string key)
         {
-            return Globalization.LocalizationManager.Current[key];
+            return SnakeAndLaddersFinalProject.Globalization.LocalizationManager.Current[key];
         }
 
         private static void ShowWarn(string message)
         {
             MessageBox.Show(
                 message,
-                T("UiTitleWarning"),
+                Globalization("UiTitleWarning"),
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
         }
@@ -322,7 +322,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             MessageBox.Show(
                 message,
-                T("UiTitleInfo"),
+                Globalization("UiTitleInfo"),
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
         }
@@ -331,7 +331,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             MessageBox.Show(
                 message,
-                T("UiTitleError"),
+                Globalization("UiTitleError"),
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
@@ -343,41 +343,41 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             switch (code)
             {
                 case AUTH_CODE_OK:
-                    return T("AuthOk");
+                    return Globalization("AuthOk");
 
                 case AUTH_CODE_EMAIL_REQUIRED:
-                    return T("AuthEmailRequired");
+                    return Globalization("AuthEmailRequired");
 
                 case AUTH_CODE_EMAIL_ALREADY_EXISTS:
-                    return T("AuthEmailAlreadyExists");
+                    return Globalization("AuthEmailAlreadyExists");
 
                 case AUTH_CODE_USERNAME_ALREADY_EXISTS:
-                    return T("AuthUserNameAlreadyExists");
+                    return Globalization("AuthUserNameAlreadyExists");
 
                 case AUTH_CODE_INVALID_CREDENTIALS:
-                    return T("AuthInvalidCredentials");
+                    return Globalization("AuthInvalidCredentials");
 
                 case AUTH_CODE_THROTTLE_WAIT:
                     return string.Format(
-                        T("AuthThrottleWaitFmt"),
+                        Globalization("AuthThrottleWaitFmt"),
                         metaDictionary.TryGetValue(META_KEY_SECONDS, out string secondsText)
                             ? secondsText
                             : DEFAULT_THROTTLE_SECONDS_TEXT);
 
                 case AUTH_CODE_NOT_REQUESTED:
-                    return T("AuthCodeNotRequested");
+                    return Globalization("AuthCodeNotRequested");
 
                 case AUTH_CODE_EXPIRED:
-                    return T("AuthCodeExpired");
+                    return Globalization("AuthCodeExpired");
 
                 case AUTH_CODE_INVALID:
-                    return T("AuthCodeInvalid");
+                    return Globalization("AuthCodeInvalid");
 
                 case AUTH_CODE_EMAIL_SEND_FAILED:
-                    return T("AuthEmailSendFailed");
+                    return Globalization("AuthEmailSendFailed");
 
                 default:
-                    return T("AuthServerError");
+                    return Globalization("AuthServerError");
             }
         }
     }

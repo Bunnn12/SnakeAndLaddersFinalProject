@@ -17,11 +17,11 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class LobbyPage : Page
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(LobbyPage));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(LobbyPage));
 
-        private readonly LobbyNavigationArgs args;
+        private readonly LobbyNavigationArgs _lobbyNavigationArgs;
 
-        private readonly PlayerReportPolicy playerReportPolicy = new PlayerReportPolicy();
+        private readonly PlayerReportPolicy _playerReportPolicy = new PlayerReportPolicy();
 
         private LobbyViewModel ViewModel
         {
@@ -37,7 +37,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             InitializeComponent();
 
-            args = value ?? new LobbyNavigationArgs { Mode = LobbyEntryMode.Create };
+            _lobbyNavigationArgs = value ?? new LobbyNavigationArgs { Mode = LobbyEntryMode.Create };
             DataContext = new LobbyViewModel();
 
             Loaded += OnLoaded;
@@ -59,27 +59,27 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             try
             {
-                if (args.Mode == LobbyEntryMode.Create)
+                if (_lobbyNavigationArgs.Mode == LobbyEntryMode.Create)
                 {
-                    if (args.CreateOptions != null)
+                    if (_lobbyNavigationArgs.CreateOptions != null)
                     {
-                        viewModel.ApplyCreateOptions(args.CreateOptions);
+                        viewModel.ApplyCreateOptions(_lobbyNavigationArgs.CreateOptions);
                     }
 
                     viewModel.CreateLobbyCommand?.Execute(null);
                 }
-                else if (args.Mode == LobbyEntryMode.Join)
+                else if (_lobbyNavigationArgs.Mode == LobbyEntryMode.Join)
                 {
-                    if (!string.IsNullOrWhiteSpace(args.JoinCode))
+                    if (!string.IsNullOrWhiteSpace(_lobbyNavigationArgs.JoinCode))
                     {
-                        viewModel.CodeInput = args.JoinCode.Trim();
+                        viewModel.CodeInput = _lobbyNavigationArgs.JoinCode.Trim();
                         viewModel.JoinLobbyCommand?.Execute(null);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error("Error inicializando LobbyPage.", ex);
+                _logger.Error("Error inicializando LobbyPage.", ex);
 
                 MessageBox.Show(
                     Lang.LobbyInitErrorText,
@@ -91,14 +91,14 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            var vm = ViewModel;
-            if (vm == null)
+            var viewModel = ViewModel;
+            if (viewModel == null)
             {
                 return;
             }
 
-            vm.NavigateToBoardRequested -= OnNavigateToBoardRequested;
-            vm.CurrentUserKickedFromLobby -= OnCurrentUserKickedFromLobby;
+            viewModel.NavigateToBoardRequested -= OnNavigateToBoardRequested;
+            viewModel.CurrentUserKickedFromLobby -= OnCurrentUserKickedFromLobby;
         }
 
         private void OnCurrentUserKickedFromLobby()
@@ -112,7 +112,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al manejar el baneo del usuario actual.", ex);
+                _logger.Error("Error al manejar el baneo del usuario actual.", ex);
             }
         }
 
@@ -120,7 +120,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             if (boardViewModel == null)
             {
-                Logger.Warn("Se recibió una solicitud de navegación al tablero sin ViewModel.");
+                _logger.Warn("Se recibió una solicitud de navegación al tablero sin shopViewModelInstance.");
                 return;
             }
 
@@ -157,7 +157,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al navegar hacia GameBoardPage.", ex);
+                _logger.Error("Error al navegar hacia GameBoardPage.", ex);
 
                 MessageBox.Show(
                     Lang.GameBoardOpenErrorText,
@@ -214,7 +214,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 string userMessage = ExceptionHandler.Handle(
                     ex,
                     $"{nameof(LobbyPage)}.{nameof(OpenChat)}",
-                    Logger);
+                    _logger);
 
                 MessageBox.Show(
                     userMessage,
@@ -226,14 +226,14 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void LeaveLobby(object sender, RoutedEventArgs e)
         {
-            var vm = ViewModel;
-            vm?.LeaveLobbyCommand?.Execute(null);
+            var lobbyViewModel = ViewModel;
+            lobbyViewModel?.LeaveLobbyCommand?.Execute(null);
         }
 
         private void StartMatch(object sender, RoutedEventArgs e)
         {
-            var vm = ViewModel;
-            vm?.StartMatchCommand?.Execute(null);
+            var lobbyViewModel = ViewModel;
+            lobbyViewModel?.StartMatchCommand?.Execute(null);
         }
 
         private void MemberBorder_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -248,7 +248,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 int currentUserId = SessionContext.Current.UserId;
 
-                bool canReport = playerReportPolicy.CanCurrentUserReportTarget(currentUserId, border.DataContext);
+                bool canReport = _playerReportPolicy.CanCurrentUserReportTarget(currentUserId, border.DataContext);
                 if (!canReport)
                 {
                     return;
@@ -266,7 +266,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al mostrar el menú contextual del miembro del lobby.", ex);
+                _logger.Error("Error al mostrar el menú contextual del miembro del lobby.", ex);
             }
         }
 
@@ -312,7 +312,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 string userMessage = ExceptionHandler.Handle(
                     ex,
                     $"{nameof(LobbyPage)}.{nameof(OpenMatchInvitation)}",
-                    Logger);
+                    _logger);
 
                 MessageBox.Show(
                     userMessage,
@@ -337,7 +337,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 int currentUserId = SessionContext.Current.UserId;
 
-                bool canReport = playerReportPolicy.CanCurrentUserReportTarget(
+                bool canReport = _playerReportPolicy.CanCurrentUserReportTarget(
                     currentUserId,
                     border?.DataContext);
 
@@ -346,8 +346,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                int reportedUserId = playerReportPolicy.GetMemberUserId(border?.DataContext);
-                string reportedUserName = playerReportPolicy.GetMemberUserName(border?.DataContext);
+                int reportedUserId = _playerReportPolicy.GetMemberUserId(border?.DataContext);
+                string reportedUserName = _playerReportPolicy.GetMemberUserName(border?.DataContext);
 
                 if (reportedUserId < 1)
                 {
@@ -368,7 +368,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al abrir ReportsWindow desde LobbyPage.", ex);
+                _logger.Error("Error al abrir ReportsWindow desde LobbyPage.", ex);
 
                 MessageBox.Show(
                     Lang.ReportsWindowOpenErrorText,
@@ -390,7 +390,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 int currentUserId = SessionContext.Current.UserId;
 
-                bool canReport = playerReportPolicy.CanCurrentUserReportTarget(currentUserId, border.DataContext);
+                bool canReport = _playerReportPolicy.CanCurrentUserReportTarget(currentUserId, border.DataContext);
                 if (!canReport)
                 {
                     e.Handled = true;
@@ -398,7 +398,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al validar la apertura del menú contextual del miembro del lobby.", ex);
+                _logger.Error("Error al validar la apertura del menú contextual del miembro del lobby.", ex);
             }
         }
 

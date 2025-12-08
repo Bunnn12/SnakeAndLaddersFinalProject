@@ -3,53 +3,54 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using log4net;
+using log4net.Repository.Hierarchy;
+using SnakeAndLaddersFinalProject.Pages;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 
 namespace SnakeAndLaddersFinalProject.Utilities
 {
     public static class Loading
     {
-        /// <summary>
-        /// Muestra Pages.LoadingPage dentro del Frame del owner mientras se ejecuta 'work'.
-        /// Requiere que el Window tenga un Frame con Name="MainFrame".
-        /// </summary>
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(Loading));
+        private const int DEFAULT_MIN_LOADING_MILLISECONDS = 600;
         public static async Task RunOnFrameAsync(
             Window owner,
             Func<CancellationToken, Task> work,
-            int minMilliseconds = 600,
+            int minMilliseconds = DEFAULT_MIN_LOADING_MILLISECONDS,
             CancellationToken externalToken = default)
         {
             if (owner == null) throw new ArgumentNullException(nameof(owner));
             if (work == null) throw new ArgumentNullException(nameof(work));
 
-            // Busca el Frame principal
-            var frame = owner.FindName("MainFrame") as Frame;
-            if (frame == null)
-                throw new InvalidOperationException("No se encontró un Frame llamado 'MainFrame' en la ventana.");
+            Frame mainFrame = owner.FindName("MainFrame") as Frame;
+            if (mainFrame == null)
+                throw new InvalidOperationException(Lang.LoadingMainFrameNotFoundError);
 
-            using (var cts = CancellationTokenSource.CreateLinkedTokenSource(externalToken))
+            using (CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(externalToken))
             {
-                var token = cts.Token;
+                CancellationToken cancellationToken = linkedCts.Token;
 
-                // Guarda el contenido actual para restaurar si hace falta
-                var previous = frame.Content;
+                object previous = mainFrame.Content;
 
-                // Navega a la LoadingPage (cubre toda el área del Frame)
                 await owner.Dispatcher.InvokeAsync(() =>
                 {
-                    frame.Navigate(new SnakeAndLaddersFinalProject.Pages.LoadingPage());
+                    mainFrame.Navigate(new SnakeAndLaddersFinalProject.Pages.LoadingPage());
                 });
 
                 try
                 {
-                    var minDelay = Task.Delay(minMilliseconds, token);
-                    var job = work(token);
-                    await Task.WhenAll(job, minDelay);
+                    Task minimumDelayTask = Task.Delay(minMilliseconds, cancellationToken);
+                    Task jobTask = work(cancellationToken);
+                    await Task.WhenAll(jobTask, minimumDelayTask);
                 }
-                finally
+                catch (OperationCanceledException ex)
                 {
-                    // Si quieres restaurar lo anterior, descomenta:
-                    // await owner.Dispatcher.InvokeAsync(() => frame.Navigate(previous));
-                    // Pero normalmente aquí ya navegarás a la siguiente página/ventana.
+                    _logger.Warn("Loading.RunOnFrameAsync was canceled.", ex);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error("Unexpected error while running Loading.RunOnFrameAsync.", ex);
                 }
             }
         }

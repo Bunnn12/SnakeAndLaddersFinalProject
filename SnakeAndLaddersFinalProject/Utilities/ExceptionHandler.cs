@@ -26,7 +26,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
         private const string UI_KEY_IO_ERROR = "UiIoError";
         private const string UI_KEY_SERVICE_ERROR = "UiServiceError";
 
-        public static string Handle(Exception ex, string operation, ILog logger)
+        public static string Handle(Exception ex, string operationName, ILog logger)
         {
             if (ex == null)
             {
@@ -35,22 +35,22 @@ namespace SnakeAndLaddersFinalProject.Utilities
 
             if (logger != null)
             {
-                LogException(ex, operation, logger);
+                LogException(ex, operationName, logger);
             }
 
             string uiKey = MapExceptionToUiKey(ex);
             return GetText(uiKey);
         }
 
-        private static void LogException(Exception ex, string operation, ILog logger)
+        private static void LogException(Exception ex, string operationName, ILog logger)
         {
-            string message = string.Format("Error in '{0}'.", operation);
+            string message = string.Format("Error in '{0}'.", operationName);
 
             if (ex is ArgumentException || ex is FormatException)
             {
                 logger.WarnFormat(
                     "Validation error in '{0}'. Message={1}",
-                    operation,
+                    operationName,
                     ex.Message);
                 return;
             }
@@ -59,7 +59,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
             {
                 logger.WarnFormat(
                     "Timeout / cancelled in '{0}'. Message={1}",
-                    operation,
+                    operationName,
                     ex.Message);
                 return;
             }

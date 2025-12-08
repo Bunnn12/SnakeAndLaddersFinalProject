@@ -9,9 +9,6 @@
         private const string WPF_ASSEMBLY_NAME = "SnakeAndLaddersFinalProject";
         private const string PACK_COMPONENT_SEPARATOR = ";component/";
 
-        /// <summary>
-        /// Devuelve una pack URI lista para usar en Image.Source.
-        /// </summary>
         public static string GetPackUri(string avatarId)
         {
             string normalizedAvatarId = AvatarIdHelper.NormalizeOrDefault(avatarId);

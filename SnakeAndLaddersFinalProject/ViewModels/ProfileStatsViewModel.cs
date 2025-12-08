@@ -61,6 +61,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 avatarIdFromSession,
                 Lang.lblProfileStatsTitle);
         }
+
         public static ProfileStatsViewModel CreateForOtherUser(
             int userId,
             string username,
@@ -83,7 +84,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             AvatarId = AvatarIdHelper.NormalizeOrDefault(avatarId);
             Username = string.IsNullOrWhiteSpace(username)
-                ? "Lang.lblProfileUnknownUserText"
+                ? Lang.lblProfileUnknownUserText
                 : username;
 
             StatsTitle = statsTitle;
@@ -95,7 +96,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 _logger.Warn("ProfileStatsPage: targetUserId inválido.");
                 MessageBox.Show(
-                    "Lang.errorProfileStatsInvalidUserIdText",
+                    Lang.errorProfileStatsInvalidUserIdText,
                     Lang.errorTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -123,7 +124,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 _logger.Error("Error loading player stats.", ex);
 
                 MessageBox.Show(
-                    "Lang.errorLoadingProfileStatsText",
+                    Lang.errorLoadingProfileStatsText,
                     Lang.errorTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);

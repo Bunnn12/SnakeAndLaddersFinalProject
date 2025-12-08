@@ -84,9 +84,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
             int initialCellIndex)
         {
             UserId = userId;
-            UserName = string.IsNullOrWhiteSpace(userName)
-                ? $"Jugador {userId}"
+
+            string safeUserName = string.IsNullOrWhiteSpace(userName)
+                ? string.Format(
+                    Globalization.LocalizationManager.Current["GameDefaultPlayerNameFmt"],
+                    userId)
                 : userName;
+
+            UserName = safeUserName;
 
             CurrentSkinUnlockedId = currentSkinUnlockedId;
             CurrentCellIndex = initialCellIndex;
@@ -94,6 +99,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
 
             TokenImagePath = SkinAssetHelper.GetTokenPathFromSkinId(currentSkinUnlockedId);
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

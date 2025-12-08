@@ -12,9 +12,9 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class GameBoardPage : Page
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(GameBoardPage));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(GameBoardPage));
 
-        private GameBoardViewModel currentViewModel;
+        private GameBoardViewModel _currentViewModel;
 
         public GameBoardPage()
         {
@@ -35,22 +35,22 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             AttachToViewModel(ViewModel);
 
-            if (currentViewModel == null)
+            if (_currentViewModel == null)
             {
-                Logger.Warn("GameBoardPage.OnLoaded: ViewModel es null.");
+                _logger.Warn("GameBoardPage.OnLoaded: shopViewModelInstance es null.");
                 return;
             }
 
             try
             {
-                if (currentViewModel.Inventory != null)
+                if (_currentViewModel.Inventory != null)
                 {
-                    await currentViewModel.Inventory.InitializeAsync();
+                    await _currentViewModel.Inventory.InitializeAsync();
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al inicializar el inventario en GameBoardPage.", ex);
+                _logger.Error("Error al inicializar el inventario en GameBoardPage.", ex);
             }
         }
 
@@ -72,35 +72,35 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            if (ReferenceEquals(currentViewModel, viewModel))
+            if (ReferenceEquals(_currentViewModel, viewModel))
             {
                 return;
             }
 
-            currentViewModel = viewModel;
+            _currentViewModel = viewModel;
 
-            currentViewModel.PodiumRequested += OnPodiumRequested;
-            currentViewModel.NavigateToPodiumRequested += OnNavigateToPodiumRequested;
+            _currentViewModel.PodiumRequested += OnPodiumRequested;
+            _currentViewModel.NavigateToPodiumRequested += OnNavigateToPodiumRequested;
 
-            Logger.Info("GameBoardPage: suscrito a PodiumRequested y NavigateToPodiumRequested.");
+            _logger.Info("GameBoardPage: suscrito a PodiumRequested y NavigateToPodiumRequested.");
         }
 
         private void DetachFromViewModel()
         {
-            if (currentViewModel == null)
+            if (_currentViewModel == null)
             {
                 return;
             }
 
-            GameBoardViewModel vm = currentViewModel;
-            currentViewModel = null;
+            GameBoardViewModel viewModel = _currentViewModel;
+            _currentViewModel = null;
 
-            vm.PodiumRequested -= OnPodiumRequested;
-            vm.NavigateToPodiumRequested -= OnNavigateToPodiumRequested;
+            viewModel.PodiumRequested -= OnPodiumRequested;
+            viewModel.NavigateToPodiumRequested -= OnNavigateToPodiumRequested;
 
-            Logger.Info("GameBoardPage: desuscrito de eventos del ViewModel. Llamando a Dispose().");
+            _logger.Info("GameBoardPage: desuscrito de eventos del shopViewModelInstance. Llamando a Dispose().");
 
-            if (vm is IDisposable disposable)
+            if (viewModel is IDisposable disposable)
             {
                 try
                 {
@@ -108,7 +108,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("Error al hacer Dispose() del GameBoardViewModel.", ex);
+                    _logger.Error("Error al hacer Dispose() del GameBoardViewModel.", ex);
                 }
             }
         }
@@ -117,17 +117,17 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             try
             {
-                Logger.Info("OnPodiumRequested: recibido PodiumViewModel, navegando a PodiumPage.");
+                _logger.Info("OnPodiumRequested: recibido PodiumViewModel, navegando a PodiumPage.");
 
                 if (podiumViewModel == null)
                 {
-                    Logger.Warn("OnPodiumRequested: podiumViewModel es null.");
+                    _logger.Warn("OnPodiumRequested: podiumViewModel es null.");
                     return;
                 }
 
                 if (Application.Current == null || Application.Current.Dispatcher == null)
                 {
-                    Logger.Error("OnPodiumRequested: Application.Dispatcher es null, no se puede navegar.");
+                    _logger.Error("OnPodiumRequested: Application.Dispatcher es null, no se puede navegar.");
                     return;
                 }
 
@@ -150,7 +150,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al navegar a la página de podio desde PodiumRequested.", ex);
+                _logger.Error("Error al navegar a la página de podio desde PodiumRequested.", ex);
             }
         }
 
@@ -158,21 +158,21 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             try
             {
-                Logger.InfoFormat(
-                    "OnNavigateToPodiumRequested: gameId={0}, winnerUserId={1}",
+                _logger.InfoFormat(
+                    "OnNavigateToPodiumRequested: _gameId={0}, winnerUserId={1}",
                     gameId,
                     winnerUserId);
 
-                GameBoardViewModel vm = currentViewModel;
+                GameBoardViewModel gameBoardViewModel = _currentViewModel;
 
-                string winnerName = vm != null
-                    ? vm.ResolveUserDisplayName(winnerUserId)
+                string winnerName = gameBoardViewModel != null
+                    ? gameBoardViewModel.ResolveUserDisplayName(winnerUserId)
                     : string.Format(Lang.PodiumDefaultPlayerNameFmt, winnerUserId);
 
 
                 ReadOnlyCollection<PodiumPlayerViewModel> podiumPlayers =
-                    vm != null
-                        ? vm.BuildPodiumPlayers(winnerUserId)
+                    gameBoardViewModel != null
+                        ? gameBoardViewModel.BuildPodiumPlayers(winnerUserId)
                         : new ReadOnlyCollection<PodiumPlayerViewModel>(
                             new PodiumPlayerViewModel[0]);
 
@@ -194,7 +194,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                Logger.Error("Error al navegar a la página de podio.", ex);
+                _logger.Error("Error al navegar a la página de podio.", ex);
             }
         }
     }

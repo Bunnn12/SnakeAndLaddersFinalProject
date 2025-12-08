@@ -1,5 +1,4 @@
-﻿using log4net;
-using SnakeAndLaddersFinalProject.Properties.Langs;
+﻿using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.ViewModels;
 using System;
 using System.Windows;
@@ -10,8 +9,6 @@ namespace SnakeAndLaddersFinalProject.Windows
     public partial class ReportsWindow : Window
     {
         private const string REASON_KEY_OTHER = "Other";
-
-        private const string REPORT_INVALID_CONTEXT_MESSAGE_TEXT_KEY = "Lang.ReportInvalidContextMessage";
 
         private ReportsViewModel ViewModel
         {
@@ -61,12 +58,12 @@ namespace SnakeAndLaddersFinalProject.Windows
             DataContext = new ReportsViewModel();
         }
 
-        private void BtnClose_Click(object sender, RoutedEventArgs e)
+        private void Close(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void ReasonButton_Click(object sender, RoutedEventArgs e)
+        private void Reason(object sender, RoutedEventArgs e)
         {
             var reasonButton = sender as Button;
             if (reasonButton == null)
@@ -83,7 +80,7 @@ namespace SnakeAndLaddersFinalProject.Windows
             if (!viewModel.IsReportContextValid())
             {
                 MessageBox.Show(
-                    REPORT_INVALID_CONTEXT_MESSAGE_TEXT_KEY,
+                    Lang.ReportInvalidContextMessage,
                     Lang.reportUserTittle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);

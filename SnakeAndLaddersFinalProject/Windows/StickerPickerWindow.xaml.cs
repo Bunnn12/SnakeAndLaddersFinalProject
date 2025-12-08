@@ -6,7 +6,7 @@ namespace SnakeAndLaddersFinalProject.Windows
 {
     public partial class StickerPickerWindow : Window
     {
-        private static readonly ObservableCollection<StickerModel> EmptyCollection =
+        private static readonly ObservableCollection<StickerModel> _emptyCollection =
             new ObservableCollection<StickerModel>();
 
         public StickerModel SelectedSticker { get; private set; }
@@ -16,7 +16,7 @@ namespace SnakeAndLaddersFinalProject.Windows
             InitializeComponent();
 
             ObservableCollection<StickerModel> safeStickers =
-                stickers ?? EmptyCollection;
+                stickers ?? _emptyCollection;
 
             icStickers.ItemsSource = safeStickers;
         }

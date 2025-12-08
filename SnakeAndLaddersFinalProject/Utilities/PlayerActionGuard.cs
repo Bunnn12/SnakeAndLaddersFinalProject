@@ -44,7 +44,6 @@
             bool isUseItemInProgress,
             bool isTargetSelectionActive)
         {
-            // De momento comparte las mismas reglas que tirar dado
             return CanRollDice(
                 isMyTurn,
                 isAnimating,

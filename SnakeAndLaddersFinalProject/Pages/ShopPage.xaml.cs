@@ -1,16 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using SnakeAndLaddersFinalProject.Pages;
 using SnakeAndLaddersFinalProject.ViewModels;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class ShopPage : Page
     {
-        private ShopViewModel ViewModel
+        private ShopViewModel shopViewModelInstance
         {
             get { return DataContext as ShopViewModel; }
         }
@@ -20,8 +17,6 @@ namespace SnakeAndLaddersFinalProject.Pages
             InitializeComponent();
 
             DataContext = new ShopViewModel();
-
-            Loaded -= PageLoaded;
             Loaded += PageLoaded;
         }
 
@@ -29,20 +24,20 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             lblCoinsValue.Text = "0";
 
-            if (ViewModel == null)
+            if (shopViewModelInstance == null)
             {
                 return;
             }
 
-            await ViewModel.InitializeCoinsAsync();
+            await shopViewModelInstance.InitializeCoinsAsync();
             UpdateCoinsLabel();
         }
 
         private void UpdateCoinsLabel()
         {
-            if (lblCoinsValue != null && ViewModel != null)
+            if (lblCoinsValue != null && shopViewModelInstance != null)
             {
-                lblCoinsValue.Text = ViewModel.CurrentCoins.ToString();
+                lblCoinsValue.Text = shopViewModelInstance.CurrentCoins.ToString();
             }
         }
 
@@ -51,40 +46,10 @@ namespace SnakeAndLaddersFinalProject.Pages
             return Globalization.LocalizationManager.Current[key];
         }
 
-        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        private void Settings(object sender, RoutedEventArgs e)
         {
             Frame mainFrame = GetMainFrame();
             mainFrame?.Navigate(new SettingsPage());
-        }
-
-        private void btnNavFriends_Click(object sender, RoutedEventArgs e)
-        {
-            Frame mainFrame = GetMainFrame();
-            mainFrame?.Navigate(new FriendsListPage());
-        }
-
-        private void btnNavInventory_Click(object sender, RoutedEventArgs e)
-        {
-            Frame mainFrame = GetMainFrame();
-            mainFrame?.Navigate(new InventoryPage());
-        }
-
-        private void btnNavMain_Click(object sender, RoutedEventArgs e)
-        {
-            Frame mainFrame = GetMainFrame();
-            mainFrame?.Navigate(new MainPage());
-        }
-
-        private void btnNavSkins_Click(object sender, RoutedEventArgs e)
-        {
-            Frame mainFrame = GetMainFrame();
-            mainFrame?.Navigate(new SkinsPage());
-        }
-
-        private void btnNavProfile_Click(object sender, RoutedEventArgs e)
-        {
-            Frame mainFrame = GetMainFrame();
-            mainFrame?.Navigate(new ProfilePage());
         }
 
         private Frame GetMainFrame()
@@ -111,163 +76,163 @@ namespace SnakeAndLaddersFinalProject.Pages
                 MessageBoxImage.Information);
         }
 
-        private void btnAvatarCommonInfo_Click(object sender, RoutedEventArgs e)
+        private void AvatarCommonInfo(object sender, RoutedEventArgs e)
         {
             ShowChestInfo("ShopAvatarCommonInfo");
         }
 
-        private void btnAvatarEpicInfo_Click(object sender, RoutedEventArgs e)
+        private void AvatarEpicInfo(object sender, RoutedEventArgs e)
         {
             ShowChestInfo("ShopAvatarEpicInfo");
         }
 
-        private void btnAvatarLegendaryInfo_Click(object sender, RoutedEventArgs e)
+        private void AvatarLegendaryInfo(object sender, RoutedEventArgs e)
         {
             ShowChestInfo("ShopAvatarLegendaryInfo");
         }
 
-        private void btnStickerCommonInfo_Click(object sender, RoutedEventArgs e)
+        private void StickerCommonInfo(object sender, RoutedEventArgs e)
         {
             ShowChestInfo("ShopStickerCommonInfo");
         }
 
-        private void btnStickerEpicInfo_Click(object sender, RoutedEventArgs e)
+        private void StickerEpicInfo(object sender, RoutedEventArgs e)
         {
             ShowChestInfo("ShopStickerEpicInfo");
         }
 
-        private void btnStickerLegendaryInfo_Click(object sender, RoutedEventArgs e)
+        private void StickerLegendaryInfo(object sender, RoutedEventArgs e)
         {
             ShowChestInfo("ShopStickerLegendaryInfo");
         }
 
-        private void btnDiceNegativeInfo_Click(object sender, RoutedEventArgs e)
+        private void DiceNegativeInfo(object sender, RoutedEventArgs e)
         {
             ShowChestInfo("ShopDiceNegativeInfo");
         }
 
-        private void btnDice123Info_Click(object sender, RoutedEventArgs e)
+        private void Dice123Info(object sender, RoutedEventArgs e)
         {
             ShowChestInfo("ShopDice123Info");
         }
 
-        private void btnDice456Info_Click(object sender, RoutedEventArgs e)
+        private void Dice456Info(object sender, RoutedEventArgs e)
         {
             ShowChestInfo("ShopDice456Info");
         }
 
-        private void btnItemChestInfo_Click(object sender, RoutedEventArgs e)
+        private void ItemChestInfo(object sender, RoutedEventArgs e)
         {
             ShowChestInfo("ShopItemChestInfo");
         }
 
-        private async void btnAvatarCommonBuy_Click(object sender, RoutedEventArgs e)
+        private async void AvatarCommonBuy(object sender, RoutedEventArgs e)
         {
-            if (ViewModel == null)
+            if (shopViewModelInstance == null)
             {
                 return;
             }
 
-            await ViewModel.PurchaseAvatarCommonAsync();
+            await shopViewModelInstance.PurchaseAvatarCommonAsync();
             UpdateCoinsLabel();
         }
 
-        private async void btnAvatarEpicBuy_Click(object sender, RoutedEventArgs e)
+        private async void AvatarEpicBuy(object sender, RoutedEventArgs e)
         {
-            if (ViewModel == null)
+            if (shopViewModelInstance == null)
             {
                 return;
             }
 
-            await ViewModel.PurchaseAvatarEpicAsync();
+            await shopViewModelInstance.PurchaseAvatarEpicAsync();
             UpdateCoinsLabel();
         }
 
-        private async void btnAvatarLegendaryBuy_Click(object sender, RoutedEventArgs e)
+        private async void AvatarLegendaryBuy(object sender, RoutedEventArgs e)
         {
-            if (ViewModel == null)
+            if (shopViewModelInstance == null)
             {
                 return;
             }
 
-            await ViewModel.PurchaseAvatarLegendaryAsync();
+            await shopViewModelInstance.PurchaseAvatarLegendaryAsync();
             UpdateCoinsLabel();
         }
 
-        private async void btnStickerCommonBuy_Click(object sender, RoutedEventArgs e)
+        private async void StickerCommonBuy(object sender, RoutedEventArgs e)
         {
-            if (ViewModel == null)
+            if (shopViewModelInstance == null)
             {
                 return;
             }
 
-            await ViewModel.PurchaseStickerCommonAsync();
+            await shopViewModelInstance.PurchaseStickerCommonAsync();
             UpdateCoinsLabel();
         }
 
-        private async void btnStickerEpicBuy_Click(object sender, RoutedEventArgs e)
+        private async void StickerEpicBuy(object sender, RoutedEventArgs e)
         {
-            if (ViewModel == null)
+            if (shopViewModelInstance == null)
             {
                 return;
             }
 
-            await ViewModel.PurchaseStickerEpicAsync();
+            await shopViewModelInstance.PurchaseStickerEpicAsync();
             UpdateCoinsLabel();
         }
 
-        private async void btnStickerLegendaryBuy_Click(object sender, RoutedEventArgs e)
+        private async void StickerLegendaryBuy(object sender, RoutedEventArgs e)
         {
-            if (ViewModel == null)
+            if (shopViewModelInstance == null)
             {
                 return;
             }
 
-            await ViewModel.PurchaseStickerLegendaryAsync();
+            await shopViewModelInstance.PurchaseStickerLegendaryAsync();
             UpdateCoinsLabel();
         }
 
-        private async void btnDiceNegativeBuy_Click(object sender, RoutedEventArgs e)
+        private async void DiceNegativeBuy(object sender, RoutedEventArgs e)
         {
-            if (ViewModel == null)
+            if (shopViewModelInstance == null)
             {
                 return;
             }
 
-            await ViewModel.PurchaseDiceNegativeAsync();
+            await shopViewModelInstance.PurchaseDiceNegativeAsync();
             UpdateCoinsLabel();
         }
 
-        private async void btnDice123Buy_Click(object sender, RoutedEventArgs e)
+        private async void Dice123Buy(object sender, RoutedEventArgs e)
         {
-            if (ViewModel == null)
+            if (shopViewModelInstance == null)
             {
                 return;
             }
 
-            await ViewModel.PurchaseDiceOneToThreeAsync();
+            await shopViewModelInstance.PurchaseDiceOneToThreeAsync();
             UpdateCoinsLabel();
         }
 
-        private async void btnDice456Buy_Click(object sender, RoutedEventArgs e)
+        private async void Dice456Buy(object sender, RoutedEventArgs e)
         {
-            if (ViewModel == null)
+            if (shopViewModelInstance == null)
             {
                 return;
             }
 
-            await ViewModel.PurchaseDiceFourToSixAsync();
+            await shopViewModelInstance.PurchaseDiceFourToSixAsync();
             UpdateCoinsLabel();
         }
 
-        private async void btnItemChestBuy_Click(object sender, RoutedEventArgs e)
+        private async void ItemChestBuy(object sender, RoutedEventArgs e)
         {
-            if (ViewModel == null)
+            if (shopViewModelInstance == null)
             {
                 return;
             }
 
-            await ViewModel.PurchaseItemChestAsync();
+            await shopViewModelInstance.PurchaseItemChestAsync();
             UpdateCoinsLabel();
         }
     }

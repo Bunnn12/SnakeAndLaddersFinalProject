@@ -10,32 +10,32 @@ namespace SnakeAndLaddersFinalProject.Managers
 {
     public sealed class DiceRollManager
     {
-        private readonly int gameId;
-        private readonly int localUserId;
+        private readonly int _gameId;
+        private readonly int _localUserId;
 
-        private readonly DiceSelectionManager diceSelectionManager;
-        private readonly Func<IGameplayClient> gameplayClientProvider;
-        private readonly ILog logger;
+        private readonly DiceSelectionManager _diceSelectionManager;
+        private readonly Func<IGameplayClient> _gameplayClientProvider;
+        private readonly ILog _logger;
 
-        private readonly Func<bool> getIsMyTurn;
-        private readonly Func<bool> getIsAnimating;
-        private readonly Func<bool> getIsRollRequestInProgress;
-        private readonly Func<bool> getIsUseItemInProgress;
-        private readonly Func<bool> getIsTargetSelectionActive;
+        private readonly Func<bool> _getIsMyTurn;
+        private readonly Func<bool> _getIsAnimating;
+        private readonly Func<bool> _getIsRollRequestInProgress;
+        private readonly Func<bool> _getIsUseItemInProgress;
+        private readonly Func<bool> _getIsTargetSelectionActive;
 
-        private readonly Action<bool> setIsRollRequestInProgress;
-        private readonly Action raiseAllCanExecuteChanged;
+        private readonly Action<bool> _setIsRollRequestInProgress;
+        private readonly Action _raiseAllCanExecuteChanged;
 
-        private readonly Func<Task> syncGameStateAsync;
-        private readonly Func<Task> initializeInventoryAsync;
-        private readonly Action markServerEventReceived;
-        private readonly Func<Exception, string, bool> handleConnectionException;
-        private readonly Action<string, string, MessageBoxImage> showMessage;
+        private readonly Func<Task> _syncGameStateAsync;
+        private readonly Func<Task> _initializeInventoryAsync;
+        private readonly Action _markServerEventReceived;
+        private readonly Func<Exception, string, bool> _handleConnectionException;
+        private readonly Action<string, string, MessageBoxImage> _showMessage;
 
-        private readonly string unknownErrorMessage;
-        private readonly string rollDiceFailureMessagePrefix;
-        private readonly string rollDiceUnexpectedErrorMessage;
-        private readonly string gameWindowTitle;
+        private readonly string _unknownErrorMessage;
+        private readonly string _rollDiceFailureMessagePrefix;
+        private readonly string _rollDiceUnexpectedErrorMessage;
+        private readonly string _gameWindowTitle;
 
         public DiceRollManager(
             int gameId,
@@ -65,128 +65,128 @@ namespace SnakeAndLaddersFinalProject.Managers
                 throw new ArgumentOutOfRangeException(nameof(gameId));
             }
 
-            if (localUserId <= 0)
+            if (localUserId == 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(localUserId));
             }
 
-            this.gameId = gameId;
-            this.localUserId = localUserId;
-            this.diceSelectionManager = diceSelectionManager ?? throw new ArgumentNullException(nameof(diceSelectionManager));
-            this.gameplayClientProvider = gameplayClientProvider ?? throw new ArgumentNullException(nameof(gameplayClientProvider));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.getIsMyTurn = getIsMyTurn ?? throw new ArgumentNullException(nameof(getIsMyTurn));
-            this.getIsAnimating = getIsAnimating ?? throw new ArgumentNullException(nameof(getIsAnimating));
-            this.getIsRollRequestInProgress = getIsRollRequestInProgress ?? throw new ArgumentNullException(nameof(getIsRollRequestInProgress));
-            this.getIsUseItemInProgress = getIsUseItemInProgress ?? throw new ArgumentNullException(nameof(getIsUseItemInProgress));
-            this.getIsTargetSelectionActive = getIsTargetSelectionActive ?? throw new ArgumentNullException(nameof(getIsTargetSelectionActive));
-            this.setIsRollRequestInProgress = setIsRollRequestInProgress ?? throw new ArgumentNullException(nameof(setIsRollRequestInProgress));
-            this.raiseAllCanExecuteChanged = raiseAllCanExecuteChanged ?? throw new ArgumentNullException(nameof(raiseAllCanExecuteChanged));
-            this.syncGameStateAsync = syncGameStateAsync ?? throw new ArgumentNullException(nameof(syncGameStateAsync));
-            this.initializeInventoryAsync = initializeInventoryAsync ?? throw new ArgumentNullException(nameof(initializeInventoryAsync));
-            this.markServerEventReceived = markServerEventReceived ?? throw new ArgumentNullException(nameof(markServerEventReceived));
-            this.handleConnectionException = handleConnectionException ?? throw new ArgumentNullException(nameof(handleConnectionException));
-            this.showMessage = showMessage ?? throw new ArgumentNullException(nameof(showMessage));
-            this.unknownErrorMessage = unknownErrorMessage ?? throw new ArgumentNullException(nameof(unknownErrorMessage));
-            this.rollDiceFailureMessagePrefix = rollDiceFailureMessagePrefix ?? throw new ArgumentNullException(nameof(rollDiceFailureMessagePrefix));
-            this.rollDiceUnexpectedErrorMessage = rollDiceUnexpectedErrorMessage ?? throw new ArgumentNullException(nameof(rollDiceUnexpectedErrorMessage));
-            this.gameWindowTitle = gameWindowTitle ?? throw new ArgumentNullException(nameof(gameWindowTitle));
+            this._gameId = gameId;
+            this._localUserId = localUserId;
+            this._diceSelectionManager = diceSelectionManager ?? throw new ArgumentNullException(nameof(diceSelectionManager));
+            this._gameplayClientProvider = gameplayClientProvider ?? throw new ArgumentNullException(nameof(gameplayClientProvider));
+            this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this._getIsMyTurn = getIsMyTurn ?? throw new ArgumentNullException(nameof(getIsMyTurn));
+            this._getIsAnimating = getIsAnimating ?? throw new ArgumentNullException(nameof(getIsAnimating));
+            this._getIsRollRequestInProgress = getIsRollRequestInProgress ?? throw new ArgumentNullException(nameof(getIsRollRequestInProgress));
+            this._getIsUseItemInProgress = getIsUseItemInProgress ?? throw new ArgumentNullException(nameof(getIsUseItemInProgress));
+            this._getIsTargetSelectionActive = getIsTargetSelectionActive ?? throw new ArgumentNullException(nameof(getIsTargetSelectionActive));
+            this._setIsRollRequestInProgress = setIsRollRequestInProgress ?? throw new ArgumentNullException(nameof(setIsRollRequestInProgress));
+            this._raiseAllCanExecuteChanged = raiseAllCanExecuteChanged ?? throw new ArgumentNullException(nameof(raiseAllCanExecuteChanged));
+            this._syncGameStateAsync = syncGameStateAsync ?? throw new ArgumentNullException(nameof(syncGameStateAsync));
+            this._initializeInventoryAsync = initializeInventoryAsync ?? throw new ArgumentNullException(nameof(initializeInventoryAsync));
+            this._markServerEventReceived = markServerEventReceived ?? throw new ArgumentNullException(nameof(markServerEventReceived));
+            this._handleConnectionException = handleConnectionException ?? throw new ArgumentNullException(nameof(handleConnectionException));
+            this._showMessage = showMessage ?? throw new ArgumentNullException(nameof(showMessage));
+            this._unknownErrorMessage = unknownErrorMessage ?? throw new ArgumentNullException(nameof(unknownErrorMessage));
+            this._rollDiceFailureMessagePrefix = rollDiceFailureMessagePrefix ?? throw new ArgumentNullException(nameof(rollDiceFailureMessagePrefix));
+            this._rollDiceUnexpectedErrorMessage = rollDiceUnexpectedErrorMessage ?? throw new ArgumentNullException(nameof(rollDiceUnexpectedErrorMessage));
+            this._gameWindowTitle = gameWindowTitle ?? throw new ArgumentNullException(nameof(gameWindowTitle));
         }
 
         public bool CanRollDice()
         {
-            logger.InfoFormat(
-                "CanRollDice: gameId={0}, localUserId={1}, isMyTurn={2}, isAnimating={3}, isRollRequestInProgress={4}",
-                gameId,
-                localUserId,
-                getIsMyTurn(),
-                getIsAnimating(),
-                getIsRollRequestInProgress());
+            _logger.InfoFormat(
+                "CanRollDice: _gameId={0}, _localUserId={1}, _isMyTurn={2}, isAnimating={3}, _isRollRequestInProgress={4}",
+                _gameId,
+                _localUserId,
+                _getIsMyTurn(),
+                _getIsAnimating(),
+                _getIsRollRequestInProgress());
 
             return PlayerActionGuard.CanRollDice(
-                getIsMyTurn(),
-                getIsAnimating(),
-                getIsRollRequestInProgress(),
-                getIsUseItemInProgress(),
-                getIsTargetSelectionActive());
+                _getIsMyTurn(),
+                _getIsAnimating(),
+                _getIsRollRequestInProgress(),
+                _getIsUseItemInProgress(),
+                _getIsTargetSelectionActive());
         }
 
         public async Task RollDiceForLocalPlayerAsync()
         {
-            if (getIsRollRequestInProgress())
+            if (_getIsRollRequestInProgress())
             {
                 return;
             }
 
-            setIsRollRequestInProgress(true);
-            raiseAllCanExecuteChanged();
+            _setIsRollRequestInProgress(true);
+            _raiseAllCanExecuteChanged();
 
             try
             {
-                IGameplayClient client = gameplayClientProvider();
+                IGameplayClient client = _gameplayClientProvider();
 
                 if (client == null)
                 {
                     return;
                 }
 
-                byte? diceSlotNumber = diceSelectionManager.SelectedSlot;
+                byte? diceSlotNumber = _diceSelectionManager.SelectedSlot;
 
                 RollDiceResponseDto response = await client
-                    .GetRollDiceAsync(gameId, localUserId, diceSlotNumber)
+                    .GetRollDiceAsync(_gameId, _localUserId, diceSlotNumber)
                     .ConfigureAwait(false);
 
                 if (response == null || !response.Success)
                 {
                     string failureReason = response != null && !string.IsNullOrWhiteSpace(response.FailureReason)
                         ? response.FailureReason
-                        : unknownErrorMessage;
+                        : _unknownErrorMessage;
 
-                    logger.Warn("RollDice failed: " + failureReason);
+                    _logger.Warn("RollDice failed: " + failureReason);
 
-                    showMessage(
-                        rollDiceFailureMessagePrefix + failureReason,
-                        gameWindowTitle,
+                    _showMessage(
+                        _rollDiceFailureMessagePrefix + failureReason,
+                        _gameWindowTitle,
                         MessageBoxImage.Warning);
 
                     return;
                 }
 
-                markServerEventReceived();
-                await ShowGrantedRewardsAsync(response, gameWindowTitle).ConfigureAwait(false);
+                _markServerEventReceived();
+                await ShowGrantedRewardsAsync(response, _gameWindowTitle).ConfigureAwait(false);
 
-                diceSelectionManager.ResetSelection();
+                _diceSelectionManager.ResetSelection();
 
-                logger.InfoFormat(
+                _logger.InfoFormat(
                     "RollDice request accepted. UserId={0}, From={1}, To={2}, Dice={3}",
-                    localUserId,
+                    _localUserId,
                     response.FromCellIndex,
                     response.ToCellIndex,
                     response.DiceValue);
 
-                await syncGameStateAsync().ConfigureAwait(false);
-                await initializeInventoryAsync().ConfigureAwait(false);
+                await _syncGameStateAsync().ConfigureAwait(false);
+                await _initializeInventoryAsync().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                if (handleConnectionException(
+                if (_handleConnectionException(
                         ex,
                         "Connection lost while rolling dice."))
                 {
                     return;
                 }
 
-                logger.Error(rollDiceUnexpectedErrorMessage, ex);
+                _logger.Error(_rollDiceUnexpectedErrorMessage, ex);
 
-                showMessage(
-                    rollDiceUnexpectedErrorMessage,
-                    gameWindowTitle,
+                _showMessage(
+                    _rollDiceUnexpectedErrorMessage,
+                    _gameWindowTitle,
                     MessageBoxImage.Error);
             }
             finally
             {
-                setIsRollRequestInProgress(false);
-                raiseAllCanExecuteChanged();
+                _setIsRollRequestInProgress(false);
+                _raiseAllCanExecuteChanged();
             }
         }
 

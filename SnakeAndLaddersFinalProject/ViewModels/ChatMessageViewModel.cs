@@ -6,7 +6,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     public sealed class ChatMessageViewModel
     {
         private const string EMPTY_TEXT = "";
-
+        private const int MIN_VALID_STICKER_ID = 1;
         public string Sender { get; }
         public string Text { get; }
         public DateTime SentAt { get; }
@@ -18,36 +18,36 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public bool IsSticker { get; }
         public string StickerImagePath { get; }
 
-        public ChatMessageViewModel(ChatMessageDto dto, string currentUserName)
+        public ChatMessageViewModel(ChatMessageDto chatMessageDto, string currentUserName)
         {
-            if (dto == null)
+            if (chatMessageDto == null)
             {
-                throw new ArgumentNullException(nameof(dto));
+                throw new ArgumentNullException(nameof(chatMessageDto));
             }
 
-            Sender = dto.Sender ?? EMPTY_TEXT;
-            AvatarId = dto.SenderAvatarId ?? EMPTY_TEXT;
-            SentAt = dto.TimestampUtc.ToLocalTime();
+            Sender = chatMessageDto.Sender ?? EMPTY_TEXT;
+            AvatarId = chatMessageDto.SenderAvatarId ?? EMPTY_TEXT;
+            SentAt = chatMessageDto.TimestampUtc.ToLocalTime();
 
             IsMine = !string.IsNullOrWhiteSpace(currentUserName)
                      && string.Equals(Sender, currentUserName, StringComparison.OrdinalIgnoreCase);
 
             Header = Sender;
 
-            bool hasSticker = dto.StickerId > 0
-                              && !string.IsNullOrWhiteSpace(dto.StickerCode);
+            bool hasSticker = chatMessageDto.StickerId > MIN_VALID_STICKER_ID
+                              && !string.IsNullOrWhiteSpace(chatMessageDto.StickerCode);
 
             IsSticker = hasSticker;
 
             if (hasSticker)
             {
                 Text = EMPTY_TEXT;
-                StickerImagePath = ChatViewModel.BuildStickerAssetPath(dto.StickerCode);
+                StickerImagePath = ChatViewModel.BuildStickerAssetPath(chatMessageDto.StickerCode);
             }
             else
             {
-                Text = (dto.Text ?? EMPTY_TEXT).Trim();
-                StickerImagePath = string.Empty;
+                Text = (chatMessageDto.Text ?? EMPTY_TEXT).Trim();
+                StickerImagePath = EMPTY_TEXT;
             }
         }
     }

@@ -13,17 +13,17 @@ namespace SnakeAndLaddersFinalProject.Managers
 {
     public sealed class GameplayServerEventsRouter
     {
-        private readonly GameplayEventsHandler eventsHandler;
-        private readonly GameStateSynchronizer gameStateSynchronizer;
+        private readonly GameplayEventsHandler _eventsHandler;
+        private readonly GameStateSynchronizer _gameStateSynchronizer;
         private readonly InventoryViewModel inventory;
-        private readonly ILog logger;
-        private readonly Action markServerEventReceived;
-        private readonly Action<string, string, MessageBoxImage> showMessage;
-        private readonly Action<string> setLastItemNotification;
-        private readonly Action<int> updateTurnTimerText;
-        private readonly string timeoutSkipMessage;
-        private readonly string timeoutKickMessage;
-        private readonly string gameWindowTitle;
+        private readonly ILog _logger;
+        private readonly Action _markServerEventReceived;
+        private readonly Action<string, string, MessageBoxImage> _showMessage;
+        private readonly Action<string> _setLastItemNotification;
+        private readonly Action<int> _updateTurnTimerText;
+        private readonly string _timeoutSkipMessage;
+        private readonly string _timeoutKickMessage;
+        private readonly string _gameWindowTitle;
 
         public GameplayServerEventsRouter(
             GameplayEventsHandler eventsHandler,
@@ -38,17 +38,17 @@ namespace SnakeAndLaddersFinalProject.Managers
             string timeoutKickMessage,
             string gameWindowTitle)
         {
-            this.eventsHandler = eventsHandler ?? throw new ArgumentNullException(nameof(eventsHandler));
-            this.gameStateSynchronizer = gameStateSynchronizer ?? throw new ArgumentNullException(nameof(gameStateSynchronizer));
+            this._eventsHandler = eventsHandler ?? throw new ArgumentNullException(nameof(eventsHandler));
+            this._gameStateSynchronizer = gameStateSynchronizer ?? throw new ArgumentNullException(nameof(gameStateSynchronizer));
             this.inventory = inventory ?? throw new ArgumentNullException(nameof(inventory));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.markServerEventReceived = markServerEventReceived ?? throw new ArgumentNullException(nameof(markServerEventReceived));
-            this.showMessage = showMessage ?? throw new ArgumentNullException(nameof(showMessage));
-            this.setLastItemNotification = setLastItemNotification ?? throw new ArgumentNullException(nameof(setLastItemNotification));
-            this.updateTurnTimerText = updateTurnTimerText ?? throw new ArgumentNullException(nameof(updateTurnTimerText));
-            this.timeoutSkipMessage = timeoutSkipMessage ?? throw new ArgumentNullException(nameof(timeoutSkipMessage));
-            this.timeoutKickMessage = timeoutKickMessage ?? throw new ArgumentNullException(nameof(timeoutKickMessage));
-            this.gameWindowTitle = gameWindowTitle ?? throw new ArgumentNullException(nameof(gameWindowTitle));
+            this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this._markServerEventReceived = markServerEventReceived ?? throw new ArgumentNullException(nameof(markServerEventReceived));
+            this._showMessage = showMessage ?? throw new ArgumentNullException(nameof(showMessage));
+            this._setLastItemNotification = setLastItemNotification ?? throw new ArgumentNullException(nameof(setLastItemNotification));
+            this._updateTurnTimerText = updateTurnTimerText ?? throw new ArgumentNullException(nameof(updateTurnTimerText));
+            this._timeoutSkipMessage = timeoutSkipMessage ?? throw new ArgumentNullException(nameof(timeoutSkipMessage));
+            this._timeoutKickMessage = timeoutKickMessage ?? throw new ArgumentNullException(nameof(timeoutKickMessage));
+            this._gameWindowTitle = gameWindowTitle ?? throw new ArgumentNullException(nameof(gameWindowTitle));
         }
 
         public async Task HandlePlayerMovedAsync(PlayerMoveResultDto move)
@@ -58,9 +58,9 @@ namespace SnakeAndLaddersFinalProject.Managers
                 return;
             }
 
-            markServerEventReceived();
+            _markServerEventReceived();
 
-            Task handlerTask = eventsHandler.HandleServerPlayerMovedAsync(move);
+            Task handlerTask = _eventsHandler.HandleServerPlayerMovedAsync(move);
 
             if (move.MessageIndex.HasValue)
             {
@@ -74,14 +74,14 @@ namespace SnakeAndLaddersFinalProject.Managers
 
                 if (!string.IsNullOrWhiteSpace(messageText))
                 {
-                    showMessage(
+                    _showMessage(
                         messageText,
-                        gameWindowTitle,
+                        _gameWindowTitle,
                         MessageBoxImage.Information);
                 }
                 else
                 {
-                    logger.WarnFormat(
+                    _logger.WarnFormat(
                         "No se encontró recurso de mensaje para key={0}.",
                         resourceKey);
                 }
@@ -97,13 +97,13 @@ namespace SnakeAndLaddersFinalProject.Managers
                 return;
             }
 
-            markServerEventReceived();
+            _markServerEventReceived();
 
-            Task handlerTask = eventsHandler.HandleServerTurnChangedAsync(turnInfo);
+            Task handlerTask = _eventsHandler.HandleServerTurnChangedAsync(turnInfo);
 
             await ShowTurnChangedReasonAsync(turnInfo).ConfigureAwait(false);
 
-            await gameStateSynchronizer
+            await _gameStateSynchronizer
                 .SyncGameStateAsync(false)
                 .ConfigureAwait(false);
 
@@ -125,8 +125,8 @@ namespace SnakeAndLaddersFinalProject.Managers
                     () =>
                     {
                         MessageBox.Show(
-                            timeoutSkipMessage,
-                            gameWindowTitle,
+                            _timeoutSkipMessage,
+                            _gameWindowTitle,
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);
                     });
@@ -137,8 +137,8 @@ namespace SnakeAndLaddersFinalProject.Managers
                     () =>
                     {
                         MessageBox.Show(
-                            timeoutKickMessage,
-                            gameWindowTitle,
+                            _timeoutKickMessage,
+                            _gameWindowTitle,
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);
                     });
@@ -152,17 +152,17 @@ namespace SnakeAndLaddersFinalProject.Managers
                 return;
             }
 
-            markServerEventReceived();
+            _markServerEventReceived();
 
-            logger.InfoFormat(
+            _logger.InfoFormat(
                 "HandleServerPlayerLeftAsync: GameId={0}, UserId={1}, Reason={2}",
                 playerLeftInfo.GameId,
                 playerLeftInfo.UserId,
                 playerLeftInfo.Reason);
 
-            Task handlerTask = eventsHandler.HandleServerPlayerLeftAsync(playerLeftInfo);
+            Task handlerTask = _eventsHandler.HandleServerPlayerLeftAsync(playerLeftInfo);
 
-            await gameStateSynchronizer
+            await _gameStateSynchronizer
                 .SyncGameStateAsync(false)
                 .ConfigureAwait(false);
 
@@ -176,20 +176,20 @@ namespace SnakeAndLaddersFinalProject.Managers
                 return;
             }
 
-            markServerEventReceived();
+            _markServerEventReceived();
 
-            logger.InfoFormat(
+            _logger.InfoFormat(
                 "HandleServerItemUsedAsync: GameId={0}, ItemCode={1}, UserId={2}, TargetUserId={3}",
                 notification.GameId,
                 notification.ItemCode,
                 notification.UserId,
                 notification.TargetUserId);
 
-            setLastItemNotification(GameTextBuilder.BuildItemUsedMessage(notification));
+            _setLastItemNotification(GameTextBuilder.BuildItemUsedMessage(notification));
 
             await inventory.InitializeAsync().ConfigureAwait(false);
 
-            await gameStateSynchronizer
+            await _gameStateSynchronizer
                 .SyncGameStateAsync(true)
                 .ConfigureAwait(false);
         }
@@ -201,12 +201,12 @@ namespace SnakeAndLaddersFinalProject.Managers
                 return Task.CompletedTask;
             }
 
-            markServerEventReceived();
+            _markServerEventReceived();
 
             int seconds = timerInfo.RemainingSeconds;
 
             Application.Current.Dispatcher.Invoke(
-                () => updateTurnTimerText(seconds));
+                () => _updateTurnTimerText(seconds));
 
             return Task.CompletedTask;
         }

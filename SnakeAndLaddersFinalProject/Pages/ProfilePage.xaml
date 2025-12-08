@@ -441,7 +441,7 @@
                                                                FontSize="16"
                                                                Foreground="#5B2722">
                                                         <Hyperlink x:Name="lnkInstagramProfile"
-                                                                   Click="LnkInstagramProfile_Click">
+                                                                   Click="LnkInstagramProfile">
                                                             <Run Text="{x:Static language:Lang.ProfileSocialNotLinkedText}" />
                                                         </Hyperlink>
                                                     </TextBlock>
@@ -458,7 +458,7 @@
                                                                FontSize="16"
                                                                Foreground="#5B2722">
                                                         <Hyperlink x:Name="lnkFacebookProfile"
-                                                                   Click="LnkFacebookProfile_Click">
+                                                                   Click="LnkFacebookProfile">
                                                             <Run Text="{x:Static language:Lang.ProfileSocialNotLinkedText}" />
                                                         </Hyperlink>
                                                     </TextBlock>
@@ -589,7 +589,7 @@
                                                         Height="90"
                                                         Margin="4"
                                                         Tag="{Binding}"
-                                                        Click="AvatarItem_Click"
+                                                        Click="AvatarItem"
                                                         Background="Transparent"
                                                         BorderBrush="Transparent"
                                                         Cursor="Hand"

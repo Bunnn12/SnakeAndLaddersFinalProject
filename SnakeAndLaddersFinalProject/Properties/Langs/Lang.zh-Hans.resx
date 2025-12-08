@@ -823,7 +823,7 @@
     <value>验证电子邮件已发送至 {0}。</value>
   </data>
   <data name="warningTitle" xml:space="preserve">
-    <value />
+    <value>警告</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Message1Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
@@ -885,5 +885,455 @@
   </data>
   <data name="Message20Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
+  </data>
+  <data name="ProfileChangeAvatarConfirmTitle" xml:space="preserve">
+    <value>更改头像</value>
+  </data>
+  <data name="UiJoinMatchTitle" xml:space="preserve">
+    <value>加入比赛</value>
+  </data>
+  <data name="btnSendInvitationText" xml:space="preserve">
+    <value>发送邀请</value>
+  </data>
+  <data name="InviteInactiveFriendWarn" xml:space="preserve">
+    <value>无法邀请该朋友，因为他们的帐户处于非活动状态。</value>
+  </data>
+  <data name="InviteInvalidSessionError" xml:space="preserve">
+    <value>会话无效。请重新登录。</value>
+  </data>
+  <data name="InviteNoFriendsInfo" xml:space="preserve">
+    <value>您还没有可以邀请的朋友。</value>
+  </data>
+  <data name="InviteNoLobbyContextError" xml:space="preserve">
+    <value>未找到大厅上下文。</value>
+  </data>
+  <data name="InviteNoMatchCodeWarn" xml:space="preserve">
+    <value>没有有效的匹配代码来邀请朋友。</value>
+  </data>
+  <data name="InviteNoServerResponseError" xml:space="preserve">
+    <value>没有收到服务器的响应。</value>
+  </data>
+  <data name="InviteSelectFriendWarn" xml:space="preserve">
+    <value>您必须选择一位朋友才能发送邀请。</value>
+  </data>
+  <data name="InviteSendFailedText" xml:space="preserve">
+    <value>无法发送邀请。</value>
+  </data>
+  <data name="InviteSentOkText" xml:space="preserve">
+    <value>邀请已成功发送。</value>
+  </data>
+  <data name="InviteSessionExpiredWarn" xml:space="preserve">
+    <value>您的会话已过期。请重新登录。</value>
+  </data>
+  <data name="lblInviteFriendsToMatchText" xml:space="preserve">
+    <value>邀请好友参加比赛</value>
+  </data>
+  <data name="colFriendNoteHeader" xml:space="preserve">
+    <value>笔记</value>
+  </data>
+  <data name="UiInviteFriendFailureDefault" xml:space="preserve">
+    <value>无法发送邀请。</value>
+  </data>
+  <data name="UiInviteFriendGuestsNotAllowed" xml:space="preserve">
+    <value>客人无法发送比赛邀请。请使用帐户登录。</value>
+  </data>
+  <data name="UiInviteFriendInvalidSession" xml:space="preserve">
+    <value>会话无效。请重新登录。</value>
+  </data>
+  <data name="UiInviteFriendLobbyContextMissing" xml:space="preserve">
+    <value>未找到大厅上下文。</value>
+  </data>
+  <data name="UiInviteFriendMissingGameCode" xml:space="preserve">
+    <value>缺少匹配代码。请重新创建或加入比赛。</value>
+  </data>
+  <data name="UiInviteFriendNoMatchCode" xml:space="preserve">
+    <value>尚无匹配的邀请好友代码。</value>
+  </data>
+  <data name="UiInviteFriendNoResponse" xml:space="preserve">
+    <value>没有收到服务器的响应。</value>
+  </data>
+  <data name="UiInviteFriendSelectFriendRequired" xml:space="preserve">
+    <value>您必须在发送邀请之前选择一位朋友。</value>
+  </data>
+  <data name="UiInviteFriendSuccessDefault" xml:space="preserve">
+    <value>邀请已成功发送。</value>
+  </data>
+  <data name="lblProfileSocialNetworksText" xml:space="preserve">
+    <value>社交网络</value>
+  </data>
+  <data name="ProfileAccountInfoLoadError" xml:space="preserve">
+    <value>无法检索帐户信息。</value>
+  </data>
+  <data name="ProfileAvatarUpdateErrorText" xml:space="preserve">
+    <value>头像无法更新。</value>
+  </data>
+  <data name="ProfileAvatarUpdateSuccessText" xml:space="preserve">
+    <value>头像更新成功。</value>
+  </data>
+  <data name="ProfileChangeAvatarConfirmText" xml:space="preserve">
+    <value>您想使用此头像作为您的个人资料图片吗？</value>
+  </data>
+  <data name="ProfileDeactivateConfirmText" xml:space="preserve">
+    <value>您确定要停用您的帐户吗？\n在管理员重新激活该帐户之前，您将无法再次使用该帐户。</value>
+  </data>
+  <data name="ProfileDeactivateConfirmTitle" xml:space="preserve">
+    <value>停用帐户</value>
+  </data>
+  <data name="ProfileDeactivateErrorText" xml:space="preserve">
+    <value>停用帐户时发生错误。</value>
+  </data>
+  <data name="ProfileDeactivateSuccessText" xml:space="preserve">
+    <value>您的帐户已成功停用。该应用程序现在将关闭。</value>
+  </data>
+  <data name="ProfileDeactivateSuccessTitle" xml:space="preserve">
+    <value>帐户已停用</value>
+  </data>
+  <data name="ProfileDescriptionTooLongFmt" xml:space="preserve">
+    <value>说明不能超过 {0} 个字符。</value>
+  </data>
+  <data name="ProfileFirstNameInvalidCharsText" xml:space="preserve">
+    <value>名字包含不允许的字符。</value>
+  </data>
+  <data name="ProfileFirstNameTooLongFmt" xml:space="preserve">
+    <value>名字不能超过 {0} 个字符。</value>
+  </data>
+  <data name="ProfileGuestNotAllowedText" xml:space="preserve">
+    <value>您以访客身份登录，因此无法访问配置文件。\n\n如果您想使用配置文件，请创建一个帐户。</value>
+  </data>
+  <data name="ProfileGuestNotAllowedTitle" xml:space="preserve">
+    <value>个人资料不可用</value>
+  </data>
+  <data name="ProfileInvalidCharactersText" xml:space="preserve">
+    <value>文本包含无效字符。</value>
+  </data>
+  <data name="ProfileLastNameInvalidCharsText" xml:space="preserve">
+    <value>姓氏包含不允许的字符。</value>
+  </data>
+  <data name="ProfileLastNameTooLongFmt" xml:space="preserve">
+    <value>姓氏不能超过 {0} 个字符。</value>
+  </data>
+  <data name="ProfileMenuLinkFmt" xml:space="preserve">
+    <value>链接{0}</value>
+  </data>
+  <data name="ProfileMenuUnlinkFmt" xml:space="preserve">
+    <value>取消链接{0}</value>
+  </data>
+  <data name="ProfileNetworkFacebookText" xml:space="preserve">
+    <value>Facebook</value>
+  </data>
+  <data name="ProfileNetworkInstagramText" xml:space="preserve">
+    <value>Instagram</value>
+  </data>
+  <data name="ProfileNetworkTwitterText" xml:space="preserve">
+    <value>X/推特</value>
+  </data>
+  <data name="ProfileNotFoundText" xml:space="preserve">
+    <value>未找到个人资料。</value>
+  </data>
+  <data name="ProfileNotLoadedError" xml:space="preserve">
+    <value>配置文件尚未加载。</value>
+  </data>
+  <data name="ProfileSocialNotLinkedText" xml:space="preserve">
+    <value>（未链接）</value>
+  </data>
+  <data name="ProfileUpdateErrorText" xml:space="preserve">
+    <value>无法更新个人资料。</value>
+  </data>
+  <data name="ProfileUpdateSuccessText" xml:space="preserve">
+    <value>个人资料更新成功。</value>
+  </data>
+  <data name="ProfileUserNameUnavailableText" xml:space="preserve">
+    <value>用户名不可用。</value>
+  </data>
+  <data name="ProfileUserNotLoadedError" xml:space="preserve">
+    <value>用户配置文件尚未加载。</value>
+  </data>
+  <data name="SocialBrowserOpenError" xml:space="preserve">
+    <value>浏览器无法打开。</value>
+  </data>
+  <data name="SocialNetworkNotLinkedInfo" xml:space="preserve">
+    <value>该社交网络未链接。</value>
+  </data>
+  <data name="SocialProfileInvalidUrlWarn" xml:space="preserve">
+    <value>该链接似乎不是该社交网络的有效个人资料 URL。\n请确保将完整 URL 粘贴到您的个人资料（而不是主页）。</value>
+  </data>
+  <data name="SocialProfileLinkedInfo" xml:space="preserve">
+    <value>社交网络个人资料链接成功。</value>
+  </data>
+  <data name="SocialProfileLinkEmptyWarn" xml:space="preserve">
+    <value>个人资料链接不能为空。</value>
+  </data>
+  <data name="SocialProfileLinkError" xml:space="preserve">
+    <value>链接社交网络个人资料时出错。</value>
+  </data>
+  <data name="SocialProfileLinkFacebookCaption" xml:space="preserve">
+    <value>您的 Facebook 个人资料的 URL：</value>
+  </data>
+  <data name="SocialProfileLinkFacebookTitle" xml:space="preserve">
+    <value>链接脸书</value>
+  </data>
+  <data name="SocialProfileLinkGenericCaption" xml:space="preserve">
+    <value>您的个人资料的网址：</value>
+  </data>
+  <data name="SocialProfileLinkGenericTitle" xml:space="preserve">
+    <value>链接社交网络</value>
+  </data>
+  <data name="SocialProfileLinkInstagramCaption" xml:space="preserve">
+    <value>您的 Instagram 个人资料的 URL：</value>
+  </data>
+  <data name="SocialProfileLinkInstagramTitle" xml:space="preserve">
+    <value>链接 Instagram</value>
+  </data>
+  <data name="SocialProfileLinkInstructionsText" xml:space="preserve">
+    <value>您的浏览器将打开，以便您可以登录。然后将您的个人资料的 URL 粘贴到此处，如图所示。</value>
+  </data>
+  <data name="SocialProfileLinkTwitterCaption" xml:space="preserve">
+    <value>您的 X/Twitter 个人资料的 URL：</value>
+  </data>
+  <data name="SocialProfileLinkTwitterTitle" xml:space="preserve">
+    <value>链接X/推特</value>
+  </data>
+  <data name="SocialProfileLinkUrlRequiredText" xml:space="preserve">
+    <value>粘贴您的个人资料的 URL。</value>
+  </data>
+  <data name="SocialProfileOpenError" xml:space="preserve">
+    <value>社交网络链接无法打开。</value>
+  </data>
+  <data name="SocialProfileSaveError" xml:space="preserve">
+    <value>无法保存社交网络配置文件。</value>
+  </data>
+  <data name="SocialProfileUnlinkConfirmText" xml:space="preserve">
+    <value>您确定要取消此社交网络的链接吗？</value>
+  </data>
+  <data name="SocialProfileUnlinkConfirmTitle" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="SocialProfileUnlinkedInfo" xml:space="preserve">
+    <value>社交网络个人资料已成功取消链接。</value>
+  </data>
+  <data name="SocialProfileUnlinkError" xml:space="preserve">
+    <value>取消链接社交网络配置文件时发生错误。</value>
+  </data>
+  <data name="AuthCodeNotRequested" xml:space="preserve">
+    <value>尚未请求验证码。请先索取代码</value>
+  </data>
+  <data name="AuthOk" xml:space="preserve">
+    <value>操作成功完成</value>
+  </data>
+  <data name="autoAcceptedFriendText" xml:space="preserve">
+    <value>该用户已向您发送好友请求，现在你们是好友</value>
+  </data>
+  <data name="ChatNoActiveLobbyWarnText" xml:space="preserve">
+    <value>目前还没有活跃的大厅。在打开聊天之前创建或加入一个</value>
+  </data>
+  <data name="ConnectionLostMessage" xml:space="preserve">
+    <value>与服务器的连接丢失。您将返回到登录屏幕</value>
+  </data>
+  <data name="ConnectionLostTitle" xml:space="preserve">
+    <value>连接丢失</value>
+  </data>
+  <data name="GameBoardOpenErrorText" xml:space="preserve">
+    <value>游戏板无法打开。</value>
+  </data>
+  <data name="GameEffectsFrozenFmt" xml:space="preserve">
+    <value>冻结 ({0})</value>
+  </data>
+  <data name="GameEffectsRocketReadyText" xml:space="preserve">
+    <value>火箭准备就绪</value>
+  </data>
+  <data name="GameEffectsSeparatorText" xml:space="preserve">
+    <value>•</value>
+  </data>
+  <data name="GameEffectsShieldFmt" xml:space="preserve">
+    <value>盾牌 ({0})</value>
+  </data>
+  <data name="GameItemAnchorBlockedFmt" xml:space="preserve">
+    <value>{0} 尝试在 {1} 上使用锚点，但它们已经位于起始单元格上</value>
+  </data>
+  <data name="GameItemAnchorUsedFmt" xml:space="preserve">
+    <value>{0} 使用了锚点。</value>
+  </data>
+  <data name="GameItemAnchorUsedOnPlayerFmt" xml:space="preserve">
+    <value>{0} 在 {1} 上使用了 Anchor</value>
+  </data>
+  <data name="GameItemFreezeAppliedFmt" xml:space="preserve">
+    <value>{0}冻结了{1}</value>
+  </data>
+  <data name="GameItemFreezeBlockedFmt" xml:space="preserve">
+    <value>{0}试图冻结{1}，但他们的护盾挡住了它。</value>
+  </data>
+  <data name="GameItemFreezeUsedFmt" xml:space="preserve">
+    <value>{0}使用了冻结。</value>
+  </data>
+  <data name="GameItemGenericUsedFmt" xml:space="preserve">
+    <value>{0}使用了一个项目</value>
+  </data>
+  <data name="GameItemRocketBlockedFmt" xml:space="preserve">
+    <value>{0}尝试在{1}上使用火箭，但他们的盾牌挡住了它</value>
+  </data>
+  <data name="GameItemRocketUsedFmt" xml:space="preserve">
+    <value>{0} 使用了火箭</value>
+  </data>
+  <data name="GameItemShieldUsedFmt" xml:space="preserve">
+    <value>{0}激活护盾</value>
+  </data>
+  <data name="LoadingMainFrameNotFoundError" xml:space="preserve">
+    <value>在窗口中找不到名为“MainFrame”的框架。</value>
+  </data>
+  <data name="LobbyBannedAndKickedText" xml:space="preserve">
+    <value>您已被禁止并从游戏中删除</value>
+  </data>
+  <data name="LobbyInitErrorText" xml:space="preserve">
+    <value>大厅无法初始化。</value>
+  </data>
+  <data name="MainPageErrorLoadingCoinsText" xml:space="preserve">
+    <value>加载您的硬币时发生错误。</value>
+  </data>
+  <data name="PodiumDefaultPlayerNameFmt" xml:space="preserve">
+    <value>玩家{0}</value>
+  </data>
+  <data name="ProfileFirstNameRequiredText" xml:space="preserve">
+    <value>姓名不能为空，请输入您的姓名继续</value>
+  </data>
+  <data name="ProfileLastNameRequiredText" xml:space="preserve">
+    <value>姓氏不能为空，请输入您的姓氏以继续</value>
+  </data>
+  <data name="ReportsWindowOpenErrorText" xml:space="preserve">
+    <value>尝试打开报告窗口时出错。</value>
+  </data>
+  <data name="SettingsLanguageApplyError" xml:space="preserve">
+    <value>无法应用所选语言。</value>
+  </data>
+  <data name="SettingsLanguageInitError" xml:space="preserve">
+    <value>语言无法初始化</value>
+  </data>
+  <data name="StartCleanupErrorText" xml:space="preserve">
+    <value>释放视频资源时出错</value>
+  </data>
+  <data name="StartSoundFileNotFoundFmt" xml:space="preserve">
+    <value>找不到声音文件：{0}{1}</value>
+  </data>
+  <data name="StartSoundPlayErrorText" xml:space="preserve">
+    <value>播放声音时发生错误。</value>
+  </data>
+  <data name="StartVideoFileNotFoundFmt" xml:space="preserve">
+    <value>找不到视频文件：{0}{1}</value>
+  </data>
+  <data name="StartVideoLoadFailedText" xml:space="preserve">
+    <value>无法加载介绍视频。请稍后重试。</value>
+  </data>
+  <data name="StartVideoLoadFailedTitle" xml:space="preserve">
+    <value>视频无法加载</value>
+  </data>
+  <data name="StartVideoNotAvailableTitle" xml:space="preserve">
+    <value>视频不可用</value>
+  </data>
+  <data name="StartVideoNotFoundText" xml:space="preserve">
+    <value>找不到可以播放的视频文件</value>
+  </data>
+  <data name="TextBoxCharCounterFmt" xml:space="preserve">
+    <value>{0}/{1}</value>
+  </data>
+  <data name="UiCommunicationError" xml:space="preserve">
+    <value>联系服务器时发生通信错误</value>
+  </data>
+  <data name="UiGuestNamePrefix" xml:space="preserve">
+    <value>客人</value>
+  </data>
+  <data name="UiInvalidInput" xml:space="preserve">
+    <value>某些字段包含无效数据。请检查您的输入。</value>
+  </data>
+  <data name="UiIoError" xml:space="preserve">
+    <value>处理文件或数据时发生输入/输出错误。</value>
+  </data>
+  <data name="UiJoinMatchCodeRequired" xml:space="preserve">
+    <value>请输入匹配码</value>
+  </data>
+  <data name="UiLoadingText" xml:space="preserve">
+    <value>加载中...</value>
+  </data>
+  <data name="UiNavigationBackError" xml:space="preserve">
+    <value>尝试返回时发生错误</value>
+  </data>
+  <data name="UiNavigationNoHistory" xml:space="preserve">
+    <value>没有定义导航历史记录或返回操作。</value>
+  </data>
+  <data name="UiNetworkError" xml:space="preserve">
+    <value>发生网络错误。请检查您的连接</value>
+  </data>
+  <data name="UiOperationCanceled" xml:space="preserve">
+    <value>操作被取消。</value>
+  </data>
+  <data name="UiSecurityError" xml:space="preserve">
+    <value>处理您的请求时发生安全错误</value>
+  </data>
+  <data name="UiServiceError" xml:space="preserve">
+    <value>该服务在处理您的请求时报告了错误。</value>
+  </data>
+  <data name="UiTimeout" xml:space="preserve">
+    <value>操作超时</value>
+  </data>
+  <data name="WindowTitleGameBoard" xml:space="preserve">
+    <value>蛇梯棋 - 游戏板</value>
+  </data>
+  <data name="Message1Text" xml:space="preserve">
+    <value>您发现了一个严重的错误...该项目被推迟了。后退 5 个空格。</value>
+  </data>
+  <data name="Message2Text" xml:space="preserve">
+    <value>构建成功。你充满信心地前进。向前移动 4 个空格。</value>
+  </data>
+  <data name="Message3Text" xml:space="preserve">
+    <value>合并分支中的冲突。真可惜……后退5个空格。</value>
+  </data>
+  <data name="Message4Text" xml:space="preserve">
+    <value>您的代码通过了所有单元测试。质量加成：前进4位。</value>
+  </data>
+  <data name="Message5Text" xml:space="preserve">
+    <value>您必须重新安装 Visual Studio。你浪费了宝贵的时间。后退 5 个空格</value>
+  </data>
+  <data name="Message6Text" xml:space="preserve">
+    <value>您第一次通过了编程基础知识。向前移动 4 个空格。</value>
+  </data>
+  <data name="Message7Text" xml:space="preserve">
+    <value>IndexOutOfRangeException：您访问的数组外部返回了 5 个空格。</value>
+  </data>
+  <data name="Message8Text" xml:space="preserve">
+    <value>您发现了一个编程模因，它给了您继续下去的力量。您前进 4 个空格</value>
+  </data>
+  <data name="Message9Text" xml:space="preserve">
+    <value>你的技术老师抛弃你去秘鲁，你的项目迟到了，回去5个盒子</value>
+  </data>
+  <data name="Message10Text" xml:space="preserve">
+    <value>您完成了序列图。向前移动 4 个空格</value>
+  </data>
+  <data name="Message11Text" xml:space="preserve">
+    <value>NullReferenceException：您在未初始化的情况下前进。你就失去了下一个回合。</value>
+  </data>
+  <data name="Message12Text" xml:space="preserve">
+    <value>你的团队让你独自完成最终项目。你是无人要求的英雄。你赢得了额外回合</value>
+  </data>
+  <data name="Message13Text" xml:space="preserve">
+    <value>检测到倦怠……强制休息。你失去了一个回合。</value>
+  </data>
+  <data name="Message14Text" xml:space="preserve">
+    <value>你通过了本学期最难的一门课。庆祝一下。再次掷骰子</value>
+  </data>
+  <data name="Message15Text" xml:space="preserve">
+    <value>您必须在没有文档的情况下调试遗留代码......祝您好运。我们让你下一班休息</value>
+  </data>
+  <data name="Message16Text" xml:space="preserve">
+    <value>您通过了俄勒冈大学的技术课程。你是一个传奇。你赢了一个回合。</value>
+  </data>
+  <data name="Message17Text" xml:space="preserve">
+    <value>你必须在 sonarqube 中清除 1 天的技术债务，否则你会失去一个班次。</value>
+  </data>
+  <data name="Message18Text" xml:space="preserve">
+    <value>您以 6 分通过了技术……通过了就是通过了。你再扔一次</value>
+  </data>
+  <data name="Message19Text" xml:space="preserve">
+    <value>你求助于编程。你失去了一个回合</value>
+  </data>
+  <data name="Message20Text" xml:space="preserve">
+    <value>您在 gpt 聊天提示中处于全栈状态。这是你一生中最大的成就。你赢得一个回合</value>
   </data>
 </root>

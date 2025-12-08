@@ -45,14 +45,14 @@
         <Border Margin="24"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                MaxWidth="900"   
+                MaxWidth="900"
                 CornerRadius="16"
                 Padding="24">
             <Border.Background>
                 <SolidColorBrush Color="#FF000000"
-                         Opacity="0.50" />
+                                 Opacity="0.50" />
             </Border.Background>
-            
+
             <Border.Effect>
                 <DropShadowEffect BlurRadius="18"
                                   ShadowDepth="0"
@@ -73,8 +73,27 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
+                    <!-- Botón Back (nuevo) -->
+                    <Button x:Name="btnBack"
+                            Grid.Row="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="0,0,8,0"
+                            Width="40"
+                            Height="40"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Click="Back">
+                        <Image Source="/Assets/Images/Icons/BackIcon.png"
+                               Width="32"
+                               Height="32"
+                               Stretch="Fill"
+                               RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                    </Button>
+
                     <!-- Título -->
                     <TextBlock x:Name="lblTitle"
+                               Grid.Row="0"
                                Text="Ajustes de la partida"
                                FontSize="20"
                                FontWeight="SemiBold"

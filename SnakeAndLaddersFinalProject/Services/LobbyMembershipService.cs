@@ -10,24 +10,24 @@ namespace SnakeAndLaddersFinalProject.Services
             string currentUserName,
             int hostUserId,
             string hostUserName,
-            IEnumerable<LobbyMemberViewModel> members)
+            IEnumerable<LobbyMemberViewModel> lobbyMembers)
         {
-            foreach (var member in members)
+            foreach (var lobbyMember in lobbyMembers)
             {
-                if (member == null)
+                if (lobbyMember == null)
                 {
                     continue;
                 }
 
-                if (!string.IsNullOrWhiteSpace(member.UserName) &&
-                    string.Equals(member.UserName, currentUserName, System.StringComparison.OrdinalIgnoreCase))
+                if (!string.IsNullOrWhiteSpace(lobbyMember.UserName) &&
+                    string.Equals(lobbyMember.UserName, currentUserName, System.StringComparison.OrdinalIgnoreCase))
                 {
-                    return member.IsHost;
+                    return lobbyMember.IsHost;
                 }
 
-                if (member.UserId == currentUserId)
+                if (lobbyMember.UserId == currentUserId)
                 {
-                    return member.IsHost;
+                    return lobbyMember.IsHost;
                 }
             }
 

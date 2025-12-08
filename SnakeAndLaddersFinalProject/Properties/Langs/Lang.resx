@@ -1122,8 +1122,59 @@
   <data name="ChatNoActiveLobbyWarnText" xml:space="preserve">
     <value>There is no active lobby yet. Create or join one before opening the chat</value>
   </data>
+  <data name="ConnectionLostMessage" xml:space="preserve">
+    <value>The connection to the server was lost. You will be returned to the login screen</value>
+  </data>
+  <data name="ConnectionLostTitle" xml:space="preserve">
+    <value>Connection lost</value>
+  </data>
   <data name="GameBoardOpenErrorText" xml:space="preserve">
     <value>The game board could not be opened.</value>
+  </data>
+  <data name="GameEffectsFrozenFmt" xml:space="preserve">
+    <value>Frozen ({0})</value>
+  </data>
+  <data name="GameEffectsRocketReadyText" xml:space="preserve">
+    <value>Rocket ready</value>
+  </data>
+  <data name="GameEffectsSeparatorText" xml:space="preserve">
+    <value>•</value>
+  </data>
+  <data name="GameEffectsShieldFmt" xml:space="preserve">
+    <value>Shield ({0})</value>
+  </data>
+  <data name="GameItemAnchorBlockedFmt" xml:space="preserve">
+    <value>{0} tried to use Anchor on {1}, but they are already on the starting cell</value>
+  </data>
+  <data name="GameItemAnchorUsedFmt" xml:space="preserve">
+    <value>{0} used Anchor.</value>
+  </data>
+  <data name="GameItemAnchorUsedOnPlayerFmt" xml:space="preserve">
+    <value>{0} used Anchor on {1}</value>
+  </data>
+  <data name="GameItemFreezeAppliedFmt" xml:space="preserve">
+    <value>{0} froze {1}</value>
+  </data>
+  <data name="GameItemFreezeBlockedFmt" xml:space="preserve">
+    <value>{0} tried to freeze {1}, but their shield blocked it.</value>
+  </data>
+  <data name="GameItemFreezeUsedFmt" xml:space="preserve">
+    <value>{0} used Freeze.</value>
+  </data>
+  <data name="GameItemGenericUsedFmt" xml:space="preserve">
+    <value>{0} used an item</value>
+  </data>
+  <data name="GameItemRocketBlockedFmt" xml:space="preserve">
+    <value>{0} tried to use Rocket on {1}, but their shield blocked it</value>
+  </data>
+  <data name="GameItemRocketUsedFmt" xml:space="preserve">
+    <value>{0} used Rocket</value>
+  </data>
+  <data name="GameItemShieldUsedFmt" xml:space="preserve">
+    <value>{0} activated Shield</value>
+  </data>
+  <data name="LoadingMainFrameNotFoundError" xml:space="preserve">
+    <value>No Frame named 'MainFrame' was found in the window.</value>
   </data>
   <data name="LobbyBannedAndKickedText" xml:space="preserve">
     <value>You have been banned and removed from the game</value>
@@ -1137,11 +1188,59 @@
   <data name="PodiumDefaultPlayerNameFmt" xml:space="preserve">
     <value>Player {0}</value>
   </data>
+  <data name="ProfileFirstNameRequiredText" xml:space="preserve">
+    <value>The name cannot be in blank, please enter your name to continue</value>
+  </data>
+  <data name="ProfileLastNameRequiredText" xml:space="preserve">
+    <value>The lastname cannot be in blank, please enter your lastname to continue</value>
+  </data>
   <data name="ReportsWindowOpenErrorText" xml:space="preserve">
     <value>An error occurred while trying to open the reports window.</value>
   </data>
+  <data name="SettingsLanguageApplyError" xml:space="preserve">
+    <value>The selected language could not be applied.</value>
+  </data>
+  <data name="SettingsLanguageInitError" xml:space="preserve">
+    <value>The language could not be initialized</value>
+  </data>
+  <data name="StartCleanupErrorText" xml:space="preserve">
+    <value>An error occurred while releasing video resources</value>
+  </data>
+  <data name="StartSoundFileNotFoundFmt" xml:space="preserve">
+    <value>The sound file could not be found:{0}{1}</value>
+  </data>
+  <data name="StartSoundPlayErrorText" xml:space="preserve">
+    <value>An error occurred while playing the sound.</value>
+  </data>
+  <data name="StartVideoFileNotFoundFmt" xml:space="preserve">
+    <value>The video file could not be found:{0}{1}</value>
+  </data>
+  <data name="StartVideoLoadFailedText" xml:space="preserve">
+    <value>The intro video could not be loaded. Please try again later.</value>
+  </data>
+  <data name="StartVideoLoadFailedTitle" xml:space="preserve">
+    <value>Video could not be loaded</value>
+  </data>
+  <data name="StartVideoNotAvailableTitle" xml:space="preserve">
+    <value>Video not available</value>
+  </data>
+  <data name="StartVideoNotFoundText" xml:space="preserve">
+    <value>No video file was found to play</value>
+  </data>
+  <data name="TextBoxCharCounterFmt" xml:space="preserve">
+    <value>{0}/{1}</value>
+  </data>
+  <data name="UiCommunicationError" xml:space="preserve">
+    <value>A communication error occurred while contacting the server</value>
+  </data>
   <data name="UiGuestNamePrefix" xml:space="preserve">
     <value>Guest</value>
+  </data>
+  <data name="UiInvalidInput" xml:space="preserve">
+    <value>Some fields contain invalid data. Please review your input.</value>
+  </data>
+  <data name="UiIoError" xml:space="preserve">
+    <value>An input/output error occurred while processing files or data.</value>
   </data>
   <data name="UiJoinMatchCodeRequired" xml:space="preserve">
     <value>Please enter the match code</value>
@@ -1152,7 +1251,157 @@
   <data name="UiLoadingText" xml:space="preserve">
     <value>Loading...</value>
   </data>
+  <data name="UiNavigationBackError" xml:space="preserve">
+    <value>An error occurred while trying to go back</value>
+  </data>
+  <data name="UiNavigationNoHistory" xml:space="preserve">
+    <value>There is no navigation history or return action defined.</value>
+  </data>
+  <data name="UiNetworkError" xml:space="preserve">
+    <value>A network error occurred. Please check your connection</value>
+  </data>
+  <data name="UiOperationCanceled" xml:space="preserve">
+    <value>The operation was canceled.</value>
+  </data>
+  <data name="UiSecurityError" xml:space="preserve">
+    <value>A security error occurred while processing your request</value>
+  </data>
+  <data name="UiServiceError" xml:space="preserve">
+    <value>The service reported an error while processing your request.</value>
+  </data>
+  <data name="UiTimeout" xml:space="preserve">
+    <value>The operation timed out</value>
+  </data>
   <data name="WindowTitleGameBoard" xml:space="preserve">
     <value>Snakes &amp; Ladders - Game Board</value>
+  </data>
+  <data name="ChatInvalidLobbyIdText" xml:space="preserve">
+    <value>Invalid lobby identifier</value>
+  </data>
+  <data name="CreateMatchErrorFmt" xml:space="preserve">
+    <value>An error occurred while creating the match: {0}</value>
+  </data>
+  <data name="errorLoadingProfileStatsText" xml:space="preserve">
+    <value>An error occurred while loading player stats. Please try again later.</value>
+  </data>
+  <data name="errorProfileStatsInvalidUserIdText" xml:space="preserve">
+    <value>Unable to load stats. Invalid user identifier.</value>
+  </data>
+  <data name="errorRankingCommunicationText" xml:space="preserve">
+    <value>Could not communicate with the server to retrieve the ranking.</value>
+  </data>
+  <data name="errorRankingServerFaultTextFmt" xml:space="preserve">
+    <value>The server reported an error while retrieving the ranking:{0}{1}</value>
+  </data>
+  <data name="errorRankingUnexpectedText" xml:space="preserve">
+    <value>An unexpected error occurred while loading the player ranking. Please try again later.</value>
+  </data>
+  <data name="friendRequestNoLongerExistsText" xml:space="preserve">
+    <value>This friend request no longer exists or has already been processed.</value>
+  </data>
+  <data name="FriendUnfriendConfirmText" xml:space="preserve">
+    <value>Remove this user from your friends list?</value>
+  </data>
+  <data name="FriendUnfriendConfirmTitle" xml:space="preserve">
+    <value>Confirm action</value>
+  </data>
+  <data name="GameCallbackRegistrationErrorText" xml:space="preserve">
+    <value>An error occurred while registering for gameplay callbacks</value>
+  </data>
+  <data name="GameDefaultPlayerNameFmt" xml:space="preserve">
+    <value>Player {0}</value>
+  </data>
+  <data name="GameDiceRollFailurePrefixText" xml:space="preserve">
+    <value>Could not roll the dice:</value>
+  </data>
+  <data name="GameDiceRollUnexpectedErrorText" xml:space="preserve">
+    <value>An unexpected error occurred while rolling the dice.</value>
+  </data>
+  <data name="GameDiceSlotSelectedFmt" xml:space="preserve">
+    <value>Dice in slot {0} selected for the next roll</value>
+  </data>
+  <data name="GameItemUseCancelledText" xml:space="preserve">
+    <value>Item use was cancelled.</value>
+  </data>
+  <data name="GameItemUseFailurePrefixText" xml:space="preserve">
+    <value>Could not use the item:</value>
+  </data>
+  <data name="GameItemUseUnexpectedErrorText" xml:space="preserve">
+    <value>An error occurred while using the item.</value>
+  </data>
+  <data name="GameSelectTargetPlayerText" xml:space="preserve">
+    <value>Select the target player by clicking their avatar.</value>
+  </data>
+  <data name="GameStateSyncErrorText" xml:space="preserve">
+    <value>An error occurred while synchronizing the game state</value>
+  </data>
+  <data name="GameTimeoutKickPlayerText" xml:space="preserve">
+    <value>A player was removed from the match due to inactivity</value>
+  </data>
+  <data name="GameTimeoutSkipTurnText" xml:space="preserve">
+    <value>A player missed their turn due to time</value>
+  </data>
+  <data name="GameUnknownErrorText" xml:space="preserve">
+    <value>An unknown error occurred</value>
+  </data>
+  <data name="lblProfileUnknownUserText" xml:space="preserve">
+    <value>Unknown player</value>
+  </data>
+  <data name="lblRankingTitle" xml:space="preserve">
+    <value>Ranking</value>
+  </data>
+  <data name="LobbyCreatedStatusFmt" xml:space="preserve">
+    <value>Lobby created. Code {0}. Limit {1}. Expires at {2} UTC</value>
+  </data>
+  <data name="LobbyJoinSuccessFmt" xml:space="preserve">
+    <value>Joined {0}. Host: {1}. {2}/{3}</value>
+  </data>
+  <data name="LobbyKickedWithoutReasonText" xml:space="preserve">
+    <value>You have been removed from the lobby.</value>
+  </data>
+  <data name="LobbyKickedWithReasonFmt" xml:space="preserve">
+    <value>You have been removed from the lobby: {0}</value>
+  </data>
+  <data name="LobbyStartMatchFailedText" xml:space="preserve">
+    <value>The match could not be started</value>
+  </data>
+  <data name="LobbyStartMatchInProgressText" xml:space="preserve">
+    <value>Starting match...</value>
+  </data>
+  <data name="OtherReasonMinLengthMessageFmt" xml:space="preserve">
+    <value>The report reason must have at least {0} characters.</value>
+  </data>
+  <data name="PodiumCoinsFmt" xml:space="preserve">
+    <value>{0} coins</value>
+  </data>
+  <data name="PodiumPositionFmt" xml:space="preserve">
+    <value>#{0}</value>
+  </data>
+  <data name="PodiumTitleDefault" xml:space="preserve">
+    <value>Match results</value>
+  </data>
+  <data name="PodiumWinnerFallbackFmt" xml:space="preserve">
+    <value>Player with Id {0}</value>
+  </data>
+  <data name="ProfileUnknownUserNameText" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="ReportConfirmMessageFormat" xml:space="preserve">
+    <value>Do you want to report {0} for the following reason: {1}?</value>
+  </data>
+  <data name="ReportEndpointNotFoundMessage" xml:space="preserve">
+    <value>The report service is not available. Please try again later.</value>
+  </data>
+  <data name="ReportInvalidContextMessage" xml:space="preserve">
+    <value>The report cannot be sent because the current context is not valid</value>
+  </data>
+  <data name="ReportSentSuccessfullyMessage" xml:space="preserve">
+    <value>Your report has been sent successfully.</value>
+  </data>
+  <data name="ReportUnknownUserDisplayName" xml:space="preserve">
+    <value>Unknown user</value>
+  </data>
+  <data name="UiPasswordWeak" xml:space="preserve">
+    <value>Password must be at least {0} characters long and contain at least one uppercase letter, one lowercase letter, and one special character.</value>
   </data>
 </root>

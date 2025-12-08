@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -16,13 +14,9 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class ProfilePage : Page
     {
-        private const string INSTAGRAM_URL = "https://www.instagram.com/";
-        private const string FACEBOOK_URL = "https://www.facebook.com/";
-        private const string TWITTER_URL = "https://_x.com/";
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ProfilePage));
 
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(ProfilePage));
-
-        private readonly SocialProfilesViewModel socialProfilesViewModel;
+        private readonly SocialProfilesViewModel _socialProfilesViewModel;
 
         private ProfileViewModel ViewModel
         {
@@ -34,7 +28,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             InitializeComponent();
 
             DataContext = new ProfileViewModel();
-            socialProfilesViewModel = new SocialProfilesViewModel();
+            _socialProfilesViewModel = new SocialProfilesViewModel();
         }
 
         private void PageLoaded(object sender, RoutedEventArgs e)
@@ -55,7 +49,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 bool avatarsLoaded = viewModel.LoadAvatarOptions();
                 if (!avatarsLoaded)
                 {
-                    Logger.Warn("Avatar options could not be loaded.");
+                    _logger.Warn("Avatar options could not be loaded.");
                 }
 
                 RefreshAvatarBinding();
@@ -207,7 +201,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             borderAvatarPicker.Visibility = Visibility.Collapsed;
         }
 
-        private void AvatarItem_Click(object sender, RoutedEventArgs e)
+        private void AvatarItem(object sender, RoutedEventArgs e)
         {
             var viewModel = ViewModel;
             if (viewModel?.LoadedAccount == null)
@@ -303,24 +297,24 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void InitializeSocialProfiles(int userId)
         {
-            socialProfilesViewModel.LoadSocialProfiles(userId);
+            _socialProfilesViewModel.LoadSocialProfiles(userId);
             ApplySocialProfilesToUi();
         }
 
         private void ApplySocialProfilesToUi()
         {
             ApplySocialProfileToHyperlink(
-                socialProfilesViewModel.Instagram,
+                _socialProfilesViewModel.Instagram,
                 lnkInstagramProfile,
                 Lang.ProfileNetworkInstagramText);
 
             ApplySocialProfileToHyperlink(
-                socialProfilesViewModel.Facebook,
+                _socialProfilesViewModel.Facebook,
                 lnkFacebookProfile,
                 Lang.ProfileNetworkFacebookText);
 
             ApplySocialProfileToHyperlink(
-                socialProfilesViewModel.Twitter,
+                _socialProfilesViewModel.Twitter,
                 lnkTwitterProfile,
                 Lang.ProfileNetworkTwitterText);
 
@@ -355,17 +349,17 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             UpdateMenuHeader(
                 miInstagramLinkToggle,
-                socialProfilesViewModel.Instagram,
+                _socialProfilesViewModel.Instagram,
                 Lang.ProfileNetworkInstagramText);
 
             UpdateMenuHeader(
                 miFacebookLinkToggle,
-                socialProfilesViewModel.Facebook,
+                _socialProfilesViewModel.Facebook,
                 Lang.ProfileNetworkFacebookText);
 
             UpdateMenuHeader(
                 miTwitterLinkToggle,
-                socialProfilesViewModel.Twitter,
+                _socialProfilesViewModel.Twitter,
                 Lang.ProfileNetworkTwitterText);
         }
 
@@ -384,225 +378,95 @@ namespace SnakeAndLaddersFinalProject.Pages
                 : string.Format(Lang.ProfileMenuLinkFmt, networkDisplayName);
         }
 
-        private void OpenNetworkInBrowser(SocialNetworkType network)
+        private void LnkInstagramProfile(object sender, RoutedEventArgs e)
         {
-            string url;
-
-            switch (network)
-            {
-                case SocialNetworkType.Instagram:
-                    url = INSTAGRAM_URL;
-                    break;
-                case SocialNetworkType.Facebook:
-                    url = FACEBOOK_URL;
-                    break;
-                case SocialNetworkType.Twitter:
-                    url = TWITTER_URL;
-                    break;
-                default:
-                    return;
-            }
-
-            try
-            {
-                var startInfo = new ProcessStartInfo
-                {
-                    FileName = url,
-                    UseShellExecute = true
-                };
-
-                Process.Start(startInfo);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Error opening browser for social network.", ex);
-                MessageBox.Show(
-                    Lang.SocialBrowserOpenError,
-                    Lang.UiTitleError,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-            }
+            _socialProfilesViewModel.TryOpenSavedProfile(SocialNetworkType.Instagram);
         }
 
-        private void OpenSavedProfile(SocialNetworkType network)
+        private void LnkFacebookProfile(object sender, RoutedEventArgs e)
         {
-            SocialProfileItemViewModel item = null;
-
-            switch (network)
-            {
-                case SocialNetworkType.Instagram:
-                    item = socialProfilesViewModel.Instagram;
-                    break;
-                case SocialNetworkType.Facebook:
-                    item = socialProfilesViewModel.Facebook;
-                    break;
-                case SocialNetworkType.Twitter:
-                    item = socialProfilesViewModel.Twitter;
-                    break;
-            }
-
-            if (item == null || !item.IsLinked || string.IsNullOrWhiteSpace(item.ProfileLink))
-            {
-                MessageBox.Show(
-                    Lang.SocialNetworkNotLinkedInfo,
-                    Lang.UiTitleInfo,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-                return;
-            }
-
-            try
-            {
-                var startInfo = new ProcessStartInfo
-                {
-                    FileName = item.ProfileLink,
-                    UseShellExecute = true
-                };
-
-                Process.Start(startInfo);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Error opening social profile link.", ex);
-                MessageBox.Show(
-                    Lang.SocialProfileOpenError,
-                    Lang.UiTitleError,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-            }
-        }
-
-        private void LinkSocialProfile(SocialNetworkType network)
-        {
-            var profileVm = ViewModel;
-            if (profileVm?.LoadedAccount == null)
-            {
-                MessageBox.Show(
-                    Lang.ProfileUserNotLoadedError,
-                    Lang.UiTitleError,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                return;
-            }
-
-            int userId = profileVm.LoadedAccount.UserId;
-
-            OpenNetworkInBrowser(network);
-
-            var dialog = new SocialProfileLinkWindow(network)
-            {
-                Owner = Application.Current.MainWindow
-            };
-
-            bool? result = dialog.ShowDialog();
-            if (result != true)
-            {
-                return;
-            }
-
-            string profileLink = dialog.ProfileLink;
-
-            bool linked = socialProfilesViewModel.TryLinkProfile(userId, network, profileLink);
-            if (!linked)
-            {
-                return;
-            }
-
-            socialProfilesViewModel.LoadSocialProfiles(userId);
-            ApplySocialProfilesToUi();
-        }
-
-        private void UnlinkSocialProfile(SocialNetworkType network)
-        {
-            var profileVm = ViewModel;
-            if (profileVm?.LoadedAccount == null)
-            {
-                MessageBox.Show(
-                    Lang.ProfileUserNotLoadedError,
-                    Lang.UiTitleError,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                return;
-            }
-
-            int userId = profileVm.LoadedAccount.UserId;
-
-            var confirm = MessageBox.Show(
-                Lang.SocialProfileUnlinkConfirmText,
-                Lang.SocialProfileUnlinkConfirmTitle,
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
-
-            if (confirm != MessageBoxResult.Yes)
-            {
-                return;
-            }
-
-            bool unlinked = socialProfilesViewModel.TryUnlinkProfile(userId, network);
-            if (!unlinked)
-            {
-                return;
-            }
-
-            socialProfilesViewModel.LoadSocialProfiles(userId);
-            ApplySocialProfilesToUi();
-        }
-
-        private void LnkInstagramProfile_Click(object sender, RoutedEventArgs e)
-        {
-            OpenSavedProfile(SocialNetworkType.Instagram);
-        }
-
-        private void LnkFacebookProfile_Click(object sender, RoutedEventArgs e)
-        {
-            OpenSavedProfile(SocialNetworkType.Facebook);
+            _socialProfilesViewModel.TryOpenSavedProfile(SocialNetworkType.Facebook);
         }
 
         private void LnkTwitterProfile(object sender, RoutedEventArgs e)
         {
-            OpenSavedProfile(SocialNetworkType.Twitter);
+            _socialProfilesViewModel.TryOpenSavedProfile(SocialNetworkType.Twitter);
         }
 
         private void MenuInstagramLinkToggle(object sender, RoutedEventArgs e)
         {
-            var item = socialProfilesViewModel.Instagram;
-
-            if (item != null && item.IsLinked)
-            {
-                UnlinkSocialProfile(SocialNetworkType.Instagram);
-            }
-            else
-            {
-                LinkSocialProfile(SocialNetworkType.Instagram);
-            }
+            ToggleSocialLink(SocialNetworkType.Instagram, _socialProfilesViewModel.Instagram);
         }
 
         private void MenuFacebookLinkToggle(object sender, RoutedEventArgs e)
         {
-            var item = socialProfilesViewModel.Facebook;
-
-            if (item != null && item.IsLinked)
-            {
-                UnlinkSocialProfile(SocialNetworkType.Facebook);
-            }
-            else
-            {
-                LinkSocialProfile(SocialNetworkType.Facebook);
-            }
+            ToggleSocialLink(SocialNetworkType.Facebook, _socialProfilesViewModel.Facebook);
         }
 
         private void MenuTwitterLinkToggle(object sender, RoutedEventArgs e)
         {
-            var item = socialProfilesViewModel.Twitter;
+            ToggleSocialLink(SocialNetworkType.Twitter, _socialProfilesViewModel.Twitter);
+        }
+
+        private void ToggleSocialLink(SocialNetworkType network, SocialProfileItemViewModel item)
+        {
+            var profileVm = ViewModel;
+            if (profileVm?.LoadedAccount == null)
+            {
+                MessageBox.Show(
+                    Lang.ProfileUserNotLoadedError,
+                    Lang.UiTitleError,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            int userId = profileVm.LoadedAccount.UserId;
 
             if (item != null && item.IsLinked)
             {
-                UnlinkSocialProfile(SocialNetworkType.Twitter);
+                var confirm = MessageBox.Show(
+                    Lang.SocialProfileUnlinkConfirmText,
+                    Lang.SocialProfileUnlinkConfirmTitle,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (confirm != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+
+                bool unlinked = _socialProfilesViewModel.TryUnlinkProfile(userId, network);
+                if (!unlinked)
+                {
+                    return;
+                }
             }
             else
             {
-                LinkSocialProfile(SocialNetworkType.Twitter);
+                _socialProfilesViewModel.TryOpenNetworkHome(network);
+
+                var dialog = new SocialProfileLinkWindow(network)
+                {
+                    Owner = Application.Current.MainWindow
+                };
+
+                bool? result = dialog.ShowDialog();
+                if (result != true)
+                {
+                    return;
+                }
+
+                string profileLink = dialog.ProfileLink;
+
+                bool linked = _socialProfilesViewModel.TryLinkProfile(userId, network, profileLink);
+                if (!linked)
+                {
+                    return;
+                }
             }
+            _socialProfilesViewModel.LoadSocialProfiles(userId);
+            ApplySocialProfilesToUi();
         }
     }
 }

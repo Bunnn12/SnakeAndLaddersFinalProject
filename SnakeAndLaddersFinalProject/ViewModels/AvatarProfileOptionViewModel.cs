@@ -31,7 +31,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             if (string.IsNullOrWhiteSpace(avatarCode))
             {
-                throw new ArgumentException(nameof(avatarCode));
+                throw new ArgumentException("Avatar code cannot be null or whitespace.",
+                    nameof(avatarCode));
             }
 
             AvatarCode = avatarCode.Trim().ToUpperInvariant();

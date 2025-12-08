@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using SnakeAndLaddersFinalProject.Utilities;
 
 namespace SnakeAndLaddersFinalProject.Windows
@@ -7,8 +8,6 @@ namespace SnakeAndLaddersFinalProject.Windows
     {
         private const int MIN_COMMENT_LENGTH = 5;
         private const int MAX_COMMENT_LENGTH = 100;
-
-        private const string MIN_LENGTH_MESSAGE_TEXT_KEY = "Properties.Langs.Lang.OtherReasonMinLengthMessage";
 
         public string ReportComment { get; private set; }
 
@@ -22,15 +21,19 @@ namespace SnakeAndLaddersFinalProject.Windows
                 MAX_COMMENT_LENGTH);
         }
 
-        private void BtnOk_Click(object sender, RoutedEventArgs e)
+        private void Accept(object sender, RoutedEventArgs e)
         {
             string commentText = txtComment.Text;
 
             if (string.IsNullOrWhiteSpace(commentText) ||
                 commentText.Trim().Length < MIN_COMMENT_LENGTH)
             {
+                string message = string.Format(
+                    Properties.Langs.Lang.OtherReasonMinLengthMessageFmt,
+                    MIN_COMMENT_LENGTH);
+
                 MessageBox.Show(
-                    MIN_LENGTH_MESSAGE_TEXT_KEY,
+                    message,
                     Properties.Langs.Lang.OtherReasonWindowTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -43,7 +46,7 @@ namespace SnakeAndLaddersFinalProject.Windows
             Close();
         }
 
-        private void BtnCancel_Click(object sender, RoutedEventArgs e)
+        private void Cancel(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
             Close();

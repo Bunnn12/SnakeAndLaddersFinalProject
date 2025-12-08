@@ -299,6 +299,7 @@
     <Compile Include="Utilities\PlayerActionGuard.cs" />
     <Compile Include="Utilities\ServerInactivityGuard.cs" />
     <Compile Include="Utilities\SessionGuard.cs" />
+    <Compile Include="Utilities\SkinAssetDescriptor.cs" />
     <Compile Include="Utilities\SkinAssetHelper.cs" />
     <Compile Include="Utilities\TextBoxCharCounterHelper.cs" />
     <Compile Include="Utilities\TurnTimerTextFormatter.cs" />

@@ -15,7 +15,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         private const string USER_SERVICE_ENDPOINT_CONFIGURATION_NAME = "NetTcpBinding_IUserService";
         private const int DEFAULT_COINS = 0;
 
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(MainPage));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(MainPage));
 
         public string AvatarId { get; }
 
@@ -59,7 +59,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                Logger.Error("Error while loading coins for MainPage.", ex);
+                _logger.Error("Error while loading coins for MainPage.", ex);
 
                 try
                 {
@@ -67,7 +67,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 }
                 catch (Exception abortEx)
                 {
-                    Logger.Warn("Error while aborting UserServiceClient after coin load failure.", abortEx);
+                    _logger.Warn("Error while aborting UserServiceClient after coin load failure.", abortEx);
                 }
 
                 MessageBox.Show(

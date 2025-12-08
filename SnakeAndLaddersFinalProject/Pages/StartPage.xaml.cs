@@ -8,20 +8,23 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Resources;
 using System.Windows.Threading;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class StartPage : Page
     {
-        private Uri videoSourceUri;
-        private readonly bool isMuted = true;
+        private const int DAYTIME_START_HOUR = 6;
+        private const int DAYTIME_END_HOUR = 18;
 
-   
+        private Uri _videoSourceUri;
+        private readonly bool _isMuted = true;
+
         private string _baseDir;
         private string _videosDir;
-        private string _dayPath;
-        private string _nightPath;
-        private string _defaultPath;
+        private string _dayVideoPath;
+        private string _nightVideoPath;
+        private string _defaultVideoPath;
         private string _currentVideoPath; 
         private DispatcherTimer _clockTimer;
 
@@ -39,23 +42,23 @@ namespace SnakeAndLaddersFinalProject.Pages
             _videosDir = Path.Combine(_baseDir, "Assets", "Videos");
 
             
-            _dayPath = Path.Combine(_videosDir, "StartPageVideo.mp4");
-            _nightPath = Path.Combine(_videosDir, "StartPageNightVideo.mp4");
-            _defaultPath = Path.Combine(_videosDir, "StartPageVideo.mp4"); 
+            _dayVideoPath = Path.Combine(_videosDir, "StartPageVideo.mp4");
+            _nightVideoPath = Path.Combine(_videosDir, "StartPageNightVideo.mp4");
+            _defaultVideoPath = Path.Combine(_videosDir, "StartPageVideo.mp4"); 
 
             
             VideoIntro.MediaOpened += OnMediaOpened;
             VideoIntro.MediaEnded += OnMediaEnded;
             VideoIntro.MediaFailed += OnMediaFailed; 
-            VideoIntro.IsMuted = isMuted;
+            VideoIntro.IsMuted = _isMuted;
             VideoIntro.Opacity = 0; 
 
             
-            PlayVidePerHour(initial: true);
+            UpdateVideoForCurrentTime(initial: true);
 
             
             _clockTimer = new DispatcherTimer { Interval = TimeSpan.FromMinutes(5) };
-            _clockTimer.Tick += (_, __) => PlayVidePerHour();
+            _clockTimer.Tick += (_, __) => UpdateVideoForCurrentTime();
             _clockTimer.Start();
         }
 
@@ -78,63 +81,64 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error during cleanup: {ex.Message}");
+                MessageBox.Show(Lang.StartCleanupErrorText, Lang.UiTitleError,
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         
-        private void PlayVidePerHour(bool initial = false)
+        private void UpdateVideoForCurrentTime(bool initial = false)
         {
-            string elegido = ChooseRoutePerHour();
+            string selectedVideoPath = GetVideoPathForCurrentTime();
 
-            if (string.IsNullOrEmpty(elegido) || !File.Exists(elegido))
+            if (string.IsNullOrEmpty(selectedVideoPath) || !File.Exists(selectedVideoPath))
             {
-                
-                MessageBox.Show("no se encontró ningún video para reproducir.",
-                    "Video no disponible", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                MessageBox.Show(Lang.StartVideoNotFoundText, Lang.StartVideoNotAvailableTitle,
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
                 BtnStart.IsEnabled = true;
                 return;
             }
 
-            if (string.Equals(_currentVideoPath, elegido, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(_currentVideoPath, selectedVideoPath, StringComparison.OrdinalIgnoreCase))
             {
                 
                 if (VideoIntro.Source == null)
                 {
-                    videoSourceUri = new Uri(elegido, UriKind.Absolute);
-                    VideoIntro.Source = videoSourceUri;
+                    _videoSourceUri = new Uri(selectedVideoPath, UriKind.Absolute);
+                    VideoIntro.Source = _videoSourceUri;
                     VideoIntro.Position = TimeSpan.Zero;
                     VideoIntro.Play();
                 }
                 return;
             }
 
-            _currentVideoPath = elegido;
-            RealizarSwapConFade(elegido, initial);
+            _currentVideoPath = selectedVideoPath;
+            SwapWithFade(selectedVideoPath, initial);
         }
 
-        private string ChooseRoutePerHour()
+        private string GetVideoPathForCurrentTime()
         {
             
             bool isDay = IsDaytime();
 
-            string preferVideo = isDay ? _dayPath : _nightPath;
+            string preferVideo = isDay ? _dayVideoPath : _nightVideoPath;
             if (File.Exists(preferVideo))
                 return preferVideo;
 
             
-            string alternVideo = isDay ? _nightPath : _dayPath;
+            string alternVideo = isDay ? _nightVideoPath : _dayVideoPath;
             if (File.Exists(alternVideo))
                 return alternVideo;
 
             
-            return File.Exists(_defaultPath) ? _defaultPath : null;
+            return File.Exists(_defaultVideoPath) ? _defaultVideoPath : null;
         }
 
         private static bool IsDaytime()
         {
-            int h = DateTime.Now.Hour;
-            return h >= 6 && h < 18;
+            int currentHour = DateTime.Now.Hour;
+            return currentHour >= DAYTIME_START_HOUR && currentHour < DAYTIME_END_HOUR;
         }
 
         private void OnMediaOpened(object sender, RoutedEventArgs e)
@@ -146,11 +150,13 @@ namespace SnakeAndLaddersFinalProject.Pages
             VideoIntro.Play();
         }
 
-        private void RealizarSwapConFade(string filePath, bool initial)
+        private void SwapWithFade(string filePath, bool initial)
         {
             if (!File.Exists(filePath))
             {
-                MessageBox.Show($"No se encontró el archivo de video:\n{filePath}");
+                MessageBox.Show(
+                    string.Format(Lang.StartVideoFileNotFoundFmt, Environment.NewLine, filePath),
+                    Lang.UiTitleError, MessageBoxButton.OK, MessageBoxImage.Error);
                 BtnStart.IsEnabled = true;
                 return;
             }
@@ -166,8 +172,8 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             fadeOut.Completed += (_, __) =>
             {
-                videoSourceUri = new Uri(Path.GetFullPath(filePath), UriKind.Absolute);
-                VideoIntro.Source = videoSourceUri;
+                _videoSourceUri = new Uri(Path.GetFullPath(filePath), UriKind.Absolute);
+                VideoIntro.Source = _videoSourceUri;
                 VideoIntro.Position = TimeSpan.Zero;
                 VideoIntro.Play();
 
@@ -183,8 +189,8 @@ namespace SnakeAndLaddersFinalProject.Pages
             if (initial)
             {
                 
-                videoSourceUri = new Uri(Path.GetFullPath(filePath), UriKind.Absolute);
-                VideoIntro.Source = videoSourceUri;
+                _videoSourceUri = new Uri(Path.GetFullPath(filePath), UriKind.Absolute);
+                VideoIntro.Source = _videoSourceUri;
                 VideoIntro.Position = TimeSpan.Zero;
                 VideoIntro.Play();
 
@@ -207,18 +213,14 @@ namespace SnakeAndLaddersFinalProject.Pages
         private void OnMediaFailed(object sender, ExceptionRoutedEventArgs e)
         {
             var src = VideoIntro.Source?.ToString() ?? "(sin Source)";
-            MessageBox.Show(
-                $"No se pudo cargar el video:\n{src}\n\n" +
-                $"Existe en disco: {(VideoIntro.Source != null && File.Exists(VideoIntro.Source.LocalPath))}\n\n" +
-                $"Error: {e.ErrorException?.Message}",
-                "Video no cargó", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(Lang.StartVideoLoadFailedText, Lang.StartVideoLoadFailedTitle,
+                MessageBoxButton.OK, MessageBoxImage.Warning);
 
-            
             BtnStart.IsEnabled = true;
         }
 
         
-        private void BtnStart_Click(object sender, RoutedEventArgs e)
+        private void Start(object sender, RoutedEventArgs e)
         {
             PlayClickSound();
 
@@ -254,7 +256,9 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 if (!File.Exists(filePath))
                 {
-                    MessageBox.Show($"No se encontró el archivo de sonido:\n{filePath}");
+                    MessageBox.Show(
+                        string.Format(Lang.StartSoundFileNotFoundFmt, Environment.NewLine, filePath),
+                        Lang.UiTitleWarning, MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
@@ -265,7 +269,8 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al reproducir sonido: {ex.Message}");
+                MessageBox.Show(Lang.StartSoundPlayErrorText, Lang.UiTitleError,
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

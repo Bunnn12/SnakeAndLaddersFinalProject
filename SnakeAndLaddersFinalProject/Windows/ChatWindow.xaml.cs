@@ -6,13 +6,13 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.ViewModels;
 
 namespace SnakeAndLaddersFinalProject.Windows
 {
     public partial class ChatWindow : Window
     {
-        private const string INVALID_LOBBY_ID_MESSAGE = "LobbyId inválido.";
         private const int WINDOW_MARGIN_PIXELS = 16;
 
         private readonly ChatViewModel _chatViewModel;
@@ -21,7 +21,7 @@ namespace SnakeAndLaddersFinalProject.Windows
         {
             if (lobbyId <= 0)
             {
-                throw new ArgumentException(INVALID_LOBBY_ID_MESSAGE, nameof(lobbyId));
+                throw new ArgumentException(Lang.ChatInvalidLobbyIdText, nameof(lobbyId));
             }
 
             InitializeComponent();
@@ -133,7 +133,7 @@ namespace SnakeAndLaddersFinalProject.Windows
                 DispatcherPriority.ContextIdle);
         }
 
-        private void Close_Click(object sender, RoutedEventArgs e)
+        private void Close(object sender, RoutedEventArgs e)
         {
             Close();
         }

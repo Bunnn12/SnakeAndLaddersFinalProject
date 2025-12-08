@@ -9,15 +9,15 @@ namespace SnakeAndLaddersFinalProject.Utilities
         private const int DEFAULT_TIMEOUT_SECONDS = 45;
         private const int DEFAULT_INTERVAL_SECONDS = 5;
 
-        private readonly int timeoutSeconds;
-        private readonly DispatcherTimer timer;
-        private readonly ILog logger;
-        private readonly int gameId;
-        private readonly int localUserId;
+        private readonly int _timeoutSeconds;
+        private readonly DispatcherTimer _timer;
+        private readonly ILog _logger;
+        private readonly int _gameId;
+        private readonly int _localUserId;
 
-        private DateTime lastServerEventUtc;
+        private DateTime _lastServerEventUtc;
 
-        public event Action TimeoutDetected;
+        public event Action ServerInactivityTimeoutDetected;
 
         public ServerInactivityGuard(
             ILog logger,
@@ -27,9 +27,9 @@ namespace SnakeAndLaddersFinalProject.Utilities
             int intervalSeconds = DEFAULT_INTERVAL_SECONDS,
             Dispatcher dispatcher = null)
         {
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.gameId = gameId;
-            this.localUserId = localUserId;
+            this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this._gameId = gameId;
+            this._localUserId = localUserId;
 
             if (timeoutSeconds <= 0)
             {
@@ -41,14 +41,14 @@ namespace SnakeAndLaddersFinalProject.Utilities
                 throw new ArgumentOutOfRangeException(nameof(intervalSeconds));
             }
 
-            this.timeoutSeconds = timeoutSeconds;
+            this._timeoutSeconds = timeoutSeconds;
 
             Dispatcher effectiveDispatcher = dispatcher ??
                                              (System.Windows.Application.Current != null
                                                  ? System.Windows.Application.Current.Dispatcher
                                                  : Dispatcher.CurrentDispatcher);
 
-            timer = new DispatcherTimer(
+            _timer = new DispatcherTimer(
                 TimeSpan.FromSeconds(intervalSeconds),
                 DispatcherPriority.Background,
                 OnTimerTick,
@@ -67,50 +67,50 @@ namespace SnakeAndLaddersFinalProject.Utilities
 
         public void MarkServerEventReceived()
         {
-            lastServerEventUtc = DateTime.UtcNow;
+            _lastServerEventUtc = DateTime.UtcNow;
         }
 
         public void Start()
         {
-            timer.Start();
+            _timer.Start();
         }
 
         public void Stop()
         {
-            timer.Stop();
+            _timer.Stop();
         }
 
         private void OnTimerTick(object sender, EventArgs e)
         {
             DateTime now = DateTime.UtcNow;
-            double secondsWithoutEvents = (now - lastServerEventUtc).TotalSeconds;
+            double secondsWithoutEvents = (now - _lastServerEventUtc).TotalSeconds;
 
-            logger.InfoFormat(
+            _logger.InfoFormat(
                 "ServerInactivityGuard.Tick: GameId={0}, LocalUserId={1}, SecondsWithoutEvents={2}",
-                gameId,
-                localUserId,
+                _gameId,
+                _localUserId,
                 secondsWithoutEvents);
 
-            if (secondsWithoutEvents < timeoutSeconds)
+            if (secondsWithoutEvents < _timeoutSeconds)
             {
                 return;
             }
 
-            timer.Stop();
+            _timer.Stop();
 
-            logger.ErrorFormat(
+            _logger.ErrorFormat(
                 "ServerInactivityGuard: inactivity detected. GameId={0}, LocalUserId={1}, SecondsWithoutEvents={2}",
-                gameId,
-                localUserId,
+                _gameId,
+                _localUserId,
                 secondsWithoutEvents);
 
-            TimeoutDetected?.Invoke();
+            ServerInactivityTimeoutDetected?.Invoke();
         }
 
         public void Dispose()
         {
-            timer.Stop();
-            timer.Tick -= OnTimerTick;
+            _timer.Stop();
+            _timer.Tick -= OnTimerTick;
         }
     }
 }

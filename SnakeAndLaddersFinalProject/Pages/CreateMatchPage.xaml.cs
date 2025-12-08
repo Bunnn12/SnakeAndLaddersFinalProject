@@ -14,7 +14,7 @@ namespace SnakeAndLaddersFinalProject.Pages
     public partial class CreateMatchPage : Page
     {
 
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(CreateMatchPage));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(CreateMatchPage));
         public CreateMatchPage()
         {
             InitializeComponent();
@@ -34,13 +34,13 @@ namespace SnakeAndLaddersFinalProject.Pages
 
              
 
-                var args = new LobbyNavigationArgs
+                var lobbyNavigationArgs = new LobbyNavigationArgs
                 {
                     Mode = LobbyEntryMode.Create,
                     CreateOptions = options
                 };
 
-                var lobbyPage = new LobbyPage(args);
+                var lobbyPage = new LobbyPage(lobbyNavigationArgs);
 
                 if (NavigationService != null)
                 {
@@ -64,7 +64,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 string userMessage = ExceptionHandler.Handle(
                     ex,
                     $"{nameof(CreateMatchPage)}.{nameof(CreateRoom)}",
-                    Logger);
+                    _logger);
 
                 MessageBox.Show(
                     userMessage,
@@ -139,6 +139,44 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
 
             return AppConstants.DEFAULT_PLAYERS;
+        }
+        private void Back(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var navigationService = NavigationService.GetNavigationService(this);
+                if (navigationService != null && navigationService.CanGoBack)
+                {
+                    navigationService.GoBack();
+                    return;
+                }
+
+                var window = Application.Current.MainWindow as NavigationWindow;
+                if (window != null && window.CanGoBack)
+                {
+                    window.GoBack();
+                    return;
+                }
+
+                MessageBox.Show(
+                    Lang.UiNavigationNoHistory,
+                    Lang.UiTitleInfo,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    $"{nameof(CreateMatchPage)}.{nameof(Back)}",
+                    _logger);
+
+                MessageBox.Show(
+                    userMessage,
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
         }
     }
 }

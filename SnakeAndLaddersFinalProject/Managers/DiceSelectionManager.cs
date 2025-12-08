@@ -1,20 +1,20 @@
-﻿using SnakeAndLaddersFinalProject.Utilities;
-using System;
+﻿using System;
+using SnakeAndLaddersFinalProject.Globalization;
+using SnakeAndLaddersFinalProject.Utilities;
 
 namespace SnakeAndLaddersFinalProject.Managers
 {
     public sealed class DiceSelectionManager
     {
-        private readonly byte minSlot;
-        private readonly byte maxSlot;
-        private readonly Func<byte, bool> hasDiceInSlotFunc;
-        private readonly Action<byte?> onSelectedSlotChanged;
-        private readonly Action<bool> onSlot1SelectedChanged;
-        private readonly Action<bool> onSlot2SelectedChanged;
-        private readonly Action<string> onNotificationChanged;
+        private const string SLOT_SELECTED_MESSAGE_KEY = "GameDiceSlotSelectedFmt";
 
-        private const string SLOT_SELECTED_MESSAGE_FORMAT =
-            "Dado del slot {0} seleccionado para el siguiente tiro.";
+        private readonly byte _minSlot;
+        private readonly byte _maxSlot;
+        private readonly Func<byte, bool> _hasDiceInSlotFunc;
+        private readonly Action<byte?> _onSelectedSlotChanged;
+        private readonly Action<bool> _onSlot1SelectedChanged;
+        private readonly Action<bool> _onSlot2SelectedChanged;
+        private readonly Action<string> _onNotificationChanged;
 
         public DiceSelectionManager(
             byte minSlot,
@@ -35,13 +35,13 @@ namespace SnakeAndLaddersFinalProject.Managers
                 throw new ArgumentOutOfRangeException(nameof(maxSlot));
             }
 
-            this.minSlot = minSlot;
-            this.maxSlot = maxSlot;
-            this.hasDiceInSlotFunc = hasDiceInSlotFunc ?? throw new ArgumentNullException(nameof(hasDiceInSlotFunc));
-            this.onSelectedSlotChanged = onSelectedSlotChanged ?? throw new ArgumentNullException(nameof(onSelectedSlotChanged));
-            this.onSlot1SelectedChanged = onSlot1SelectedChanged ?? throw new ArgumentNullException(nameof(onSlot1SelectedChanged));
-            this.onSlot2SelectedChanged = onSlot2SelectedChanged ?? throw new ArgumentNullException(nameof(onSlot2SelectedChanged));
-            this.onNotificationChanged = onNotificationChanged ?? throw new ArgumentNullException(nameof(onNotificationChanged));
+            _minSlot = minSlot;
+            _maxSlot = maxSlot;
+            _hasDiceInSlotFunc = hasDiceInSlotFunc ?? throw new ArgumentNullException(nameof(hasDiceInSlotFunc));
+            _onSelectedSlotChanged = onSelectedSlotChanged ?? throw new ArgumentNullException(nameof(onSelectedSlotChanged));
+            _onSlot1SelectedChanged = onSlot1SelectedChanged ?? throw new ArgumentNullException(nameof(onSlot1SelectedChanged));
+            _onSlot2SelectedChanged = onSlot2SelectedChanged ?? throw new ArgumentNullException(nameof(onSlot2SelectedChanged));
+            _onNotificationChanged = onNotificationChanged ?? throw new ArgumentNullException(nameof(onNotificationChanged));
         }
 
         public byte? SelectedSlot { get; private set; }
@@ -49,10 +49,10 @@ namespace SnakeAndLaddersFinalProject.Managers
         public void ResetSelection()
         {
             SelectedSlot = null;
-            onSelectedSlotChanged(null);
-            onSlot1SelectedChanged(false);
-            onSlot2SelectedChanged(false);
-            onNotificationChanged(string.Empty);
+            _onSelectedSlotChanged(null);
+            _onSlot1SelectedChanged(false);
+            _onSlot2SelectedChanged(false);
+            _onNotificationChanged(string.Empty);
         }
 
         public bool CanSelectSlot(
@@ -63,7 +63,7 @@ namespace SnakeAndLaddersFinalProject.Managers
             bool isUseItemInProgress,
             bool isTargetSelectionActive)
         {
-            bool hasDiceInSlot = hasDiceInSlotFunc(slotNumber);
+            bool hasDiceInSlot = _hasDiceInSlotFunc(slotNumber);
 
             return PlayerActionGuard.CanSelectDiceSlot(
                 isMyTurn,
@@ -76,24 +76,29 @@ namespace SnakeAndLaddersFinalProject.Managers
 
         public void SelectSlot(byte slotNumber)
         {
-            if (!hasDiceInSlotFunc(slotNumber))
+            if (!_hasDiceInSlotFunc(slotNumber))
             {
                 return;
             }
 
             SelectedSlot = slotNumber;
-            onSelectedSlotChanged(SelectedSlot);
+            _onSelectedSlotChanged(SelectedSlot);
 
-            bool isSlot1Selected = slotNumber == minSlot;
-            bool isSlot2Selected = slotNumber == maxSlot;
+            bool isSlot1Selected = slotNumber == _minSlot;
+            bool isSlot2Selected = slotNumber == _maxSlot;
 
-            onSlot1SelectedChanged(isSlot1Selected);
-            onSlot2SelectedChanged(isSlot2Selected);
+            _onSlot1SelectedChanged(isSlot1Selected);
+            _onSlot2SelectedChanged(isSlot2Selected);
 
-            onNotificationChanged(
+            _onNotificationChanged(
                 string.Format(
-                    SLOT_SELECTED_MESSAGE_FORMAT,
+                    T(SLOT_SELECTED_MESSAGE_KEY),
                     slotNumber));
+        }
+
+        private static string T(string key)
+        {
+            return LocalizationManager.Current[key];
         }
     }
 }

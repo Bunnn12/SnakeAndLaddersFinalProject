@@ -26,11 +26,11 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void HookCloseRequested()
         {
-            PodiumViewModel vm = ViewModel;
+            PodiumViewModel viewModel = ViewModel;
 
-            if (vm != null)
+            if (viewModel != null)
             {
-                vm.CloseRequested = OnCloseRequested;
+                viewModel.CloseRequested = OnCloseRequested;
             }
 
             DataContextChanged += OnDataContextChanged;

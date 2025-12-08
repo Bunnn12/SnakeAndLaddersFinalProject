@@ -823,7 +823,7 @@
     <value>Se envió un correo electrónico de verificación a {0}.</value>
   </data>
   <data name="warningTitle" xml:space="preserve">
-    <value />
+    <value>Advertencia</value>
   </data>
   <data name="Message1Text" xml:space="preserve">
     <value>Encontraste un bug crítico… el proyecto se atrasó. Retrocede 5 casillas.</value>
@@ -884,5 +884,395 @@
   </data>
   <data name="Message20Text" xml:space="preserve">
     <value>Eres full stack en prompts de chat gpt. Es tu mayor logro en la vida. ganas un turno</value>
+  </data>
+  <data name="ProfileChangeAvatarConfirmTitle" xml:space="preserve">
+    <value>Cambiar avatar</value>
+  </data>
+  <data name="UiJoinMatchTitle" xml:space="preserve">
+    <value>Unirse a partida</value>
+  </data>
+  <data name="btnSendInvitationText" xml:space="preserve">
+    <value>Enviar invitación</value>
+  </data>
+  <data name="InviteInactiveFriendWarn" xml:space="preserve">
+    <value>No se puede invitar a este amigo porque su cuenta está inactiva.</value>
+  </data>
+  <data name="InviteInvalidSessionError" xml:space="preserve">
+    <value>La sesión no es válida. Por favor inicia sesión nuevamente.</value>
+  </data>
+  <data name="InviteNoFriendsInfo" xml:space="preserve">
+    <value>Aún no tienes amigos para invitar.</value>
+  </data>
+  <data name="InviteNoLobbyContextError" xml:space="preserve">
+    <value>No se encontró el contexto del lobby.</value>
+  </data>
+  <data name="InviteNoMatchCodeWarn" xml:space="preserve">
+    <value>No hay ninguna coincidencia activa con un código para invitar amigos.</value>
+  </data>
+  <data name="InviteNoServerResponseError" xml:space="preserve">
+    <value>No se recibió respuesta del servidor.</value>
+  </data>
+  <data name="InviteSelectFriendWarn" xml:space="preserve">
+    <value>Debes seleccionar un amigo para enviarle una invitación.</value>
+  </data>
+  <data name="InviteSendFailedText" xml:space="preserve">
+    <value>No se pudo enviar la invitación.</value>
+  </data>
+  <data name="InviteSentOkText" xml:space="preserve">
+    <value>Invitación enviada exitosamente.</value>
+  </data>
+  <data name="InviteSessionExpiredWarn" xml:space="preserve">
+    <value>Tu sesión ha caducado. Por favor inicia sesión nuevamente.</value>
+  </data>
+  <data name="lblInviteFriendsToMatchText" xml:space="preserve">
+    <value>Invitar amigos al partido.</value>
+  </data>
+  <data name="colFriendNoteHeader" xml:space="preserve">
+    <value>Notas</value>
+  </data>
+  <data name="UiInviteFriendFailureDefault" xml:space="preserve">
+    <value>No se pudo enviar la invitación.</value>
+  </data>
+  <data name="UiInviteFriendGuestsNotAllowed" xml:space="preserve">
+    <value>Los invitados no pueden enviar invitaciones a partidos. Por favor inicia sesión con una cuenta.</value>
+  </data>
+  <data name="UiInviteFriendInvalidSession" xml:space="preserve">
+    <value>La sesión no es válida. Por favor inicia sesión nuevamente.</value>
+  </data>
+  <data name="UiInviteFriendLobbyContextMissing" xml:space="preserve">
+    <value>No se encontró el contexto del lobby.</value>
+  </data>
+  <data name="UiInviteFriendMissingGameCode" xml:space="preserve">
+    <value>Falta el código de coincidencia. Por favor, crea o únete a una partida nuevamente.</value>
+  </data>
+  <data name="UiInviteFriendNoMatchCode" xml:space="preserve">
+    <value>Aún no hay ninguna coincidencia con un código para invitar amigos.</value>
+  </data>
+  <data name="UiInviteFriendNoResponse" xml:space="preserve">
+    <value>No se recibió respuesta del servidor.</value>
+  </data>
+  <data name="UiInviteFriendSelectFriendRequired" xml:space="preserve">
+    <value>Debes seleccionar un amigo antes de enviar una invitación.</value>
+  </data>
+  <data name="UiInviteFriendSuccessDefault" xml:space="preserve">
+    <value>Invitación enviada exitosamente.</value>
+  </data>
+  <data name="lblProfileSocialNetworksText" xml:space="preserve">
+    <value>Redes sociales</value>
+  </data>
+  <data name="ProfileAccountInfoLoadError" xml:space="preserve">
+    <value>No se pudo recuperar la información de la cuenta.</value>
+  </data>
+  <data name="ProfileAvatarUpdateErrorText" xml:space="preserve">
+    <value>No se pudo actualizar el avatar.</value>
+  </data>
+  <data name="ProfileAvatarUpdateSuccessText" xml:space="preserve">
+    <value>Avatar actualizado exitosamente.</value>
+  </data>
+  <data name="ProfileChangeAvatarConfirmText" xml:space="preserve">
+    <value>¿Quieres utilizar este avatar como tu foto de perfil?</value>
+  </data>
+  <data name="ProfileDeactivateConfirmText" xml:space="preserve">
+    <value>¿Está seguro de que desea desactivar su cuenta?\nNo podrá volver a usarla hasta que un administrador la reactive.</value>
+  </data>
+  <data name="ProfileDeactivateConfirmTitle" xml:space="preserve">
+    <value>Desactivar cuenta</value>
+  </data>
+  <data name="ProfileDeactivateErrorText" xml:space="preserve">
+    <value>Se produjo un error al desactivar la cuenta.</value>
+  </data>
+  <data name="ProfileDeactivateSuccessText" xml:space="preserve">
+    <value>Su cuenta ha sido desactivada exitosamente. La aplicación ahora se cerrará.</value>
+  </data>
+  <data name="ProfileDeactivateSuccessTitle" xml:space="preserve">
+    <value>Cuenta desactivada</value>
+  </data>
+  <data name="ProfileDescriptionTooLongFmt" xml:space="preserve">
+    <value>La descripción no puede tener más de {0} caracteres.</value>
+  </data>
+  <data name="ProfileFirstNameInvalidCharsText" xml:space="preserve">
+    <value>El nombre contiene caracteres que no están permitidos.</value>
+  </data>
+  <data name="ProfileFirstNameTooLongFmt" xml:space="preserve">
+    <value>El nombre no puede tener más de {0} caracteres.</value>
+  </data>
+  <data name="ProfileGuestNotAllowedText" xml:space="preserve">
+    <value>Usted inició sesión como invitado, por lo que no puede acceder al perfil.\n\nSi desea utilizar un perfil, cree una cuenta.</value>
+  </data>
+  <data name="ProfileGuestNotAllowedTitle" xml:space="preserve">
+    <value>Perfil no disponible</value>
+  </data>
+  <data name="ProfileInvalidCharactersText" xml:space="preserve">
+    <value>El texto contiene caracteres no válidos.</value>
+  </data>
+  <data name="ProfileLastNameInvalidCharsText" xml:space="preserve">
+    <value>El apellido contiene caracteres que no están permitidos.</value>
+  </data>
+  <data name="ProfileLastNameTooLongFmt" xml:space="preserve">
+    <value>El apellido no puede tener más de {0} caracteres.</value>
+  </data>
+  <data name="ProfileMenuLinkFmt" xml:space="preserve">
+    <value>Enlace {0}</value>
+  </data>
+  <data name="ProfileMenuUnlinkFmt" xml:space="preserve">
+    <value>Desvincular {0}</value>
+  </data>
+  <data name="ProfileNetworkFacebookText" xml:space="preserve">
+    <value>Facebook</value>
+  </data>
+  <data name="ProfileNetworkInstagramText" xml:space="preserve">
+    <value>Instagram</value>
+  </data>
+  <data name="ProfileNetworkTwitterText" xml:space="preserve">
+    <value>X/Twitter</value>
+  </data>
+  <data name="ProfileNotFoundText" xml:space="preserve">
+    <value>Perfil no encontrado.</value>
+  </data>
+  <data name="ProfileNotLoadedError" xml:space="preserve">
+    <value>El perfil no ha sido cargado.</value>
+  </data>
+  <data name="ProfileSocialNotLinkedText" xml:space="preserve">
+    <value>(no vinculado)</value>
+  </data>
+  <data name="ProfileUpdateErrorText" xml:space="preserve">
+    <value>No se pudo actualizar el perfil.</value>
+  </data>
+  <data name="ProfileUpdateSuccessText" xml:space="preserve">
+    <value>Perfil actualizado exitosamente.</value>
+  </data>
+  <data name="ProfileUserNameUnavailableText" xml:space="preserve">
+    <value>El nombre de usuario no está disponible.</value>
+  </data>
+  <data name="ProfileUserNotLoadedError" xml:space="preserve">
+    <value>El perfil de usuario no se ha cargado.</value>
+  </data>
+  <data name="SocialBrowserOpenError" xml:space="preserve">
+    <value>No se pudo abrir el navegador.</value>
+  </data>
+  <data name="SocialNetworkNotLinkedInfo" xml:space="preserve">
+    <value>Esta red social no está vinculada.</value>
+  </data>
+  <data name="SocialProfileInvalidUrlWarn" xml:space="preserve">
+    <value>El enlace no parece ser una URL de perfil válida para esta red social.\nAsegúrese de pegar la URL completa en su perfil (no en la página de inicio).</value>
+  </data>
+  <data name="SocialProfileLinkedInfo" xml:space="preserve">
+    <value>Perfil de red social vinculado exitosamente.</value>
+  </data>
+  <data name="SocialProfileLinkEmptyWarn" xml:space="preserve">
+    <value>El enlace del perfil no puede estar vacío.</value>
+  </data>
+  <data name="SocialProfileLinkError" xml:space="preserve">
+    <value>Se produjo un error al vincular el perfil de la red social.</value>
+  </data>
+  <data name="SocialProfileLinkFacebookCaption" xml:space="preserve">
+    <value>URL de tu perfil de Facebook:</value>
+  </data>
+  <data name="SocialProfileLinkFacebookTitle" xml:space="preserve">
+    <value>Enlace Facebook</value>
+  </data>
+  <data name="SocialProfileLinkGenericCaption" xml:space="preserve">
+    <value>URL de tu perfil:</value>
+  </data>
+  <data name="SocialProfileLinkGenericTitle" xml:space="preserve">
+    <value>Enlace red social</value>
+  </data>
+  <data name="SocialProfileLinkInstagramCaption" xml:space="preserve">
+    <value>URL de tu perfil de Instagram:</value>
+  </data>
+  <data name="SocialProfileLinkInstagramTitle" xml:space="preserve">
+    <value>Enlace Instagram</value>
+  </data>
+  <data name="SocialProfileLinkInstructionsText" xml:space="preserve">
+    <value>Su navegador se abrirá para que pueda iniciar sesión. Luego pegue aquí la URL de su perfil como se muestra allí.</value>
+  </data>
+  <data name="SocialProfileLinkTwitterCaption" xml:space="preserve">
+    <value>URL de tu perfil X/Twitter:</value>
+  </data>
+  <data name="SocialProfileLinkTwitterTitle" xml:space="preserve">
+    <value>Enlace X/Twitter</value>
+  </data>
+  <data name="SocialProfileLinkUrlRequiredText" xml:space="preserve">
+    <value>Pega la URL de tu perfil.</value>
+  </data>
+  <data name="SocialProfileOpenError" xml:space="preserve">
+    <value>No se pudo abrir el enlace de la red social.</value>
+  </data>
+  <data name="SocialProfileSaveError" xml:space="preserve">
+    <value>No se pudo guardar el perfil de la red social.</value>
+  </data>
+  <data name="SocialProfileUnlinkConfirmText" xml:space="preserve">
+    <value>¿Estás seguro de que quieres desvincular esta red social?</value>
+  </data>
+  <data name="SocialProfileUnlinkConfirmTitle" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="SocialProfileUnlinkedInfo" xml:space="preserve">
+    <value>Perfil de red social desvinculado exitosamente.</value>
+  </data>
+  <data name="SocialProfileUnlinkError" xml:space="preserve">
+    <value>Se produjo un error al desvincular el perfil de la red social.</value>
+  </data>
+  <data name="AuthCodeNotRequested" xml:space="preserve">
+    <value>Aún no se ha solicitado un código de verificación. Por favor solicite un código primero</value>
+  </data>
+  <data name="AuthOk" xml:space="preserve">
+    <value>Operación completada con éxito</value>
+  </data>
+  <data name="autoAcceptedFriendText" xml:space="preserve">
+    <value>Este usuario ya te había enviado una solicitud de amistad, ahora eres amigo</value>
+  </data>
+  <data name="ChatNoActiveLobbyWarnText" xml:space="preserve">
+    <value>Aún no hay ningún lobby activo. Crea o únete a uno antes de abrir el chat.</value>
+  </data>
+  <data name="ConnectionLostMessage" xml:space="preserve">
+    <value>Se perdió la conexión con el servidor. Volverá a la pantalla de inicio de sesión.</value>
+  </data>
+  <data name="ConnectionLostTitle" xml:space="preserve">
+    <value>Conexión perdida</value>
+  </data>
+  <data name="GameBoardOpenErrorText" xml:space="preserve">
+    <value>No se pudo abrir el tablero de juego.</value>
+  </data>
+  <data name="GameEffectsFrozenFmt" xml:space="preserve">
+    <value>Congelado ({0})</value>
+  </data>
+  <data name="GameEffectsRocketReadyText" xml:space="preserve">
+    <value>Cohete listo</value>
+  </data>
+  <data name="GameEffectsSeparatorText" xml:space="preserve">
+    <value>•</value>
+  </data>
+  <data name="GameEffectsShieldFmt" xml:space="preserve">
+    <value>Escudo ({0})</value>
+  </data>
+  <data name="GameItemAnchorBlockedFmt" xml:space="preserve">
+    <value>{0} intentó usar Anchor en {1}, pero ya está en la celda inicial</value>
+  </data>
+  <data name="GameItemAnchorUsedFmt" xml:space="preserve">
+    <value>{0} utilizó Ancla.</value>
+  </data>
+  <data name="GameItemAnchorUsedOnPlayerFmt" xml:space="preserve">
+    <value>{0} usó Anchor en {1}</value>
+  </data>
+  <data name="GameItemFreezeAppliedFmt" xml:space="preserve">
+    <value>{0} se congeló {1}</value>
+  </data>
+  <data name="GameItemFreezeBlockedFmt" xml:space="preserve">
+    <value>{0} intentó congelar a {1}, pero su escudo lo bloqueó.</value>
+  </data>
+  <data name="GameItemFreezeUsedFmt" xml:space="preserve">
+    <value>{0} usó Congelar.</value>
+  </data>
+  <data name="GameItemGenericUsedFmt" xml:space="preserve">
+    <value>{0} usó un artículo</value>
+  </data>
+  <data name="GameItemRocketBlockedFmt" xml:space="preserve">
+    <value>{0} intentó usar Rocket en {1}, pero su escudo lo bloqueó</value>
+  </data>
+  <data name="GameItemRocketUsedFmt" xml:space="preserve">
+    <value>{0} cohete usado</value>
+  </data>
+  <data name="GameItemShieldUsedFmt" xml:space="preserve">
+    <value>{0} escudo activado</value>
+  </data>
+  <data name="LoadingMainFrameNotFoundError" xml:space="preserve">
+    <value>No se encontró ningún marco llamado 'MainFrame' en la ventana.</value>
+  </data>
+  <data name="LobbyBannedAndKickedText" xml:space="preserve">
+    <value>Has sido baneado y eliminado del juego.</value>
+  </data>
+  <data name="LobbyInitErrorText" xml:space="preserve">
+    <value>No se pudo inicializar el lobby.</value>
+  </data>
+  <data name="MainPageErrorLoadingCoinsText" xml:space="preserve">
+    <value>Se produjo un error al cargar tus monedas.</value>
+  </data>
+  <data name="PodiumDefaultPlayerNameFmt" xml:space="preserve">
+    <value>Jugador {0}</value>
+  </data>
+  <data name="ProfileFirstNameRequiredText" xml:space="preserve">
+    <value>El nombre no puede estar en blanco, ingresa tu nombre para continuar</value>
+  </data>
+  <data name="ProfileLastNameRequiredText" xml:space="preserve">
+    <value>El apellido no puede estar en blanco, ingrese su apellido para continuar</value>
+  </data>
+  <data name="ReportsWindowOpenErrorText" xml:space="preserve">
+    <value>Se produjo un error al intentar abrir la ventana de informes.</value>
+  </data>
+  <data name="SettingsLanguageApplyError" xml:space="preserve">
+    <value>No se pudo aplicar el idioma seleccionado.</value>
+  </data>
+  <data name="SettingsLanguageInitError" xml:space="preserve">
+    <value>No se pudo inicializar el idioma</value>
+  </data>
+  <data name="StartCleanupErrorText" xml:space="preserve">
+    <value>Se produjo un error al publicar recursos de video.</value>
+  </data>
+  <data name="StartSoundFileNotFoundFmt" xml:space="preserve">
+    <value>No se pudo encontrar el archivo de sonido:{0}{1}</value>
+  </data>
+  <data name="StartSoundPlayErrorText" xml:space="preserve">
+    <value>Se produjo un error al reproducir el sonido.</value>
+  </data>
+  <data name="StartVideoFileNotFoundFmt" xml:space="preserve">
+    <value>No se pudo encontrar el archivo de vídeo:{0}{1}</value>
+  </data>
+  <data name="StartVideoLoadFailedText" xml:space="preserve">
+    <value>No se pudo cargar el vídeo de introducción. Inténtelo de nuevo más tarde.</value>
+  </data>
+  <data name="StartVideoLoadFailedTitle" xml:space="preserve">
+    <value>No se pudo cargar el video</value>
+  </data>
+  <data name="StartVideoNotAvailableTitle" xml:space="preserve">
+    <value>Vídeo no disponible</value>
+  </data>
+  <data name="StartVideoNotFoundText" xml:space="preserve">
+    <value>No se encontró ningún archivo de vídeo para reproducir.</value>
+  </data>
+  <data name="TextBoxCharCounterFmt" xml:space="preserve">
+    <value>{0}/{1}</value>
+  </data>
+  <data name="UiCommunicationError" xml:space="preserve">
+    <value>Se produjo un error de comunicación al contactar con el servidor.</value>
+  </data>
+  <data name="UiGuestNamePrefix" xml:space="preserve">
+    <value>Invitado</value>
+  </data>
+  <data name="UiInvalidInput" xml:space="preserve">
+    <value>Algunos campos contienen datos no válidos. Por favor revise su entrada.</value>
+  </data>
+  <data name="UiIoError" xml:space="preserve">
+    <value>Se produjo un error de entrada/salida al procesar archivos o datos.</value>
+  </data>
+  <data name="UiJoinMatchCodeRequired" xml:space="preserve">
+    <value>Por favor ingrese el código de coincidencia</value>
+  </data>
+  <data name="UiLoadingText" xml:space="preserve">
+    <value>Cargando...</value>
+  </data>
+  <data name="UiNavigationBackError" xml:space="preserve">
+    <value>Se produjo un error al intentar regresar</value>
+  </data>
+  <data name="UiNavigationNoHistory" xml:space="preserve">
+    <value>No hay historial de navegación ni acción de retorno definida.</value>
+  </data>
+  <data name="UiNetworkError" xml:space="preserve">
+    <value>Se produjo un error de red. Por favor revisa tu conexión</value>
+  </data>
+  <data name="UiOperationCanceled" xml:space="preserve">
+    <value>La operación fue cancelada.</value>
+  </data>
+  <data name="UiSecurityError" xml:space="preserve">
+    <value>Se produjo un error de seguridad al procesar su solicitud.</value>
+  </data>
+  <data name="UiServiceError" xml:space="preserve">
+    <value>El servicio informó un error al procesar su solicitud.</value>
+  </data>
+  <data name="UiTimeout" xml:space="preserve">
+    <value>La operación expiró</value>
+  </data>
+  <data name="WindowTitleGameBoard" xml:space="preserve">
+    <value>Serpientes y escaleras - Juego de mesa</value>
   </data>
 </root>

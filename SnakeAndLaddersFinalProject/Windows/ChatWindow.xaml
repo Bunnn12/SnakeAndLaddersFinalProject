@@ -270,7 +270,7 @@
                             Style="{StaticResource ChatCloseButtonStyle}"
                             Content="✕"
                             DockPanel.Dock="Right"
-                            Click="Close_Click"
+                            Click="Close"
                             Margin="4,0,0,0" />
 
                     <TextBlock Text="{x:Static language:Lang.chatTittle}"

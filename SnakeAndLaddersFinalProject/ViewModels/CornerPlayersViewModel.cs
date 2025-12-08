@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using SnakeAndLaddersFinalProject.GameplayService;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.ViewModels.Models;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
@@ -208,21 +210,29 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            var parts = new List<string>();
+            List<string> effectParts = new List<string>();
 
             if (slot.HasShield && slot.RemainingShieldTurns > 0)
             {
-                parts.Add(string.Format("Escudo ({0} turnos)", slot.RemainingShieldTurns));
+                effectParts.Add(
+                    string.Format(
+                        CultureInfo.InvariantCulture,
+                        Lang.GameEffectsShieldFmt,
+                        slot.RemainingShieldTurns));
             }
 
             if (slot.IsFrozen && slot.RemainingFrozenTurns > 0)
             {
-                parts.Add(string.Format("Congelado ({0} turnos)", slot.RemainingFrozenTurns));
+                effectParts.Add(
+                    string.Format(
+                        CultureInfo.InvariantCulture,
+                        Lang.GameEffectsFrozenFmt,
+                        slot.RemainingFrozenTurns));
             }
 
-            slot.EffectsText = parts.Count == 0
+            slot.EffectsText = effectParts.Count == 0
                 ? string.Empty
-                : string.Join(" | ", parts);
+                : string.Join(Lang.GameEffectsSeparatorText, effectParts);
         }
 
         private bool TryFindSlotByUserId(int userId, out LobbyMemberViewModel slot)

@@ -13,7 +13,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class MatchListPage : Page
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(MatchListPage));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(MatchListPage));
 
         public MatchListPage()
         {

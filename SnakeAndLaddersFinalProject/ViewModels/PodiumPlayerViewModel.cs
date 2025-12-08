@@ -6,6 +6,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
 {
     public sealed class PodiumPlayerViewModel : INotifyPropertyChanged
     {
+        private const string KEY_PODIUM_POSITION_FMT = "PodiumPositionFmt";
+        private const string KEY_PODIUM_COINS_FMT = "PodiumCoinsFmt";
+
         public int UserId { get; private set; }
 
         public string DisplayName { get; private set; }
@@ -31,7 +34,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
                     return string.Empty;
                 }
 
-                return string.Format("#{0}", Position);
+                return string.Format(T(KEY_PODIUM_POSITION_FMT), Position);
             }
         }
 
@@ -60,7 +63,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
                     return string.Empty;
                 }
 
-                return string.Format("{0} monedas", Coins);
+                return string.Format(T(KEY_PODIUM_COINS_FMT), Coins);
             }
         }
 
@@ -94,7 +97,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
             }
         }
 
-        // ctor “simple”
         public PodiumPlayerViewModel(int userId, string displayName, int position, int coins)
         {
             UserId = userId;
@@ -103,7 +105,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
             Coins = coins;
         }
 
-        // ctor con skin
         public PodiumPlayerViewModel(
             int userId,
             string displayName,
@@ -115,7 +116,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
             SkinImagePath = skinImagePath;
         }
 
-        // ctor viejo de compatibilidad
         public PodiumPlayerViewModel(
             object arg1,
             object arg2,
@@ -133,6 +133,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private static string T(string key)
+        {
+            return Globalization.LocalizationManager.Current[key];
+        }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

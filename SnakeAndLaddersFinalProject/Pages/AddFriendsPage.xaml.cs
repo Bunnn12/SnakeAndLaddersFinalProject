@@ -13,7 +13,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class AddFriendsPage : Page
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(AddFriendsPage));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(AddFriendsPage));
 
         private const int DEBOUNCE_MS = 250;
 
@@ -28,7 +28,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             InitializeComponent();
 
-            DataContext = new AddFriendsViewModel(Logger);
+            DataContext = new AddFriendsViewModel(_logger);
 
             if (!SessionGuard.HasValidSession())
             {
@@ -77,13 +77,13 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            var vm = ViewModel;
-            if (vm == null)
+            var viewModel = ViewModel;
+            if (viewModel == null)
             {
                 return;
             }
 
-            vm.RunSearch(term);
+            viewModel.RunSearch(term);
         }
 
         private void AddFriend(object sender, RoutedEventArgs e)
@@ -98,13 +98,13 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            var vm = ViewModel;
-            if (vm == null)
+            var viewModel = ViewModel;
+            if (viewModel == null)
             {
                 return;
             }
 
-            vm.AddFriend(user);
+            viewModel.AddFriend(user);
         }
 
         private void Back(object sender, RoutedEventArgs e)

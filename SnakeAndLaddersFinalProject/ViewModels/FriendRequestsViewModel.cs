@@ -29,7 +29,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                using (var friendsApi = new FriendsApi())
+                using (FriendsApi friendsApi = new FriendsApi())
                 {
                     IncomingRequests.Clear();
                     foreach (FriendRequestItemDto request in friendsApi.GetIncoming())
@@ -62,7 +62,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                using (var friendsApi = new FriendsApi())
+                using (FriendsApi friendsApi = new FriendsApi())
                 {
                     friendsApi.Accept(friendLinkId);
                 }
@@ -81,7 +81,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 if (!stillExists)
                 {
                     MessageBox.Show(
-                        "Lang.friendRequestNoLongerExistsText",
+                        Lang.friendRequestNoLongerExistsText,
                         Lang.infoTitle);
                 }
                 else
@@ -104,7 +104,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                using (var friendsApi = new FriendsApi())
+                using (FriendsApi friendsApi = new FriendsApi())
                 {
                     friendsApi.Reject(friendLinkId);
                 }
@@ -123,7 +123,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 if (!stillExists)
                 {
                     MessageBox.Show(
-                        "Lang.friendRequestNoLongerExistsText",
+                        Lang.friendRequestNoLongerExistsText,
                         Lang.infoTitle);
                 }
                 else
@@ -146,7 +146,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                using (var friendsApi = new FriendsApi())
+                using (FriendsApi friendsApi = new FriendsApi())
                 {
                     friendsApi.Cancel(friendLinkId);
                 }
@@ -165,7 +165,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 if (!stillExists)
                 {
                     MessageBox.Show(
-                        "Lang.friendRequestNoLongerExistsText",
+                        Lang.friendRequestNoLongerExistsText,
                         Lang.infoTitle);
                 }
                 else

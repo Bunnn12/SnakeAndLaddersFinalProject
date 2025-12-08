@@ -34,7 +34,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public EmailVerificationViewModel(RegistrationDto pendingDto)
         {
-            this._pendingDto = pendingDto ?? throw new ArgumentNullException(nameof(pendingDto));
+            _pendingDto = pendingDto ?? throw new ArgumentNullException(nameof(pendingDto));
         }
 
         public async Task VerificateCodeAsync(string code)
@@ -53,7 +53,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            var client = new AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
+            AuthServiceClient client = new AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
 
             try
             {
@@ -112,7 +112,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 .Trim()
                 .ToLowerInvariant();
 
-            var client = new AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
+            AuthServiceClient client = new AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
 
             try
             {

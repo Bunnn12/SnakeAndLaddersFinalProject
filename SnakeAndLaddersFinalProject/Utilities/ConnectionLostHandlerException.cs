@@ -3,15 +3,12 @@ using System.Linq;
 using System.ServiceModel;
 using System.Windows;
 using SnakeAndLaddersFinalProject.Pages;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 
 namespace SnakeAndLaddersFinalProject.Utilities
 {
     public static class ConnectionLostHandlerException
     {
-        private const string CONNECTION_LOST_TITLE = "Conexión perdida";
-        private const string CONNECTION_LOST_MESSAGE =
-            "Se perdió la conexión con el servidor. Serás regresado a la pantalla de inicio.";
-
         private static bool _isHandlingConnectionLost;
 
         public static bool IsConnectionException(Exception ex)
@@ -55,11 +52,8 @@ namespace SnakeAndLaddersFinalProject.Utilities
                 {
                     try
                     {
-                        MessageBox.Show(
-                            CONNECTION_LOST_MESSAGE,
-                            CONNECTION_LOST_TITLE,
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Warning);
+                        MessageBox.Show(Lang.ConnectionLostMessage, Lang.ConnectionLostTitle,
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
 
                         BasicWindow mainWindow = Application.Current
                             .Windows

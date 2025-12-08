@@ -211,15 +211,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             var sessionContext = SessionContext.Current;
             if (sessionContext != null && sessionContext.UserId != LobbyMessages.INVALID_USER_ID)
             {
-                CurrentUserId = sessionContext.UserId;
                 CurrentUserName = string.IsNullOrWhiteSpace(sessionContext.UserName)
-                    ? "Unknown"
+                    ? Lang.ProfileUnknownUserNameText
                     : sessionContext.UserName.Trim();
 
                 return;
             }
 
-            var fallbackName = $"Guest-{Environment.UserName}-{Process.GetCurrentProcess().Id}";
+            var fallbackName = $"{Lang.UiGuestNamePrefix}-{Environment.UserName}-{Process.GetCurrentProcess().Id}";
             CurrentUserName = fallbackName;
             CurrentUserId = -Math.Abs(fallbackName.GetHashCode());
         }
@@ -295,7 +294,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     _logger);
 
                 MessageBox.Show(
-                    userMessage + "STATUS_CREATE_ERROR_PREFIX",
+                    userMessage,
                     Lang.errorTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -353,8 +352,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 ApplyLobbyInfo(joinResult.Lobby);
 
-                StatusText = $"Unido a {CodigoPartida}. Host: {HostUserName}. " +
-                             $"{Members.Count}/{MaxPlayers}";
+                StatusText = string.Format(
+                    Lang.LobbyJoinSuccessFmt, CodigoPartida, HostUserName,
+                    Members.Count, MaxPlayers);
 
                 await Task.CompletedTask;
             }
@@ -393,7 +393,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 });
 
                 StatusText = result.Message ??
-                             (result.Success ? "Iniciando..." : "No se pudo iniciar.");
+                     (result.Success
+                         ? Lang.LobbyStartMatchInProgressText
+                         : Lang.LobbyStartMatchFailedText);
+
 
                 if (!result.Success)
                 {
@@ -536,9 +539,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     currentSkinId,
                     currentSkinUnlockedId));
 
-            StatusText =
-                $"Lobby creado. Código {CodigoPartida}. " +
-                $"Límite {MaxPlayers}. Expira {ExpiresAtUtc:HH:mm} UTC";
+            StatusText = string.Format(
+                Lang.LobbyCreatedStatusFmt,
+                CodigoPartida,
+                MaxPlayers,
+                ExpiresAtUtc.ToString("HH:mm"));
+
         }
 
         private void ApplyLobbyInfo(LobbyInfo info)
@@ -557,7 +563,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             LobbyStatus = info.Status.ToString();
             ExpiresAtUtc = info.ExpiresAtUtc;
 
-            // Si el server ya lo marca cerrado o la fecha ya pasó, sacar al usuario.
             if (info.Status == ServerLobbyStatus.Closed || IsLobbyExpired(ExpiresAtUtc))
             {
                 StatusText = LobbyMessages.STATUS_LOBBY_CLOSED;
@@ -583,10 +588,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             if (!isCurrentUserStillInLobby)
             {
-                StatusText = "Has sido expulsado del lobby.";
+                StatusText = Lang.LobbyKickedWithoutReasonText;
                 CurrentUserKickedFromLobby?.Invoke();
                 ResetLobbyState(StatusText);
-                return;
             }
 
             var boardSize = LobbyMapper.MapBoardSize(info.BoardSide);
@@ -793,11 +797,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     }
 
                     StatusText = string.IsNullOrWhiteSpace(reason)
-                        ? "Has sido expulsado del lobby."
-                        : $"Has sido expulsado del lobby: {reason}";
+                        ? Lang.LobbyKickedWithoutReasonText
+                        : string.Format(Lang.LobbyKickedWithReasonFmt, reason);
 
                     CurrentUserKickedFromLobby?.Invoke();
                     ResetLobbyState(StatusText);
+
                 }));
 
             return Task.CompletedTask;

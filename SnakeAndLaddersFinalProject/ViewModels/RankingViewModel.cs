@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Windows;
 using log4net;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.StatsService;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
@@ -28,7 +29,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             try
             {
-                using (var statsClient = new StatsServiceClient(STATS_ENDPOINT_NAME))
+                using (StatsServiceClient statsClient = new StatsServiceClient(STATS_ENDPOINT_NAME))
                 {
                     var rankingItems = statsClient.GetTopPlayersByCoins(DEFAULT_MAX_RESULTS);
 
@@ -49,14 +50,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                     foreach (var player in orderedPlayers)
                     {
-                        var viewModel = new PlayerRankingItemViewModel
+                        PlayerRankingItemViewModel playerRankingViewModel = new PlayerRankingItemViewModel
                         {
                             Position = currentPosition,
                             Username = player.Username,
                             Coins = player.Coins
                         };
 
-                        Players.Add(viewModel);
+                        Players.Add(playerRankingViewModel);
                         currentPosition++;
                     }
                 }
@@ -65,9 +66,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 _logger.Warn("FaultException al cargar el ranking.", faultException);
 
+                string message = string.Format(
+                    Lang.errorRankingServerFaultTextFmt,
+                    faultException.Message);
+
                 MessageBox.Show(
-                    "El servidor reportó un error al obtener el ranking:\n\n" + faultException.Message,
-                    "Ranking",
+                    message,
+                    Lang.lblRankingTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
             }
@@ -76,9 +81,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 _logger.Error("CommunicationException al cargar el ranking.", communicationException);
 
                 MessageBox.Show(
-                    "No se pudo comunicar con el servidor para obtener el ranking.\n" +
-                    "Verifica que el servidor esté ejecutándose.",
-                    "Ranking",
+                    Lang.errorRankingCommunicationText,
+                    Lang.lblRankingTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -87,8 +91,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 _logger.Error("Error inesperado al cargar el ranking.", exception);
 
                 MessageBox.Show(
-                    "Ocurrió un error inesperado al cargar el ranking de jugadores.",
-                    "Ranking",
+                    Lang.errorRankingUnexpectedText,
+                    Lang.lblRankingTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }

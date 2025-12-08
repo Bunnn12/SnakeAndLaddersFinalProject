@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 
 namespace SnakeAndLaddersFinalProject.Utilities
 {
@@ -33,7 +30,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
             }
 
             textBox.MaxLength = maxLength;
-            textBox.TextChanged += (sender, args) =>
+            textBox.TextChanged += (object sender, TextChangedEventArgs e) =>
             {
                 UpdateCounter(textBox, counterTextBlock, maxLength);
             };
@@ -53,11 +50,8 @@ namespace SnakeAndLaddersFinalProject.Utilities
                 currentLength = maxLength;
             }
 
-            counterTextBlock.Text = string.Format(
-                CultureInfo.InvariantCulture,
-                "{0}/{1}",
-                currentLength,
-                maxLength);
+            counterTextBlock.Text = string.Format(CultureInfo.InvariantCulture,
+                Lang.TextBoxCharCounterFmt, currentLength, maxLength);
         }
     }
 }

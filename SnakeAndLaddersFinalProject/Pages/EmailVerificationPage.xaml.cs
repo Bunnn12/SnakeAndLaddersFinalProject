@@ -12,7 +12,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class EmailVerificationPage : Page
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(EmailVerificationPage));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(EmailVerificationPage));
 
         private const int DEFAULT_RESEND_COOLDOWN_SECONDS = 50;
         private const int MIN_RESEND_SECONDS = 1;
@@ -106,7 +106,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                Logger.Error("Error while navigating to Login from EmailVerificationPage.", ex);
+                _logger.Error("Error while navigating to Login from EmailVerificationPage.", ex);
 
                 MessageBox.Show(
                     Lang.UiUnexpectedNavigationError,
