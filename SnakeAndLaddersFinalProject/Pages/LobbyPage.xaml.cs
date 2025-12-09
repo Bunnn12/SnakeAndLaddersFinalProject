@@ -259,7 +259,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             lobbyViewModel?.StartMatchCommand?.Execute(null);
         }
 
-        private void MemberBorder_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void ShowLobbyMemberContextMenuIfCanReport(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -345,7 +345,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void ReportPlayerMenuItem_Click(object sender, RoutedEventArgs e)
+        private void ReportPlayerMenuItem(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -401,7 +401,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void PlayerBorder_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        private void OpenPlayerBorder(object sender, ContextMenuEventArgs e)
         {
             try
             {

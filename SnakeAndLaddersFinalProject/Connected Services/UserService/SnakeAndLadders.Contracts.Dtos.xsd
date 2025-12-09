@@ -11,7 +11,7 @@
       <xs:element minOccurs="0" name="ProfileDescription" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ProfilePhotoId" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="UserId" type="xs:int" />
-      <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="AccountDto" nillable="true" type="tns:AccountDto" />

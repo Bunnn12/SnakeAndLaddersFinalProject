@@ -9,11 +9,12 @@
         Height="245"
         Width="405"
         WindowStartupLocation="Manual"
-        Loaded="ChatWindow_Loaded"
+        Loaded="ChatWindowLoaded"
         Unloaded="WindowUnloaded"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent">
+        Background="Transparent"
+        ShowInTaskbar="False">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -327,7 +328,7 @@
                              AcceptsReturn="False"
                              MaxLength="500"
                              MinHeight="32"
-                             Loaded="TaMessage_Loaded"
+                             Loaded="MessageLoadded"
                              ToolTip="Enter para enviar; Ctrl+Enter para salto de línea.">
                         <TextBox.InputBindings>
                             <KeyBinding Key="Enter"

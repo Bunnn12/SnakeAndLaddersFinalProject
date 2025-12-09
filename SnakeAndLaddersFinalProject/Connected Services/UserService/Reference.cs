@@ -50,7 +50,7 @@ namespace SnakeAndLaddersFinalProject.UserService {
         private int UserIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string UsernameField;
+        private string UserNameField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -180,14 +180,14 @@ namespace SnakeAndLaddersFinalProject.UserService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Username {
+        public string UserName {
             get {
-                return this.UsernameField;
+                return this.UserNameField;
             }
             set {
-                if ((object.ReferenceEquals(this.UsernameField, value) != true)) {
-                    this.UsernameField = value;
-                    this.RaisePropertyChanged("Username");
+                if ((object.ReferenceEquals(this.UserNameField, value) != true)) {
+                    this.UserNameField = value;
+                    this.RaisePropertyChanged("UserName");
                 }
             }
         }

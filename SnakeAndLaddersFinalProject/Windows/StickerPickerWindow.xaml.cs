@@ -21,7 +21,7 @@ namespace SnakeAndLaddersFinalProject.Windows
             icStickers.ItemsSource = safeStickers;
         }
 
-        private void StickerButton_Click(object sender, RoutedEventArgs e)
+        private void SelectSticker(object sender, RoutedEventArgs e)
         {
             FrameworkElement element = sender as FrameworkElement;
             if (element == null)

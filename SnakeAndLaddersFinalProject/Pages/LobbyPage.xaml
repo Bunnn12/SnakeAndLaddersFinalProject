@@ -123,13 +123,13 @@
                                                     BorderBrush="#88FFFFFF"
                                                     BorderThickness="1"
                                                     Background="#66000000"
-                                                    MouseLeftButtonUp="MemberBorder_MouseLeftButtonUp"
-                                                    ContextMenuOpening="PlayerBorder_ContextMenuOpening">
+                                                    MouseLeftButtonUp="ShowLobbyMemberContextMenuIfCanReport"
+                                                    ContextMenuOpening="OpenPlayerBorder">
 
                                                 <Border.ContextMenu>
                                                     <ContextMenu>
                                                         <MenuItem Header="{x:Static language:Lang.btnReportPlayerText}"
-                                                                  Click="ReportPlayerMenuItem_Click" />
+                                                                  Click="ReportPlayerMenuItem" />
                                                     </ContextMenu>
                                                 </Border.ContextMenu>
 

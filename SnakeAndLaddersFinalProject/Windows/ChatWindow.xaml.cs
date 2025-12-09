@@ -32,7 +32,7 @@ namespace SnakeAndLaddersFinalProject.Windows
             _chatViewModel.Messages.CollectionChanged += MessagesCollectionChanged;
         }
 
-        private async void ChatWindow_Loaded(object sender, RoutedEventArgs e)
+        private async void ChatWindowLoaded(object sender, RoutedEventArgs e)
         {
             PositionRelativeToOwner();
             await InitializeChatAsync();
@@ -121,7 +121,7 @@ namespace SnakeAndLaddersFinalProject.Windows
             return null;
         }
 
-        private void TaMessage_Loaded(object sender, RoutedEventArgs e)
+        private void MessageLoadded(object sender, RoutedEventArgs e)
         {
             Dispatcher.BeginInvoke(
                 new Action(

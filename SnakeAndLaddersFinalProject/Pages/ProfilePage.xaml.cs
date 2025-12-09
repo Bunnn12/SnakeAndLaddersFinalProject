@@ -66,7 +66,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            txtUsername.Text = account.Username;
+            txtUsername.Text = account.UserName;
             txtFirstName.Text = account.FirstName;
             txtLastName.Text = account.LastName;
             txtDescription.Text = account.ProfileDescription;
