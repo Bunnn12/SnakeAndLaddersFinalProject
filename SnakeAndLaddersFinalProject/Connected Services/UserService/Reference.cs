@@ -526,6 +526,67 @@ namespace SnakeAndLaddersFinalProject.UserService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AvatarSelectionRequestDto", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class AvatarSelectionRequestDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AvatarCodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AvatarCode {
+            get {
+                return this.AvatarCodeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AvatarCodeField, value) != true)) {
+                    this.AvatarCodeField = value;
+                    this.RaisePropertyChanged("AvatarCode");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserId {
+            get {
+                return this.UserIdField;
+            }
+            set {
+                if ((this.UserIdField.Equals(value) != true)) {
+                    this.UserIdField = value;
+                    this.RaisePropertyChanged("UserId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UserService.IUserService")]
     public interface IUserService {
@@ -559,6 +620,12 @@ namespace SnakeAndLaddersFinalProject.UserService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAvatarOptions", ReplyAction="http://tempuri.org/IUserService/GetAvatarOptionsResponse")]
         System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.UserService.AvatarProfileOptionsDto> GetAvatarOptionsAsync(int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/SelectAvatarForProfile", ReplyAction="http://tempuri.org/IUserService/SelectAvatarForProfileResponse")]
+        SnakeAndLaddersFinalProject.UserService.AccountDto SelectAvatarForProfile(SnakeAndLaddersFinalProject.UserService.AvatarSelectionRequestDto request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/SelectAvatarForProfile", ReplyAction="http://tempuri.org/IUserService/SelectAvatarForProfileResponse")]
+        System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.UserService.AccountDto> SelectAvatarForProfileAsync(SnakeAndLaddersFinalProject.UserService.AvatarSelectionRequestDto request);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -626,6 +693,14 @@ namespace SnakeAndLaddersFinalProject.UserService {
         
         public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.UserService.AvatarProfileOptionsDto> GetAvatarOptionsAsync(int userId) {
             return base.Channel.GetAvatarOptionsAsync(userId);
+        }
+        
+        public SnakeAndLaddersFinalProject.UserService.AccountDto SelectAvatarForProfile(SnakeAndLaddersFinalProject.UserService.AvatarSelectionRequestDto request) {
+            return base.Channel.SelectAvatarForProfile(request);
+        }
+        
+        public System.Threading.Tasks.Task<SnakeAndLaddersFinalProject.UserService.AccountDto> SelectAvatarForProfileAsync(SnakeAndLaddersFinalProject.UserService.AvatarSelectionRequestDto request) {
+            return base.Channel.SelectAvatarForProfileAsync(request);
         }
     }
 }

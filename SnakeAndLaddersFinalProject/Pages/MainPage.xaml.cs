@@ -250,5 +250,11 @@ namespace SnakeAndLaddersFinalProject.Pages
             var inventoryPage = new InventoryPage();
             NavigateToPage(inventoryPage);
         }
+
+        private void OpenSkins(object sender, RoutedEventArgs e)
+        {
+            var skinsPage = new SkinsPage();
+            NavigateToPage(skinsPage);
+        }
     }
 }

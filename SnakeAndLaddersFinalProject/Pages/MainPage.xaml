@@ -428,7 +428,8 @@
                                 Grid.ColumnSpan="2"
                                 Margin="10,-24,0,0"
                                 Style="{StaticResource BtnIcon}"
-                                ToolTip="{x:Static language:Lang.btnSkinsText}">
+                                ToolTip="{x:Static language:Lang.btnSkinsText}"
+                                Click="OpenSkins">
                             <Image Width="122"
                                    Height="78"
                                    Source="/Assets/Images/Icons/SkinIcon.png"

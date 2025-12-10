@@ -66,6 +66,12 @@
   <wsdl:message name="IUserService_GetAvatarOptions_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetAvatarOptionsResponse" />
   </wsdl:message>
+  <wsdl:message name="IUserService_SelectAvatarForProfile_InputMessage">
+    <wsdl:part name="parameters" element="tns:SelectAvatarForProfile" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_SelectAvatarForProfile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SelectAvatarForProfileResponse" />
+  </wsdl:message>
   <wsdl:portType name="IUserService">
     <wsdl:operation name="GetProfileByUsername">
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetProfileByUsername" message="tns:IUserService_GetProfileByUsername_InputMessage" />
@@ -86,6 +92,10 @@
     <wsdl:operation name="GetAvatarOptions">
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetAvatarOptions" message="tns:IUserService_GetAvatarOptions_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IUserService/GetAvatarOptionsResponse" message="tns:IUserService_GetAvatarOptions_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SelectAvatarForProfile">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/SelectAvatarForProfile" message="tns:IUserService_SelectAvatarForProfile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/SelectAvatarForProfileResponse" message="tns:IUserService_SelectAvatarForProfile_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IUserService" type="tns:IUserService">
@@ -128,6 +138,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetAvatarOptions">
       <soap:operation soapAction="http://tempuri.org/IUserService/GetAvatarOptions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SelectAvatarForProfile">
+      <soap:operation soapAction="http://tempuri.org/IUserService/SelectAvatarForProfile" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -184,6 +203,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="SelectAvatarForProfile">
+      <soap12:operation soapAction="http://tempuri.org/IUserService/SelectAvatarForProfile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="UserService">
     <wsdl:port name="BasicHttpBinding_IUserService" binding="tns:BasicHttpBinding_IUserService">
@@ -194,7 +222,7 @@
       <wsa10:EndpointReference>
         <wsa10:Address>net.tcp://localhost:8095/user/</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
-          <Upn>LAP-ASTRID\reino</Upn>
+          <Upn>LAPTOPIRENE\irene</Upn>
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>

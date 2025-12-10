@@ -1,28 +1,77 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using SnakeAndLaddersFinalProject.ViewModels;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
-    /// <summary>
-    /// Lógica de interacción para SkinsPage.xaml
-    /// </summary>
     public partial class SkinsPage : Page
     {
+        private readonly SkinsViewModel _viewModel;
+
         public SkinsPage()
         {
             InitializeComponent();
+
+            _viewModel = new SkinsViewModel();
+            DataContext = _viewModel;
+
+            Loaded += SkinsPageLoaded;
+        }
+
+        private async void SkinsPageLoaded(object sender, RoutedEventArgs e)
+        {
+            await SafeLoadAsync();
+        }
+
+        private async Task SafeLoadAsync()
+        {
+            try
+            {
+                await _viewModel.LoadAsync();
+            }
+            catch (Exception)
+            {
+                // ya se loguea en el VM
+            }
+        }
+
+        private void BackClick(object sender, RoutedEventArgs e)
+        {
+            if (NavigationService != null && NavigationService.CanGoBack)
+            {
+                NavigationService.GoBack();
+            }
+        }
+
+        private async void ApplyClick(object sender, RoutedEventArgs e)
+        {
+            await _viewModel.ApplySelectionAsync();
+        }
+
+        private void NextClick(object sender, RoutedEventArgs e)
+        {
+            _viewModel.SelectNext();
+        }
+
+        private void PreviousClick(object sender, RoutedEventArgs e)
+        {
+            _viewModel.SelectPrevious();
+        }
+
+        private void AvatarTileMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            FrameworkElement element = sender as FrameworkElement;
+
+            if (element == null)
+            {
+                return;
+            }
+
+            _viewModel.SelectAvatarFromTile(element.DataContext);
         }
     }
 }

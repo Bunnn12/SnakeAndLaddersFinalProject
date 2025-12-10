@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using SnakeAndLaddersFinalProject.Utilities;
 
@@ -9,10 +10,20 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
         private int _currentCellIndex;
         private double _verticalOffset;
         private double _x;
-        private double y;
+        private double _y;
 
         public int UserId { get; }
         public string UserName { get; }
+
+        /// <summary>
+        /// Código de skin (por ejemplo "003", "011").
+        /// Es lo que usa SkinAssetHelper para resolver las rutas.
+        /// </summary>
+        public string CurrentSkinId { get; }
+
+        /// <summary>
+        /// Id de AvatarDesbloqueado en BD (solo por si lo necesitas para lógica).
+        /// </summary>
         public int? CurrentSkinUnlockedId { get; }
 
         public int CurrentCellIndex
@@ -35,7 +46,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
             get { return _verticalOffset; }
             set
             {
-                if (_verticalOffset.Equals(value))
+                if (Math.Abs(_verticalOffset - value) < double.Epsilon)
                 {
                     return;
                 }
@@ -50,7 +61,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
             get { return _x; }
             set
             {
-                if (_x.Equals(value))
+                if (Math.Abs(_x - value) < double.Epsilon)
                 {
                     return;
                 }
@@ -62,15 +73,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
 
         public double Y
         {
-            get { return y; }
+            get { return _y; }
             set
             {
-                if (y.Equals(value))
+                if (Math.Abs(_y - value) < double.Epsilon)
                 {
                     return;
                 }
 
-                y = value;
+                _y = value;
                 OnPropertyChanged();
             }
         }
@@ -80,6 +91,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
         public PlayerTokenViewModel(
             int userId,
             string userName,
+            string currentSkinId,
             int? currentSkinUnlockedId,
             int initialCellIndex)
         {
@@ -93,13 +105,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
 
             UserName = safeUserName;
 
+            CurrentSkinId = currentSkinId ?? string.Empty;
             CurrentSkinUnlockedId = currentSkinUnlockedId;
+
             CurrentCellIndex = initialCellIndex;
             VerticalOffset = 0;
 
-            TokenImagePath = SkinAssetHelper.GetTokenPathFromSkinId(currentSkinUnlockedId);
+            // El token se resuelve por código de skin, no por IdAvatarDesbloqueado
+            TokenImagePath = SkinAssetHelper.GetTokenPathFromSkinId(CurrentSkinId);
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

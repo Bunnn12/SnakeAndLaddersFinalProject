@@ -159,6 +159,8 @@
     <Compile Include="Controls\InventorySlotsControl.xaml.cs">
       <DependentUpon>InventorySlotsControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BooleanToBrushConverter.cs" />
+    <Compile Include="Converters\BooleanToVisibilityParameterConverter.cs" />
     <Compile Include="Converters\CellTokenVisibleConverter.cs" />
     <Compile Include="Converters\GameBoardConverters.cs" />
     <Compile Include="Converters\LadderGeometryConverter.cs" />
@@ -307,6 +309,7 @@
     <Compile Include="Utilities\WidthToBoolConverter.cs" />
     <Compile Include="ViewModels\AddFriendsViewModel.cs" />
     <Compile Include="ViewModels\AvatarProfileOptionViewModel.cs" />
+    <Compile Include="ViewModels\AvatarSkinItemViewModel.cs" />
     <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\ChatClientCallback.cs" />
     <Compile Include="ViewModels\ChatMessageViewModel.cs" />
@@ -337,6 +340,7 @@
     <Compile Include="ViewModels\ReportsViewModel.cs" />
     <Compile Include="ViewModels\ShopViewModel.cs" />
     <Compile Include="ViewModels\SignUpViewModel.cs" />
+    <Compile Include="ViewModels\SkinsViewModel.cs" />
     <Compile Include="ViewModels\SocialProfilesViewModel.cs" />
     <Compile Include="Windows\ChatWindow.xaml.cs">
       <DependentUpon>ChatWindow.xaml</DependentUpon>
@@ -1119,6 +1123,10 @@
     <Resource Include="Assets\Images\Icons\CommonChestIcon.png" />
     <Resource Include="Assets\Images\Icons\EpicChestIcon.png" />
     <Resource Include="Assets\Images\Icons\LegendaryChestIcon.png" />
+    <Resource Include="Assets\Images\Skins\006.png" />
+    <Resource Include="Assets\Images\Skins\012.png" />
+    <Resource Include="Assets\Images\Skins\002.png" />
+    <Resource Include="Assets\Images\Skins\007.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -49,6 +49,7 @@ namespace SnakeAndLaddersFinalProject.Game
             var token = new PlayerTokenViewModel(
                 member.UserId,
                 member.UserName,
+                member.CurrentSkinId,
                 member.CurrentSkinUnlockedId,
                 startCellIndex);
 
@@ -79,6 +80,7 @@ namespace SnakeAndLaddersFinalProject.Game
             token = new PlayerTokenViewModel(
                 userId,
                 $"Jugador {userId}",
+                null,
                 null,
                 initialCellIndex);
 

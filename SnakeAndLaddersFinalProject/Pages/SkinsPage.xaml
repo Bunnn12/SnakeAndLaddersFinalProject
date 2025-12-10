@@ -1,14 +1,337 @@
 ﻿<Page x:Class="SnakeAndLaddersFinalProject.Pages.SkinsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="SkinsPage">
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
+      mc:Ignorable="d"
+      Title="SkinsPage"
+      d:DesignWidth="1280"
+      d:DesignHeight="720"
+      SnapsToDevicePixels="True"
+      UseLayoutRounding="True"
+      TextOptions.TextRenderingMode="Aliased"
+      Background="Transparent">
 
-    <Grid>
-        
+    <Page.Resources>
+
+        <!-- Background -->
+        <ImageBrush x:Key="SkinsBackgroundBrush"
+                    ImageSource="/Assets/Images/Backgrounds/RankingBackground.png"
+                    Stretch="UniformToFill"
+                    AlignmentX="Center"
+                    AlignmentY="Center"
+                    RenderOptions.BitmapScalingMode="NearestNeighbor" />
+
+        <!-- Shadow -->
+        <DropShadowEffect x:Key="ShadowSoft"
+                          BlurRadius="10"
+                          ShadowDepth="0"
+                          Direction="270"
+                          Opacity="0.6"
+                          Color="#22000000" />
+
+        <!-- Wood palette -->
+        <SolidColorBrush x:Key="BrushBoardBackground" Color="#F7C76B" />
+        <SolidColorBrush x:Key="BrushBoardBorder"     Color="#9B4C24" />
+        <SolidColorBrush x:Key="BrushBoardInner"      Color="#FEE1A9" />
+        <SolidColorBrush x:Key="BrushBoardInnerBorder" Color="#D0893A" />
+
+        <!-- Text / tiles -->
+        <SolidColorBrush x:Key="BrushHeaderText" Color="#FFFDF2" />
+        <SolidColorBrush x:Key="BrushWoodDark"   Color="#5C3721" />
+        <SolidColorBrush x:Key="BrushTileBorder" Color="#7A3A12" />
+        <SolidColorBrush x:Key="BrushTileBackgroundUnlocked" Color="#FEE7BC" />
+        <SolidColorBrush x:Key="BrushTileBackgroundLocked"   Color="#C7B29A" />
+
+        <FontFamily x:Key="Font.SkinsMain">Bahnschrift SemiBold</FontFamily>
+
+        <!-- Title -->
+        <Style x:Key="LblSkinsTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource BrushHeaderText}" />
+            <Setter Property="FontFamily" Value="Impact" />
+            <Setter Property="FontSize" Value="40" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Effect" Value="{StaticResource ShadowSoft}" />
+        </Style>
+
+        <!-- Back button -->
+        <Style x:Key="BtnBackSkins" TargetType="Button">
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Height" Value="80" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+
+        <!-- Arrow button -->
+        <Style x:Key="ArrowButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="64" />
+            <Setter Property="Height" Value="64" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontFamily" Value="{StaticResource Font.SkinsMain}" />
+            <Setter Property="FontSize" Value="36" />
+            <Setter Property="Foreground" Value="#321309" />
+        </Style>
+
+        <!-- Primary button -->
+        <Style x:Key="PrimaryActionButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="260" />
+            <Setter Property="Height" Value="52" />
+            <Setter Property="FontFamily" Value="{StaticResource Font.SkinsMain}" />
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="Foreground" Value="#321309" />
+            <Setter Property="Background" Value="#E37A2B" />
+            <Setter Property="BorderBrush" Value="#D0893A" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Effect" Value="{StaticResource ShadowSoft}" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Avatar tile template -->
+        <DataTemplate x:Key="AvatarTileTemplate">
+            <Border Width="120"
+                    Height="120"
+                    Margin="6"
+                    CornerRadius="8"
+                    BorderThickness="3"
+                    BorderBrush="{StaticResource BrushTileBorder}"
+                    SnapsToDevicePixels="True"
+                    RenderOptions.BitmapScalingMode="NearestNeighbor"
+                    MouseLeftButtonUp="AvatarTileMouseLeftButtonUp">
+
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="{StaticResource BrushTileBackgroundUnlocked}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsUnlocked}" Value="False">
+                                <Setter Property="Background" Value="{StaticResource BrushTileBackgroundLocked}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Grid>
+                    <Image Source="{Binding ImagePath}"
+                           Stretch="Uniform"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+
+                    <!-- Nombre abajo -->
+                    <Border Background="#80000000"
+                            VerticalAlignment="Bottom"
+                            Height="28">
+                        <TextBlock Text="{Binding DisplayName}"
+                                   Foreground="White"
+                                   FontFamily="{StaticResource Font.SkinsMain}"
+                                   FontSize="14"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   TextTrimming="CharacterEllipsis" />
+                    </Border>
+
+                    <!-- Candado si está bloqueado -->
+                    <TextBlock Text="🔒"
+                               FontSize="32"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsUnlocked}" Value="False">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <!-- Marco si es el actual -->
+                    <Border BorderThickness="3"
+                            CornerRadius="8"
+                            BorderBrush="#FFD67A2B">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+    </Page.Resources>
+
+    <Grid Background="{StaticResource SkinsBackgroundBrush}">
+        <Viewbox Stretch="Uniform" StretchDirection="Both">
+            <Grid Width="1280" Height="720" Background="Transparent" Margin="24">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Grid Grid.Row="0" Margin="0,0,0,24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="btnBack"
+                            Grid.Column="0"
+                            Style="{StaticResource BtnBackSkins}"
+                            Click="BackClick">
+                        <Image Source="/Assets/Images/Icons/BackIcon.png"
+                               Width="48"
+                               Height="48"
+                               Stretch="Fill"
+                               RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                    </Button>
+
+                    <Border Grid.Column="1"
+                            CornerRadius="10"
+                            BorderBrush="{StaticResource BrushWoodDark}"
+                            BorderThickness="4"
+                            Padding="40,8"
+                            HorizontalAlignment="Center"
+                            Effect="{StaticResource ShadowSoft}"
+                            Background="#FF59320B">
+                        <TextBlock Text="{x:Static language:Lang.btnSkinsText}"
+                                   d:Text="Skins"
+                                   Style="{StaticResource LblSkinsTitle}"
+                                   HorizontalAlignment="Center" />
+                    </Border>
+                </Grid>
+
+                <!-- Content -->
+                <Grid Grid.Row="1"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center">
+                    <Border CornerRadius="0"
+                            Width="1000"
+                            Height="520"
+                            Background="{StaticResource BrushBoardBackground}"
+                            BorderBrush="{StaticResource BrushBoardBorder}"
+                            BorderThickness="10"
+                            Padding="10"
+                            Effect="{StaticResource ShadowSoft}">
+                        <Border CornerRadius="0"
+                                Background="{StaticResource BrushBoardInner}"
+                                BorderBrush="{StaticResource BrushBoardInnerBorder}"
+                                BorderThickness="4"
+                                Padding="12">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="3*" />
+                                    <RowDefinition Height="2*" />
+                                </Grid.RowDefinitions>
+
+                                <!-- Avatar grande + descripción -->
+                                <Grid Grid.Row="0" Margin="0,0,0,12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="280" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Flecha izquierda -->
+                                    <Button Grid.Column="0"
+                                            Style="{StaticResource ArrowButtonStyle}"
+                                            Click="PreviousClick"
+                                            Margin="8,0,16,0"
+                                            Content="&lt;" />
+
+                                    <!-- Avatar grande -->
+                                    <Border Grid.Column="1"
+                                            CornerRadius="16"
+                                            Background="#FBD9A0"
+                                            BorderBrush="{StaticResource BrushBoardInnerBorder}"
+                                            BorderThickness="4"
+                                            Padding="16"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                        <Image Source="{Binding SelectedAvatar.ImagePath}"
+                                               Stretch="Uniform"
+                                               Width="220"
+                                               Height="220"
+                                               RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                                    </Border>
+
+                                    <!-- Flecha derecha -->
+                                    <Button Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center"
+                                            Margin="16,0,8,0"
+                                            Style="{StaticResource ArrowButtonStyle}"
+                                            Click="NextClick"
+                                            Content="&gt;" />
+
+                                    <!-- Cuadro de información -->
+                                    <Border Grid.Column="2"
+                                            CornerRadius="12"
+                                            Background="#FFFDF2"
+                                            BorderBrush="{StaticResource BrushBoardInnerBorder}"
+                                            BorderThickness="4"
+                                            Padding="12"
+                                            Effect="{StaticResource ShadowSoft}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding SelectedDisplayName}"
+                                                       FontFamily="{StaticResource Font.SkinsMain}"
+                                                       FontSize="22"
+                                                       FontWeight="Bold"
+                                                       Foreground="#321309"
+                                                       Margin="0,0,0,8" />
+                                            <TextBlock Text="{Binding SelectedStatusText}"
+                                                       FontFamily="{StaticResource Font.SkinsMain}"
+                                                       FontSize="16"
+                                                       Foreground="#321309"
+                                                       TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+
+                                <!-- Grid de avatares -->
+                                <ScrollViewer Grid.Row="1"
+                                              VerticalScrollBarVisibility="Auto"
+                                              HorizontalScrollBarVisibility="Disabled">
+                                    <ItemsControl ItemsSource="{Binding AvatarOptions}"
+                                                  ItemTemplate="{StaticResource AvatarTileTemplate}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel HorizontalAlignment="Center" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </Grid>
+
+                        </Border>
+                    </Border>
+                </Grid>
+
+                <!-- Bottom bar -->
+                <Grid Grid.Row="2" Margin="0,12,0,0">
+                    <Button Content="a"
+                            HorizontalAlignment="Center"
+                            Style="{StaticResource PrimaryActionButtonStyle}"
+                            Click="ApplyClick" />
+                </Grid>
+
+            </Grid>
+        </Viewbox>
     </Grid>
 </Page>

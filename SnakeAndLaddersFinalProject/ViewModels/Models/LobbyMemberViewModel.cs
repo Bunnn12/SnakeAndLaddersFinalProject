@@ -151,24 +151,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
             }
         }
 
-        public LobbyMemberViewModel(int userId, string userName, bool isHost, DateTime joinedAt)
-        {
-            UserId = userId;
-            UserName = userName;
-            JoinedAt = joinedAt;
-            this._isHost = isHost;
-        }
-
-        public LobbyMemberViewModel(
-            int userId,
-            string userName,
-            bool isHost,
-            DateTime joinedAt,
-            string avatarId)
-            : this(userId, userName, isHost, joinedAt, avatarId, null, null)
-        {
-
-        }
+        
 
         public LobbyMemberViewModel(
             int userId,

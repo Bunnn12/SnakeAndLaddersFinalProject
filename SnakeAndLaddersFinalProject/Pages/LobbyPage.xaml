@@ -55,6 +55,7 @@
 
     <Grid Background="Transparent">
 
+        <!-- Video de fondo -->
         <MediaElement x:Name="VideoBg"
                       IsMuted="True"
                       Stretch="UniformToFill"
@@ -114,69 +115,94 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <!-- Lista de miembros -->
+                            <!-- Miembros estilo Fortnite -->
                             <ScrollViewer Grid.Row="0"
                                           VerticalScrollBarVisibility="Auto">
                                 <ItemsControl ItemsSource="{Binding Members}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"
+                                                        HorizontalAlignment="Center" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Padding="10"
-                                                    Margin="0,6"
-                                                    CornerRadius="8"
+                                            <Border Margin="8"
+                                                    Padding="8"
+                                                    CornerRadius="12"
+                                                    Background="#66000000"
                                                     BorderBrush="#88FFFFFF"
-                                                    BorderThickness="1"
-                                                    Background="#66000000">
+                                                    BorderThickness="1">
 
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="Auto" />
-                                                    </Grid.ColumnDefinitions>
+                                                <Grid Width="220"
+                                                      Height="260">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*" />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
 
-                                                    <!-- Estrella host -->
-                                                    <TextBlock Grid.Column="0"
-                                                               Text="★"
-                                                               Margin="0,0,8,0"
-                                                               Foreground="Gold"
-                                                               FontSize="18"
-                                                               Visibility="{Binding IsHost, Converter={StaticResource BoolToVisibility}}" />
+                                                    <!-- Skin grande -->
+                                                    <Border Grid.Row="0"
+                                                            Margin="4"
+                                                            CornerRadius="10"
+                                                            Background="#22000000">
+                                                        <Grid>
+                                                            <Image Source="{Binding SkinImagePath}"
+                                                                   Stretch="Uniform"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Bottom"
+                                                                   RenderOptions.BitmapScalingMode="NearestNeighbor" />
 
-                                                    <!-- Info usuario -->
-                                                    <StackPanel Grid.Column="1">
+                                                            <!-- Host -->
+                                                            <TextBlock Text="★"
+                                                                       Margin="6"
+                                                                       FontSize="20"
+                                                                       Foreground="Gold"
+                                                                       HorizontalAlignment="Left"
+                                                                       VerticalAlignment="Top"
+                                                                       Visibility="{Binding IsHost, Converter={StaticResource BoolToVisibility}}" />
+
+                                                            <!-- Menú de acciones -->
+                                                            <Button HorizontalAlignment="Right"
+                                                                    VerticalAlignment="Top"
+                                                                    Margin="0,4,4,0"
+                                                                    Style="{StaticResource MemberActionsButtonBase}"
+                                                                    Tag="{Binding}"
+                                                                    Click="OnLobbyMemberActionsButtonClick">
+
+                                                                <Button.ContextMenu>
+                                                                    <ContextMenu>
+                                                                        <MenuItem Header="{x:Static language:Lang.btnReportPlayerText}"
+                                                                                  Tag="Report"
+                                                                                  Click="ReportPlayerMenuItem" />
+                                                                        <MenuItem Header="{x:Static language:Lang.LobbyKickPlayerMenuText}"
+                                                                                  Tag="Kick"
+                                                                                  Click="KickPlayerMenuItem" />
+                                                                    </ContextMenu>
+                                                                </Button.ContextMenu>
+
+                                                                <TextBlock Text="⋮"
+                                                                           HorizontalAlignment="Center"
+                                                                           VerticalAlignment="Center" />
+                                                            </Button>
+                                                        </Grid>
+                                                    </Border>
+
+                                                    <!-- Nombre y hora -->
+                                                    <StackPanel Grid.Row="1"
+                                                                Margin="4,6,4,0">
                                                         <TextBlock Text="{Binding UserName}"
                                                                    FontWeight="Bold"
                                                                    Foreground="White"
-                                                                   FontSize="16" />
+                                                                   FontSize="16"
+                                                                   HorizontalAlignment="Center" />
                                                         <TextBlock Text="{Binding JoinedAt, StringFormat='{}{0:HH:mm}'}"
                                                                    Opacity="0.8"
                                                                    FontSize="12"
-                                                                   Foreground="White" />
+                                                                   Foreground="White"
+                                                                   HorizontalAlignment="Center" />
                                                     </StackPanel>
-
-                                                    <!-- Botón tres puntitos alineado a la derecha -->
-                                                    <Button Grid.Column="2"
-                                                            HorizontalAlignment="Right"
-                                                            Style="{StaticResource MemberActionsButtonBase}"
-                                                            Tag="{Binding}"
-                                                            Click="OnLobbyMemberActionsButtonClick">
-
-                                                        <Button.ContextMenu>
-                                                            <ContextMenu>
-                                                                <MenuItem Header="{x:Static language:Lang.btnReportPlayerText}"
-                                                                          Tag="Report"
-                                                                          Click="ReportPlayerMenuItem" />
-                                                                <MenuItem Header="{x:Static language:Lang.LobbyKickPlayerMenuText}"
-                                                                           Tag="Kick"
-                                                                           Click="KickPlayerMenuItem" />
-
-                                                            </ContextMenu>
-                                                        </Button.ContextMenu>
-
-                                                        <TextBlock Text="⋮"
-                                                                   HorizontalAlignment="Center"
-                                                                   VerticalAlignment="Center" />
-                                                    </Button>
                                                 </Grid>
                                             </Border>
                                         </DataTemplate>
