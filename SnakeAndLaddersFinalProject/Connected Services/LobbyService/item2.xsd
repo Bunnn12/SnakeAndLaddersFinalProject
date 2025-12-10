@@ -115,6 +115,14 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="GetLobbyInfoRequest" nillable="true" type="tns:GetLobbyInfoRequest" />
+  <xs:complexType name="KickPlayerFromLobbyRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="HostUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="LobbyId" type="xs:int" />
+      <xs:element minOccurs="0" name="TargetUserId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="KickPlayerFromLobbyRequest" nillable="true" type="tns:KickPlayerFromLobbyRequest" />
   <xs:complexType name="ArrayOfLobbySummary">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="LobbySummary" nillable="true" type="tns:LobbySummary" />

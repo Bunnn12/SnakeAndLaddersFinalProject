@@ -85,10 +85,22 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="KickPlayerFromLobby">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" minOccurs="0" name="request" nillable="true" type="q11:KickPlayerFromLobbyRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="KickPlayerFromLobbyResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
   <xs:element name="OnLobbyUpdated">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" minOccurs="0" name="lobby" nillable="true" type="q11:LobbyInfo" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" minOccurs="0" name="lobby" nillable="true" type="q12:LobbyInfo" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -111,7 +123,7 @@
   <xs:element name="OnPublicLobbiesChanged">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" minOccurs="0" name="lobbies" nillable="true" type="q12:ArrayOfLobbySummary" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos" minOccurs="0" name="lobbies" nillable="true" type="q13:ArrayOfLobbySummary" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

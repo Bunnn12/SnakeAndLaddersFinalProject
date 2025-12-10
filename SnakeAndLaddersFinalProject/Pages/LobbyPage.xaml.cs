@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,6 +12,7 @@ using SnakeAndLaddersFinalProject.Windows;
 using SnakeAndLaddersFinalProject.Policies;
 using SnakeAndLaddersFinalProject.Utilities;
 using SnakeAndLaddersFinalProject.Properties.Langs;
+using SnakeAndLaddersFinalProject.ViewModels.Models;
 
 namespace SnakeAndLaddersFinalProject.Pages
 {
@@ -109,13 +111,35 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             try
             {
+                var viewModel = ViewModel;
+                if (viewModel == null)
+                {
+                    return;
+                }
+
+                if (viewModel.WasLastKickByHost)
+                {
+                    MessageBox.Show(
+                        Lang.LobbyKickedByHostText,
+                        Lang.warningTitle,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+
+                    OnNavigateToMainPageRequested();
+                    return;
+                }
+
+                string message = !string.IsNullOrWhiteSpace(viewModel.KickMessageForLogin)
+                    ? viewModel.KickMessageForLogin
+                    : Lang.LobbyBannedAndKickedText;
+
                 BanPlayerHelper.HandleBanAndNavigateToLogin(
                     this,
-                    Lang.LobbyBannedAndKickedText);
+                    message);
             }
             catch (Exception ex)
             {
-                _logger.Error("Error al manejar el baneo del usuario actual.", ex);
+                _logger.Error("Error al manejar el baneo o expulsión del usuario actual.", ex);
             }
         }
 
@@ -259,40 +283,6 @@ namespace SnakeAndLaddersFinalProject.Pages
             lobbyViewModel?.StartMatchCommand?.Execute(null);
         }
 
-        private void ShowLobbyMemberContextMenuIfCanReport(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                var border = sender as Border;
-                if (border == null)
-                {
-                    return;
-                }
-
-                int currentUserId = SessionContext.Current.UserId;
-
-                bool canReport = _playerReportPolicy.CanCurrentUserReportTarget(currentUserId, border.DataContext);
-                if (!canReport)
-                {
-                    return;
-                }
-
-                var contextMenu = border.ContextMenu;
-                if (contextMenu == null)
-                {
-                    return;
-                }
-
-                contextMenu.DataContext = border.DataContext;
-                contextMenu.PlacementTarget = border;
-                contextMenu.IsOpen = true;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Error al mostrar el menú contextual del miembro del lobby.", ex);
-            }
-        }
-
         private void OpenMatchInvitation(object sender, RoutedEventArgs e)
         {
             try
@@ -355,22 +345,25 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                var contextMenu = menuItem.Parent as ContextMenu;
-                var border = contextMenu?.PlacementTarget as Border;
+                var member = menuItem.DataContext as LobbyMemberViewModel;
+                if (member == null)
+                {
+                    return;
+                }
 
                 int currentUserId = SessionContext.Current.UserId;
 
                 bool canReport = _playerReportPolicy.CanCurrentUserReportTarget(
                     currentUserId,
-                    border?.DataContext);
+                    member);
 
                 if (!canReport)
                 {
                     return;
                 }
 
-                int reportedUserId = _playerReportPolicy.GetMemberUserId(border?.DataContext);
-                string reportedUserName = _playerReportPolicy.GetMemberUserName(border?.DataContext);
+                int reportedUserId = _playerReportPolicy.GetMemberUserId(member);
+                string reportedUserName = _playerReportPolicy.GetMemberUserName(member);
 
                 if (reportedUserId < 1)
                 {
@@ -401,27 +394,116 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void OpenPlayerBorder(object sender, ContextMenuEventArgs e)
+        private void OnLobbyMemberActionsButtonClick(object sender, RoutedEventArgs e)
         {
             try
             {
-                var border = sender as Border;
-                if (border == null)
+                var button = sender as Button;
+                if (button == null)
+                {
+                    return;
+                }
+
+                var member = button.Tag as LobbyMemberViewModel;
+                var viewModel = ViewModel;
+
+                if (member == null || viewModel == null)
+                {
+                    return;
+                }
+
+                var contextMenu = button.ContextMenu;
+                if (contextMenu == null)
                 {
                     return;
                 }
 
                 int currentUserId = SessionContext.Current.UserId;
 
-                bool canReport = _playerReportPolicy.CanCurrentUserReportTarget(currentUserId, border.DataContext);
-                if (!canReport)
+                bool canReport = _playerReportPolicy.CanCurrentUserReportTarget(
+                    currentUserId,
+                    member);
+
+                bool canKick = viewModel.CanCurrentUserKickMember(member);
+
+                foreach (var item in contextMenu.Items.OfType<MenuItem>())
                 {
-                    e.Handled = true;
+                    if (Equals(item.Tag, "Report"))
+                    {
+                        item.Visibility = canReport
+                            ? Visibility.Visible
+                            : Visibility.Collapsed;
+                    }
+                    else if (Equals(item.Tag, "Kick"))
+                    {
+                        item.Visibility = canKick
+                            ? Visibility.Visible
+                            : Visibility.Collapsed;
+                    }
                 }
+
+                if (!canReport && !canKick)
+                {
+                    return;
+                }
+
+                contextMenu.DataContext = member;
+                contextMenu.PlacementTarget = button;
+                contextMenu.IsOpen = true;
             }
             catch (Exception ex)
             {
-                _logger.Error("Error al validar la apertura del menú contextual del miembro del lobby.", ex);
+                _logger.Error("Error al abrir el menú de acciones del miembro del lobby.", ex);
+            }
+        }
+
+        private async void KickPlayerMenuItem(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var menuItem = sender as MenuItem;
+                if (menuItem == null)
+                {
+                    return;
+                }
+
+                var member = menuItem.DataContext as LobbyMemberViewModel;
+                var viewModel = ViewModel;
+
+                if (member == null || viewModel == null)
+                {
+                    return;
+                }
+
+                if (!viewModel.CanCurrentUserKickMember(member))
+                {
+                    return;
+                }
+
+                var result = MessageBox.Show(
+                    string.Format(Lang.LobbyKickConfirmTextFmt, member.UserName),
+                    Lang.LobbyKickConfirmTitle,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+
+                if (result != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+
+                await viewModel.KickMemberAsync(member);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Error al expulsar a un miembro del lobby desde el menú contextual.", ex);
+
+                MessageBox.Show(
+                    Lang.LobbyKickFailedText,
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+
             }
         }
     }

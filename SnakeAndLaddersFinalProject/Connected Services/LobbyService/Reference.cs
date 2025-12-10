@@ -1199,6 +1199,83 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="KickPlayerFromLobbyRequest", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class KickPlayerFromLobbyRequest : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int HostUserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int LobbyIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int TargetUserIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int HostUserId {
+            get {
+                return this.HostUserIdField;
+            }
+            set {
+                if ((this.HostUserIdField.Equals(value) != true)) {
+                    this.HostUserIdField = value;
+                    this.RaisePropertyChanged("HostUserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int LobbyId {
+            get {
+                return this.LobbyIdField;
+            }
+            set {
+                if ((this.LobbyIdField.Equals(value) != true)) {
+                    this.LobbyIdField = value;
+                    this.RaisePropertyChanged("LobbyId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int TargetUserId {
+            get {
+                return this.TargetUserIdField;
+            }
+            set {
+                if ((this.TargetUserIdField.Equals(value) != true)) {
+                    this.TargetUserIdField = value;
+                    this.RaisePropertyChanged("TargetUserId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="LobbySummary", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Dtos")]
     [System.SerializableAttribute()]
     public partial class LobbySummary : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -1388,6 +1465,13 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/UnsubscribePublicLobbies")]
         System.Threading.Tasks.Task UnsubscribePublicLobbiesAsync(int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/KickPlayerFromLobby", ReplyAction="http://tempuri.org/ILobbyService/KickPlayerFromLobbyResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(SnakeAndLaddersFinalProject.LobbyService.ServiceFault), Action="http://tempuri.org/ILobbyService/KickPlayerFromLobbyServiceFaultFault", Name="ServiceFault", Namespace="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Faults")]
+        void KickPlayerFromLobby(SnakeAndLaddersFinalProject.LobbyService.KickPlayerFromLobbyRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/KickPlayerFromLobby", ReplyAction="http://tempuri.org/ILobbyService/KickPlayerFromLobbyResponse")]
+        System.Threading.Tasks.Task KickPlayerFromLobbyAsync(SnakeAndLaddersFinalProject.LobbyService.KickPlayerFromLobbyRequest request);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1488,6 +1572,14 @@ namespace SnakeAndLaddersFinalProject.LobbyService {
         
         public System.Threading.Tasks.Task UnsubscribePublicLobbiesAsync(int userId) {
             return base.Channel.UnsubscribePublicLobbiesAsync(userId);
+        }
+        
+        public void KickPlayerFromLobby(SnakeAndLaddersFinalProject.LobbyService.KickPlayerFromLobbyRequest request) {
+            base.Channel.KickPlayerFromLobby(request);
+        }
+        
+        public System.Threading.Tasks.Task KickPlayerFromLobbyAsync(SnakeAndLaddersFinalProject.LobbyService.KickPlayerFromLobbyRequest request) {
+            return base.Channel.KickPlayerFromLobbyAsync(request);
         }
     }
 }

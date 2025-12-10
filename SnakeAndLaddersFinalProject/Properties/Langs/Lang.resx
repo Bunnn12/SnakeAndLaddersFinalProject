@@ -1404,4 +1404,22 @@
   <data name="UiPasswordWeak" xml:space="preserve">
     <value>Password must be at least {0} characters long and contain at least one uppercase letter, one lowercase letter, and one special character.</value>
   </data>
+  <data name="btnKickPlayerText" xml:space="preserve">
+    <value>Kick player</value>
+  </data>
+  <data name="LobbyKickConfirmTextFmt" xml:space="preserve">
+    <value>Do you want to remove {0} from the lobby?</value>
+  </data>
+  <data name="LobbyKickConfirmTitle" xml:space="preserve">
+    <value>Remove player</value>
+  </data>
+  <data name="LobbyKickedByHostText" xml:space="preserve">
+    <value>You have been removed from the lobby by the host</value>
+  </data>
+  <data name="LobbyKickFailedText" xml:space="preserve">
+    <value>The player could not be removed from the lobby</value>
+  </data>
+  <data name="LobbyKickPlayerMenuText" xml:space="preserve">
+    <value>Kick player</value>
+  </data>
 </root>

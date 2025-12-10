@@ -44,7 +44,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public event Action<GameBoardViewModel> NavigateToBoardRequested;
         public event Action CurrentUserKickedFromLobby;
 
-        // nuevo evento para regresar a MainPage al dejar lobby
         public event Action NavigateToMainPageRequested;
 
         private readonly GameBoardClient _gameBoardClient;
@@ -74,6 +73,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public DifficultyOption Difficulty { get; private set; } = DifficultyOption.Medium;
         public byte PlayersRequested { get; private set; } = AppConstants.MIN_PLAYERS_TO_START;
+        public bool isCurrentUser { get; set; }
 
         public ObservableCollection<LobbyMemberViewModel> Members { get; } =
             new ObservableCollection<LobbyMemberViewModel>();
@@ -87,6 +87,41 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public ICommand StartMatchCommand { get; }
         public ICommand LeaveLobbyCommand { get; }
         public ICommand CopyInviteLinkCommand { get; }
+
+        private const string KICK_REASON_CODE_KICKED_BY_HOST = "KICKED_BY_HOST";
+
+        private string _kickMessageForLogin = string.Empty;
+
+        public string KickMessageForLogin
+        {
+            get { return _kickMessageForLogin; }
+            private set
+            {
+                if (_kickMessageForLogin == value)
+                {
+                    return;
+                }
+
+                _kickMessageForLogin = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool _wasLastKickByHost;
+
+        public bool WasLastKickByHost
+        {
+            get { return _wasLastKickByHost; }
+            private set
+            {
+                if (_wasLastKickByHost == value)
+                {
+                    return;
+                }
+
+                _wasLastKickByHost = value;
+                OnPropertyChanged();
+            }
+        }
 
         public LobbyViewModel()
         {
@@ -237,7 +272,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 Process.GetCurrentProcess().Id);
 
             CurrentUserName = fallbackName;
-            // Guests siguen usando ID negativo para distinguirlos en cliente
             CurrentUserId = -Math.Abs(fallbackName.GetHashCode());
         }
 
@@ -584,7 +618,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private void ApplyCreatedLobby(CreateGameResponse response)
         {
-            // En este punto ya pasó por IsValidCreatedLobby en CreateLobbyAsync.
 
             LobbyId = response.PartidaId;
             CodigoPartida = response.CodigoPartida;
@@ -665,10 +698,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             if (!isCurrentUserStillInLobby)
             {
                 StatusText = Lang.LobbyKickedWithoutReasonText;
+                KickMessageForLogin = Lang.LobbyKickedWithoutReasonText;
+
                 CurrentUserKickedFromLobby?.Invoke();
                 ResetLobbyState(StatusText);
                 return;
             }
+
 
             var boardSize = LobbyMapper.MapBoardSize(info.BoardSide);
             var difficultyOption = LobbyMapper.MapDifficultyFromServer(info.Difficulty);
@@ -873,9 +909,36 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                         return;
                     }
 
-                    StatusText = string.IsNullOrWhiteSpace(reason)
-                        ? Lang.LobbyKickedWithoutReasonText
-                        : string.Format(Lang.LobbyKickedWithReasonFmt, reason);
+                    bool isKickByHost = string.Equals(
+                        reason,
+                        KICK_REASON_CODE_KICKED_BY_HOST,
+                        StringComparison.OrdinalIgnoreCase);
+
+                    WasLastKickByHost = isKickByHost;
+
+                    string statusMessage;
+
+                    if (isKickByHost)
+                    {
+                        statusMessage = Lang.LobbyKickedByHostText;
+                    }
+                    else if (string.IsNullOrWhiteSpace(reason))
+                    {
+                        statusMessage = Lang.LobbyKickedWithoutReasonText;
+                    }
+                    else
+                    {
+                        statusMessage = string.Format(
+                            Lang.LobbyKickedWithReasonFmt,
+                            reason);
+                    }
+
+                    StatusText = statusMessage;
+
+                    if (!isKickByHost)
+                    {
+                        KickMessageForLogin = statusMessage;
+                    }
 
                     CurrentUserKickedFromLobby?.Invoke();
                     ResetLobbyState(StatusText);
@@ -907,6 +970,65 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }));
 
             return Task.CompletedTask;
+        }
+        public bool CanCurrentUserKickMember(LobbyMemberViewModel member)
+        {
+            if (member == null)
+            {
+                return false;
+            }
+
+            if (!HasLobby())
+            {
+                return false;
+            }
+
+            if (!IsCurrentUserHost())
+            {
+                return false;
+            }
+
+            if (member.UserId == CurrentUserId)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task KickMemberAsync(LobbyMemberViewModel member)
+        {
+            if (!CanCurrentUserKickMember(member))
+            {
+                return;
+            }
+
+            try
+            {
+                var client = LobbyProxy;
+
+                var request = new KickPlayerFromLobbyRequest
+                {
+                    LobbyId = LobbyId,
+                    HostUserId = CurrentUserId,
+                    TargetUserId = member.UserId
+                };
+
+                await client.KickPlayerFromLobbyAsync(request);
+            }
+            catch (Exception ex)
+            {
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    $"{nameof(LobbyViewModel)}.{nameof(KickMemberAsync)}",
+                    _logger);
+
+                MessageBox.Show(
+                    userMessage,
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
         }
     }
 }

@@ -394,6 +394,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Kick player.
+        /// </summary>
+        public static string btnKickPlayerText {
+            get {
+                return ResourceManager.GetString("btnKickPlayerText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Log in.
         /// </summary>
         public static string btnLoginText {
@@ -1987,6 +1996,33 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Do you want to remove {0} from the lobby?.
+        /// </summary>
+        public static string LobbyKickConfirmTextFmt {
+            get {
+                return ResourceManager.GetString("LobbyKickConfirmTextFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Remove player.
+        /// </summary>
+        public static string LobbyKickConfirmTitle {
+            get {
+                return ResourceManager.GetString("LobbyKickConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You have been removed from the lobby by the host.
+        /// </summary>
+        public static string LobbyKickedByHostText {
+            get {
+                return ResourceManager.GetString("LobbyKickedByHostText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a You have been removed from the lobby..
         /// </summary>
         public static string LobbyKickedWithoutReasonText {
@@ -2001,6 +2037,24 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string LobbyKickedWithReasonFmt {
             get {
                 return ResourceManager.GetString("LobbyKickedWithReasonFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The player could not be removed from the lobby.
+        /// </summary>
+        public static string LobbyKickFailedText {
+            get {
+                return ResourceManager.GetString("LobbyKickFailedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Kick player.
+        /// </summary>
+        public static string LobbyKickPlayerMenuText {
+            get {
+                return ResourceManager.GetString("LobbyKickPlayerMenuText", resourceCulture);
             }
         }
         

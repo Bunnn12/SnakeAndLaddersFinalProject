@@ -67,6 +67,15 @@
   <wsdl:message name="ILobbyService_UnsubscribePublicLobbies_InputMessage">
     <wsdl:part name="parameters" element="tns:UnsubscribePublicLobbies" />
   </wsdl:message>
+  <wsdl:message name="ILobbyService_KickPlayerFromLobby_InputMessage">
+    <wsdl:part name="parameters" element="tns:KickPlayerFromLobby" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_KickPlayerFromLobby_OutputMessage">
+    <wsdl:part name="parameters" element="tns:KickPlayerFromLobbyResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_KickPlayerFromLobby_ServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://schemas.datacontract.org/2004/07/SnakeAndLadders.Contracts.Faults" name="detail" element="q6:ServiceFault" />
+  </wsdl:message>
   <wsdl:message name="ILobbyService_OnLobbyUpdated_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:OnLobbyUpdated" />
   </wsdl:message>
@@ -110,6 +119,11 @@
     </wsdl:operation>
     <wsdl:operation name="UnsubscribePublicLobbies">
       <wsdl:input wsaw:Action="http://tempuri.org/ILobbyService/UnsubscribePublicLobbies" message="tns:ILobbyService_UnsubscribePublicLobbies_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="KickPlayerFromLobby">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILobbyService/KickPlayerFromLobby" message="tns:ILobbyService_KickPlayerFromLobby_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILobbyService/KickPlayerFromLobbyResponse" message="tns:ILobbyService_KickPlayerFromLobby_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ILobbyService/KickPlayerFromLobbyServiceFaultFault" name="ServiceFaultFault" message="tns:ILobbyService_KickPlayerFromLobby_ServiceFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="OnLobbyUpdated">
       <wsdl:output wsaw:Action="http://tempuri.org/ILobbyService/OnLobbyUpdated" message="tns:ILobbyService_OnLobbyUpdated_OutputCallbackMessage" />
@@ -198,6 +212,18 @@
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="KickPlayerFromLobby">
+      <soap12:operation soapAction="http://tempuri.org/ILobbyService/KickPlayerFromLobby" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap12:fault use="literal" name="ServiceFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="OnLobbyUpdated">
       <soap12:operation soapAction="http://tempuri.org/ILobbyService/OnLobbyUpdated" style="document" />
