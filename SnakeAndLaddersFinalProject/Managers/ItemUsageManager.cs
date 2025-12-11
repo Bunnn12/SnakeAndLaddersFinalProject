@@ -15,22 +15,22 @@ namespace SnakeAndLaddersFinalProject.Managers
         private const byte ITEM_SLOT_2 = 2;
         private const byte ITEM_SLOT_3 = 3;
 
-        private readonly int gameId;
-        private readonly int localUserId;
-        private readonly InventoryViewModel inventory;
-        private readonly Func<IGameplayClient> getGameplayClient;
-        private readonly ILog logger;
+        private readonly int _gameId;
+        private readonly int _localUserId;
+        private readonly InventoryViewModel _inventory;
+        private readonly Func<IGameplayClient> _getGameplayClient;
+        private readonly ILog _logger;
 
-        private readonly Func<bool> getIsUseItemInProgress;
-        private readonly Action<bool> setIsUseItemInProgress;
-        private readonly Func<bool> getIsTargetSelectionActive;
-        private readonly Action<bool> setIsTargetSelectionActive;
-        private readonly Func<byte?> getPendingItemSlotNumber;
-        private readonly Action<byte?> setPendingItemSlotNumber;
-        private readonly Action<string> setLastItemNotification;
-        private readonly Func<Task> refreshInventoryAsync;
-        private readonly Func<Task> syncGameStateAsync;
-        private readonly Action raiseAllCanExecuteChanged;
+        private readonly Func<bool> _getIsUseItemInProgress;
+        private readonly Action<bool> _setIsUseItemInProgress;
+        private readonly Func<bool> _getIsTargetSelectionActive;
+        private readonly Action<bool> _setIsTargetSelectionActive;
+        private readonly Func<byte?> _getPendingItemSlotNumber;
+        private readonly Action<byte?> _setPendingItemSlotNumber;
+        private readonly Action<string> _setLastItemNotification;
+        private readonly Func<Task> _refreshInventoryAsync;
+        private readonly Func<Task> _syncGameStateAsync;
+        private readonly Action _raiseAllCanExecuteChanged;
 
         public ItemUsageManager(
             int gameId,
@@ -49,34 +49,46 @@ namespace SnakeAndLaddersFinalProject.Managers
             Func<Task> syncGameStateAsync,
             Action raiseAllCanExecuteChanged)
         {
-            this.gameId = gameId;
-            this.localUserId = localUserId;
-            this.inventory = inventory ?? throw new ArgumentNullException(nameof(inventory));
-            this.getGameplayClient = getGameplayClient ?? throw new ArgumentNullException(nameof(getGameplayClient));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.getIsUseItemInProgress = getIsUseItemInProgress ?? throw new ArgumentNullException(nameof(getIsUseItemInProgress));
-            this.setIsUseItemInProgress = setIsUseItemInProgress ?? throw new ArgumentNullException(nameof(setIsUseItemInProgress));
-            this.getIsTargetSelectionActive = getIsTargetSelectionActive ?? throw new ArgumentNullException(nameof(getIsTargetSelectionActive));
-            this.setIsTargetSelectionActive = setIsTargetSelectionActive ?? throw new ArgumentNullException(nameof(setIsTargetSelectionActive));
-            this.getPendingItemSlotNumber = getPendingItemSlotNumber ?? throw new ArgumentNullException(nameof(getPendingItemSlotNumber));
-            this.setPendingItemSlotNumber = setPendingItemSlotNumber ?? throw new ArgumentNullException(nameof(setPendingItemSlotNumber));
-            this.setLastItemNotification = setLastItemNotification ?? throw new ArgumentNullException(nameof(setLastItemNotification));
-            this.refreshInventoryAsync = refreshInventoryAsync ?? throw new ArgumentNullException(nameof(refreshInventoryAsync));
-            this.syncGameStateAsync = syncGameStateAsync ?? throw new ArgumentNullException(nameof(syncGameStateAsync));
-            this.raiseAllCanExecuteChanged = raiseAllCanExecuteChanged ?? throw new ArgumentNullException(nameof(raiseAllCanExecuteChanged));
+            _gameId = gameId;
+            _localUserId = localUserId;
+            _inventory = inventory ?? throw new ArgumentNullException(nameof(inventory));
+            _getGameplayClient = getGameplayClient ?? throw new ArgumentNullException(
+                nameof(getGameplayClient));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _getIsUseItemInProgress = getIsUseItemInProgress ?? throw new ArgumentNullException(
+                nameof(getIsUseItemInProgress));
+            _setIsUseItemInProgress = setIsUseItemInProgress ?? throw new ArgumentNullException(
+                nameof(setIsUseItemInProgress));
+            _getIsTargetSelectionActive = getIsTargetSelectionActive ??
+                throw new ArgumentNullException(nameof(getIsTargetSelectionActive));
+            _setIsTargetSelectionActive = setIsTargetSelectionActive ??
+                throw new ArgumentNullException(nameof(setIsTargetSelectionActive));
+            _getPendingItemSlotNumber = getPendingItemSlotNumber ?? throw new ArgumentNullException(
+                nameof(getPendingItemSlotNumber));
+            _setPendingItemSlotNumber = setPendingItemSlotNumber ?? throw new ArgumentNullException(
+                nameof(setPendingItemSlotNumber));
+            _setLastItemNotification = setLastItemNotification ?? throw new ArgumentNullException(
+                nameof(setLastItemNotification));
+            _refreshInventoryAsync = refreshInventoryAsync ?? throw new ArgumentNullException(
+                nameof(refreshInventoryAsync));
+            _syncGameStateAsync = syncGameStateAsync ?? throw new ArgumentNullException(
+                nameof(syncGameStateAsync));
+            _raiseAllCanExecuteChanged = raiseAllCanExecuteChanged ??
+                throw new ArgumentNullException(nameof(raiseAllCanExecuteChanged));
         }
 
-        public Task PrepareItemTargetSelectionAsync(byte slotNumber, string selectTargetPlayerMessage)
+        public Task PrepareItemTargetSelectionAsync(byte slotNumber,
+            string selectTargetPlayerMessage)
         {
             if (!HasItemInSlot(slotNumber))
             {
                 return Task.CompletedTask;
             }
 
-            setPendingItemSlotNumber(slotNumber);
-            setIsTargetSelectionActive(true);
-            setLastItemNotification(selectTargetPlayerMessage);
-            raiseAllCanExecuteChanged();
+            _setPendingItemSlotNumber(slotNumber);
+            _setIsTargetSelectionActive(true);
+            _setLastItemNotification(selectTargetPlayerMessage);
+            _raiseAllCanExecuteChanged();
 
             return Task.CompletedTask;
         }
@@ -88,45 +100,40 @@ namespace SnakeAndLaddersFinalProject.Managers
             string useItemUnexpectedErrorMessage,
             string gameWindowTitle)
         {
-            if (!getIsTargetSelectionActive())
+            if (!_getIsTargetSelectionActive())
             {
                 return;
             }
 
-            byte? pendingSlot = getPendingItemSlotNumber();
+            byte? pendingSlot = _getPendingItemSlotNumber();
             if (!pendingSlot.HasValue)
             {
                 return;
             }
 
-            setIsTargetSelectionActive(false);
-            setPendingItemSlotNumber(null);
+            _setIsTargetSelectionActive(false);
+            _setPendingItemSlotNumber(null);
 
-            await UseItemAsync(
-                pendingSlot.Value,
-                userId,
-                unknownErrorMessage,
-                useItemFailureMessagePrefix,
-                useItemUnexpectedErrorMessage,
-                gameWindowTitle);
+            await UseItemAsync(pendingSlot.Value, userId, unknownErrorMessage,
+                useItemFailureMessagePrefix, useItemUnexpectedErrorMessage, gameWindowTitle);
         }
 
         public void CancelItemUse(string itemUseCancelledMessage)
         {
-            if (!getIsTargetSelectionActive() && !getPendingItemSlotNumber().HasValue)
+            if (!_getIsTargetSelectionActive() && !_getPendingItemSlotNumber().HasValue)
             {
                 return;
             }
 
-            setPendingItemSlotNumber(null);
-            setIsTargetSelectionActive(false);
-            setLastItemNotification(itemUseCancelledMessage);
-            raiseAllCanExecuteChanged();
+            _setPendingItemSlotNumber(null);
+            _setIsTargetSelectionActive(false);
+            _setLastItemNotification(itemUseCancelledMessage);
+            _raiseAllCanExecuteChanged();
         }
 
         public bool HasItemInSlot(byte slotNumber)
         {
-            if (inventory == null)
+            if (_inventory == null)
             {
                 return false;
             }
@@ -134,14 +141,11 @@ namespace SnakeAndLaddersFinalProject.Managers
             switch (slotNumber)
             {
                 case ITEM_SLOT_1:
-                    return inventory.Slot1Item != null && inventory.Slot1Item.Quantity > 0;
-
+                    return _inventory.Slot1Item != null && _inventory.Slot1Item.Quantity > 0;
                 case ITEM_SLOT_2:
-                    return inventory.Slot2Item != null && inventory.Slot2Item.Quantity > 0;
-
+                    return _inventory.Slot2Item != null && _inventory.Slot2Item.Quantity > 0;
                 case ITEM_SLOT_3:
-                    return inventory.Slot3Item != null && inventory.Slot3Item.Quantity > 0;
-
+                    return _inventory.Slot3Item != null && _inventory.Slot3Item.Quantity > 0;
                 default:
                     return false;
             }
@@ -155,27 +159,25 @@ namespace SnakeAndLaddersFinalProject.Managers
             string useItemUnexpectedErrorMessage,
             string gameWindowTitle)
         {
-            if (getIsUseItemInProgress())
+            if (_getIsUseItemInProgress())
             {
                 return;
             }
 
-            IGameplayClient gameplayClient = getGameplayClient();
+            IGameplayClient gameplayClient = _getGameplayClient();
             if (gameplayClient == null)
             {
                 return;
             }
 
-            setIsUseItemInProgress(true);
-            raiseAllCanExecuteChanged();
+            _setIsUseItemInProgress(true);
+            _raiseAllCanExecuteChanged();
 
             try
             {
                 int? targetUserIdOrNull = targetUserId <= 0 ? (int?)null : targetUserId;
-
-                UseItemResponseDto response = await gameplayClient
-                    .UseItemAsync(gameId, localUserId, slotNumber, targetUserIdOrNull)
-                    .ConfigureAwait(false);
+                UseItemResponseDto response = await gameplayClient.UseItemAsync(_gameId,
+                    _localUserId, slotNumber, targetUserIdOrNull).ConfigureAwait(false);
 
                 if (response == null || !response.Success)
                 {
@@ -183,67 +185,45 @@ namespace SnakeAndLaddersFinalProject.Managers
                         ? response.FailureReason
                         : unknownErrorMessage;
 
-                    logger.Warn("UseItem failed: " + failureReason);
-
-                    await Application.Current.Dispatcher.InvokeAsync(
-                        () =>
-                        {
-                            MessageBox.Show(
-                                useItemFailureMessagePrefix + failureReason,
-                                gameWindowTitle,
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Warning);
-                        });
-
+                    _logger.Warn("UseItem failed: " + failureReason);
+                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    {
+                        MessageBox.Show(useItemFailureMessagePrefix + failureReason, gameWindowTitle,
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                    });
                     return;
                 }
 
-                logger.InfoFormat(
-                    "UseItem OK. GameId={0}, UserId={1}, Slot={2}, TargetUserId={3}",
-                    gameId,
-                    localUserId,
-                    slotNumber,
-                    targetUserIdOrNull);
+                _logger.InfoFormat("UseItem OK. GameId={0}, UserId={1}, Slot={2}, TargetUserId={3}",
+                    _gameId, _localUserId, slotNumber, targetUserIdOrNull);
 
-                await refreshInventoryAsync().ConfigureAwait(false);
-                await syncGameStateAsync().ConfigureAwait(false);
+                await _refreshInventoryAsync().ConfigureAwait(false);
+                await _syncGameStateAsync().ConfigureAwait(false);
             }
             catch (FaultException faultEx)
             {
-                string failureReason = string.IsNullOrWhiteSpace(faultEx.Message)
-                    ? unknownErrorMessage
-                    : faultEx.Message;
-
-                logger.Warn("UseItem business error: " + failureReason, faultEx);
-
-                await Application.Current.Dispatcher.InvokeAsync(
-                    () =>
-                    {
-                        MessageBox.Show(
-                            useItemFailureMessagePrefix + failureReason,
-                            gameWindowTitle,
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Warning);
-                    });
+                string failureReason = string.IsNullOrWhiteSpace(faultEx.Message) ?
+                    unknownErrorMessage : faultEx.Message;
+                _logger.Warn("UseItem business error: " + failureReason, faultEx);
+                await Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    MessageBox.Show(useItemFailureMessagePrefix + failureReason, gameWindowTitle,
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                });
             }
             catch (Exception ex)
             {
-                logger.Error(useItemUnexpectedErrorMessage, ex);
-
-                await Application.Current.Dispatcher.InvokeAsync(
-                    () =>
-                    {
-                        MessageBox.Show(
-                            useItemUnexpectedErrorMessage,
-                            gameWindowTitle,
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error);
-                    });
+                _logger.Error(useItemUnexpectedErrorMessage, ex);
+                await Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    MessageBox.Show(useItemUnexpectedErrorMessage, gameWindowTitle,
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                });
             }
             finally
             {
-                setIsUseItemInProgress(false);
-                raiseAllCanExecuteChanged();
+                _setIsUseItemInProgress(false);
+                _raiseAllCanExecuteChanged();
             }
         }
     }

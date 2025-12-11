@@ -7,26 +7,44 @@ namespace SnakeAndLaddersFinalProject.Converters
 {
     public sealed class IsSnakeToColorConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        private static readonly Color _snakeColor = Color.FromRgb(220, 38, 38);
+        private static readonly Color _nonSnakeColor = Color.FromRgb(56, 161, 105);
+        private static readonly SolidColorBrush _snakeBrush = new SolidColorBrush(_snakeColor);
+        private static readonly SolidColorBrush _nonSnakeBrush =
+            new SolidColorBrush(_nonSnakeColor);
+
+        static IsSnakeToColorConverter()
         {
-            bool isSnake = value is bool b && b;
-            return isSnake
-                ? new SolidColorBrush(Color.FromRgb(220, 38, 38))   
-                : new SolidColorBrush(Color.FromRgb(56, 161, 105)); 
+            _snakeBrush.Freeze();
+            _nonSnakeBrush.Freeze();
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool isSnake = value is bool booleanValue && booleanValue;
+            return isSnake ? _snakeBrush : _nonSnakeBrush;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter,
+            CultureInfo culture)
+            => throw new NotSupportedException("Not supported exception");
     }
 
     public sealed class IsSnakeToStyleConverter : IValueConverter
     {
+        private const double SNAKE_DASH_LENGTH = 4.0;
+        private const double SNAKE_GAP_LENGTH = 2.0;
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool isSnake = value is bool b && b;
-
-            return isSnake ? new DoubleCollection { 4, 2 } : new DoubleCollection();
+            bool isSnake = value is bool booleanValue && booleanValue;
+            return isSnake
+                ? new DoubleCollection { SNAKE_DASH_LENGTH, SNAKE_GAP_LENGTH }
+                : new DoubleCollection();
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+        public object ConvertBack(object value, Type targetType, object parameter,
+            CultureInfo culture)
+            => throw new NotSupportedException("Not supported exception");
     }
 }

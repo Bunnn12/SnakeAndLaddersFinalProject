@@ -1,5 +1,6 @@
 ﻿using log4net;
 using SnakeAndLaddersFinalProject.Authentication;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.UserService;
 using SnakeAndLaddersFinalProject.Utilities;
 using System;
@@ -7,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -15,11 +17,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     public sealed class SkinsViewModel : INotifyPropertyChanged
     {
         private const string USER_SERVICE_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IUserService";
+        private const string SKIN_PREFIX_AVATAR = "A";
 
         private static readonly ILog _logger = LogManager.GetLogger(typeof(SkinsViewModel));
 
-        private readonly ObservableCollection<AvatarSkinItemViewModel> _avatarOptions =
-            new ObservableCollection<AvatarSkinItemViewModel>();
+        private readonly ObservableCollection<AvatarSkinItemViewModel> _avatarOptions
+            = new ObservableCollection<AvatarSkinItemViewModel>();
 
         private AvatarSkinItemViewModel _selectedAvatar;
         private bool _isBusy;
@@ -45,8 +48,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        public string SelectedDisplayName =>
-            SelectedAvatar?.DisplayName ?? string.Empty;
+        public string SelectedDisplayName => SelectedAvatar?.DisplayName ?? string.Empty;
 
         public string SelectedStatusText
         {
@@ -59,12 +61,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 if (!SelectedAvatar.IsUnlocked)
                 {
-                    return "Bloqueado. Consíguelo en la tienda.";
+                    return Lang.SkinsStatusLockedText;
                 }
 
                 return SelectedAvatar.IsCurrent
-                    ? "Actualmente seleccionado."
-                    : "Desbloqueado. Haz clic en Aplicar para usarlo.";
+                    ? Lang.SkinsStatusCurrentText
+                    : Lang.SkinsStatusUnlockedText;
             }
         }
 
@@ -85,9 +87,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public async Task LoadAsync()
         {
-            if (!SessionContext.Current.IsAuthenticated)
+            if (SessionContext.Current == null || !SessionContext.Current.IsAuthenticated)
             {
-                _logger.Warn("SkinsViewModel.LoadAsync: usuario no autenticado.");
+                _logger.Warn("SkinsViewModel.LoadAsync: user not authenticated.");
                 return;
             }
 
@@ -98,76 +100,67 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             IsBusy = true;
 
+            var client = new UserServiceClient(USER_SERVICE_ENDPOINT_CONFIGURATION_NAME);
+
             try
             {
                 int userId = SessionContext.Current.UserId;
+                AvatarProfileOptionsDto options = await client.GetAvatarOptionsAsync(userId);
 
-                using (UserServiceClient client =
-                    new UserServiceClient(USER_SERVICE_ENDPOINT_CONFIGURATION_NAME))
+                if (options == null || options.Avatars == null)
                 {
-                    AvatarProfileOptionsDto options =
-                        await client.GetAvatarOptionsAsync(userId);
-
-                    if (options == null || options.Avatars == null)
-                    {
-                        _logger.Warn("GetAvatarOptions devolvió null o sin lista.");
-                        return;
-                    }
-
-                    _avatarOptions.Clear();
-
-                    foreach (AvatarProfileOptionDto option in options.Avatars)
-                    {
-                        string skinCode = option.AvatarCode ?? string.Empty;
-
-                        // Saltar los avatares default tipo A0001, A0007, etc.
-                        if (skinCode.StartsWith("A", StringComparison.OrdinalIgnoreCase))
-                        {
-                            continue;
-                        }
-
-                        string imagePath = SkinAssetHelper.GetSkinPathFromSkinId(skinCode);
-
-                        AvatarSkinItemViewModel item = new AvatarSkinItemViewModel
-                        {
-                            AvatarCode = skinCode,
-                            DisplayName = option.DisplayName ?? skinCode,
-                            IsUnlocked = option.IsUnlocked,
-                            IsCurrent = option.IsCurrent,
-                            ImagePath = imagePath
-                        };
-
-                        _avatarOptions.Add(item);
-                    }
-
-                    AvatarSkinItemViewModel current =
-                        _avatarOptions.FirstOrDefault(a => a.IsCurrent);
-
-                    if (current == null)
-                    {
-                        current = _avatarOptions.FirstOrDefault(a => a.IsUnlocked)
-                                  ?? _avatarOptions.FirstOrDefault();
-                    }
-
-                    SelectedAvatar = current;
+                    _logger.Warn("GetAvatarOptions returned null or empty list.");
+                    return;
                 }
+
+                _avatarOptions.Clear();
+
+                foreach (AvatarProfileOptionDto option in options.Avatars)
+                {
+                    string skinCode = option.AvatarCode ?? string.Empty;
+
+                    if (skinCode.StartsWith(SKIN_PREFIX_AVATAR, StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    string imagePath = SkinAssetHelper.GetSkinPathFromSkinId(skinCode);
+
+                    var item = new AvatarSkinItemViewModel
+                    {
+                        AvatarCode = skinCode,
+                        DisplayName = option.DisplayName ?? skinCode,
+                        IsUnlocked = option.IsUnlocked,
+                        IsCurrent = option.IsCurrent,
+                        ImagePath = imagePath
+                    };
+
+                    _avatarOptions.Add(item);
+                }
+
+                var current = _avatarOptions.FirstOrDefault(a => a.IsCurrent);
+
+                if (current == null)
+                {
+                    current = _avatarOptions.FirstOrDefault(a => a.IsUnlocked) ??
+                        _avatarOptions.FirstOrDefault();
+                }
+
+                SelectedAvatar = current;
             }
             catch (Exception ex)
             {
-                _logger.Error("Error al cargar las opciones de avatar.", ex);
-
-                _ = MessageBox.Show(
-                    "Ocurrió un problema al cargar las skins. Intenta de nuevo.",
-                    "Error",
-                    MessageBoxButton.OK,
+                string userMessage = ExceptionHandler.Handle(ex, "SkinsViewModel.LoadAsync",
+                    _logger);
+                MessageBox.Show(userMessage, Lang.errorTitle, MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
             finally
             {
+                SafeClose(client);
                 IsBusy = false;
             }
         }
-
 
         public void SelectNext()
         {
@@ -177,7 +170,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
 
             int currentIndex = _avatarOptions.IndexOf(SelectedAvatar);
-
             if (currentIndex < 0)
             {
                 currentIndex = 0;
@@ -195,14 +187,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
 
             int currentIndex = _avatarOptions.IndexOf(SelectedAvatar);
-
             if (currentIndex < 0)
             {
                 currentIndex = 0;
             }
 
             int previousIndex = currentIndex - 1;
-
             if (previousIndex < 0)
             {
                 previousIndex = _avatarOptions.Count - 1;
@@ -213,44 +203,31 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public void SelectAvatarFromTile(object dataContext)
         {
-            AvatarSkinItemViewModel item = dataContext as AvatarSkinItemViewModel;
-
-            if (item == null)
+            if (dataContext is AvatarSkinItemViewModel item)
             {
-                return;
+                SelectedAvatar = item;
             }
-
-            SelectedAvatar = item;
         }
 
         public async Task ApplySelectionAsync()
         {
-            if (!SessionContext.Current.IsAuthenticated)
+            if (SessionContext.Current == null || !SessionContext.Current.IsAuthenticated)
             {
-                MessageBox.Show(
-                    "Debes iniciar sesión para cambiar tu avatar.",
-                    "Información",
-                    MessageBoxButton.OK,
+                MessageBox.Show(Lang.UiShopRequiresLogin, Lang.UiTitleInfo, MessageBoxButton.OK,
                     MessageBoxImage.Information);
                 return;
             }
 
             if (SelectedAvatar == null)
             {
-                MessageBox.Show(
-                    "Selecciona primero un avatar.",
-                    "Información",
-                    MessageBoxButton.OK,
+                MessageBox.Show(Lang.SkinsSelectAvatarWarn, Lang.UiTitleInfo, MessageBoxButton.OK,
                     MessageBoxImage.Information);
                 return;
             }
 
             if (!SelectedAvatar.IsUnlocked)
             {
-                MessageBox.Show(
-                    "Este avatar está bloqueado. Desbloquéalo en la tienda para poder usarlo.",
-                    "Avatar bloqueado",
-                    MessageBoxButton.OK,
+                MessageBox.Show(Lang.SkinsAvatarLockedWarn, Lang.SkinsLockedTitle, MessageBoxButton.OK,
                     MessageBoxImage.Information);
                 return;
             }
@@ -261,53 +238,67 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
 
             IsBusy = true;
+            var client = new UserServiceClient(USER_SERVICE_ENDPOINT_CONFIGURATION_NAME);
 
             try
             {
-                AvatarSelectionRequestDto request = new AvatarSelectionRequestDto
+                var request = new AvatarSelectionRequestDto
                 {
                     UserId = SessionContext.Current.UserId,
                     AvatarCode = SelectedAvatar.AvatarCode
                 };
 
-                using (UserServiceClient client =
-                    new UserServiceClient(USER_SERVICE_ENDPOINT_CONFIGURATION_NAME))
+                AccountDto result = await client.SelectAvatarForProfileAsync(request).ConfigureAwait(false);
+
+                if (result != null)
                 {
-                    AccountDto result =
-                        await client.SelectAvatarForProfileAsync(request).ConfigureAwait(false);
-
-                    if (result != null)
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            SessionContext.Current.ProfilePhotoId = result.ProfilePhotoId;
-                            SessionContext.Current.CurrentSkinId = result.CurrentSkinId;
-                            SessionContext.Current.CurrentSkinUnlockedId = result.CurrentSkinUnlockedId;
-                            SessionContext.Current.Coins = result.Coins;
-                        });
-                    }
+                        SessionContext.Current.ProfilePhotoId = result.ProfilePhotoId;
+                        SessionContext.Current.CurrentSkinId = result.CurrentSkinId;
+                        SessionContext.Current.CurrentSkinUnlockedId = result.CurrentSkinUnlockedId;
+                        SessionContext.Current.Coins = result.Coins;
+                    });
+
+                    await Application.Current.Dispatcher.InvokeAsync(async () => await LoadAsync());
+
+                    MessageBox.Show(Lang.SkinsAvatarUpdatedSuccess, Lang.SkinsUpdatedTitle, MessageBoxButton.OK,
+                        MessageBoxImage.Information);
                 }
-
-                await LoadAsync().ConfigureAwait(false);
-
-                MessageBox.Show(
-                    "Avatar actualizado correctamente.",
-                    "Avatar actualizado",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                _logger.Error("Error al aplicar la selección de avatar.", ex);
-                MessageBox.Show(
-                    "No se pudo cambiar el avatar. Intenta de nuevo.",
-                    "Error",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                string userMessage = ExceptionHandler.Handle(ex, "SkinsViewModel.ApplySelectionAsync", _logger);
+                MessageBox.Show(userMessage, Lang.errorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
+                SafeClose(client);
                 IsBusy = false;
+            }
+        }
+
+        private static void SafeClose(UserServiceClient client)
+        {
+            if (client == null)
+            {
+                return;
+            }
+
+            try
+            {
+                if (client.State == CommunicationState.Faulted)
+                {
+                    client.Abort();
+                }
+                else
+                {
+                    client.Close();
+                }
+            }
+            catch
+            {
+                client.Abort();
             }
         }
 

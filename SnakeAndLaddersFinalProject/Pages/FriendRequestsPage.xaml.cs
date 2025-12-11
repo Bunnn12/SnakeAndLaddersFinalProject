@@ -13,8 +13,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class FriendRequestsPage : Page
     {
-
-        private FriendRequestsViewModel ViewModel
+        private FriendRequestsViewModel _viewModel
         {
             get { return DataContext as FriendRequestsViewModel; }
         }
@@ -25,10 +24,10 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             DataContext = new FriendRequestsViewModel();
 
-            if (ViewModel != null)
+            if (_viewModel != null)
             {
-                tvIncoming.ItemsSource = ViewModel.IncomingRequests;
-                tvOutgoing.ItemsSource = ViewModel.OutgoingRequests;
+                tvIncoming.ItemsSource = _viewModel.IncomingRequests;
+                tvOutgoing.ItemsSource = _viewModel.OutgoingRequests;
             }
 
             if (!SessionGuard.HasValidSession())
@@ -36,7 +35,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            ViewModel?.LoadData();
+            _viewModel?.LoadData();
         }
 
         private void AcceptRequest(object sender, RoutedEventArgs e)
@@ -51,7 +50,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            ViewModel?.AcceptRequest(requestItem);
+            _viewModel?.AcceptRequest(requestItem);
         }
 
         private void RejectRequest(object sender, RoutedEventArgs e)
@@ -66,7 +65,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            ViewModel?.RejectRequest(requestItem);
+            _viewModel?.RejectRequest(requestItem);
         }
 
         private void CancelRequest(object sender, RoutedEventArgs e)
@@ -81,7 +80,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            ViewModel?.CancelRequest(requestItem);
+            _viewModel?.CancelRequest(requestItem);
         }
 
         private void Back(object sender, RoutedEventArgs e)

@@ -130,7 +130,7 @@
                             Width="640">
                         <Label x:Name="lblTitle"
                                Content="{x:Static language:Lang.btnSettingsText}"
-                               Style="{StaticResource LblSettingsTitleStyle}" />
+                               Style="{StaticResource LblSettingsTitleStyle}" Foreground="#FFEEE3DA" FontSize="48" />
                     </Border>
                 </Grid>
 
@@ -162,16 +162,15 @@
                                     <Label x:Name="lblSound"
                                            Grid.Column="0"
                                            Content="{x:Static language:Lang.lblSound}"
-                                           Style="{StaticResource SettingsLabelStyle}" />
+                                           Style="{StaticResource SettingsLabelStyle}" FontSize="24" />
 
                                     <Slider x:Name="sldSound"
                                             Grid.Column="1"
-                                            HorizontalAlignment="Stretch"
                                             VerticalAlignment="Center"
                                             Margin="8,0,0,0"
                                             Minimum="0"
                                             Maximum="100"
-                                            Value="100" />
+                                            Value="100" Height="36" />
                                 </Grid>
 
                                 <!-- Música -->
@@ -185,16 +184,15 @@
                                     <Label x:Name="lblMusic"
                                            Grid.Column="0"
                                            Content="{x:Static language:Lang.lblMusic}"
-                                           Style="{StaticResource SettingsLabelStyle}" />
+                                           Style="{StaticResource SettingsLabelStyle}" FontSize="24" />
 
                                     <Slider x:Name="sldMusic"
                                             Grid.Column="1"
-                                            HorizontalAlignment="Stretch"
                                             VerticalAlignment="Center"
-                                            Margin="8,0,0,0"
+                                            Margin="8,0,10,0"
                                             Minimum="0"
                                             Maximum="100"
-                                            Value="100" />
+                                            Value="100" Height="53" />
                                 </Grid>
 
                                 <!-- Idioma -->
@@ -207,14 +205,19 @@
                                     <Label x:Name="lblLanguag"
                                            Grid.Column="0"
                                            Content="{x:Static language:Lang.lblLanguage}"
-                                           Style="{StaticResource SettingsLabelStyle}" />
+                                           Style="{StaticResource SettingsLabelStyle}" FontSize="24" />
 
                                     <ComboBox x:Name="cmbLanguage"
                                               Grid.Column="1"
-                                              HorizontalAlignment="Stretch"
                                               VerticalAlignment="Center"
-                                              Margin="8,0,0,0"
-                                              SelectionChanged="LanguageSelectionChanged">
+                                              Margin="10,0,10,0"
+                                              SelectionChanged="LanguageSelectionChanged" Height="50" FontSize="22">
+                                        <ComboBox.Background>
+                                            <LinearGradientBrush EndPoint="0,1">
+                                                <GradientStop Color="#FFF0F0F0"/>
+                                                <GradientStop Color="#FFFEFEFE" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </ComboBox.Background>
                                         <ComboBoxItem Tag="es-MX">Español (México)</ComboBoxItem>
                                         <ComboBoxItem Tag="en-US">English (US)</ComboBoxItem>
                                         <ComboBoxItem Tag="pt-BR">Português (Brasil)</ComboBoxItem>

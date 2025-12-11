@@ -19,17 +19,14 @@ namespace SnakeAndLaddersFinalProject.Windows
                     lblTitle.Text = Lang.SocialProfileLinkInstagramTitle;
                     lblUserCaption.Text = Lang.SocialProfileLinkInstagramCaption;
                     break;
-
                 case SocialNetworkType.Facebook:
                     lblTitle.Text = Lang.SocialProfileLinkFacebookTitle;
                     lblUserCaption.Text = Lang.SocialProfileLinkFacebookCaption;
                     break;
-
                 case SocialNetworkType.Twitter:
                     lblTitle.Text = Lang.SocialProfileLinkTwitterTitle;
                     lblUserCaption.Text = Lang.SocialProfileLinkTwitterCaption;
                     break;
-
                 default:
                     lblTitle.Text = Lang.SocialProfileLinkGenericTitle;
                     lblUserCaption.Text = Lang.SocialProfileLinkGenericCaption;
@@ -39,7 +36,7 @@ namespace SnakeAndLaddersFinalProject.Windows
 
         private void Accept(object sender, RoutedEventArgs e)
         {
-            string value = txtProfileLink.Text == null ? string.Empty : txtProfileLink.Text.Trim();
+            string value = (txtProfileLink.Text ?? string.Empty).Trim();
 
             if (string.IsNullOrWhiteSpace(value))
             {

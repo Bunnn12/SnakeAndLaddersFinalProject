@@ -11,20 +11,20 @@ using System.Windows.Navigation;
 
 namespace SnakeAndLaddersFinalProject
 {
-    
     public sealed partial class BasicWindow : Window
     {
-        private bool _isClosingHandled;
+        private const string DEFAULT_BACKGROUND_PATH = "Assets/Images/BackgroundMainWindow.png";
+        private const string AUTH_BACKGROUND_KEY = "Auth";
+        private const string AUTH_BACKGROUND_PATH = "/Assets/Images/Backgrounds/LoginBackground (2).png";
+        private const string PACK_URI_FORMAT = "pack://application:,,,/{0}";
 
-
-        private static readonly IReadOnlyDictionary<string, string> Backgrounds =
+        private static readonly IReadOnlyDictionary<string, string> _backgrounds =
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
-                ["Auth"] = "/Assets/Images/Backgrounds/LoginBackground (2).png",
-               
+                [AUTH_BACKGROUND_KEY] = AUTH_BACKGROUND_PATH,
             };
 
-        private const string DefaultBackground = "Assets/Images/BackgroundMainWindow.png";
+        private bool _isClosingHandled;
 
         public BasicWindow()
         {
@@ -40,58 +40,53 @@ namespace SnakeAndLaddersFinalProject
 
             _isClosingHandled = true;
 
-            // 1) Salir silenciosamente del lobby si aplica
             if (MainFrame.Content is LobbyPage lobbyPage &&
                 lobbyPage.DataContext is LobbyViewModel vm)
             {
                 await vm.TryLeaveLobbySilentlyAsync().ConfigureAwait(true);
             }
 
-            // 2) Logout en el servidor (si hay token)
             try
             {
                 await AuthClientHelper.LogoutAsync().ConfigureAwait(true);
             }
             catch
             {
-                // ya estamos cerrando la app, no mostramos nada
             }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
             MainFrame.Navigate(new Pages.StartPage());
         }
 
-        private void MainFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        private void MainFrame_Navigated(object sender, NavigationEventArgs e)
         {
             var page = e.Content as Page;
             if (page == null)
             {
-                SetBackground(DefaultBackground);
+                SetBackground(DEFAULT_BACKGROUND_PATH);
                 return;
             }
 
-            var key = SnakeAndLaddersFinalProject.Utilities.PageBackground.GetKey(page);
-            if (!string.IsNullOrWhiteSpace(key) && Backgrounds.TryGetValue(key, out var path))
+            var key = PageBackground.GetKey(page);
+
+            if (!string.IsNullOrWhiteSpace(key) && _backgrounds.TryGetValue(key, out var path))
             {
                 SetBackground(path);
             }
             else
             {
-                SetBackground(DefaultBackground);
+                SetBackground(DEFAULT_BACKGROUND_PATH);
             }
         }
-
 
         private void SetBackground(string resourcePath)
         {
             try
             {
-                
                 var path = (resourcePath ?? string.Empty).TrimStart('/');
-                var packUri = new Uri($"pack://application:,,,/{path}", UriKind.Absolute);
+                var packUri = new Uri(string.Format(PACK_URI_FORMAT, path), UriKind.Absolute);
 
                 var bmp = new BitmapImage();
                 bmp.BeginInit();
@@ -104,9 +99,8 @@ namespace SnakeAndLaddersFinalProject
             }
             catch
             {
-                
-                var defPath = DefaultBackground.TrimStart('/');
-                var defUri = new Uri($"pack://application:,,,/{defPath}", UriKind.Absolute);
+                var defPath = DEFAULT_BACKGROUND_PATH.TrimStart('/');
+                var defUri = new Uri(string.Format(PACK_URI_FORMAT, defPath), UriKind.Absolute);
 
                 var bmp = new BitmapImage();
                 bmp.BeginInit();
@@ -118,6 +112,5 @@ namespace SnakeAndLaddersFinalProject
                 BgBrush.ImageSource = bmp;
             }
         }
-
     }
 }

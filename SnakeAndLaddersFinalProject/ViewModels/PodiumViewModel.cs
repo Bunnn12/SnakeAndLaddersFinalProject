@@ -2,9 +2,11 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using SnakeAndLaddersFinalProject.Infrastructure;
 using SnakeAndLaddersFinalProject.ViewModels.Models;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
@@ -31,14 +33,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public string Title
         {
-            get { return _title; }
+            get => _title;
             set
             {
                 if (string.Equals(_title, value, StringComparison.Ordinal))
                 {
                     return;
                 }
-
                 _title = value ?? string.Empty;
                 OnPropertyChanged();
             }
@@ -46,14 +47,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public string WinnerName
         {
-            get { return _winnerName; }
+            get => _winnerName;
             set
             {
                 if (string.Equals(_winnerName, value, StringComparison.Ordinal))
                 {
                     return;
                 }
-
                 _winnerName = value ?? string.Empty;
                 OnPropertyChanged();
             }
@@ -61,69 +61,47 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public PodiumPlayerViewModel FirstPlace
         {
-            get
-            {
-                if (Players.Count > FIRST_PLACE_INDEX)
-                {
-                    return Players[FIRST_PLACE_INDEX];
-                }
-
-                return null;
-            }
+            get => GetPlayerAtIndex(FIRST_PLACE_INDEX);
         }
+
+        public Visibility FirstPlaceVisibility => FirstPlace != null ? Visibility.Visible :
+            Visibility.Collapsed;
 
         public PodiumPlayerViewModel SecondPlace
         {
-            get
-            {
-                if (Players.Count > SECOND_PLACE_INDEX)
-                {
-                    return Players[SECOND_PLACE_INDEX];
-                }
-
-                return null;
-            }
+            get => GetPlayerAtIndex(SECOND_PLACE_INDEX);
         }
+
+        public Visibility SecondPlaceVisibility => SecondPlace != null ? Visibility.Visible :
+            Visibility.Collapsed;
 
         public PodiumPlayerViewModel ThirdPlace
         {
-            get
-            {
-                if (Players.Count > THIRD_PLACE_INDEX)
-                {
-                    return Players[THIRD_PLACE_INDEX];
-                }
-
-                return null;
-            }
+            get => GetPlayerAtIndex(THIRD_PLACE_INDEX);
         }
+
+        public Visibility ThirdPlaceVisibility => ThirdPlace != null ? Visibility.Visible :
+            Visibility.Collapsed;
 
         public PodiumViewModel()
         {
             Players = new ObservableCollection<PodiumPlayerViewModel>();
             CloseCommand = new RelayCommand(_ => CloseRequested?.Invoke());
-
             Title = T(KEY_PODIUM_TITLE_DEFAULT);
         }
 
-        public PodiumViewModel(
-            int winnerUserId,
-            ReadOnlyCollection<PodiumPlayerViewModel> orderedPlayers)
-            : this()
+        public PodiumViewModel(int winnerUserId, ReadOnlyCollection<PodiumPlayerViewModel>
+            orderedPlayers) : this()
         {
             Initialize(winnerUserId, orderedPlayers);
         }
 
-        public void Initialize(
-            int winnerUserId,
-            ReadOnlyCollection<PodiumPlayerViewModel> orderedPlayers)
+        public void Initialize(int winnerUserId, ReadOnlyCollection<PodiumPlayerViewModel> orderedPlayers)
         {
             Initialize(winnerUserId, null, orderedPlayers);
         }
 
-        public void Initialize(
-            int winnerUserId,
-            string winnerDisplayName,
+        public void Initialize(int winnerUserId, string winnerDisplayName,
             ReadOnlyCollection<PodiumPlayerViewModel> orderedPlayers)
         {
             Players.Clear();
@@ -131,20 +109,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             if (orderedPlayers != null)
             {
                 int count = 0;
-
-                foreach (PodiumPlayerViewModel player in orderedPlayers)
+                foreach (var player in orderedPlayers)
                 {
-                    if (player == null)
-                    {
-                        continue;
-                    }
+                    if (player == null) continue;
 
                     count++;
-
-                    if (count > MAX_PODIUM_PLAYERS)
-                    {
-                        break;
-                    }
+                    if (count > MAX_PODIUM_PLAYERS) break;
 
                     Players.Add(player);
 
@@ -156,39 +126,41 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
 
             string effectiveWinnerName = string.IsNullOrWhiteSpace(winnerDisplayName)
-                ? null
+                ? string.Format(T(KEY_PODIUM_WINNER_FALLBACK_FMT), winnerUserId)
                 : winnerDisplayName.Trim();
-
-            if (effectiveWinnerName == null)
-            {
-                effectiveWinnerName = string.Format(
-                    T(KEY_PODIUM_WINNER_FALLBACK_FMT),
-                    winnerUserId);
-            }
 
             WinnerName = effectiveWinnerName;
 
+            NotifyPropertiesChanged();
+        }
+
+        private PodiumPlayerViewModel GetPlayerAtIndex(int index)
+        {
+            if (Players.Count > index)
+            {
+                return Players[index];
+            }
+            return null;
+        }
+
+        private void NotifyPropertiesChanged()
+        {
             OnPropertyChanged(nameof(FirstPlace));
+            OnPropertyChanged(nameof(FirstPlaceVisibility));
             OnPropertyChanged(nameof(SecondPlace));
+            OnPropertyChanged(nameof(SecondPlaceVisibility));
             OnPropertyChanged(nameof(ThirdPlace));
+            OnPropertyChanged(nameof(ThirdPlaceVisibility));
         }
 
         private static string T(string key)
         {
-            return Globalization.LocalizationManager.Current[key];
+            return Lang.ResourceManager.GetString(key);
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler == null)
-            {
-                return;
-            }
-
-            PropertyChangedEventArgs args = new PropertyChangedEventArgs(propertyName);
-            handler(this, args);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

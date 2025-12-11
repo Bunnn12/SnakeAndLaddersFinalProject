@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using SnakeAndLaddersFinalProject.Utilities;
+using Lang = SnakeAndLaddersFinalProject.Properties.Langs.Lang;
 
 namespace SnakeAndLaddersFinalProject.Windows
 {
@@ -29,12 +30,12 @@ namespace SnakeAndLaddersFinalProject.Windows
                 commentText.Trim().Length < MIN_COMMENT_LENGTH)
             {
                 string message = string.Format(
-                    Properties.Langs.Lang.OtherReasonMinLengthMessageFmt,
+                    Lang.OtherReasonMinLengthMessageFmt,
                     MIN_COMMENT_LENGTH);
 
                 MessageBox.Show(
                     message,
-                    Properties.Langs.Lang.OtherReasonWindowTitle,
+                    Lang.OtherReasonWindowTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
 

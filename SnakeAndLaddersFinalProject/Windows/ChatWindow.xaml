@@ -326,7 +326,7 @@
                              Style="{StaticResource ChatTextBox}"
                              Text="{Binding NewMessage, UpdateSourceTrigger=PropertyChanged}"
                              AcceptsReturn="False"
-                             MaxLength="500"
+                             MaxLength="300"
                              MinHeight="32"
                              Loaded="MessageLoadded"
                              ToolTip="Enter para enviar; Ctrl+Enter para salto de línea.">

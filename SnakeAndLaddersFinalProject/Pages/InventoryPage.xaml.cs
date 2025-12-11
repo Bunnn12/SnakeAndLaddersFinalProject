@@ -9,16 +9,13 @@ namespace SnakeAndLaddersFinalProject.Pages
     public partial class InventoryPage : Page
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(InventoryPage));
-
         private readonly InventoryViewModel _viewModel;
 
         public InventoryPage()
         {
             InitializeComponent();
-
             _viewModel = new InventoryViewModel();
             DataContext = _viewModel;
-
             Loaded += OnLoaded;
         }
 
@@ -31,7 +28,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                _logger.Error("Error al inicializar InventoryPage.", ex);
+                _logger.Error("Error initializing InventoryPage.", ex);
             }
         }
 

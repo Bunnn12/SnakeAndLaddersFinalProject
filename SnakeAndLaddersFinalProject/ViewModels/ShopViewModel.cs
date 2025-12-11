@@ -4,13 +4,20 @@ using System.Threading.Tasks;
 using System.Windows;
 using SnakeAndLaddersFinalProject.Authentication;
 using SnakeAndLaddersFinalProject.ShopService;
+using SnakeAndLaddersFinalProject.Properties.Langs;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using log4net;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
-    public sealed class ShopViewModel
+    public sealed class ShopViewModel : INotifyPropertyChanged
     {
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ShopViewModel));
+
         private const string ICON_TITLE_WARNING = "UiTitleWarning";
         private const string ICON_TITLE_ERROR = "UiTitleError";
+        private const string ICON_TITLE_INFO = "UiTitleInfo";
 
         private const string SHOP_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IShopService";
 
@@ -28,17 +35,35 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const int DICE_ID_NEGATIVE = 1;
         private const int DICE_ID_ONE_TO_THREE = 2;
         private const int DICE_ID_FOUR_TO_SIX = 3;
+        private const int MIN_COINS = 0;
+        private const int INVALID_USER_ID = 0;
 
-        public int CurrentCoins { get; private set; }
+        private int _currentCoins;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public int CurrentCoins
+        {
+            get => _currentCoins;
+            private set
+            {
+                if (_currentCoins == value)
+                {
+                    return;
+                }
+                _currentCoins = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ShopViewModel()
         {
-            CurrentCoins = 0;
+            CurrentCoins = MIN_COINS;
         }
 
         public async Task InitializeCoinsAsync()
         {
-            CurrentCoins = 0;
+            CurrentCoins = MIN_COINS;
 
             if (!EnsureAuthenticated())
             {
@@ -55,9 +80,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     .Run(() => client.GetCurrentCoins(token))
                     .ConfigureAwait(true);
 
-                if (coins < 0)
+                if (coins < MIN_COINS)
                 {
-                    coins = 0;
+                    coins = MIN_COINS;
                 }
 
                 CurrentCoins = coins;
@@ -74,21 +99,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 ShowError(T("UiEndpointNotFound"));
                 client.Abort();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.Error("Error initializing coins.", ex);
                 ShowError(T("ShopServerError"));
                 client.Abort();
             }
             finally
             {
-                if (client.State == System.ServiceModel.CommunicationState.Faulted)
-                {
-                    client.Abort();
-                }
-                else
-                {
-                    client.Close();
-                }
+                SafeClose(client);
             }
         }
 
@@ -216,21 +235,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 ShowError(T("UiEndpointNotFound"));
                 client.Abort();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.Error("Error executing purchase.", ex);
                 ShowError(T("ShopServerError"));
                 client.Abort();
             }
             finally
             {
-                if (client.State == System.ServiceModel.CommunicationState.Faulted)
-                {
-                    client.Abort();
-                }
-                else
-                {
-                    client.Close();
-                }
+                SafeClose(client);
             }
         }
 
@@ -242,7 +255,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return false;
             }
 
-            if (SessionContext.Current.UserId <= 0)
+            if (SessionContext.Current.UserId <= INVALID_USER_ID)
             {
                 ShowWarning(T("UiShopRequiresRegisteredUser"));
                 return false;
@@ -255,6 +268,30 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
 
             return true;
+        }
+
+        private static void SafeClose(ShopServiceClient client)
+        {
+            if (client == null)
+            {
+                return;
+            }
+
+            try
+            {
+                if (client.State == CommunicationState.Faulted)
+                {
+                    client.Abort();
+                }
+                else
+                {
+                    client.Close();
+                }
+            }
+            catch
+            {
+                client.Abort();
+            }
         }
 
         private static string T(string key)
@@ -284,7 +321,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             MessageBox.Show(
                 message,
-                T("UiTitleInfo"),
+                T(ICON_TITLE_INFO),
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
         }
@@ -326,6 +363,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 default:
                     return T("ShopUnknownError");
             }
+        }
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

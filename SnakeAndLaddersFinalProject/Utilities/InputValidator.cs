@@ -12,7 +12,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
         private const char DIGIT_ASCII_MAX = '9';
         private const char DOUBLE_QUOTE_CHAR = '"';
 
-        private static readonly Regex EmailRegex =
+        private static readonly Regex _emailRegex =
             new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$",
                 RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
@@ -56,7 +56,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
                 return false;
             }
 
-            return EmailRegex.IsMatch(value);
+            return _emailRegex.IsMatch(value);
         }
 
 
@@ -101,8 +101,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
 
             return true;
         }
-
-   
+  
         public static bool IsIdentifierText(string value, int minLength, int maxLength)
         {
             value = Normalize(value);
@@ -129,7 +128,6 @@ namespace SnakeAndLaddersFinalProject.Utilities
                     continue;
                 }
 
-                // símbolos seguros para username / búsqueda
                 if (character == '_' ||
                     character == '-' ||
                     character == '.' ||

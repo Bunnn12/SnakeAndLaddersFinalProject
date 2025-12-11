@@ -1,5 +1,4 @@
 ﻿using log4net;
-using log4net.Repository.Hierarchy;
 using SnakeAndLaddersFinalProject.Navigation;
 using SnakeAndLaddersFinalProject.Properties.Langs;
 using System;
@@ -8,17 +7,23 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using SnakeAndLaddersFinalProject.Utilities;
 
-
 namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class CreateMatchPage : Page
     {
-
+        private const int BOARD_SIZE_8 = 8;
+        private const int BOARD_SIZE_12 = 12;
+        private const int BOARD_SIZE_DEFAULT = 10;
+        private const int PLAYERS_COUNT_4 = 4;
+        private const int PLAYERS_COUNT_3 = 3;
+        private const int PLAYERS_COUNT_DEFAULT = 2; 
         private static readonly ILog _logger = LogManager.GetLogger(typeof(CreateMatchPage));
+
         public CreateMatchPage()
         {
             InitializeComponent();
         }
+
         private void CreateRoom(object sender, RoutedEventArgs e)
         {
             try
@@ -31,8 +36,6 @@ namespace SnakeAndLaddersFinalProject.Pages
                     IsPrivate = chkPrivateRoom.IsChecked == true,
                     Players = GetSelectedPlayers()
                 };
-
-             
 
                 var lobbyNavigationArgs = new LobbyNavigationArgs
                 {
@@ -63,7 +66,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             {
                 string userMessage = ExceptionHandler.Handle(
                     ex,
-                    $"{nameof(CreateMatchPage)}.{nameof(CreateRoom)}",
+                    "CreateMatchPage.CreateRoom",
                     _logger);
 
                 MessageBox.Show(
@@ -130,16 +133,17 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             if (rdbPlayers4.IsChecked == true)
             {
-                return 4;
+                return PLAYERS_COUNT_4;
             }
 
             if (rdbPlayers3.IsChecked == true)
             {
-                return 3;
+                return PLAYERS_COUNT_3;
             }
 
             return AppConstants.DEFAULT_PLAYERS;
         }
+
         private void Back(object sender, RoutedEventArgs e)
         {
             try
@@ -168,7 +172,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             {
                 string userMessage = ExceptionHandler.Handle(
                     ex,
-                    $"{nameof(CreateMatchPage)}.{nameof(Back)}",
+                    "CreateMatchPage.Back",
                     _logger);
 
                 MessageBox.Show(

@@ -44,7 +44,6 @@ namespace SnakeAndLaddersFinalProject.Pages
             if (loaded && viewModel.LoadedAccount != null)
             {
                 ApplyLoadedAccountToUi(viewModel.LoadedAccount);
-
                 InitializeSocialProfiles(viewModel.LoadedAccount.UserId);
 
                 bool avatarsLoaded = viewModel.LoadAvatarOptions();
@@ -78,7 +77,6 @@ namespace SnakeAndLaddersFinalProject.Pages
             txtFirstName.IsReadOnly = !enabled;
             txtLastName.IsReadOnly = !enabled;
             txtDescription.IsReadOnly = !enabled;
-
             txtCoins.IsReadOnly = true;
 
             btnGuardar.IsEnabled = enabled;
@@ -95,7 +93,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         private void Cancel(object sender, RoutedEventArgs e)
         {
             var viewModel = ViewModel;
-            if (viewModel?.LoadedAccount != null)
+            if (viewModel != null && viewModel.LoadedAccount != null)
             {
                 ApplyLoadedAccountToUi(viewModel.LoadedAccount);
                 RefreshAvatarBinding();
@@ -107,14 +105,14 @@ namespace SnakeAndLaddersFinalProject.Pages
         private void SaveChanges(object sender, RoutedEventArgs e)
         {
             var viewModel = ViewModel;
-            if (viewModel?.LoadedAccount == null)
+            if (viewModel == null || viewModel.LoadedAccount == null)
             {
                 return;
             }
 
-            string firstName = txtFirstName.Text?.Trim();
-            string lastName = txtLastName.Text?.Trim();
-            string description = txtDescription.Text?.Trim();
+            string firstName = (txtFirstName.Text ?? string.Empty).Trim();
+            string lastName = (txtLastName.Text ?? string.Empty).Trim();
+            string description = (txtDescription.Text ?? string.Empty).Trim();
 
             if (!viewModel.ValidateProfileInputs(firstName, lastName, description))
             {
@@ -144,7 +142,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         private void MenuDeleteAccount(object sender, RoutedEventArgs e)
         {
             var viewModel = ViewModel;
-            if (viewModel?.LoadedAccount == null)
+            if (viewModel == null || viewModel.LoadedAccount == null)
             {
                 MessageBox.Show(
                     Lang.ProfileAccountInfoLoadError,
@@ -191,8 +189,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void ChangeAvatar(object sender, RoutedEventArgs e)
         {
-            borderAvatarPicker.Visibility =
-                borderAvatarPicker.Visibility == Visibility.Visible
+            borderAvatarPicker.Visibility = borderAvatarPicker.Visibility == Visibility.Visible
                     ? Visibility.Collapsed
                     : Visibility.Visible;
         }
@@ -205,7 +202,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         private void AvatarItem(object sender, RoutedEventArgs e)
         {
             var viewModel = ViewModel;
-            if (viewModel?.LoadedAccount == null)
+            if (viewModel == null || viewModel.LoadedAccount == null)
             {
                 MessageBox.Show(
                     Lang.ProfileNotLoadedError,
@@ -448,7 +445,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         private void ToggleSocialLink(SocialNetworkType network, SocialProfileItemViewModel item)
         {
             var profileVm = ViewModel;
-            if (profileVm?.LoadedAccount == null)
+            if (profileVm == null || profileVm.LoadedAccount == null)
             {
                 MessageBox.Show(
                     Lang.ProfileUserNotLoadedError,
@@ -502,6 +499,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
             }
+
             _socialProfilesViewModel.LoadSocialProfiles(userId);
             ApplySocialProfilesToUi();
         }

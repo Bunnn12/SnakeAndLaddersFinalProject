@@ -7,35 +7,33 @@ namespace SnakeAndLaddersFinalProject.Converters
 {
     public sealed class CellTokenVisibleConverter : IMultiValueConverter
     {
-        public object Convert(
-            object[] values,
-            Type targetType,
-            object parameter,
+        private const int IDX_CURRENT_CELL = 0;
+        private const int IDX_TARGET_CELL = 1;
+        private const int MIN_VALUES_COUNT = 2;
+
+        public object Convert(object[] values, Type targetType, object parameter,
             CultureInfo culture)
         {
-            if (values == null || values.Length < 2)
+            if (values == null || values.Length < MIN_VALUES_COUNT)
             {
                 return Visibility.Collapsed;
             }
 
-            if (!(values[0] is int currentCellIndex) ||
-                !(values[1] is int cellIndex))
+            if (!(values[IDX_CURRENT_CELL] is int currentCellIndex) ||
+                !(values[IDX_TARGET_CELL] is int targetCellIndex))
             {
                 return Visibility.Collapsed;
             }
 
-            return currentCellIndex == cellIndex
+            return currentCellIndex == targetCellIndex
                 ? Visibility.Visible
                 : Visibility.Collapsed;
         }
 
-        public object[] ConvertBack(
-            object value,
-            Type[] targetTypes,
-            object parameter,
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter,
             CultureInfo culture)
         {
-            throw new NotSupportedException();
+            throw new NotSupportedException("Not supported exception");
         }
     }
 }

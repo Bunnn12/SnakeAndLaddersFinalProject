@@ -39,6 +39,40 @@ namespace SnakeAndLaddersFinalProject.Pages
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             ApplyHostRestrictionsIfNeeded();
+
+            if (btnCreateMatch != null)
+            {
+                btnCreateMatch.Content = Lang.btnCreateMatchText;
+            }
+            if (btnJoinMatch != null)
+            {
+                btnJoinMatch.Content = Lang.btnJoinMatchText;
+            }
+
+            if (btnFriends != null)
+            {
+                btnFriends.ToolTip = Lang.lblFriendsListTitle;
+            }
+            if (btnShop != null)
+            {
+                btnShop.ToolTip = Lang.btnShopText;
+            }
+            if (btnInventory != null)
+            {
+                btnInventory.ToolTip = Lang.btnInventoryText;
+            }
+            if (btnSkins != null)
+            {
+                btnSkins.ToolTip = Lang.btnSkinsText;
+            }
+            if (btnProfile != null)
+            {
+                btnProfile.ToolTip = Lang.btnProfileText;
+            }
+            if (btnRanking != null)
+            {
+                btnRanking.ToolTip = Lang.btnRankingText;
+            }
         }
 
         private void ApplyHostRestrictionsIfNeeded()
@@ -52,7 +86,6 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             int userId = session.UserId;
 
-            // Negativos = host/guest especial
             bool isHostUser = userId < HOST_USER_ID_THRESHOLD;
 
             if (!isHostUser)
@@ -60,15 +93,9 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            // Deshabilitar todos los botones de menú…
-            if (btnBack != null)
-            {
-                btnBack.IsEnabled = false;
-            }
-
             if (btnSettings != null)
             {
-                btnSettings.IsEnabled = false;
+                btnSettings.IsEnabled = true;
             }
 
             if (btnCreateMatch != null)
@@ -106,15 +133,9 @@ namespace SnakeAndLaddersFinalProject.Pages
                 btnRanking.IsEnabled = false;
             }
 
-            // …menos “Unirse a partida” y el textbox del código
             if (btnJoinMatch != null)
             {
                 btnJoinMatch.IsEnabled = true;
-            }
-
-            if (txtJoinCode != null)
-            {
-                txtJoinCode.IsEnabled = true;
             }
         }
 
@@ -255,6 +276,23 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             var skinsPage = new SkinsPage();
             NavigateToPage(skinsPage);
+        }
+        private void Settings(object sender, RoutedEventArgs e)
+        {
+            if (TryGetMainFrame(out Frame mainFrame))
+            {
+                mainFrame.Navigate(new SettingsPage());
+                return;
+            }
+
+            NavigationService?.Navigate(new SettingsPage());
+        }
+
+        private bool TryGetMainFrame(out Frame mainFrame)
+        {
+            Window owner = Window.GetWindow(this) ?? Application.Current?.MainWindow;
+            mainFrame = owner?.FindName("MainFrame") as Frame;
+            return mainFrame != null;
         }
     }
 }

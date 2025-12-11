@@ -223,12 +223,6 @@
                                                 Background="#66000000"
                                                 CornerRadius="10">
                                             <Grid>
-                                                <Button x:Name="btnAvatarCommonInfo"
-                                                        Style="{StaticResource InfoDotsButton}"
-                                                        HorizontalAlignment="Right"
-                                                        VerticalAlignment="Top"
-                                                        Margin="0,0,0,4"
-                                                        Click="AvatarCommonInfo" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgAvatarCommonChest"
                                                            Height="109"
@@ -270,12 +264,6 @@
                                                 Background="#66000000"
                                                 CornerRadius="10">
                                             <Grid>
-                                                <Button x:Name="btnAvatarEpicInfo"
-                                                        Style="{StaticResource InfoDotsButton}"
-                                                        HorizontalAlignment="Right"
-                                                        VerticalAlignment="Top"
-                                                        Margin="0,0,0,4"
-                                                        Click="AvatarEpicInfo" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgAvatarEpicChest"
                                                            Height="109"
@@ -317,12 +305,6 @@
                                                 Background="#66000000"
                                                 CornerRadius="10">
                                             <Grid>
-                                                <Button x:Name="btnAvatarLegendaryInfo"
-                                                        Style="{StaticResource InfoDotsButton}"
-                                                        HorizontalAlignment="Right"
-                                                        VerticalAlignment="Top"
-                                                        Margin="0,0,0,4"
-                                                        Click="AvatarLegendaryInfo" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgAvatarLegendaryChest"
                                                            Height="109"
@@ -376,12 +358,6 @@
                                                 Background="#66000000"
                                                 CornerRadius="10">
                                             <Grid>
-                                                <Button x:Name="btnStickerCommonInfo"
-                                                        Style="{StaticResource InfoDotsButton}"
-                                                        HorizontalAlignment="Right"
-                                                        VerticalAlignment="Top"
-                                                        Margin="0,0,0,4"
-                                                        Click="StickerCommonInfo" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgStickerCommonChest"
                                                            Height="109"
@@ -423,12 +399,6 @@
                                                 Background="#66000000"
                                                 CornerRadius="10">
                                             <Grid>
-                                                <Button x:Name="btnStickerEpicInfo"
-                                                        Style="{StaticResource InfoDotsButton}"
-                                                        HorizontalAlignment="Right"
-                                                        VerticalAlignment="Top"
-                                                        Margin="0,0,0,4"
-                                                        Click="StickerEpicInfo" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgStickerEpicChest"
                                                            Height="109"
@@ -470,12 +440,6 @@
                                                 Background="#66000000"
                                                 CornerRadius="10">
                                             <Grid>
-                                                <Button x:Name="btnStickerLegendaryInfo"
-                                                        Style="{StaticResource InfoDotsButton}"
-                                                        HorizontalAlignment="Right"
-                                                        VerticalAlignment="Top"
-                                                        Margin="0,0,0,4"
-                                                        Click="StickerLegendaryInfo" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgStickerLegendaryChest"
                                                            Height="109"
@@ -537,11 +501,11 @@
                                                         Click="DiceNegativeInfo" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgDiceNegative"
-                                                           Height="80"
-                                                           Width="80"
+                                                           Height="109"
+                                                           Width="147"
                                                            Stretch="Uniform"
                                                            HorizontalAlignment="Center"
-                                                           Source="/Pages/Captura de pantalla 2024-12-02 215634.png" />
+                                                           Source="/Assets/Images/Icons/negativeDiceIcon.png" />
                                                     <TextBlock x:Name="lblDiceNegativeTitleHeader"
                                                                Text="{x:Static language:Lang.lblDiceNegativeTitle}"
                                                                FontWeight="SemiBold"
@@ -584,11 +548,11 @@
                                                         Click="Dice123Info" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgDice123"
-                                                           Height="80"
-                                                           Width="80"
+                                                           Height="109"
+                                                           Width="147"
                                                            Stretch="Uniform"
                                                            HorizontalAlignment="Center"
-                                                           Source="/Pages/Captura de pantalla 2024-12-02 215634.png" />
+                                                           Source="/Assets/Images/Icons/1-2-3DiceIcon.png" />
                                                     <TextBlock x:Name="lblDice123TitleHeader"
                                                                Text="{x:Static language:Lang.lblDice123Title}"
                                                                FontWeight="SemiBold"
@@ -631,11 +595,11 @@
                                                         Click="Dice456Info" />
                                                 <StackPanel VerticalAlignment="Center">
                                                     <Image x:Name="imgDice456"
-                                                           Height="80"
-                                                           Width="80"
+                                                           Height="109"
+                                                           Width="147"
                                                            Stretch="Uniform"
                                                            HorizontalAlignment="Center"
-                                                           Source="/Pages/Captura de pantalla 2024-12-02 215634.png" />
+                                                           Source="/Assets/Images/Icons/4-5-6DiceIcon.png" />
                                                     <TextBlock x:Name="lblDice456TitleHeader"
                                                                Text="{x:Static language:Lang.lblDice456Title}"
                                                                FontWeight="SemiBold"
@@ -688,11 +652,11 @@
                                                     Click="ItemChestInfo" />
                                             <StackPanel VerticalAlignment="Center">
                                                 <Image x:Name="imgItemChest"
-                                                       Height="80"
-                                                       Width="80"
+                                                       Height="109"
+                                                       Width="147"
                                                        Stretch="Uniform"
                                                        HorizontalAlignment="Center"
-                                                       Source="/Pages/Captura de pantalla 2024-12-02 215634.png" />
+                                                       Source="/Assets/Images/Icons/itemChestIcon.png" />
                                                 <TextBlock x:Name="lblItemChestTitleHeader"
                                                            Text="{x:Static language:Lang.lblItemChestTitle}"
                                                            FontWeight="SemiBold"

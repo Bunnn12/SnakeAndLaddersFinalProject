@@ -7,41 +7,46 @@ namespace SnakeAndLaddersFinalProject.Converters
 {
     public sealed class TurnTimeToBrushConverter : IValueConverter
     {
-        private const int TOTAL_SECONDS = 30;
+        private const int HIGH_TIME_THRESHOLD_SECONDS = 20;
+        private const int MEDIUM_TIME_THRESHOLD_SECONDS = 10;
+        private const int SECONDS_PER_MINUTE = 60;
+        private const int DEFAULT_SECONDS = 0;
+        private const int IDX_MINUTES = 0;
+        private const int IDX_SECONDS = 1;
+        private const int TIME_PARTS_COUNT = 2;
+
+        private static readonly Color _highTimeColor = Color.FromRgb(0x4C, 0xAF, 0x50);
+        private static readonly Color _mediumTimeColor = Color.FromRgb(0xFF, 0xC1, 0x07);
+        private static readonly Color _lowTimeColor = Color.FromRgb(0xE5, 0x39, 0x35);
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string timeText = value as string;
-
             int remainingSeconds = ParseSeconds(timeText);
-            if (remainingSeconds <= 0)
+
+            if (remainingSeconds <= DEFAULT_SECONDS)
             {
-                // rojo al final
-                return new SolidColorBrush(Color.FromRgb(0xE5, 0x39, 0x35));
+                return new SolidColorBrush(_lowTimeColor);
             }
 
-            // >= 20s → verde
-            // 20–10s → amarillo
-            // < 10s → rojo
             Color color;
-
-            if (remainingSeconds >= 20)
+            if (remainingSeconds >= HIGH_TIME_THRESHOLD_SECONDS)
             {
-                color = Color.FromRgb(0x4C, 0xAF, 0x50); // verde
+                color = _highTimeColor;
             }
-            else if (remainingSeconds >= 10)
+            else if (remainingSeconds >= MEDIUM_TIME_THRESHOLD_SECONDS)
             {
-                color = Color.FromRgb(0xFF, 0xC1, 0x07); // amarillo
+                color = _mediumTimeColor;
             }
             else
             {
-                color = Color.FromRgb(0xE5, 0x39, 0x35); // rojo
+                color = _lowTimeColor;
             }
-
             return new SolidColorBrush(color);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter,
+            CultureInfo culture)
         {
             throw new NotSupportedException();
         }
@@ -54,16 +59,14 @@ namespace SnakeAndLaddersFinalProject.Converters
             }
 
             var parts = timeText.Split(':');
-            if (parts.Length == 2 &&
-                int.TryParse(parts[0], out int minutes) &&
-                int.TryParse(parts[1], out int seconds))
+            if (parts.Length == TIME_PARTS_COUNT &&
+                int.TryParse(parts[IDX_MINUTES], out int minutes) &&
+                int.TryParse(parts[IDX_SECONDS], out int seconds))
             {
-                return (minutes * 60) + seconds;
+                return (minutes * SECONDS_PER_MINUTE) + seconds;
             }
 
-            return int.TryParse(timeText, out int onlySeconds)
-                ? onlySeconds
-                : 0;
+            return int.TryParse(timeText, out int onlySeconds) ? onlySeconds : 0;
         }
     }
 }

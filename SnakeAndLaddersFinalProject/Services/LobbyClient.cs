@@ -11,7 +11,6 @@ namespace SnakeAndLaddersFinalProject.Services
 
         private readonly LobbyClientCallback _callback;
         private readonly LobbyServiceClient _client;
-
         private bool _isDisposed;
 
         public LobbyClient(ILobbyEventsHandler eventsHandler)
@@ -23,11 +22,13 @@ namespace SnakeAndLaddersFinalProject.Services
 
             _callback = new LobbyClientCallback(eventsHandler);
             var context = new InstanceContext(_callback);
-
             _client = new LobbyServiceClient(context, LOBBY_ENDPOINT_NAME);
         }
 
-        public LobbyServiceClient Proxy => _client;
+        public LobbyServiceClient Proxy
+        {
+            get { return _client; }
+        }
 
         public void SubscribePublicLobbies(int userId)
         {

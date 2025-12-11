@@ -8,6 +8,8 @@ namespace SnakeAndLaddersFinalProject.Utilities
 {
     public static class BanPlayerHelper
     {
+        private const int RESET_USER_ID = 0;
+
         public static void HandleBanAndNavigateToLogin(Page sourcePage, string banMessage = null)
         {
             if (sourcePage == null)
@@ -19,16 +21,23 @@ namespace SnakeAndLaddersFinalProject.Utilities
                  ? Lang.LobbyBannedAndKickedText
                  : banMessage.Trim();
 
-            MessageBox.Show(messageToShow, Lang.UiTitleWarning,
-               MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(
+                messageToShow,
+                Lang.UiTitleWarning,
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
 
-            SessionContext.Current.UserId = 0;
-            SessionContext.Current.UserName = string.Empty;
-            SessionContext.Current.Email = string.Empty;
-            SessionContext.Current.ProfilePhotoId = AvatarIdHelper.DEFAULT_AVATAR_ID;
+            if (SessionContext.Current != null)
+            {
+                SessionContext.Current.UserId = RESET_USER_ID;
+                SessionContext.Current.UserName = string.Empty;
+                SessionContext.Current.Email = string.Empty;
+                SessionContext.Current.ProfilePhotoId = AvatarIdHelper.DEFAULT_AVATAR_ID;
+            }
 
             Window ownerWindow = Window.GetWindow(sourcePage);
             Frame mainFrame = ownerWindow?.FindName("MainFrame") as Frame;
+
             if (mainFrame != null)
             {
                 mainFrame.Navigate(new LoginPage());

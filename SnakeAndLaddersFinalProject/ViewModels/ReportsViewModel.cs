@@ -3,6 +3,7 @@ using System.ServiceModel;
 using System.Windows;
 using log4net;
 using SnakeAndLaddersFinalProject.Mappers;
+using SnakeAndLaddersFinalProject.PlayerReportService;
 using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.Utilities;
 
@@ -152,15 +153,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private void SendReport(string reasonText)
         {
-            var reportDto = new PlayerReportService.ReportDto
+            var reportDto = new ReportDto
             {
                 ReporterUserId = ReporterUserId,
                 ReportedUserId = ReportedUserId,
                 ReportReason = reasonText
             };
 
-            var client = new PlayerReportService.PlayerReportServiceClient(
-                PLAYER_REPORT_SERVICE_ENDPOINT_CONFIGURATION_NAME);
+            var client = new PlayerReportServiceClient(PLAYER_REPORT_SERVICE_ENDPOINT_CONFIGURATION_NAME);
 
             try
             {
@@ -173,7 +173,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
             }
-            catch (FaultException<PlayerReportService.ServiceFault> faultException)
+            catch (FaultException<ServiceFault> faultException)
             {
                 string faultCode = faultException.Detail != null
                     ? faultException.Detail.Code
@@ -205,7 +205,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 string technicalMessage = ExceptionHandler.Handle(
                     ex,
-                    $"{nameof(ReportsViewModel)}.{nameof(SendReport)}",
+                    "ReportsViewModel.SendReport",
                     _logger);
 
                 string userMessage = string.Format(

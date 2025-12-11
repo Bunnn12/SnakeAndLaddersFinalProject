@@ -11,20 +11,23 @@ namespace SnakeAndLaddersFinalProject.Animation
 {
     public sealed class GameBoardAnimationService
     {
-        private const int ANIMATION_STEP_MS = 120;
-        private const int BOB_STEP_MS = 60;
-        private const double BOB_OFFSET = -0.12;
+        private const int TOKEN_MOVE_DELAY_MS = 120;
+        private const int BOB_ANIMATION_DELAY_MS = 60;
+        private const double BOB_VERTICAL_OFFSET = -0.12;
         private const double MIN_DISTANCE_TOLERANCE = 0.001;
-        private const double CURVE_FACTOR = 0.25;
-        private const double MAX_CURVE_OFFSET = 1.20;
+        private const double SNAKE_CURVE_FACTOR = 0.25;
+        private const double MAX_SNAKE_CURVE_OFFSET = 1.20;
+        private const int LADDER_PATH_STEPS = 14;
+        private const int SNAKE_PATH_STEPS = 20;
+        private const int MIN_SNAKE_PATH_STEPS = 4;
+        private const double DEFAULT_VERTICAL_OFFSET = 0.0;
 
         private readonly PlayerTokenManager _tokenManager;
-        private readonly IReadOnlyDictionary<int, BoardLinkDto> _linksByStartIndex;
+        private readonly IReadOnlyDictionary<int, BoardLinkDto> _linksByStartCellIndex;
         private readonly IReadOnlyDictionary<int, Point> _cellCentersByIndex;
         private readonly Func<int, int> _mapServerIndexToVisual;
 
-        public GameBoardAnimationService(
-            PlayerTokenManager tokenManager,
+        public GameBoardAnimationService(PlayerTokenManager tokenManager,
             IReadOnlyDictionary<int, BoardLinkDto> linksByStartIndex,
             IReadOnlyDictionary<int, Point> cellCentersByIndex,
             Func<int, int> mapServerIndexToVisual)
@@ -32,7 +35,7 @@ namespace SnakeAndLaddersFinalProject.Animation
             this._tokenManager = tokenManager
                 ?? throw new ArgumentNullException(nameof(tokenManager));
 
-            this._linksByStartIndex = linksByStartIndex
+            this._linksByStartCellIndex = linksByStartIndex
                 ?? throw new ArgumentNullException(nameof(linksByStartIndex));
 
             this._cellCentersByIndex = cellCentersByIndex
@@ -44,13 +47,10 @@ namespace SnakeAndLaddersFinalProject.Animation
 
         public bool IsAnimating { get; private set; }
 
-        public async Task AnimateMoveForLocalPlayerAsync(
-            int userId,
-            int fromIndexServer,
-            int toIndexServer,
-            int diceValue)
+        public async Task AnimateMoveForLocalPlayerAsync(int userId,
+            int fromServerCellIndex, int toIndexServer, int diceValue)
         {
-            int fromVisual = _mapServerIndexToVisual(fromIndexServer);
+            int fromVisual = _mapServerIndexToVisual(fromServerCellIndex);
             int toVisual = _mapServerIndexToVisual(toIndexServer);
 
             PlayerTokenViewModel token = _tokenManager.GetOrCreateTokenForUser(userId, fromVisual);
@@ -59,21 +59,22 @@ namespace SnakeAndLaddersFinalProject.Animation
 
             try
             {
-                int landingIndexServer = fromIndexServer + diceValue;
+                int landingIndexServer = fromServerCellIndex + diceValue;
 
                 if (landingIndexServer > 0 &&
-                    _linksByStartIndex.TryGetValue(landingIndexServer, out BoardLinkDto link) &&
+                    _linksByStartCellIndex.TryGetValue(landingIndexServer, out BoardLinkDto link) &&
                     toIndexServer == link.EndIndex)
                 {
                     int landingVisual = _mapServerIndexToVisual(landingIndexServer);
 
-                    await AnimateWalkAsync(token, fromVisual, landingVisual).ConfigureAwait(false);
+                    await AnimateTokenWalkAsync(token, fromVisual, landingVisual)
+                        .ConfigureAwait(false);
 
                     await AnimateLinkSlideAsync(token, link).ConfigureAwait(false);
                 }
                 else
                 {
-                    await AnimateWalkAsync(token, fromVisual, toVisual).ConfigureAwait(false);
+                    await AnimateTokenWalkAsync(token, fromVisual, toVisual).ConfigureAwait(false);
                 }
             }
             finally
@@ -82,12 +83,8 @@ namespace SnakeAndLaddersFinalProject.Animation
             }
         }
 
-
-
-        private async Task AnimateWalkAsync(
-            PlayerTokenViewModel token,
-            int fromIndexVisual,
-            int toIndexVisual)
+        private async Task AnimateTokenWalkAsync(PlayerTokenViewModel token,
+            int fromIndexVisual, int toIndexVisual)
         {
             if (token == null)
             {
@@ -119,13 +116,12 @@ namespace SnakeAndLaddersFinalProject.Animation
                         _tokenManager.UpdateTokenPositionFromCell(token, cellIndex);
                     });
 
-                await BobTokenAsync(token).ConfigureAwait(false);
-                await Task.Delay(ANIMATION_STEP_MS).ConfigureAwait(false);
+                await AnimateTokenBobAsync(token).ConfigureAwait(false);
+                await Task.Delay(TOKEN_MOVE_DELAY_MS).ConfigureAwait(false);
             }
         }
 
-        private async Task AnimateLinkSlideAsync(
-            PlayerTokenViewModel token,
+        private async Task AnimateLinkSlideAsync(PlayerTokenViewModel token,
             BoardLinkDto link)
         {
             if (token == null || link == null)
@@ -146,8 +142,8 @@ namespace SnakeAndLaddersFinalProject.Animation
             }
 
             IEnumerable<Point> points = link.IsLadder
-                ? GetStraightPathPoints(start, end, 14)
-                : GetSnakePathPoints(start, end, 20);
+                ? GetStraightPathPoints(start, end, LADDER_PATH_STEPS)
+                : GetSnakePathPoints(start, end, SNAKE_PATH_STEPS);
 
             foreach (Point point in points)
             {
@@ -160,7 +156,7 @@ namespace SnakeAndLaddersFinalProject.Animation
                         token.Y = currentPoint.Y;
                     });
 
-                await Task.Delay(ANIMATION_STEP_MS).ConfigureAwait(false);
+                await Task.Delay(TOKEN_MOVE_DELAY_MS).ConfigureAwait(false);
             }
 
             await Application.Current.Dispatcher.InvokeAsync(
@@ -170,7 +166,7 @@ namespace SnakeAndLaddersFinalProject.Animation
                 });
         }
 
-        private static async Task BobTokenAsync(PlayerTokenViewModel token)
+        private static async Task AnimateTokenBobAsync(PlayerTokenViewModel token)
         {
             if (token == null)
             {
@@ -180,53 +176,48 @@ namespace SnakeAndLaddersFinalProject.Animation
             await Application.Current.Dispatcher.InvokeAsync(
                 () =>
                 {
-                    token.VerticalOffset = 0;
+                    token.VerticalOffset = DEFAULT_VERTICAL_OFFSET;
                 });
 
-            await Task.Delay(BOB_STEP_MS).ConfigureAwait(false);
+            await Task.Delay(BOB_ANIMATION_DELAY_MS).ConfigureAwait(false);
 
             await Application.Current.Dispatcher.InvokeAsync(
                 () =>
                 {
-                    token.VerticalOffset = BOB_OFFSET;
+                    token.VerticalOffset = BOB_VERTICAL_OFFSET;
                 });
 
-            await Task.Delay(BOB_STEP_MS).ConfigureAwait(false);
+            await Task.Delay(BOB_ANIMATION_DELAY_MS).ConfigureAwait(false);
 
             await Application.Current.Dispatcher.InvokeAsync(
                 () =>
                 {
-                    token.VerticalOffset = 0;
+                    token.VerticalOffset = DEFAULT_VERTICAL_OFFSET;
                 });
 
-            await Task.Delay(BOB_STEP_MS).ConfigureAwait(false);
+            await Task.Delay(BOB_ANIMATION_DELAY_MS).ConfigureAwait(false);
         }
 
-        private static IEnumerable<Point> GetStraightPathPoints(
-            Point start,
-            Point end,
-            int steps)
+        private static IEnumerable<Point> GetStraightPathPoints(Point start, Point end,
+            int stepCount)
         {
-            if (steps <= 1)
+            if (stepCount <= 1)
             {
                 yield return end;
                 yield break;
             }
 
-            for (int i = 1; i <= steps; i++)
+            for (int stepIndex = 1; stepIndex <= stepCount; stepIndex++)
             {
-                double t = i / (double)steps;
-                double x = start.X + ((end.X - start.X) * t);
-                double y = start.Y + ((end.Y - start.Y) * t);
+                double progress = stepIndex / (double)stepCount;
+                double x = start.X + ((end.X - start.X) * progress);
+                double y = start.Y + ((end.Y - start.Y) * progress);
 
                 yield return new Point(x, y);
             }
         }
 
-        private static IEnumerable<Point> GetSnakePathPoints(
-            Point start,
-            Point end,
-            int steps)
+        private static IEnumerable<Point> GetSnakePathPoints(Point start, Point end, int steps)
         {
             double startX = start.X;
             double startY = start.Y;
@@ -255,10 +246,10 @@ namespace SnakeAndLaddersFinalProject.Animation
             double midX = (startX + endX) * 0.5;
             double midY = (startY + endY) * 0.5;
 
-            double offset = distance * CURVE_FACTOR;
-            if (offset > MAX_CURVE_OFFSET)
+            double offset = distance * SNAKE_CURVE_FACTOR;
+            if (offset > MAX_SNAKE_CURVE_OFFSET)
             {
-                offset = MAX_CURVE_OFFSET;
+                offset = MAX_SNAKE_CURVE_OFFSET;
             }
 
             Point controlPoint1 = new Point(
@@ -273,28 +264,29 @@ namespace SnakeAndLaddersFinalProject.Animation
             Point midPoint = new Point(midX, midY);
             Point endPoint = end;
 
-            if (steps < 4)
+            if (steps < MIN_SNAKE_PATH_STEPS)
             {
-                steps = 4;
+                steps = MIN_SNAKE_PATH_STEPS;
             }
 
             for (int i = 1; i <= steps; i++)
             {
-                double tGlobal = i / (double)steps;
+                double globalProgress = i / (double)steps;
 
-                Point p;
-                if (tGlobal <= 0.5)
+                Point pointOnPath;
+                if (globalProgress <= 0.5)
                 {
-                    double u = tGlobal * 2.0;
-                    p = EvaluateQuadraticBezier(startPoint, controlPoint1, midPoint, u);
+                    double segmentProgress = globalProgress * 2.0;
+                    pointOnPath = EvaluateQuadraticBezier(startPoint, controlPoint1, midPoint,
+                        segmentProgress);
                 }
                 else
                 {
-                    double u = (tGlobal - 0.5) * 2.0;
-                    p = EvaluateQuadraticBezier(midPoint, controlPoint2, endPoint, u);
+                    double u = (globalProgress - 0.5) * 2.0;
+                    pointOnPath = EvaluateQuadraticBezier(midPoint, controlPoint2, endPoint, u);
                 }
 
-                yield return p;
+                yield return pointOnPath;
             }
         }
 

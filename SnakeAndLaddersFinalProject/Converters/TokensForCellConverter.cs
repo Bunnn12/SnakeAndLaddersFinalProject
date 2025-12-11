@@ -9,28 +9,33 @@ namespace SnakeAndLaddersFinalProject.Converters
 {
     public sealed class TokensForCellConverter : IMultiValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        private const int MIN_EXPECTED_VALUES_COUNT = 2;
+        private const int IDX_TOKENS = 0;
+        private const int IDX_CELL_INDEX = 1;
+
+        public object Convert(object[] values, Type targetType, object parameter,
+            CultureInfo culture)
         {
-            if (values == null || values.Length < 2)
+            if (values == null || values.Length < MIN_EXPECTED_VALUES_COUNT)
             {
-                return null;
+                return Enumerable.Empty<PlayerTokenViewModel>();
             }
 
-            var tokens = values[0] as IEnumerable<PlayerTokenViewModel>;
-            if (tokens == null)
+            if (!(values[IDX_TOKENS] is IEnumerable<PlayerTokenViewModel> allTokens))
             {
-                return null;
+                return Enumerable.Empty<PlayerTokenViewModel>();
             }
 
-            if (!(values[1] is int cellIndex))
+            if (!(values[IDX_CELL_INDEX] is int cellIndex))
             {
-                return null;
+                return Enumerable.Empty<PlayerTokenViewModel>();
             }
 
-            return tokens.Where(t => t.CurrentCellIndex == cellIndex).ToList();
+            return allTokens.Where(token => token.CurrentCellIndex == cellIndex).ToList();
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter,
+            CultureInfo culture)
         {
             throw new NotSupportedException();
         }

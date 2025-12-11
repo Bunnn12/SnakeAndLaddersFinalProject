@@ -20,7 +20,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public AddFriendsViewModel(ILog logger)
         {
-            this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             SearchResults = new ObservableCollection<UserBriefDto>();
         }
 
@@ -40,7 +40,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     SearchResults.Clear();
 
-                    foreach (UserBriefDto user in friendsApi.SearchUsers(searchTerm, SEARCH_MAX_RESULTS))
+                    foreach (UserBriefDto user in friendsApi.SearchUsers(searchTerm,
+                        SEARCH_MAX_RESULTS))
                     {
                         SearchResults.Add(user);
                     }
@@ -50,7 +51,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 string userMessage = ExceptionHandler.Handle(
                     ex,
-                    $"{nameof(AddFriendsViewModel)}.{nameof(RunSearch)}",
+                    "AddFriendsViewModel.RunSearch",
                     _logger);
 
                 MessageBox.Show(
@@ -93,7 +94,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 string userMessage = ExceptionHandler.Handle(
                     ex,
-                    $"{nameof(AddFriendsViewModel)}.{nameof(AddFriend)}",
+                    "AddFriendsViewModel.AddFriend",
                     _logger);
 
                 MessageBox.Show(

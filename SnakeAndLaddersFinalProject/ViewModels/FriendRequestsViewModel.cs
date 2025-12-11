@@ -12,16 +12,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class FriendRequestsViewModel
     {
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(FriendRequestsViewModel));
-
         private const int USERNAME_MIN_LENGTH = 3;
         private const int USERNAME_MAX_LENGTH = 50;
 
-        public ObservableCollection<FriendRequestItemDto> IncomingRequests { get; } =
-            new ObservableCollection<FriendRequestItemDto>();
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(FriendRequestsViewModel));
 
-        public ObservableCollection<FriendRequestItemDto> OutgoingRequests { get; } =
-            new ObservableCollection<FriendRequestItemDto>();
+        public ObservableCollection<FriendRequestItemDto> IncomingRequests { get; }
+            = new ObservableCollection<FriendRequestItemDto>();
+
+        public ObservableCollection<FriendRequestItemDto> OutgoingRequests { get; }
+            = new ObservableCollection<FriendRequestItemDto>();
 
         public void LoadData()
         {
@@ -54,13 +54,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        /// <summary>
-        /// Valida el username que se usará para buscar amigos.
-        /// Normaliza el valor y aplica reglas de identificador seguro.
-        /// </summary>
-        /// <param name="username">Texto capturado por el usuario.</param>
-        /// <param name="normalizedUsername">Username ya normalizado si es válido, vacío en caso contrario.</param>
-        /// <returns>true si el username es válido para búsqueda; false en caso contrario.</returns>
         public bool ValidateSearchUsername(string username, out string normalizedUsername)
         {
             normalizedUsername = InputValidator.Normalize(username);

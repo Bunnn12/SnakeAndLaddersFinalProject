@@ -12,15 +12,15 @@ namespace SnakeAndLaddersFinalProject.Managers
 {
     public sealed class GameStateSynchronizer
     {
-        private readonly int gameId;
-        private readonly ILog logger;
-        private readonly Func<IGameplayClient> gameplayClientProvider;
-        private readonly Action markServerEventReceived;
-        private readonly Func<GetGameStateResponseDto, bool, Task> applyGameStateAsync;
-        private readonly Func<Exception, string, bool> handleConnectionException;
-        private readonly string syncErrorLogMessage;
-        private readonly string errorDialogTitle;
-        private readonly Action<string, string, MessageBoxImage> showErrorMessage;
+        private readonly int _gameId;
+        private readonly ILog _logger;
+        private readonly Func<IGameplayClient> _gameplayClientProvider;
+        private readonly Action _markServerEventReceived;
+        private readonly Func<GetGameStateResponseDto, bool, Task> _applyGameStateAsync;
+        private readonly Func<Exception, string, bool> _handleConnectionException;
+        private readonly string _syncErrorLogMessage;
+        private readonly string _errorDialogTitle;
+        private readonly Action<string, string, MessageBoxImage> _showErrorMessage;
 
         public GameStateSynchronizer(
             int gameId,
@@ -33,26 +33,29 @@ namespace SnakeAndLaddersFinalProject.Managers
             string errorDialogTitle,
             Action<string, string, MessageBoxImage> showErrorMessage)
         {
-            if (gameId <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(gameId));
-            }
+            if (gameId <= 0) throw new ArgumentOutOfRangeException(nameof(gameId));
 
-            this.gameId = gameId;
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.gameplayClientProvider = gameplayClientProvider ?? throw new ArgumentNullException(nameof(gameplayClientProvider));
-            this.markServerEventReceived = markServerEventReceived ?? throw new ArgumentNullException(nameof(markServerEventReceived));
-            this.applyGameStateAsync = applyGameStateAsync ?? throw new ArgumentNullException(nameof(applyGameStateAsync));
-            this.handleConnectionException = handleConnectionException ?? throw new ArgumentNullException(nameof(handleConnectionException));
-            this.syncErrorLogMessage = syncErrorLogMessage ?? throw new ArgumentNullException(nameof(syncErrorLogMessage));
-            this.errorDialogTitle = errorDialogTitle ?? throw new ArgumentNullException(nameof(errorDialogTitle));
-            this.showErrorMessage = showErrorMessage ?? throw new ArgumentNullException(nameof(showErrorMessage));
+            _gameId = gameId;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _gameplayClientProvider = gameplayClientProvider ?? throw new ArgumentNullException(
+                nameof(gameplayClientProvider));
+            _markServerEventReceived = markServerEventReceived ?? throw new ArgumentNullException(
+                nameof(markServerEventReceived));
+            _applyGameStateAsync = applyGameStateAsync ?? throw new ArgumentNullException(
+                nameof(applyGameStateAsync));
+            _handleConnectionException = handleConnectionException ??
+                throw new ArgumentNullException(nameof(handleConnectionException));
+            _syncErrorLogMessage = syncErrorLogMessage ?? throw new ArgumentNullException(
+                nameof(syncErrorLogMessage));
+            _errorDialogTitle = errorDialogTitle ?? throw new ArgumentNullException(
+                nameof(errorDialogTitle));
+            _showErrorMessage = showErrorMessage ?? throw new ArgumentNullException(
+                nameof(showErrorMessage));
         }
 
         public async Task SyncGameStateAsync(bool forceUpdateTokenPositions)
         {
-            IGameplayClient client = gameplayClientProvider();
-
+            IGameplayClient client = _gameplayClientProvider();
             if (client == null)
             {
                 return;
@@ -60,40 +63,26 @@ namespace SnakeAndLaddersFinalProject.Managers
 
             try
             {
-                GetGameStateResponseDto stateResponse = await client
-                    .GetGameStateAsync(gameId)
+                GetGameStateResponseDto stateResponse = await client.GetGameStateAsync(_gameId)
                     .ConfigureAwait(false);
-
                 if (stateResponse == null)
                 {
                     return;
                 }
 
-                markServerEventReceived();
-
-                await applyGameStateAsync(
-                        stateResponse,
-                        forceUpdateTokenPositions)
+                _markServerEventReceived();
+                await _applyGameStateAsync(stateResponse, forceUpdateTokenPositions)
                     .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                if (handleConnectionException(
-                        ex,
-                        "Connection lost while syncing game state."))
+                if (_handleConnectionException(ex, "Connection lost while syncing game state."))
                 {
                     return;
                 }
 
-                ExceptionHandler.Handle(
-                    ex,
-                    "GameBoardViewModel.SyncGameStateAsync",
-                    logger);
-
-                showErrorMessage(
-                    syncErrorLogMessage,
-                    errorDialogTitle,
-                    MessageBoxImage.Error);
+                ExceptionHandler.Handle(ex, "GameBoardViewModel.SyncGameStateAsync", _logger);
+                _showErrorMessage(_syncErrorLogMessage, _errorDialogTitle, MessageBoxImage.Error);
             }
         }
     }

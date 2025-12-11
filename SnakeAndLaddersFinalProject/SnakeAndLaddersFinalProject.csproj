@@ -174,9 +174,6 @@
     <Compile Include="Converters\TurnTimeToScaleConverter.cs" />
     <Compile Include="Converters\TurnTimeToStrokeDashConverter.cs" />
     <Compile Include="CreateMatchOptions.cs" />
-    <Compile Include="DialogBasicWindow.xaml.cs">
-      <DependentUpon>DialogBasicWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="FriendsApi.cs" />
     <Compile Include="Animation\GameBoardAnimationService.cs" />
     <Compile Include="Game\Board\BoardBuilder.cs" />
@@ -286,9 +283,6 @@
     <Compile Include="Services\LobbyClient.cs" />
     <Compile Include="Services\LobbyClientCallback.cs" />
     <Compile Include="Services\LobbyMembershipService.cs" />
-    <Compile Include="SkinsWindow.xaml.cs">
-      <DependentUpon>SkinsWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Utilities\AuthClientHelper.cs" />
     <Compile Include="Utilities\AvatarIdHelper.cs" />
     <Compile Include="Utilities\AvatarIdToPathConverter.cs" />
@@ -341,6 +335,7 @@
     <Compile Include="ViewModels\ShopViewModel.cs" />
     <Compile Include="ViewModels\SignUpViewModel.cs" />
     <Compile Include="ViewModels\SkinsViewModel.cs" />
+    <Compile Include="ViewModels\SocialProfileItemViewModel.cs" />
     <Compile Include="ViewModels\SocialProfilesViewModel.cs" />
     <Compile Include="Windows\ChatWindow.xaml.cs">
       <DependentUpon>ChatWindow.xaml</DependentUpon>
@@ -369,10 +364,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Controls\InventorySlotsControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DialogBasicWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -461,10 +452,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\StartPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SkinsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1127,6 +1114,10 @@
     <Resource Include="Assets\Images\Skins\012.png" />
     <Resource Include="Assets\Images\Skins\002.png" />
     <Resource Include="Assets\Images\Skins\007.png" />
+    <Resource Include="Assets\Images\Icons\1-2-3DiceIcon.png" />
+    <Resource Include="Assets\Images\Icons\4-5-6DiceIcon.png" />
+    <Resource Include="Assets\Images\Icons\itemChestIcon.png" />
+    <Resource Include="Assets\Images\Icons\negativeDiceIcon.png" />
     <Content Include="Assets\Sounds\confirmation_002.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

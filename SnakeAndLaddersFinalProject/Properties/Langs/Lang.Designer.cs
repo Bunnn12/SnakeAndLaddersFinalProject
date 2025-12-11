@@ -187,6 +187,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The session is already active, please logout to continue.
+        /// </summary>
+        public static string AuthSessionAlreadyActive {
+            get {
+                return ResourceManager.GetString("AuthSessionAlreadyActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Please wait {0} seconds before requesting a new code..
         /// </summary>
         public static string AuthThrottleWaitFmt {
@@ -246,6 +255,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string btnAddFriendText {
             get {
                 return ResourceManager.GetString("btnAddFriendText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Apply.
+        /// </summary>
+        public static string btnApplyText {
+            get {
+                return ResourceManager.GetString("btnApplyText", resourceCulture);
             }
         }
         
@@ -619,6 +637,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The message cannot exceed {0} characters.
+        /// </summary>
+        public static string ChatTextTooLongFmt {
+            get {
+                return ResourceManager.GetString("ChatTextTooLongFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Chat.
         /// </summary>
         public static string chatTittle {
@@ -916,6 +943,42 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a You rolled {0} and moved back from {1} to {2} ({3} tiles)..
+        /// </summary>
+        public static string GameDiceMoveBackwardFmt {
+            get {
+                return ResourceManager.GetString("GameDiceMoveBackwardFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You rolled {0} and moved from {1} to {2}..
+        /// </summary>
+        public static string GameDiceMoveForwardFmt {
+            get {
+                return ResourceManager.GetString("GameDiceMoveForwardFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You did not move this turn. You remain on tile {0}..
+        /// </summary>
+        public static string GameDiceNoMovementFmt {
+            get {
+                return ResourceManager.GetString("GameDiceNoMovementFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Dice result.
+        /// </summary>
+        public static string GameDiceResultTitle {
+            get {
+                return ResourceManager.GetString("GameDiceResultTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Could not roll the dice:.
         /// </summary>
         public static string GameDiceRollFailurePrefixText {
@@ -1092,6 +1155,33 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string GameItemUseUnexpectedErrorText {
             get {
                 return ResourceManager.GetString("GameItemUseUnexpectedErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Player {0}.
+        /// </summary>
+        public static string GameLeftPlayerFallbackNameFmt {
+            get {
+                return ResourceManager.GetString("GameLeftPlayerFallbackNameFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} left the match..
+        /// </summary>
+        public static string GameLeftPlayerMessageFmt {
+            get {
+                return ResourceManager.GetString("GameLeftPlayerMessageFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Player left.
+        /// </summary>
+        public static string GamePlayerLeftTitle {
+            get {
+                return ResourceManager.GetString("GamePlayerLeftTitle", resourceCulture);
             }
         }
         
@@ -1933,6 +2023,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Winner.
+        /// </summary>
+        public static string lblWinnerLabelText {
+            get {
+                return ResourceManager.GetString("lblWinnerLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Win Rate.
         /// </summary>
         public static string lblWinPercentage {
@@ -2320,6 +2419,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Password must be at least 8 chars, 1 Uppercase, 1 Lowercase, 1 Special Char and 1 Number..
+        /// </summary>
+        public static string PasswordRulesText {
+            get {
+                return ResourceManager.GetString("PasswordRulesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a {0} coins.
         /// </summary>
         public static string PodiumCoinsFmt {
@@ -2352,6 +2460,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string PodiumTitleDefault {
             get {
                 return ResourceManager.GetString("PodiumTitleDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Unknown winner.
+        /// </summary>
+        public static string PodiumUnknownWinnerNameText {
+            get {
+                return ResourceManager.GetString("PodiumUnknownWinnerNameText", resourceCulture);
             }
         }
         
@@ -2937,6 +3054,78 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string ShopUserNotFoundError {
             get {
                 return ResourceManager.GetString("ShopUserNotFoundError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a This avatar is locked. Unlock it in the store to use it..
+        /// </summary>
+        public static string SkinsAvatarLockedWarn {
+            get {
+                return ResourceManager.GetString("SkinsAvatarLockedWarn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Avatar updated successfully.
+        /// </summary>
+        public static string SkinsAvatarUpdatedSuccess {
+            get {
+                return ResourceManager.GetString("SkinsAvatarUpdatedSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Avatar Locked.
+        /// </summary>
+        public static string SkinsLockedTitle {
+            get {
+                return ResourceManager.GetString("SkinsLockedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Please select an avatar first..
+        /// </summary>
+        public static string SkinsSelectAvatarWarn {
+            get {
+                return ResourceManager.GetString("SkinsSelectAvatarWarn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Currently selected.
+        /// </summary>
+        public static string SkinsStatusCurrentText {
+            get {
+                return ResourceManager.GetString("SkinsStatusCurrentText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Locked. Get it in the shop.
+        /// </summary>
+        public static string SkinsStatusLockedText {
+            get {
+                return ResourceManager.GetString("SkinsStatusLockedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Unlocked. Click Apply to use..
+        /// </summary>
+        public static string SkinsStatusUnlockedText {
+            get {
+                return ResourceManager.GetString("SkinsStatusUnlockedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Avatar Updated.
+        /// </summary>
+        public static string SkinsUpdatedTitle {
+            get {
+                return ResourceManager.GetString("SkinsUpdatedTitle", resourceCulture);
             }
         }
         
@@ -3751,7 +3940,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a The password must have at least 8 characters, one uppercase letter, one lowercase letter, and one special character..
+        ///   Busca una cadena traducida similar a The password must have at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character..
         /// </summary>
         public static string UiPasswordPolicyDescription {
             get {
@@ -3931,7 +4120,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Username cannot be longer than 90 characters..
+        ///   Busca una cadena traducida similar a Username cannot be longer than 30 characters..
         /// </summary>
         public static string UiUserNameTooLong {
             get {

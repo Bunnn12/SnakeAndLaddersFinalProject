@@ -3,208 +3,231 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
       mc:Ignorable="d"
       d:DesignWidth="960"
       d:DesignHeight="540"
       Title="PodiumPage">
 
+    <Page.Resources>
+        <Style x:Key="PodiumTextStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="4" ShadowDepth="2" Opacity="0.8" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryActionButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Height" Value="50" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#321309" />
+            <Setter Property="Background" Value="#E37A2B" />
+            <Setter Property="BorderBrush" Value="#D0893A" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FFD67A2B"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#B25E1F"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
     <Grid Background="#002347">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        <Viewbox Stretch="Uniform">
+            <Grid Width="960" Height="540">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-        <!-- Título -->
-        <TextBlock Grid.Row="0"
-                   Margin="0,24,0,16"
-                   HorizontalAlignment="Center"
-                   Text="{Binding Title}"
-                   FontSize="32"
-                   FontWeight="Bold"
-                   Foreground="White" />
+                <TextBlock Grid.Row="0"
+                           Margin="0,24,0,16"
+                           HorizontalAlignment="Center"
+                           Text="{Binding Title}"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Style="{StaticResource PodiumTextStyle}" />
 
-        <!-- Ganador -->
-        <StackPanel Grid.Row="1"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Center"
-                    Margin="0,0,0,24">
-            <TextBlock Text="Ganador:"
-                       Margin="0,0,8,0"
-                       FontSize="20"
-                       Foreground="White" />
-            <TextBlock Text="{Binding WinnerName}"
-                       FontSize="20"
-                       FontWeight="Bold"
-                       Foreground="Gold" />
-        </StackPanel>
-
-        <!-- Podio visual -->
-        <Border Grid.Row="2"
-                Margin="40,0,40,0"
-                CornerRadius="12"
-                Background="#00152B"
-                BorderBrush="#335577"
-                BorderThickness="1">
-            <Grid Margin="24">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <!-- 2do lugar (izquierda) -->
-                <StackPanel Grid.Column="0"
+                <StackPanel Grid.Row="1"
+                            Orientation="Horizontal"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
                             Margin="0,0,0,24">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Visible" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SecondPlace}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
+                    <TextBlock Text="{x:Static language:Lang.lblWinnerLabelText}"
+                               Margin="0,0,8,0"
+                               FontSize="20"
+                               Style="{StaticResource PodiumTextStyle}" />
 
-                    <Border Width="110"
-                            Height="110"
-                            CornerRadius="55"
-                            Background="#00152B"
-                            BorderBrush="#335577"
-                            BorderThickness="2"
-                            Margin="0,0,0,8">
-                        <Image Source="{Binding SecondPlace.SkinImagePath}"
-                               Stretch="UniformToFill"
-                               Margin="8" />
-                    </Border>
-
-                    <Border Width="120"
-                            Height="60"
-                            CornerRadius="12"
-                            Background="#002546">
-                        <StackPanel VerticalAlignment="Center"
-                                    HorizontalAlignment="Center">
-                            <TextBlock Text="#2"
-                                       HorizontalAlignment="Center"
-                                       FontSize="18"
-                                       FontWeight="Bold"
-                                       Foreground="White" />
-                            <TextBlock Text="{Binding SecondPlace.DisplayName}"
-                                       HorizontalAlignment="Center"
-                                       FontSize="14"
-                                       Foreground="White" />
-                        </StackPanel>
-                    </Border>
+                    <TextBlock Text="{Binding WinnerName}"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="Gold" />
                 </StackPanel>
 
-                <!-- 1er lugar (centro, más alto) -->
-                <StackPanel Grid.Column="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
-                            Margin="0,0,0,24">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Visible" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding FirstPlace}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
+                <Border Grid.Row="2"
+                        Margin="40,0,40,0"
+                        CornerRadius="12"
+                        Background="#00152B"
+                        BorderBrush="#335577"
+                        BorderThickness="1">
+                    <Grid Margin="24">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                    <Border Width="130"
-                            Height="130"
-                            CornerRadius="65"
-                            Background="#00152B"
-                            BorderBrush="Gold"
-                            BorderThickness="3"
-                            Margin="0,0,0,8">
-                        <Image Source="{Binding FirstPlace.SkinImagePath}"
-                               Stretch="UniformToFill"
-                               Margin="8" />
-                    </Border>
+                        <StackPanel Grid.Column="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    Margin="0,0,0,24"
+                                    Visibility="{Binding SecondPlaceVisibility}">
 
-                    <Border Width="140"
-                            Height="80"
-                            CornerRadius="12"
-                            Background="#334400">
-                        <StackPanel VerticalAlignment="Center"
-                                    HorizontalAlignment="Center">
-                            <TextBlock Text="#1"
-                                       HorizontalAlignment="Center"
-                                       FontSize="22"
-                                       FontWeight="Bold"
-                                       Foreground="White" />
-                            <TextBlock Text="{Binding FirstPlace.DisplayName}"
+                            <Border Width="110"
+                                    Height="110"
+                                    CornerRadius="55"
+                                    Background="#00152B"
+                                    BorderBrush="#C0C0C0"
+                                    BorderThickness="3"
+                                    Margin="0,0,0,8">
+                                <Image Source="{Binding SecondPlace.SkinImagePath}"
+                                       Stretch="UniformToFill"
+                                       Margin="4" />
+                            </Border>
+
+                            <Border Width="120"
+                                    Height="60"
+                                    CornerRadius="12"
+                                    Background="#002546">
+                                <StackPanel VerticalAlignment="Center"
+                                            HorizontalAlignment="Center">
+                                    <TextBlock Text="#2"
+                                               HorizontalAlignment="Center"
+                                               FontSize="18"
+                                               FontWeight="Bold"
+                                               Foreground="Silver" />
+                                    <TextBlock Text="{Binding SecondPlace.DisplayName}"
+                                               HorizontalAlignment="Center"
+                                               FontSize="14"
+                                               Foreground="White"
+                                               TextTrimming="CharacterEllipsis"
+                                               MaxWidth="110"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    Margin="0,0,0,24"
+                                    Visibility="{Binding FirstPlaceVisibility}">
+
+                            <Border Width="130"
+                                    Height="130"
+                                    CornerRadius="65"
+                                    Background="#00152B"
+                                    BorderBrush="Gold"
+                                    BorderThickness="4"
+                                    Margin="0,0,0,8">
+                                <Image Source="{Binding FirstPlace.SkinImagePath}"
+                                       Stretch="UniformToFill"
+                                       Margin="4" />
+                            </Border>
+
+                            <Border Width="140"
+                                    Height="80"
+                                    CornerRadius="12"
+                                    Background="#334400">
+                                <StackPanel VerticalAlignment="Center"
+                                            HorizontalAlignment="Center">
+                                    <TextBlock Text="#1"
+                                               HorizontalAlignment="Center"
+                                               FontSize="22"
+                                               FontWeight="Bold"
+                                               Foreground="Gold" />
+                                    <TextBlock Text="{Binding FirstPlace.DisplayName}"
+                                               HorizontalAlignment="Center"
+                                               FontSize="16"
+                                               FontWeight="Bold"
+                                               Foreground="Gold"
+                                               TextTrimming="CharacterEllipsis"
+                                               MaxWidth="130"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    Margin="0,0,0,24"
+                                    Visibility="{Binding ThirdPlaceVisibility}">
+
+                            <Border Width="100"
+                                    Height="100"
+                                    CornerRadius="50"
+                                    Background="#00152B"
+                                    BorderBrush="#CD7F32"
+                                    BorderThickness="3"
+                                    Margin="0,0,0,8">
+                                <Image Source="{Binding ThirdPlace.SkinImagePath}"
+                                       Stretch="UniformToFill"
+                                       Margin="4" />
+                            </Border>
+
+                            <Border Width="120"
+                                    Height="50"
+                                    CornerRadius="12"
+                                    Background="#002546">
+                                <StackPanel VerticalAlignment="Center"
+                                            HorizontalAlignment="Center">
+                                    <TextBlock Text="#3"
                                        HorizontalAlignment="Center"
                                        FontSize="16"
                                        FontWeight="Bold"
-                                       Foreground="Gold" />
+                                       Foreground="#CD7F32" />
+                                    <TextBlock Text="{Binding ThirdPlace.DisplayName}"
+                                               HorizontalAlignment="Center"
+                                               FontSize="13"
+                                               Foreground="White"
+                                               TextTrimming="CharacterEllipsis"
+                                               MaxWidth="110"/>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
-                    </Border>
-                </StackPanel>
+                    </Grid>
+                </Border>
 
-                <!-- 3er lugar (derecha) -->
-                <StackPanel Grid.Column="2"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
-                            Margin="0,0,0,24">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Visible" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ThirdPlace}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-
-                    <Border Width="100"
-                            Height="100"
-                            CornerRadius="50"
-                            Background="#00152B"
-                            BorderBrush="#335577"
-                            BorderThickness="2"
-                            Margin="0,0,0,8">
-                        <Image Source="{Binding ThirdPlace.SkinImagePath}"
-                               Stretch="UniformToFill"
-                               Margin="8" />
-                    </Border>
-
-                    <Border Width="120"
-                            Height="50"
-                            CornerRadius="12"
-                            Background="#002546">
-                        <StackPanel VerticalAlignment="Center"
-                                    HorizontalAlignment="Center">
-                            <TextBlock Text="#3"
-                                       HorizontalAlignment="Center"
-                                       FontSize="16"
-                                       FontWeight="Bold"
-                                       Foreground="White" />
-                            <TextBlock Text="{Binding ThirdPlace.DisplayName}"
-                                       HorizontalAlignment="Center"
-                                       FontSize="13"
-                                       Foreground="White" />
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
+                <Button Grid.Row="3"
+                        Content="{x:Static language:Lang.bntContinueText}"
+                        Width="150"
+                        Height="40"
+                        Margin="0,24,0,24"
+                        HorizontalAlignment="Center"
+                        Command="{Binding CloseCommand}"
+                        Style="{StaticResource PrimaryActionButtonStyle}"/>
             </Grid>
-        </Border>
-
-        <!-- Botón continuar -->
-        <Button Grid.Row="3"
-                Content="Continuar"
-                Width="150"
-                Height="40"
-                Margin="0,24,0,24"
-                HorizontalAlignment="Center"
-                Command="{Binding CloseCommand}" />
+        </Viewbox>
     </Grid>
 </Page>

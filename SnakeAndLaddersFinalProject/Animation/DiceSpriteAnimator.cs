@@ -18,12 +18,18 @@ namespace SnakeAndLaddersFinalProject.Animation
         private const int DEFAULT_LOOP_COUNT = 3;
         private const int FRAME_DELAY_MILLISECONDS = 40;
 
+        private const int DICE_MIN_FACE_VALUE = 1;
+        private const int DICE_MAX_FACE_VALUE = 6;
+
         private const string DEFAULT_FILE_EXTENSION = ".png";
 
-        private readonly IReadOnlyList<BitmapSource> _rollFrames;
+        private const string FACE_NUMBER_FORMAT = "00";
+        private const string DICE_FILE_NAME_SUFFIX = "Dice";
+
+        private readonly IReadOnlyList<BitmapSource> _rollingFrames;
         private readonly string _finalFaceBasePath;
         private readonly string _finalFaceFileExtension;
-        private readonly Dispatcher _dispatcher;
+        private readonly Dispatcher _uiDispatcher;
 
         private BitmapSource _currentFrame;
         private bool _isRolling;
@@ -47,33 +53,36 @@ namespace SnakeAndLaddersFinalProject.Animation
         {
         }
 
-        public DiceSpriteAnimator(string spriteSheetPath, string finalFaceBasePath, string finalFaceFileExtension)
+        public DiceSpriteAnimator(string spriteSheetPath, string finalFaceBasePath,
+            string finalFaceFileExtension)
         {
-            _dispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
+            _uiDispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
 
-            this._finalFaceBasePath = finalFaceBasePath ?? throw new ArgumentNullException(nameof(finalFaceBasePath));
+            this._finalFaceBasePath = finalFaceBasePath ?? throw new ArgumentNullException(
+                nameof(finalFaceBasePath));
             this._finalFaceFileExtension = string.IsNullOrWhiteSpace(finalFaceFileExtension)
                 ? DEFAULT_FILE_EXTENSION
                 : finalFaceFileExtension;
 
-            _rollFrames = LoadFramesFromSpriteSheet(spriteSheetPath, SPRITE_COLUMNS, SPRITE_ROWS);
+            _rollingFrames = LoadSpriteSheetFrames(spriteSheetPath, SPRITE_COLUMNS, SPRITE_ROWS);
 
-            if (_rollFrames.Count > 0)
+            if (_rollingFrames.Count > 0)
             {
-                CurrentFrame = _rollFrames[0];
+                CurrentFrame = _rollingFrames[0];
             }
         }
 
-        public async Task RollAsync(int diceValue, int loopCount = DEFAULT_LOOP_COUNT)
+        public async Task PlayRollAnimationAsync(int diceValue, int loopCount = DEFAULT_LOOP_COUNT)
         {
             if (IsRolling)
             {
                 return;
             }
 
-            if (diceValue < 1 || diceValue > 6)
+            if (diceValue < DICE_MIN_FACE_VALUE || diceValue > DICE_MAX_FACE_VALUE)
             {
-                throw new ArgumentOutOfRangeException(nameof(diceValue), "Dice value must be between 1 and 6.");
+                throw new ArgumentOutOfRangeException(nameof(diceValue),
+                    "Dice value must be between 1 and 6.");
             }
 
             IsRolling = true;
@@ -82,15 +91,15 @@ namespace SnakeAndLaddersFinalProject.Animation
             {
                 for (int loopIndex = 0; loopIndex < loopCount; loopIndex++)
                 {
-                    foreach (BitmapSource frame in _rollFrames)
+                    foreach (BitmapSource frame in _rollingFrames)
                     {
-                        SetFrameOnUiThread(frame);
+                        UpdateCurrentFrameOnUiThread(frame);
                         await Task.Delay(FRAME_DELAY_MILLISECONDS).ConfigureAwait(false);
                     }
                 }
 
-                BitmapSource finalFace = LoadFinalFaceImage(diceValue);
-                SetFrameOnUiThread(finalFace);
+                BitmapSource finalFace = LoadFinalDiceFaceImage(diceValue);
+                UpdateCurrentFrameOnUiThread(finalFace);
             }
             finally
             {
@@ -98,79 +107,81 @@ namespace SnakeAndLaddersFinalProject.Animation
             }
         }
 
-        private void SetFrameOnUiThread(BitmapSource frame)
+        private void UpdateCurrentFrameOnUiThread(BitmapSource frame)
         {
-            if (_dispatcher.CheckAccess())
+            if (_uiDispatcher.CheckAccess())
             {
                 CurrentFrame = frame;
             }
             else
             {
-                _dispatcher.Invoke(() => CurrentFrame = frame);
+                _uiDispatcher.Invoke(() => CurrentFrame = frame);
             }
         }
 
-        private static IReadOnlyList<BitmapSource> LoadFramesFromSpriteSheet(
-    string spriteSheetPath,
-    int columns,
-    int rows)
+        private static IReadOnlyList<BitmapSource> LoadSpriteSheetFrames(
+            string spriteSheetPath, int columns, int rows)
         {
             if (string.IsNullOrWhiteSpace(spriteSheetPath))
             {
-                throw new ArgumentException("Sprite sheet path cannot be null or empty.", nameof(spriteSheetPath));
+                throw new ArgumentException("Sprite sheet path cannot be null or empty.",
+                    nameof(spriteSheetPath));
             }
 
             var spriteSheet = new BitmapImage(
                 new Uri(spriteSheetPath, UriKind.RelativeOrAbsolute));
 
-            int cellSize = Math.Min(
+            int spriteCellSize = Math.Min(
                 spriteSheet.PixelWidth / columns,
                 spriteSheet.PixelHeight / rows);
 
-            int totalWidth = cellSize * columns;
-            int totalHeight = cellSize * rows;
+            int spriteGridWidth = spriteCellSize * columns;
+            int spriteGridHeight = spriteCellSize * rows;
 
-            int offsetX = (spriteSheet.PixelWidth - totalWidth) / 2;
-            int offsetY = (spriteSheet.PixelHeight - totalHeight) / 2;
+            int offsetX = (spriteSheet.PixelWidth - spriteGridWidth) / 2;
+            int offsetY = (spriteSheet.PixelHeight - spriteGridHeight) / 2;
 
-            var frames = new List<BitmapSource>();
+            var spriteFrames = new List<BitmapSource>();
 
             for (int rowIndex = 0; rowIndex < rows; rowIndex++)
             {
                 for (int columnIndex = 0; columnIndex < columns; columnIndex++)
                 {
                     var frameRect = new Int32Rect(
-                        offsetX + (columnIndex * cellSize),
-                        offsetY + (rowIndex * cellSize),
-                        cellSize,
-                        cellSize);
+                        offsetX + (columnIndex * spriteCellSize),
+                        offsetY + (rowIndex * spriteCellSize),
+                        spriteCellSize,
+                        spriteCellSize);
 
                     var frame = new CroppedBitmap(spriteSheet, frameRect);
                     frame.Freeze();
-                    frames.Add(frame);
+                    spriteFrames.Add(frame);
                 }
             }
 
-            return frames;
+            return spriteFrames;
         }
 
-        private BitmapSource LoadFinalFaceImage(int diceValue)
+        private BitmapSource LoadFinalDiceFaceImage(int diceValue)
         {
-            string formattedNumber = diceValue.ToString("00", CultureInfo.InvariantCulture);
-            string fileName = string.Concat(formattedNumber, "Dice", _finalFaceFileExtension);
-            string fullPath = string.Concat(_finalFaceBasePath, fileName);
+            string formattedFaceNumber = diceValue.ToString(FACE_NUMBER_FORMAT,
+                CultureInfo.InvariantCulture);
+            string finalFaceFileName = string.Concat(formattedFaceNumber, DICE_FILE_NAME_SUFFIX,
+                _finalFaceFileExtension);
+            string finalFaceFullPath = string.Concat(_finalFaceBasePath, finalFaceFileName);
 
-            var bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(fullPath, UriKind.RelativeOrAbsolute);
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.EndInit();
-            bitmap.Freeze();
+            var finalFaceBitmap = new BitmapImage();
+            finalFaceBitmap.BeginInit();
+            finalFaceBitmap.UriSource = new Uri(finalFaceFullPath, UriKind.RelativeOrAbsolute);
+            finalFaceBitmap.CacheOption = BitmapCacheOption.OnLoad;
+            finalFaceBitmap.EndInit();
+            finalFaceBitmap.Freeze();
 
-            return bitmap;
+            return finalFaceBitmap;
         }
 
-        private void SetProperty<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+        private void SetProperty<T>(ref T backingField, T value, [CallerMemberName]
+        string propertyName = "")
         {
             if (EqualityComparer<T>.Default.Equals(backingField, value))
             {

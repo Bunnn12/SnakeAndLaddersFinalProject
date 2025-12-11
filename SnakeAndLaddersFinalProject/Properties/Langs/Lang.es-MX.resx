@@ -822,75 +822,6 @@
   <data name="UiVerificationSentFmt" xml:space="preserve">
     <value>Se envió un correo electrónico de verificación a {0}.</value>
   </data>
-  <data name="warningTitle" xml:space="preserve">
-    <value>Advertencia</value>
-  </data>
-  <data name="Message1Text" xml:space="preserve">
-    <value>Encontraste un bug crítico… el proyecto se atrasó. Retrocede 5 casillas.</value>
-  </data>
-  <data name="Message2Text" xml:space="preserve">
-    <value>Compilación exitosa. Avanzas con confianza. Avanza 4 casillas.</value>
-  </data>
-  <data name="Message3Text" xml:space="preserve">
-    <value>Merge conflict en tu rama. Qué vergüenza… retrocede 5 casillas.</value>
-  </data>
-  <data name="Message4Text" xml:space="preserve">
-    <value>Tu código pasó todas las pruebas unitarias. Bonus de calidad: avanza 4 casillas.</value>
-  </data>
-  <data name="Message5Text" xml:space="preserve">
-    <value>Tuviste que reinstalar Visual Studio. Pierdes tiempo valioso. retrocede 5 casillas</value>
-  </data>
-  <data name="Message6Text" xml:space="preserve">
-    <value>Acreditaste Fundamentos de Programación a la primera. Avanza 4 casillas.</value>
-  </data>
-  <data name="Message7Text" xml:space="preserve">
-    <value>IndexOutOfRangeException: accediste fuera del arreglo retrocede 5 casillas.</value>
-  </data>
-  <data name="Message8Text" xml:space="preserve">
-    <value>Encontraste un meme de programación que te dio fuerzas para continuar. Avanzas 4 casillas</value>
-  </data>
-  <data name="Message9Text" xml:space="preserve">
-    <value>Tu profe de tecnologías te abandono por irse a peru y te retrasaste en el poryecto retrocede 5 casillas</value>
-  </data>
-  <data name="Message10Text" xml:space="preserve">
-    <value>Terminaste un diagrama de secuencia. Avanza 4 casillas</value>
-  </data>
-  <data name="Message11Text" xml:space="preserve">
-    <value>NullReferenceException: avanzaste sin inicializar. Pierdes tu siguiente turno.</value>
-  </data>
-  <data name="Message12Text" xml:space="preserve">
-    <value>Tu equipo te dejó solo en el proyecto final. Eres el héroe que nadie pidió. ganaste un turno extra</value>
-  </data>
-  <data name="Message13Text" xml:space="preserve">
-    <value>Burnout detectado… toma un descanso obligatorio. Pierdes un turno.</value>
-  </data>
-  <data name="Message14Text" xml:space="preserve">
-    <value>Pasaste la materia más difícil del semestre. A celebrar. vuelve a tirar el dado</value>
-  </data>
-  <data name="Message15Text" xml:space="preserve">
-    <value>Te tocó debuggear código heredado sin documentacion… buena suerte. te dejamos descansar el siguiente turno</value>
-  </data>
-  <data name="Message16Text" xml:space="preserve">
-    <value>Pasaste tecnologías en UO. Eres un leyenda. Ganas un turno.</value>
-  </data>
-  <data name="Message17Text" xml:space="preserve">
-    <value>Te toco limpiar 1 dia de deuda técnica en sonarqube pierdes un turno.</value>
-  </data>
-  <data name="Message18Text" xml:space="preserve">
-    <value>Pasaste tecnologías con 6...pasar es pasar. vuelves a tirar</value>
-  </data>
-  <data name="Message19Text" xml:space="preserve">
-    <value>Recursaste programación. pierdes un turno</value>
-  </data>
-  <data name="Message20Text" xml:space="preserve">
-    <value>Eres full stack en prompts de chat gpt. Es tu mayor logro en la vida. ganas un turno</value>
-  </data>
-  <data name="ProfileChangeAvatarConfirmTitle" xml:space="preserve">
-    <value>Cambiar avatar</value>
-  </data>
-  <data name="UiJoinMatchTitle" xml:space="preserve">
-    <value>Unirse a partida</value>
-  </data>
   <data name="btnSendInvitationText" xml:space="preserve">
     <value>Enviar invitación</value>
   </data>
@@ -957,6 +888,9 @@
   <data name="UiInviteFriendSuccessDefault" xml:space="preserve">
     <value>Invitación enviada exitosamente.</value>
   </data>
+  <data name="warningTitle" xml:space="preserve">
+    <value>Advertencia</value>
+  </data>
   <data name="lblProfileSocialNetworksText" xml:space="preserve">
     <value>Redes sociales</value>
   </data>
@@ -971,6 +905,9 @@
   </data>
   <data name="ProfileChangeAvatarConfirmText" xml:space="preserve">
     <value>¿Quieres utilizar este avatar como tu foto de perfil?</value>
+  </data>
+  <data name="ProfileChangeAvatarConfirmTitle" xml:space="preserve">
+    <value>Cambiar avatar</value>
   </data>
   <data name="ProfileDeactivateConfirmText" xml:space="preserve">
     <value>¿Está seguro de que desea desactivar su cuenta?\nNo podrá volver a usarla hasta que un administrador la reactive.</value>
@@ -1113,6 +1050,66 @@
   <data name="SocialProfileUnlinkError" xml:space="preserve">
     <value>Se produjo un error al desvincular el perfil de la red social.</value>
   </data>
+  <data name="Message1Text" xml:space="preserve">
+    <value>Encontraste un bug crítico… el proyecto se atrasó. Retrocede 5 casillas.</value>
+  </data>
+  <data name="Message2Text" xml:space="preserve">
+    <value>Compilación exitosa. Avanzas con confianza. Avanza 4 casillas.</value>
+  </data>
+  <data name="Message3Text" xml:space="preserve">
+    <value>Merge conflict en tu rama. Qué vergüenza… retrocede 5 casillas.</value>
+  </data>
+  <data name="Message4Text" xml:space="preserve">
+    <value>Tu código pasó todas las pruebas unitarias. Bonus de calidad: avanza 4 casillas.</value>
+  </data>
+  <data name="Message5Text" xml:space="preserve">
+    <value>Tuviste que reinstalar Visual Studio. Pierdes tiempo valioso. retrocede 5 casillas</value>
+  </data>
+  <data name="Message6Text" xml:space="preserve">
+    <value>Acreditaste Fundamentos de Programación a la primera. Avanza 4 casillas.</value>
+  </data>
+  <data name="Message7Text" xml:space="preserve">
+    <value>IndexOutOfRangeException: accediste fuera del arreglo retrocede 5 casillas.</value>
+  </data>
+  <data name="Message8Text" xml:space="preserve">
+    <value>Encontraste un meme de programación que te dio fuerzas para continuar. Avanzas 4 casillas</value>
+  </data>
+  <data name="Message9Text" xml:space="preserve">
+    <value>Tu profe de tecnologías te abandono por irse a peru y te retrasaste en el poryecto retrocede 5 casillas</value>
+  </data>
+  <data name="Message10Text" xml:space="preserve">
+    <value>Terminaste un diagrama de secuencia. Avanza 4 casillas</value>
+  </data>
+  <data name="Message11Text" xml:space="preserve">
+    <value>NullReferenceException: avanzaste sin inicializar. Pierdes tu siguiente turno.</value>
+  </data>
+  <data name="Message12Text" xml:space="preserve">
+    <value>Tu equipo te dejó solo en el proyecto final. Eres el héroe que nadie pidió. ganaste un turno extra</value>
+  </data>
+  <data name="Message13Text" xml:space="preserve">
+    <value>Burnout detectado… toma un descanso obligatorio. Pierdes un turno.</value>
+  </data>
+  <data name="Message14Text" xml:space="preserve">
+    <value>Pasaste la materia más difícil del semestre. A celebrar. vuelve a tirar el dado</value>
+  </data>
+  <data name="Message15Text" xml:space="preserve">
+    <value>Te tocó debuggear código heredado sin documentacion… buena suerte. te dejamos descansar el siguiente turno</value>
+  </data>
+  <data name="Message16Text" xml:space="preserve">
+    <value>Pasaste tecnologías en UO. Eres un leyenda. Ganas un turno.</value>
+  </data>
+  <data name="Message17Text" xml:space="preserve">
+    <value>Te toco limpiar 1 dia de deuda técnica en sonarqube pierdes un turno.</value>
+  </data>
+  <data name="Message18Text" xml:space="preserve">
+    <value>Pasaste tecnologías con 6...pasar es pasar. vuelves a tirar</value>
+  </data>
+  <data name="Message19Text" xml:space="preserve">
+    <value>Recursaste programación. pierdes un turno</value>
+  </data>
+  <data name="Message20Text" xml:space="preserve">
+    <value>Eres full stack en prompts de chat gpt. Es tu mayor logro en la vida. ganas un turno</value>
+  </data>
   <data name="AuthCodeNotRequested" xml:space="preserve">
     <value>Aún no se ha solicitado un código de verificación. Por favor solicite un código primero</value>
   </data>
@@ -1248,6 +1245,9 @@
   <data name="UiJoinMatchCodeRequired" xml:space="preserve">
     <value>Por favor ingrese el código de coincidencia</value>
   </data>
+  <data name="UiJoinMatchTitle" xml:space="preserve">
+    <value>Unirse a partida</value>
+  </data>
   <data name="UiLoadingText" xml:space="preserve">
     <value>Cargando...</value>
   </data>
@@ -1274,5 +1274,215 @@
   </data>
   <data name="WindowTitleGameBoard" xml:space="preserve">
     <value>Serpientes y escaleras - Juego de mesa</value>
+  </data>
+  <data name="PasswordRulesText" xml:space="preserve">
+    <value>La contraseña debe tener al menos 8 caracteres, 1 mayúscula, 1 minúscula, 1 carácter especial y 1 número.</value>
+  </data>
+  <data name="AuthSessionAlreadyActive" xml:space="preserve">
+    <value>La sesión ya está activa, cierre sesión para continuar</value>
+  </data>
+  <data name="ChatInvalidLobbyIdText" xml:space="preserve">
+    <value>Identificador de lobby no válido</value>
+  </data>
+  <data name="CreateMatchErrorFmt" xml:space="preserve">
+    <value>Se produjo un error al crear la coincidencia: {0}</value>
+  </data>
+  <data name="errorLoadingProfileStatsText" xml:space="preserve">
+    <value>Se produjo un error al cargar las estadísticas del jugador. Inténtelo de nuevo más tarde.</value>
+  </data>
+  <data name="errorProfileStatsInvalidUserIdText" xml:space="preserve">
+    <value>No se pueden cargar estadísticas. Identificador de usuario no válido.</value>
+  </data>
+  <data name="errorRankingCommunicationText" xml:space="preserve">
+    <value>No se pudo comunicar con el servidor para recuperar la clasificación.</value>
+  </data>
+  <data name="errorRankingServerFaultTextFmt" xml:space="preserve">
+    <value>El servidor informó de un error al recuperar la clasificación:{0}{1}</value>
+  </data>
+  <data name="errorRankingUnexpectedText" xml:space="preserve">
+    <value>Se produjo un error inesperado al cargar la clasificación de los jugadores. Inténtelo de nuevo más tarde.</value>
+  </data>
+  <data name="friendRequestNoLongerExistsText" xml:space="preserve">
+    <value>Esta solicitud de amistad ya no existe o ya ha sido procesada.</value>
+  </data>
+  <data name="FriendUnfriendConfirmText" xml:space="preserve">
+    <value>¿Eliminar a este usuario de tu lista de amigos?</value>
+  </data>
+  <data name="FriendUnfriendConfirmTitle" xml:space="preserve">
+    <value>Confirmar acción</value>
+  </data>
+  <data name="GameCallbackRegistrationErrorText" xml:space="preserve">
+    <value>Se produjo un error al registrarse para recibir llamadas de juego</value>
+  </data>
+  <data name="GameDefaultPlayerNameFmt" xml:space="preserve">
+    <value>Jugador {0}</value>
+  </data>
+  <data name="GameDiceRollFailurePrefixText" xml:space="preserve">
+    <value>No se pudo tirar los dados:</value>
+  </data>
+  <data name="GameDiceRollUnexpectedErrorText" xml:space="preserve">
+    <value>Se produjo un error inesperado al tirar los dados.</value>
+  </data>
+  <data name="GameDiceSlotSelectedFmt" xml:space="preserve">
+    <value>Dados en la ranura {0} seleccionados para el siguiente lanzamiento</value>
+  </data>
+  <data name="GameItemUseCancelledText" xml:space="preserve">
+    <value>Se canceló el uso del artículo.</value>
+  </data>
+  <data name="GameItemUseFailurePrefixText" xml:space="preserve">
+    <value>No se pudo utilizar el artículo:</value>
+  </data>
+  <data name="GameItemUseUnexpectedErrorText" xml:space="preserve">
+    <value>Se produjo un error al usar el artículo.</value>
+  </data>
+  <data name="GameSelectTargetPlayerText" xml:space="preserve">
+    <value>Selecciona el jugador objetivo haciendo clic en su avatar.</value>
+  </data>
+  <data name="GameStateSyncErrorText" xml:space="preserve">
+    <value>Se produjo un error al sincronizar el estado del juego.</value>
+  </data>
+  <data name="GameTimeoutKickPlayerText" xml:space="preserve">
+    <value>Un jugador fue eliminado del partido por inactividad</value>
+  </data>
+  <data name="GameTimeoutSkipTurnText" xml:space="preserve">
+    <value>Un jugador perdió su turno por falta de tiempo</value>
+  </data>
+  <data name="GameUnknownErrorText" xml:space="preserve">
+    <value>Se produjo un error desconocido</value>
+  </data>
+  <data name="lblProfileUnknownUserText" xml:space="preserve">
+    <value>Jugador desconocido</value>
+  </data>
+  <data name="lblRankingTitle" xml:space="preserve">
+    <value>Ranking</value>
+  </data>
+  <data name="LobbyCreatedStatusFmt" xml:space="preserve">
+    <value>Se creó el lobby. Código {0}. Límite {1}. Vence a las {2} UTC</value>
+  </data>
+  <data name="LobbyJoinSuccessFmt" xml:space="preserve">
+    <value>Se unió a {0}. Anfitrión: {1}. {2}/{3}</value>
+  </data>
+  <data name="LobbyKickedWithoutReasonText" xml:space="preserve">
+    <value>Te han eliminado del lobby.</value>
+  </data>
+  <data name="LobbyKickedWithReasonFmt" xml:space="preserve">
+    <value>Te han eliminado del lobby: {0}</value>
+  </data>
+  <data name="LobbyStartMatchFailedText" xml:space="preserve">
+    <value>No se pudo iniciar el partido</value>
+  </data>
+  <data name="LobbyStartMatchInProgressText" xml:space="preserve">
+    <value>Partida inicial...</value>
+  </data>
+  <data name="OtherReasonMinLengthMessageFmt" xml:space="preserve">
+    <value>El motivo del informe debe tener al menos {0} caracteres.</value>
+  </data>
+  <data name="PodiumCoinsFmt" xml:space="preserve">
+    <value>{0} monedas</value>
+  </data>
+  <data name="PodiumPositionFmt" xml:space="preserve">
+    <value>#{0}</value>
+  </data>
+  <data name="PodiumTitleDefault" xml:space="preserve">
+    <value>Resultados del partido</value>
+  </data>
+  <data name="PodiumWinnerFallbackFmt" xml:space="preserve">
+    <value>Jugador con ID {0}</value>
+  </data>
+  <data name="ProfileUnknownUserNameText" xml:space="preserve">
+    <value>Desconocido</value>
+  </data>
+  <data name="ReportConfirmMessageFormat" xml:space="preserve">
+    <value>¿Quiere denunciar {0} por el siguiente motivo: {1}?</value>
+  </data>
+  <data name="ReportEndpointNotFoundMessage" xml:space="preserve">
+    <value>El servicio de informes no está disponible. Inténtelo de nuevo más tarde.</value>
+  </data>
+  <data name="ReportInvalidContextMessage" xml:space="preserve">
+    <value>El informe no se puede enviar porque el contexto actual no es válido.</value>
+  </data>
+  <data name="ReportSentSuccessfullyMessage" xml:space="preserve">
+    <value>Su informe ha sido enviado exitosamente.</value>
+  </data>
+  <data name="ReportUnknownUserDisplayName" xml:space="preserve">
+    <value>Usuario desconocido</value>
+  </data>
+  <data name="UiPasswordWeak" xml:space="preserve">
+    <value>La contraseña debe tener al menos {0} caracteres y contener al menos una letra mayúscula, una letra minúscula y un carácter especial.</value>
+  </data>
+  <data name="btnKickPlayerText" xml:space="preserve">
+    <value>jugador de patada</value>
+  </data>
+  <data name="LobbyKickConfirmTextFmt" xml:space="preserve">
+    <value>¿Quieres eliminar a {0} del lobby?</value>
+  </data>
+  <data name="LobbyKickConfirmTitle" xml:space="preserve">
+    <value>Eliminar jugador</value>
+  </data>
+  <data name="LobbyKickedByHostText" xml:space="preserve">
+    <value>El anfitrión te ha eliminado del lobby.</value>
+  </data>
+  <data name="LobbyKickFailedText" xml:space="preserve">
+    <value>El jugador no pudo ser eliminado del lobby.</value>
+  </data>
+  <data name="LobbyKickPlayerMenuText" xml:space="preserve">
+    <value>jugador de patada</value>
+  </data>
+  <data name="GameDiceMoveBackwardFmt" xml:space="preserve">
+    <value>Obtuviste {0} y retrocediste de {1} a {2} ({3} mosaicos).</value>
+  </data>
+  <data name="GameDiceMoveForwardFmt" xml:space="preserve">
+    <value>Obtuviste {0} y pasaste de {1} a {2}.</value>
+  </data>
+  <data name="GameDiceNoMovementFmt" xml:space="preserve">
+    <value>No te moviste este turno. Permaneces en el mosaico {0}.</value>
+  </data>
+  <data name="GameDiceResultTitle" xml:space="preserve">
+    <value>Resultado de los dados</value>
+  </data>
+  <data name="GameLeftPlayerFallbackNameFmt" xml:space="preserve">
+    <value>Jugador {0}</value>
+  </data>
+  <data name="GameLeftPlayerMessageFmt" xml:space="preserve">
+    <value>{0} abandonó el partido.</value>
+  </data>
+  <data name="GamePlayerLeftTitle" xml:space="preserve">
+    <value>Jugador izquierdo</value>
+  </data>
+  <data name="PodiumUnknownWinnerNameText" xml:space="preserve">
+    <value>Ganador desconocido</value>
+  </data>
+  <data name="btnApplyText" xml:space="preserve">
+    <value>Aplicar</value>
+  </data>
+  <data name="SkinsAvatarLockedWarn" xml:space="preserve">
+    <value>Este avatar está bloqueado. Desbloquéalo en la tienda para usarlo.</value>
+  </data>
+  <data name="SkinsAvatarUpdatedSuccess" xml:space="preserve">
+    <value>Avatar actualizado exitosamente</value>
+  </data>
+  <data name="SkinsLockedTitle" xml:space="preserve">
+    <value>Avatar bloqueado</value>
+  </data>
+  <data name="SkinsSelectAvatarWarn" xml:space="preserve">
+    <value>Primero seleccione un avatar.</value>
+  </data>
+  <data name="SkinsStatusCurrentText" xml:space="preserve">
+    <value>Seleccionado actualmente</value>
+  </data>
+  <data name="SkinsStatusLockedText" xml:space="preserve">
+    <value>Bloqueado. Consíguelo en la tienda</value>
+  </data>
+  <data name="SkinsStatusUnlockedText" xml:space="preserve">
+    <value>Desbloqueado. Haga clic en Aplicar para usar.</value>
+  </data>
+  <data name="SkinsUpdatedTitle" xml:space="preserve">
+    <value>Avatar actualizado</value>
+  </data>
+  <data name="ChatTextTooLongFmt" xml:space="preserve">
+    <value>El mensaje no puede exceder los {0} caracteres</value>
+  </data>
+  <data name="lblWinnerLabelText" xml:space="preserve">
+    <value>Ganador</value>
   </data>
 </root>

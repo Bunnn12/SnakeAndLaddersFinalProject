@@ -9,45 +9,41 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
     public sealed class InventoryManager : IInventoryManager
     {
         private const string INVENTORY_SERVICE_ENDPOINT_NAME = "NetTcpBinding_IInventoryService";
-
         private static readonly ILog _logger = LogManager.GetLogger(typeof(InventoryManager));
 
         public async Task<InventorySnapshot> GetInventoryAsync(int userId)
         {
             try
             {
-                using (InventoryServiceClient client = CreateClient())
+                using (var client = CreateClient())
                 {
                     var snapshotDto = await Task.Run(() => client.GetInventory(userId));
+                    var items = new List<InventoryItemData>();
+                    var dice = new List<InventoryDiceData>();
 
-                    List<InventoryItemData> items = new List<InventoryItemData>();
-                    List<InventoryDiceData> dice = new List<InventoryDiceData>();
-
-                    if (snapshotDto != null && snapshotDto.Items != null)
+                    if (snapshotDto?.Items != null)
                     {
                         foreach (var dto in snapshotDto.Items)
                         {
-                            items.Add(
-                                new InventoryItemData(
-                                    dto.ObjectId,
-                                    dto.ObjectCode,
-                                    dto.Name,
-                                    dto.Quantity,
-                                    dto.SlotNumber));
+                            items.Add(new InventoryItemData(
+                                dto.ObjectId,
+                                dto.ObjectCode,
+                                dto.Name,
+                                dto.Quantity,
+                                dto.SlotNumber));
                         }
                     }
 
-                    if (snapshotDto != null && snapshotDto.Dice != null)
+                    if (snapshotDto?.Dice != null)
                     {
                         foreach (var dto in snapshotDto.Dice)
                         {
-                            dice.Add(
-                                new InventoryDiceData(
-                                    dto.DiceId,
-                                    dto.DiceCode,
-                                    dto.Name,
-                                    dto.Quantity,
-                                    dto.SlotNumber));
+                            dice.Add(new InventoryDiceData(
+                                dto.DiceId,
+                                dto.DiceCode,
+                                dto.Name,
+                                dto.Quantity,
+                                dto.SlotNumber));
                         }
                     }
 
@@ -61,22 +57,13 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             }
         }
 
-        public async Task UpdateSelectedItemsAsync(
-            int userId,
-            int? slot1ObjectId,
-            int? slot2ObjectId,
-            int? slot3ObjectId)
+        public async Task UpdateSelectedItemsAsync(int userId, int? slot1ObjectId, int? slot2ObjectId, int? slot3ObjectId)
         {
             try
             {
-                using (InventoryServiceClient client = CreateClient())
+                using (var client = CreateClient())
                 {
-                    await Task.Run(
-                        () => client.UpdateSelectedItems(
-                            userId,
-                            slot1ObjectId,
-                            slot2ObjectId,
-                            slot3ObjectId));
+                    await Task.Run(() => client.UpdateSelectedItems(userId, slot1ObjectId, slot2ObjectId, slot3ObjectId));
                 }
             }
             catch (Exception ex)
@@ -86,20 +73,13 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             }
         }
 
-        public async Task UpdateSelectedDiceAsync(
-            int userId,
-            int? slot1DiceId,
-            int? slot2DiceId)
+        public async Task UpdateSelectedDiceAsync(int userId, int? slot1DiceId, int? slot2DiceId)
         {
             try
             {
-                using (InventoryServiceClient client = CreateClient())
+                using (var client = CreateClient())
                 {
-                    await Task.Run(
-                        () => client.UpdateSelectedDice(
-                            userId,
-                            slot1DiceId,
-                            slot2DiceId));
+                    await Task.Run(() => client.UpdateSelectedDice(userId, slot1DiceId, slot2DiceId));
                 }
             }
             catch (Exception ex)
@@ -108,20 +88,14 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
                 throw;
             }
         }
-        public async Task EquipItemToSlotAsync(
-            int userId,
-            byte slotNumber,
-            int objectId)
+
+        public async Task EquipItemToSlotAsync(int userId, byte slotNumber, int objectId)
         {
             try
             {
-                using (InventoryServiceClient client = CreateClient())
+                using (var client = CreateClient())
                 {
-                    await Task.Run(
-                        () => client.EquipItemToSlot(
-                            userId,
-                            slotNumber,
-                            objectId));
+                    await Task.Run(() => client.EquipItemToSlot(userId, slotNumber, objectId));
                 }
             }
             catch (Exception ex)
@@ -131,18 +105,13 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             }
         }
 
-        public async Task UnequipItemFromSlotAsync(
-            int userId,
-            byte slotNumber)
+        public async Task UnequipItemFromSlotAsync(int userId, byte slotNumber)
         {
             try
             {
-                using (InventoryServiceClient client = CreateClient())
+                using (var client = CreateClient())
                 {
-                    await Task.Run(
-                        () => client.UnequipItemFromSlot(
-                            userId,
-                            slotNumber));
+                    await Task.Run(() => client.UnequipItemFromSlot(userId, slotNumber));
                 }
             }
             catch (Exception ex)
@@ -152,20 +121,13 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             }
         }
 
-        public async Task EquipDiceToSlotAsync(
-            int userId,
-            byte slotNumber,
-            int diceId)
+        public async Task EquipDiceToSlotAsync(int userId, byte slotNumber, int diceId)
         {
             try
             {
-                using (InventoryServiceClient client = CreateClient())
+                using (var client = CreateClient())
                 {
-                    await Task.Run(
-                        () => client.EquipDiceToSlot(
-                            userId,
-                            slotNumber,
-                            diceId));
+                    await Task.Run(() => client.EquipDiceToSlot(userId, slotNumber, diceId));
                 }
             }
             catch (Exception ex)
@@ -175,18 +137,13 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             }
         }
 
-        public async Task UnequipDiceFromSlotAsync(
-            int userId,
-            byte slotNumber)
+        public async Task UnequipDiceFromSlotAsync(int userId, byte slotNumber)
         {
             try
             {
-                using (InventoryServiceClient client = CreateClient())
+                using (var client = CreateClient())
                 {
-                    await Task.Run(
-                        () => client.UnequipDiceFromSlot(
-                            userId,
-                            slotNumber));
+                    await Task.Run(() => client.UnequipDiceFromSlot(userId, slotNumber));
                 }
             }
             catch (Exception ex)

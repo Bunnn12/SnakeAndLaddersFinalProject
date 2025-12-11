@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using log4net;
 using SnakeAndLaddersFinalProject.Authentication;
@@ -15,7 +16,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private const int MAX_FIRST_NAME_LENGTH = 100;
         private const int MAX_LAST_NAME_LENGTH = 255;
-        private const int MAX_DESCRIPTION_LENGTH = 500;
+        private const int MAX_DESCRIPTION_LENGTH = 510; 
 
         private const int MIN_FIRST_NAME_LENGTH = 1;
         private const int MIN_LAST_NAME_LENGTH = 1;
@@ -121,7 +122,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             try
             {
                 AvatarProfileOptionsDto optionsDto = client.GetAvatarOptions(LoadedAccount.UserId);
-
                 var options = new List<AvatarProfileOptionViewModel>();
 
                 if (optionsDto != null && optionsDto.Avatars != null)
@@ -169,118 +169,67 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             string normalizedLastName = InputValidator.Normalize(lastName);
             string normalizedDescription = InputValidator.Normalize(description);
 
-            // ===== Nombre requerido =====
             if (!InputValidator.IsRequired(normalizedFirstName))
             {
-                MessageBox.Show(
-                    Lang.ProfileFirstNameRequiredText,
-                    Lang.UiTitleWarning,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-
+                ShowWarn(Lang.ProfileFirstNameRequiredText);
                 return false;
             }
 
-            // ===== Apellido requerido =====
             if (!InputValidator.IsRequired(normalizedLastName))
             {
-                MessageBox.Show(
-                    Lang.ProfileLastNameRequiredText,
-                    Lang.UiTitleWarning,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-
+                ShowWarn(Lang.ProfileLastNameRequiredText);
                 return false;
             }
 
-            // ===== Nombre: longitud y solo letras texto =====
-            if (!InputValidator.IsLengthInRange(
-                    normalizedFirstName,
-                    MIN_FIRST_NAME_LENGTH,
-                    MAX_FIRST_NAME_LENGTH))
+            if (!InputValidator.IsLengthInRange(normalizedFirstName, MIN_FIRST_NAME_LENGTH, MAX_FIRST_NAME_LENGTH))
             {
-                MessageBox.Show(
-                    string.Format(Lang.ProfileFirstNameTooLongFmt, MAX_FIRST_NAME_LENGTH),
-                    Lang.UiTitleWarning,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-
+                ShowWarn(string.Format(Lang.ProfileFirstNameTooLongFmt, MAX_FIRST_NAME_LENGTH));
                 return false;
             }
 
-            if (!InputValidator.IsLettersText(
-                    normalizedFirstName,
-                    MIN_FIRST_NAME_LENGTH,
-                    MAX_FIRST_NAME_LENGTH))
+            if (!IsAllLettersOrUnicode(normalizedFirstName))
             {
-                MessageBox.Show(
-                    Lang.ProfileFirstNameInvalidCharsText,
-                    Lang.UiTitleWarning,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
+                ShowWarn(Lang.ProfileFirstNameInvalidCharsText);
                 return false;
             }
 
-            // ===== Apellido: longitud y solo letras texto =====
-            if (!InputValidator.IsLengthInRange(
-                    normalizedLastName,
-                    MIN_LAST_NAME_LENGTH,
-                    MAX_LAST_NAME_LENGTH))
+            if (!InputValidator.IsLengthInRange(normalizedLastName, MIN_LAST_NAME_LENGTH, MAX_LAST_NAME_LENGTH))
             {
-                MessageBox.Show(
-                    string.Format(Lang.ProfileLastNameTooLongFmt, MAX_LAST_NAME_LENGTH),
-                    Lang.UiTitleWarning,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
+                ShowWarn(string.Format(Lang.ProfileLastNameTooLongFmt, MAX_LAST_NAME_LENGTH));
                 return false;
             }
 
-            if (!InputValidator.IsLettersText(
-                    normalizedLastName,
-                    MIN_LAST_NAME_LENGTH,
-                    MAX_LAST_NAME_LENGTH))
+            if (!IsAllLettersOrUnicode(normalizedLastName))
             {
-                MessageBox.Show(
-                    Lang.ProfileLastNameInvalidCharsText,
-                    Lang.UiTitleWarning,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
+                ShowWarn(Lang.ProfileLastNameInvalidCharsText);
                 return false;
             }
 
-            // ===== Descripción: longitud + texto seguro (anti HTML / controles) =====
             if (!string.IsNullOrEmpty(normalizedDescription))
             {
-                if (!InputValidator.IsLengthInRange(
-                        normalizedDescription,
-                        MIN_DESCRIPTION_LENGTH,
-                        MAX_DESCRIPTION_LENGTH))
+                if (!InputValidator.IsLengthInRange(normalizedDescription, MIN_DESCRIPTION_LENGTH, MAX_DESCRIPTION_LENGTH))
                 {
-                    MessageBox.Show(
-                        string.Format(Lang.ProfileDescriptionTooLongFmt, MAX_DESCRIPTION_LENGTH),
-                        Lang.UiTitleWarning,
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Warning);
+                    ShowWarn(string.Format(Lang.ProfileDescriptionTooLongFmt, MAX_DESCRIPTION_LENGTH));
                     return false;
                 }
 
-                // allowNewLines = true para que permita saltos de línea en la bio
-                if (!InputValidator.IsSafeText(
-                        normalizedDescription,
-                        MIN_DESCRIPTION_LENGTH,
-                        MAX_DESCRIPTION_LENGTH,
-                        allowNewLines: true))
+                if (!InputValidator.IsSafeText(normalizedDescription, MIN_DESCRIPTION_LENGTH, MAX_DESCRIPTION_LENGTH, allowNewLines: true))
                 {
-                    MessageBox.Show(
-                        Lang.ProfileInvalidCharactersText,
-                        Lang.UiTitleWarning,
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Warning);
+                    ShowWarn(Lang.ProfileInvalidCharactersText);
                     return false;
                 }
             }
 
             return true;
+        }
+
+        private static bool IsAllLettersOrUnicode(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return false;
+            }
+            return text.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
         }
 
         public bool TryUpdateProfile(string firstName, string lastName, string description)
@@ -311,11 +260,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 if (updated == null)
                 {
-                    MessageBox.Show(
-                        Lang.ProfileUpdateErrorText,
-                        Lang.UiTitleError,
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error);
+                    ShowError(Lang.ProfileUpdateErrorText);
                     return false;
                 }
 
@@ -327,22 +272,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     SessionContext.Current.ProfilePhotoId = LoadedAccount.ProfilePhotoId;
                 }
 
-                MessageBox.Show(
-                    Lang.ProfileUpdateSuccessText,
-                    Lang.UiTitleInfo,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-
+                ShowInfo(Lang.ProfileUpdateSuccessText);
                 return true;
             }
             catch (Exception ex)
             {
                 _logger.Error("Error updating profile.", ex);
-                MessageBox.Show(
-                    Lang.ProfileUpdateErrorText,
-                    Lang.UiTitleError,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                ShowError(Lang.ProfileUpdateErrorText);
                 return false;
             }
             finally
@@ -370,24 +306,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             try
             {
                 client.DeactivateAccount(LoadedAccount.UserId);
-
-                MessageBox.Show(
-                    Lang.ProfileDeactivateSuccessText,
-                    Lang.ProfileDeactivateSuccessTitle,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-
+                ShowInfo(Lang.ProfileDeactivateSuccessText);
                 Application.Current.Shutdown();
                 return true;
             }
             catch (Exception ex)
             {
                 _logger.Error("Error deactivating account.", ex);
-                MessageBox.Show(
-                    Lang.ProfileDeactivateErrorText,
-                    Lang.UiTitleError,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                ShowError(Lang.ProfileDeactivateErrorText);
                 return false;
             }
             finally
@@ -427,11 +353,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 if (updated == null)
                 {
-                    MessageBox.Show(
-                        Lang.ProfileAvatarUpdateErrorText,
-                        Lang.UiTitleError,
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error);
+                    ShowError(Lang.ProfileAvatarUpdateErrorText);
                     return false;
                 }
 
@@ -443,22 +365,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     SessionContext.Current.ProfilePhotoId = LoadedAccount.ProfilePhotoId;
                 }
 
-                MessageBox.Show(
-                    Lang.ProfileAvatarUpdateSuccessText,
-                    Lang.UiTitleInfo,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-
+                ShowInfo(Lang.ProfileAvatarUpdateSuccessText);
                 return true;
             }
             catch (Exception ex)
             {
                 _logger.Error("Error updating avatar.", ex);
-                MessageBox.Show(
-                    Lang.ProfileAvatarUpdateErrorText,
-                    Lang.UiTitleError,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                ShowError(Lang.ProfileAvatarUpdateErrorText);
                 return false;
             }
             finally
@@ -472,6 +385,33 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     _logger.Error("Error while closing UserServiceClient after avatar update.", ex);
                 }
             }
+        }
+
+        private static void ShowWarn(string message)
+        {
+            MessageBox.Show(
+                message,
+                Lang.UiTitleWarning,
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+        }
+
+        private static void ShowInfo(string message)
+        {
+            MessageBox.Show(
+                message,
+                Lang.UiTitleInfo,
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+        }
+
+        private static void ShowError(string message)
+        {
+            MessageBox.Show(
+                message,
+                Lang.UiTitleError,
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
     }
 }

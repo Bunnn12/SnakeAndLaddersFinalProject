@@ -12,26 +12,21 @@ namespace SnakeAndLaddersFinalProject.Managers
     {
         private readonly int _gameId;
         private readonly int _localUserId;
-
         private readonly DiceSelectionManager _diceSelectionManager;
         private readonly Func<IGameplayClient> _gameplayClientProvider;
         private readonly ILog _logger;
-
         private readonly Func<bool> _getIsMyTurn;
         private readonly Func<bool> _getIsAnimating;
         private readonly Func<bool> _getIsRollRequestInProgress;
         private readonly Func<bool> _getIsUseItemInProgress;
         private readonly Func<bool> _getIsTargetSelectionActive;
-
         private readonly Action<bool> _setIsRollRequestInProgress;
         private readonly Action _raiseAllCanExecuteChanged;
-
         private readonly Func<Task> _syncGameStateAsync;
         private readonly Func<Task> _initializeInventoryAsync;
         private readonly Action _markServerEventReceived;
         private readonly Func<Exception, string, bool> _handleConnectionException;
         private readonly Action<string, string, MessageBoxImage> _showMessage;
-
         private readonly string _unknownErrorMessage;
         private readonly string _rollDiceFailureMessagePrefix;
         private readonly string _rollDiceUnexpectedErrorMessage;
@@ -60,47 +55,53 @@ namespace SnakeAndLaddersFinalProject.Managers
             string rollDiceUnexpectedErrorMessage,
             string gameWindowTitle)
         {
-            if (gameId <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(gameId));
-            }
+            if (gameId <= 0) throw new ArgumentOutOfRangeException(nameof(gameId));
+            if (localUserId == 0) throw new ArgumentOutOfRangeException(nameof(localUserId));
 
-            if (localUserId == 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(localUserId));
-            }
-
-            this._gameId = gameId;
-            this._localUserId = localUserId;
-            this._diceSelectionManager = diceSelectionManager ?? throw new ArgumentNullException(nameof(diceSelectionManager));
-            this._gameplayClientProvider = gameplayClientProvider ?? throw new ArgumentNullException(nameof(gameplayClientProvider));
-            this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this._getIsMyTurn = getIsMyTurn ?? throw new ArgumentNullException(nameof(getIsMyTurn));
-            this._getIsAnimating = getIsAnimating ?? throw new ArgumentNullException(nameof(getIsAnimating));
-            this._getIsRollRequestInProgress = getIsRollRequestInProgress ?? throw new ArgumentNullException(nameof(getIsRollRequestInProgress));
-            this._getIsUseItemInProgress = getIsUseItemInProgress ?? throw new ArgumentNullException(nameof(getIsUseItemInProgress));
-            this._getIsTargetSelectionActive = getIsTargetSelectionActive ?? throw new ArgumentNullException(nameof(getIsTargetSelectionActive));
-            this._setIsRollRequestInProgress = setIsRollRequestInProgress ?? throw new ArgumentNullException(nameof(setIsRollRequestInProgress));
-            this._raiseAllCanExecuteChanged = raiseAllCanExecuteChanged ?? throw new ArgumentNullException(nameof(raiseAllCanExecuteChanged));
-            this._syncGameStateAsync = syncGameStateAsync ?? throw new ArgumentNullException(nameof(syncGameStateAsync));
-            this._initializeInventoryAsync = initializeInventoryAsync ?? throw new ArgumentNullException(nameof(initializeInventoryAsync));
-            this._markServerEventReceived = markServerEventReceived ?? throw new ArgumentNullException(nameof(markServerEventReceived));
-            this._handleConnectionException = handleConnectionException ?? throw new ArgumentNullException(nameof(handleConnectionException));
-            this._showMessage = showMessage ?? throw new ArgumentNullException(nameof(showMessage));
-            this._unknownErrorMessage = unknownErrorMessage ?? throw new ArgumentNullException(nameof(unknownErrorMessage));
-            this._rollDiceFailureMessagePrefix = rollDiceFailureMessagePrefix ?? throw new ArgumentNullException(nameof(rollDiceFailureMessagePrefix));
-            this._rollDiceUnexpectedErrorMessage = rollDiceUnexpectedErrorMessage ?? throw new ArgumentNullException(nameof(rollDiceUnexpectedErrorMessage));
-            this._gameWindowTitle = gameWindowTitle ?? throw new ArgumentNullException(nameof(gameWindowTitle));
+            _gameId = gameId;
+            _localUserId = localUserId;
+            _diceSelectionManager = diceSelectionManager ?? throw new ArgumentNullException(
+                nameof(diceSelectionManager));
+            _gameplayClientProvider = gameplayClientProvider ?? throw new ArgumentNullException(
+                nameof(gameplayClientProvider));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _getIsMyTurn = getIsMyTurn ?? throw new ArgumentNullException(nameof(getIsMyTurn));
+            _getIsAnimating = getIsAnimating ?? throw new ArgumentNullException(
+                nameof(getIsAnimating));
+            _getIsRollRequestInProgress = getIsRollRequestInProgress ??
+                throw new ArgumentNullException(nameof(getIsRollRequestInProgress));
+            _getIsUseItemInProgress = getIsUseItemInProgress ?? throw new ArgumentNullException(
+                nameof(getIsUseItemInProgress));
+            _getIsTargetSelectionActive = getIsTargetSelectionActive ??
+                throw new ArgumentNullException(nameof(getIsTargetSelectionActive));
+            _setIsRollRequestInProgress = setIsRollRequestInProgress ??
+                throw new ArgumentNullException(nameof(setIsRollRequestInProgress));
+            _raiseAllCanExecuteChanged = raiseAllCanExecuteChanged ?? throw new ArgumentNullException(
+                nameof(raiseAllCanExecuteChanged));
+            _syncGameStateAsync = syncGameStateAsync ?? throw new ArgumentNullException(
+                nameof(syncGameStateAsync));
+            _initializeInventoryAsync = initializeInventoryAsync ?? throw new ArgumentNullException(
+                nameof(initializeInventoryAsync));
+            _markServerEventReceived = markServerEventReceived ?? throw new ArgumentNullException(
+                nameof(markServerEventReceived));
+            _handleConnectionException = handleConnectionException ??
+                throw new ArgumentNullException(nameof(handleConnectionException));
+            _showMessage = showMessage ?? throw new ArgumentNullException(nameof(showMessage));
+            _unknownErrorMessage = unknownErrorMessage ?? throw new ArgumentNullException(
+                nameof(unknownErrorMessage));
+            _rollDiceFailureMessagePrefix = rollDiceFailureMessagePrefix ??
+                throw new ArgumentNullException(nameof(rollDiceFailureMessagePrefix));
+            _rollDiceUnexpectedErrorMessage = rollDiceUnexpectedErrorMessage ?? throw new
+                ArgumentNullException(nameof(rollDiceUnexpectedErrorMessage));
+            _gameWindowTitle = gameWindowTitle ?? throw new ArgumentNullException(
+                nameof(gameWindowTitle));
         }
 
         public bool CanRollDice()
         {
-            _logger.InfoFormat(
-                "CanRollDice: _gameId={0}, _localUserId={1}, _isMyTurn={2}, isAnimating={3}, _isRollRequestInProgress={4}",
-                _gameId,
-                _localUserId,
-                _getIsMyTurn(),
-                _getIsAnimating(),
+            _logger.InfoFormat("CanRollDice: _gameId={0}, _localUserId={1}, _isMyTurn={2}, " +
+                "isAnimating={3}, _isRollRequestInProgress={4}",
+                _gameId, _localUserId, _getIsMyTurn(), _getIsAnimating(),
                 _getIsRollRequestInProgress());
 
             return PlayerActionGuard.CanRollDice(
@@ -124,17 +125,14 @@ namespace SnakeAndLaddersFinalProject.Managers
             try
             {
                 IGameplayClient client = _gameplayClientProvider();
-
                 if (client == null)
                 {
                     return;
                 }
 
                 byte? diceSlotNumber = _diceSelectionManager.SelectedSlot;
-
-                RollDiceResponseDto response = await client
-                    .GetRollDiceAsync(_gameId, _localUserId, diceSlotNumber)
-                    .ConfigureAwait(false);
+                RollDiceResponseDto response = await client.GetRollDiceAsync(_gameId, _localUserId,
+                    diceSlotNumber).ConfigureAwait(false);
 
                 if (response == null || !response.Success)
                 {
@@ -143,44 +141,29 @@ namespace SnakeAndLaddersFinalProject.Managers
                         : _unknownErrorMessage;
 
                     _logger.Warn("RollDice failed: " + failureReason);
-
-                    _showMessage(
-                        _rollDiceFailureMessagePrefix + failureReason,
-                        _gameWindowTitle,
+                    _showMessage(_rollDiceFailureMessagePrefix + failureReason, _gameWindowTitle,
                         MessageBoxImage.Warning);
-
                     return;
                 }
 
                 _markServerEventReceived();
                 await ShowGrantedRewardsAsync(response, _gameWindowTitle).ConfigureAwait(false);
-
                 _diceSelectionManager.ResetSelection();
 
-                _logger.InfoFormat(
-                    "RollDice request accepted. UserId={0}, From={1}, To={2}, Dice={3}",
-                    _localUserId,
-                    response.FromCellIndex,
-                    response.ToCellIndex,
-                    response.DiceValue);
+                _logger.InfoFormat("RollDice request accepted. UserId={0}, From={1}, To={2}, Dice={3}",
+                    _localUserId, response.FromCellIndex, response.ToCellIndex, response.DiceValue);
 
                 await _syncGameStateAsync().ConfigureAwait(false);
                 await _initializeInventoryAsync().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                if (_handleConnectionException(
-                        ex,
-                        "Connection lost while rolling dice."))
+                if (_handleConnectionException(ex, "Connection lost while rolling dice."))
                 {
                     return;
                 }
-
                 _logger.Error(_rollDiceUnexpectedErrorMessage, ex);
-
-                _showMessage(
-                    _rollDiceUnexpectedErrorMessage,
-                    _gameWindowTitle,
+                _showMessage(_rollDiceUnexpectedErrorMessage, _gameWindowTitle,
                     MessageBoxImage.Error);
             }
             finally
@@ -190,9 +173,7 @@ namespace SnakeAndLaddersFinalProject.Managers
             }
         }
 
-        private static async Task ShowGrantedRewardsAsync(
-            RollDiceResponseDto response,
-            string gameWindowTitle)
+        private static async Task ShowGrantedRewardsAsync(RollDiceResponseDto response, string gameWindowTitle)
         {
             if (string.IsNullOrWhiteSpace(response.GrantedItemCode) &&
                 string.IsNullOrWhiteSpace(response.GrantedDiceCode))
@@ -200,34 +181,25 @@ namespace SnakeAndLaddersFinalProject.Managers
                 return;
             }
 
-            await Application.Current.Dispatcher.InvokeAsync(
-                () =>
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                string text = "¡Has obtenido ";
+                if (!string.IsNullOrWhiteSpace(response.GrantedItemCode))
                 {
-                    string text = "¡Has obtenido ";
-
+                    text += string.Format("un ítem ({0})", response.GrantedItemCode);
+                }
+                if (!string.IsNullOrWhiteSpace(response.GrantedDiceCode))
+                {
                     if (!string.IsNullOrWhiteSpace(response.GrantedItemCode))
                     {
-                        text += string.Format("un ítem ({0})", response.GrantedItemCode);
+                        text += " y ";
                     }
-
-                    if (!string.IsNullOrWhiteSpace(response.GrantedDiceCode))
-                    {
-                        if (!string.IsNullOrWhiteSpace(response.GrantedItemCode))
-                        {
-                            text += " y ";
-                        }
-
-                        text += string.Format("un dado ({0})", response.GrantedDiceCode);
-                    }
-
-                    text += "!";
-
-                    MessageBox.Show(
-                        text,
-                        gameWindowTitle,
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information);
-                });
+                    text += string.Format("un dado ({0})", response.GrantedDiceCode);
+                }
+                text += "!";
+                MessageBox.Show(text, gameWindowTitle, MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            });
         }
     }
 }

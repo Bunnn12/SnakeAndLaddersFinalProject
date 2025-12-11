@@ -5,21 +5,23 @@ namespace SnakeAndLaddersFinalProject.Authentication
     public sealed class SessionContext : INotifyPropertyChanged
     {
         private const int USER_ID_NOT_SET = 0;
+        private const int DEFAULT_COINS= 0;
 
-        private static readonly SessionContext CurrentSessionContext = new SessionContext();
 
-        public static SessionContext Current => CurrentSessionContext;
+        private static readonly SessionContext _currentSessionContext = new SessionContext();
+
+        public static SessionContext Current => _currentSessionContext;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private int userId = USER_ID_NOT_SET;
+        private int _userId = USER_ID_NOT_SET;
         private int coins;
-        private string userName = string.Empty;
+        private string _userName = string.Empty;
         private string email = string.Empty;
-        private string authToken = string.Empty;
-        private string profilePhotoId = string.Empty;
-        private string currentSkinId = string.Empty;
-        private int? currentSkinUnlockedId;
+        private string _authToken = string.Empty;
+        private string _profilePhotoId = string.Empty;
+        private string _currentSkinId = string.Empty;
+        private int? _currentSkinUnlockedId;
 
         private SessionContext()
         {
@@ -27,15 +29,15 @@ namespace SnakeAndLaddersFinalProject.Authentication
 
         public int UserId
         {
-            get => userId;
+            get => _userId;
             set
             {
-                if (userId == value)
+                if (_userId == value)
                 {
                     return;
                 }
 
-                userId = value;
+                _userId = value;
                 OnPropertyChanged(nameof(UserId));
                 OnPropertyChanged(nameof(IsAuthenticated));
             }
@@ -58,15 +60,15 @@ namespace SnakeAndLaddersFinalProject.Authentication
 
         public string UserName
         {
-            get => userName;
+            get => _userName;
             set
             {
-                if (userName == value)
+                if (_userName == value)
                 {
                     return;
                 }
 
-                userName = value ?? string.Empty;
+                _userName = value ?? string.Empty;
                 OnPropertyChanged(nameof(UserName));
                 OnPropertyChanged(nameof(IsAuthenticated));
             }
@@ -89,66 +91,65 @@ namespace SnakeAndLaddersFinalProject.Authentication
 
         public string AuthToken
         {
-            get => authToken;
+            get => _authToken;
             set
             {
-                if (authToken == value)
+                if (_authToken == value)
                 {
                     return;
                 }
 
-                authToken = value ?? string.Empty;
+                _authToken = value ?? string.Empty;
                 OnPropertyChanged(nameof(AuthToken));
             }
         }
 
         public string ProfilePhotoId
         {
-            get => profilePhotoId;
+            get => _profilePhotoId;
             set
             {
-                if (profilePhotoId == value)
+                if (_profilePhotoId == value)
                 {
                     return;
                 }
 
-                profilePhotoId = value ?? string.Empty;
+                _profilePhotoId = value ?? string.Empty;
                 OnPropertyChanged(nameof(ProfilePhotoId));
             }
         }
 
         public string CurrentSkinId
         {
-            get => currentSkinId;
+            get => _currentSkinId;
             set
             {
-                if (currentSkinId == value)
+                if (_currentSkinId == value)
                 {
                     return;
                 }
 
-                currentSkinId = value ?? string.Empty;
+                _currentSkinId = value ?? string.Empty;
                 OnPropertyChanged(nameof(CurrentSkinId));
             }
         }
 
         public int? CurrentSkinUnlockedId
         {
-            get => currentSkinUnlockedId;
+            get => _currentSkinUnlockedId;
             set
             {
-                if (currentSkinUnlockedId == value)
+                if (_currentSkinUnlockedId == value)
                 {
                     return;
                 }
 
-                currentSkinUnlockedId = value;
+                _currentSkinUnlockedId = value;
                 OnPropertyChanged(nameof(CurrentSkinUnlockedId));
             }
         }
 
-        public bool IsAuthenticated =>
-            UserId > USER_ID_NOT_SET &&
+        public bool IsAuthenticated => UserId > USER_ID_NOT_SET &&
             !string.IsNullOrWhiteSpace(UserName) &&
             !string.IsNullOrWhiteSpace(AuthToken);
 
@@ -159,7 +160,7 @@ namespace SnakeAndLaddersFinalProject.Authentication
         public void Clear()
         {
             UserId = USER_ID_NOT_SET;
-            Coins = 0;
+            Coins = DEFAULT_COINS;
             UserName = string.Empty;
             Email = string.Empty;
             AuthToken = string.Empty;

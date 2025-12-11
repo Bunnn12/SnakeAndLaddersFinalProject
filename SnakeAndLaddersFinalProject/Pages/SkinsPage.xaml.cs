@@ -33,9 +33,9 @@ namespace SnakeAndLaddersFinalProject.Pages
             {
                 await _viewModel.LoadAsync();
             }
-            catch (Exception)
+            catch
             {
-                // ya se loguea en el VM
+                
             }
         }
 
@@ -64,14 +64,10 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void AvatarTileMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            FrameworkElement element = sender as FrameworkElement;
-
-            if (element == null)
+            if (sender is FrameworkElement element)
             {
-                return;
+                _viewModel.SelectAvatarFromTile(element.DataContext);
             }
-
-            _viewModel.SelectAvatarFromTile(element.DataContext);
         }
     }
 }

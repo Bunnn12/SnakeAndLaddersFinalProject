@@ -39,7 +39,8 @@
                        Foreground="White"
                        Text="{x:Static language:Lang.SocialProfileLinkGenericCaption}" />
             <TextBox x:Name="txtProfileLink"
-                     Height="30" />
+                     Height="30"
+                     MaxLength="255" />
         </StackPanel>
 
         <StackPanel Grid.Row="3"

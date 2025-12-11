@@ -103,7 +103,7 @@
                 <!-- Header (zona para arrastrar la ventana) -->
                 <DockPanel Grid.Row="0"
                            Margin="0,0,0,4"
-                           MouseLeftButtonDown="Header_MouseLeftButtonDown">
+                           MouseLeftButtonDown="HeaderMouseLeftButtonDown">
                     <Button Width="22"
                             Height="22"
                             Padding="0"
@@ -113,7 +113,7 @@
                             Background="#E57373"
                             BorderBrush="#C62828"
                             Content="✕"
-                            Click="Close_Click" />
+                            Click="CloseWindow" />
 
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{x:Static language:Lang.btnInviteFriendsText}"

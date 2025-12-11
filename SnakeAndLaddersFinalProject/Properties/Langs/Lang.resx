@@ -802,7 +802,7 @@
     <value>Last name cannot be longer than 90 characters.</value>
   </data>
   <data name="UiPasswordPolicyDescription" xml:space="preserve">
-    <value>The password must have at least 8 characters, one uppercase letter, one lowercase letter, and one special character.</value>
+    <value>The password must have at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character.</value>
   </data>
   <data name="UiPasswordTooLong" xml:space="preserve">
     <value>Password is too long</value>
@@ -814,7 +814,7 @@
     <value>An unexpected error occurred while navigating.</value>
   </data>
   <data name="UiUserNameTooLong" xml:space="preserve">
-    <value>Username cannot be longer than 90 characters.</value>
+    <value>Username cannot be longer than 30 characters.</value>
   </data>
   <data name="UiVerificationCodeRequired" xml:space="preserve">
     <value>Verification code is required.</value>
@@ -1051,64 +1051,64 @@
     <value>An error occurred while unlinking the social network profile.</value>
   </data>
   <data name="Message1Text" xml:space="preserve">
-    <value />
+    <value>You found a critical bug... the project was delayed. Go back 5 spaces.</value>
   </data>
   <data name="Message2Text" xml:space="preserve">
-    <value />
+    <value>Successful build. You move forward with confidence. Move forward 4 spaces.</value>
   </data>
   <data name="Message3Text" xml:space="preserve">
-    <value />
+    <value>Merge conflict in your branch. What a shame... go back 5 spaces.</value>
   </data>
   <data name="Message4Text" xml:space="preserve">
-    <value />
+    <value>Your code passed all unit tests. Quality bonus: advance 4 spaces.</value>
   </data>
   <data name="Message5Text" xml:space="preserve">
-    <value />
+    <value>You had to reinstall Visual Studio. You waste valuable time. go back 5 spaces</value>
   </data>
   <data name="Message6Text" xml:space="preserve">
-    <value />
+    <value>You passed Programming Fundamentals the first time. Move forward 4 spaces.</value>
   </data>
   <data name="Message7Text" xml:space="preserve">
-    <value />
+    <value>IndexOutOfRangeException: you accessed outside the array goes back 5 spaces.</value>
   </data>
   <data name="Message8Text" xml:space="preserve">
-    <value />
+    <value>You found a programming meme that gave you the strength to continue. You advance 4 spaces</value>
   </data>
   <data name="Message9Text" xml:space="preserve">
-    <value />
+    <value>Your technology teacher abandoned you to go to Peru and you were late in the project, go back 5 boxes</value>
   </data>
   <data name="Message10Text" xml:space="preserve">
-    <value />
+    <value>You finished a sequence diagram. Move forward 4 spaces</value>
   </data>
   <data name="Message11Text" xml:space="preserve">
-    <value />
+    <value>NullReferenceException: You advanced without initializing. You lose your next turn.</value>
   </data>
   <data name="Message12Text" xml:space="preserve">
-    <value />
+    <value>Your team left you alone on the final project. You are the hero no one asked for. you earned an extra turn</value>
   </data>
   <data name="Message13Text" xml:space="preserve">
-    <value />
+    <value>Burnout detected… take a mandatory break. You lose a turn.</value>
   </data>
   <data name="Message14Text" xml:space="preserve">
-    <value />
+    <value>You passed the most difficult class of the semester. To celebrate. roll the dice again</value>
   </data>
   <data name="Message15Text" xml:space="preserve">
-    <value />
+    <value>You had to debug legacy code without documentation... good luck. we let you rest the next shift</value>
   </data>
   <data name="Message16Text" xml:space="preserve">
-    <value />
+    <value>You passed technologies at UO. You are a legend. You win a turn.</value>
   </data>
   <data name="Message17Text" xml:space="preserve">
-    <value />
+    <value>You have to clear 1 day of technical debt in sonarqube you lose a shift.</value>
   </data>
   <data name="Message18Text" xml:space="preserve">
-    <value />
+    <value>You passed technologies with 6...passing is passing. you throw again</value>
   </data>
   <data name="Message19Text" xml:space="preserve">
-    <value />
+    <value>You resorted to programming. you lose a turn</value>
   </data>
   <data name="Message20Text" xml:space="preserve">
-    <value />
+    <value>You are full stack in gpt chat prompts. It is your greatest achievement in life. you win a turn</value>
   </data>
   <data name="AuthCodeNotRequested" xml:space="preserve">
     <value>A verification code has not been requested yet. Please request a code first</value>
@@ -1421,5 +1421,68 @@
   </data>
   <data name="LobbyKickPlayerMenuText" xml:space="preserve">
     <value>Kick player</value>
+  </data>
+  <data name="GameDiceMoveBackwardFmt" xml:space="preserve">
+    <value>You rolled {0} and moved back from {1} to {2} ({3} tiles).</value>
+  </data>
+  <data name="GameDiceMoveForwardFmt" xml:space="preserve">
+    <value>You rolled {0} and moved from {1} to {2}.</value>
+  </data>
+  <data name="GameDiceNoMovementFmt" xml:space="preserve">
+    <value>You did not move this turn. You remain on tile {0}.</value>
+  </data>
+  <data name="GameDiceResultTitle" xml:space="preserve">
+    <value>Dice result</value>
+  </data>
+  <data name="GameLeftPlayerFallbackNameFmt" xml:space="preserve">
+    <value>Player {0}</value>
+  </data>
+  <data name="GameLeftPlayerMessageFmt" xml:space="preserve">
+    <value>{0} left the match.</value>
+  </data>
+  <data name="GamePlayerLeftTitle" xml:space="preserve">
+    <value>Player left</value>
+  </data>
+  <data name="PodiumUnknownWinnerNameText" xml:space="preserve">
+    <value>Unknown winner</value>
+  </data>
+  <data name="PasswordRulesText" xml:space="preserve">
+    <value>Password must be at least 8 chars, 1 Uppercase, 1 Lowercase, 1 Special Char and 1 Number.</value>
+  </data>
+  <data name="AuthSessionAlreadyActive" xml:space="preserve">
+    <value>The session is already active, please logout to continue</value>
+  </data>
+  <data name="btnApplyText" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="ChatTextTooLongFmt" xml:space="preserve">
+    <value>The message cannot exceed {0} characters</value>
+  </data>
+  <data name="lblWinnerLabelText" xml:space="preserve">
+    <value>Winner</value>
+  </data>
+  <data name="SkinsAvatarLockedWarn" xml:space="preserve">
+    <value>This avatar is locked. Unlock it in the store to use it.</value>
+  </data>
+  <data name="SkinsAvatarUpdatedSuccess" xml:space="preserve">
+    <value>Avatar updated successfully</value>
+  </data>
+  <data name="SkinsLockedTitle" xml:space="preserve">
+    <value>Avatar Locked</value>
+  </data>
+  <data name="SkinsSelectAvatarWarn" xml:space="preserve">
+    <value>Please select an avatar first.</value>
+  </data>
+  <data name="SkinsStatusCurrentText" xml:space="preserve">
+    <value>Currently selected</value>
+  </data>
+  <data name="SkinsStatusLockedText" xml:space="preserve">
+    <value>Locked. Get it in the shop</value>
+  </data>
+  <data name="SkinsStatusUnlockedText" xml:space="preserve">
+    <value>Unlocked. Click Apply to use.</value>
+  </data>
+  <data name="SkinsUpdatedTitle" xml:space="preserve">
+    <value>Avatar Updated</value>
   </data>
 </root>

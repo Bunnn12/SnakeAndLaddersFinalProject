@@ -289,23 +289,9 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <Button x:Name="btnBack"
-                                Grid.Column="0"
-                                Width="140"
-                                Margin="0,0,0,10"
-                                BorderBrush="{x:Null}">
-                            <Button.Background>
-                                <ImageBrush />
-                            </Button.Background>
-                            <Image Height="49"
-                                   Width="62"
-                                   Source="/Assets/Images/Icons/BackIcon.png"
-                                   Stretch="Fill" />
-                        </Button>
-
                         <Label x:Name="lblCoins"
        Grid.Column="1"
-       Style="{StaticResource LblHud}">
+       Style="{StaticResource LblHud}" Margin="156,0,0,0">
                             <StackPanel Orientation="Horizontal"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center">
@@ -325,6 +311,7 @@
                         <Button x:Name="btnSettings"
                                 Grid.Column="2"
                                 Width="160"
+                                Click="Settings"
                                 Background="{x:Null}"
                                 BorderBrush="{x:Null}">
                             <Image Height="43"
@@ -355,10 +342,6 @@
                                 Width="634"
                                 Content="{x:Static language:Lang.btnJoinMatchText}"
                                 Click="JoinMatch" />
-                        <TextBox x:Name="txtJoinCode"
-                                 Width="417"
-                                 Height="37"
-                                 />
 
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center"
@@ -480,12 +463,7 @@
                        RenderOptions.BitmapScalingMode="NearestNeighbor" />
                 </Button>
 
-                <Grid>
-                    <TextBlock Text="Codigo:"
-                                       FontFamily="{StaticResource Font.M04}"
-                                       FontSize="24"
-                                       Foreground="{StaticResource BrushBlancoSuave}" Margin="433,483,197,196" />
-                </Grid>
+                <Grid/>
             </Grid>
         </Viewbox>
     </Grid>

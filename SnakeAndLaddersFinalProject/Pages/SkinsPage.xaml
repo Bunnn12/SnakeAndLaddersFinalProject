@@ -325,7 +325,7 @@
 
                 <!-- Bottom bar -->
                 <Grid Grid.Row="2" Margin="0,12,0,0">
-                    <Button Content="a"
+                    <Button Content="{x:Static language:Lang.btnApplyText}"
                             HorizontalAlignment="Center"
                             Style="{StaticResource PrimaryActionButtonStyle}"
                             Click="ApplyClick" />

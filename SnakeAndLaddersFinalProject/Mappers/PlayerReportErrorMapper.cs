@@ -17,22 +17,26 @@ namespace SnakeAndLaddersFinalProject.Mappers
                 return Lang.ReportGenericErrorMessage;
             }
 
-            if (string.Equals(faultCode, ERROR_REPORT_DUPLICATE, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(faultCode, ERROR_REPORT_DUPLICATE,
+                StringComparison.OrdinalIgnoreCase))
             {
                 return Lang.ReportErrorDuplicate;
             }
 
-            if (string.Equals(faultCode, ERROR_REPORT_INVALID_USER, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(faultCode, ERROR_REPORT_INVALID_USER,
+                StringComparison.OrdinalIgnoreCase))
             {
                 return Lang.ReportErrorInvalidUser;
             }
 
-            if (string.Equals(faultCode, ERROR_REPORT_INVALID_REQUEST, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(faultCode, ERROR_REPORT_INVALID_REQUEST,
+                StringComparison.OrdinalIgnoreCase))
             {
                 return Lang.ReportErrorInvalidRequest;
             }
 
-            if (string.Equals(faultCode, ERROR_REPORT_INTERNAL, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(faultCode, ERROR_REPORT_INTERNAL,
+                StringComparison.OrdinalIgnoreCase))
             {
                 return Lang.ReportGenericErrorMessage;
             }

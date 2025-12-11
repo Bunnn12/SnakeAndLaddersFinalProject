@@ -5,42 +5,38 @@ using System.Windows.Media;
 
 namespace SnakeAndLaddersFinalProject.Converters
 {
-    /// <summary>
-    /// Convierte el texto "mm:ss" en un patrón de StrokeDashArray
-    /// para dibujar un arco proporcional (0–1) alrededor del avatar.
-    /// </summary>
     public sealed class TurnTimeToStrokeDashConverter : IValueConverter
     {
-        private const int TOTAL_SECONDS = 30;
+        private const int TURN_TOTAL_SECONDS = 30;
+        private const double MIN_PROGRESS = 0.0;
+        private const double MAX_PROGRESS = 1.0;
+        private const double DEFAULT_DASH_VISIBLE = 1.0;
+        private const double DEFAULT_DASH_HIDDEN = 0.0;
+        private const int MIN_REMAINING_SECONDS = 0;
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string timeText = value as string;
 
-            if (string.IsNullOrWhiteSpace(timeText) ||
-                !TimeSpan.TryParse(timeText, out TimeSpan timeSpan))
+            if (string.IsNullOrWhiteSpace(timeText) || !TimeSpan.TryParse(timeText,
+                out TimeSpan timeSpan))
             {
-                // Círculo completo si no hay dato válido
-                return new DoubleCollection { 1.0, 0.0 };
+                return new DoubleCollection { DEFAULT_DASH_VISIBLE, DEFAULT_DASH_HIDDEN };
             }
 
             int remainingSeconds = (int)timeSpan.TotalSeconds;
-            if (remainingSeconds < 0)
+            if (remainingSeconds < MIN_REMAINING_SECONDS)
             {
-                remainingSeconds = 0;
+                remainingSeconds = MIN_REMAINING_SECONDS;
             }
 
-            double progress = Math.Min(1.0, Math.Max(0.0, remainingSeconds / (double)TOTAL_SECONDS));
-
-            // Un solo “dash” (arco visible) y luego el “gap” (resto del círculo)
-            return new DoubleCollection
-            {
-                progress,          // parte pintada
-                1.0 - progress     // parte vacía
-            };
+            double progress = Math.Min(MAX_PROGRESS, Math.Max(MIN_PROGRESS, remainingSeconds
+                / (double)TURN_TOTAL_SECONDS));
+            return new DoubleCollection { progress, MAX_PROGRESS - progress };
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter,
+            CultureInfo culture)
         {
             throw new NotSupportedException();
         }

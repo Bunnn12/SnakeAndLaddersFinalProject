@@ -822,76 +822,6 @@
   <data name="UiVerificationSentFmt" xml:space="preserve">
     <value>验证电子邮件已发送至 {0}。</value>
   </data>
-  <data name="warningTitle" xml:space="preserve">
-    <value>警告</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Message1Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message2Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message3Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message4Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message5Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message6Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message7Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message8Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message9Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message10Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message11Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message12Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message13Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message14Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message15Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message16Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message17Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message18Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message19Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Message20Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="ProfileChangeAvatarConfirmTitle" xml:space="preserve">
-    <value>更改头像</value>
-  </data>
-  <data name="UiJoinMatchTitle" xml:space="preserve">
-    <value>加入比赛</value>
-  </data>
   <data name="btnSendInvitationText" xml:space="preserve">
     <value>发送邀请</value>
   </data>
@@ -958,6 +888,9 @@
   <data name="UiInviteFriendSuccessDefault" xml:space="preserve">
     <value>邀请已成功发送。</value>
   </data>
+  <data name="warningTitle" xml:space="preserve">
+    <value>警告</value>
+  </data>
   <data name="lblProfileSocialNetworksText" xml:space="preserve">
     <value>社交网络</value>
   </data>
@@ -972,6 +905,9 @@
   </data>
   <data name="ProfileChangeAvatarConfirmText" xml:space="preserve">
     <value>您想使用此头像作为您的个人资料图片吗？</value>
+  </data>
+  <data name="ProfileChangeAvatarConfirmTitle" xml:space="preserve">
+    <value>更改头像</value>
   </data>
   <data name="ProfileDeactivateConfirmText" xml:space="preserve">
     <value>您确定要停用您的帐户吗？\n在管理员重新激活该帐户之前，您将无法再次使用该帐户。</value>
@@ -1114,6 +1050,66 @@
   <data name="SocialProfileUnlinkError" xml:space="preserve">
     <value>取消链接社交网络配置文件时发生错误。</value>
   </data>
+  <data name="Message1Text" xml:space="preserve">
+    <value>您发现了一个严重的错误...该项目被推迟了。后退 5 个空格。</value>
+  </data>
+  <data name="Message2Text" xml:space="preserve">
+    <value>构建成功。你充满信心地前进。向前移动 4 个空格。</value>
+  </data>
+  <data name="Message3Text" xml:space="preserve">
+    <value>合并分支中的冲突。真可惜……后退5个空格。</value>
+  </data>
+  <data name="Message4Text" xml:space="preserve">
+    <value>您的代码通过了所有单元测试。质量加成：前进4位。</value>
+  </data>
+  <data name="Message5Text" xml:space="preserve">
+    <value>您必须重新安装 Visual Studio。你浪费了宝贵的时间。后退 5 个空格</value>
+  </data>
+  <data name="Message6Text" xml:space="preserve">
+    <value>您第一次通过了编程基础知识。向前移动 4 个空格。</value>
+  </data>
+  <data name="Message7Text" xml:space="preserve">
+    <value>IndexOutOfRangeException：您访问的数组外部返回了 5 个空格。</value>
+  </data>
+  <data name="Message8Text" xml:space="preserve">
+    <value>您发现了一个编程模因，它给了您继续下去的力量。您前进 4 个空格</value>
+  </data>
+  <data name="Message9Text" xml:space="preserve">
+    <value>你的技术老师抛弃你去秘鲁，你的项目迟到了，回去5个盒子</value>
+  </data>
+  <data name="Message10Text" xml:space="preserve">
+    <value>您完成了序列图。向前移动 4 个空格</value>
+  </data>
+  <data name="Message11Text" xml:space="preserve">
+    <value>NullReferenceException：您在未初始化的情况下前进。你就失去了下一个回合。</value>
+  </data>
+  <data name="Message12Text" xml:space="preserve">
+    <value>你的团队让你独自完成最终项目。你是无人要求的英雄。你赢得了额外回合</value>
+  </data>
+  <data name="Message13Text" xml:space="preserve">
+    <value>检测到倦怠……强制休息。你失去了一个回合。</value>
+  </data>
+  <data name="Message14Text" xml:space="preserve">
+    <value>你通过了本学期最难的一门课。庆祝一下。再次掷骰子</value>
+  </data>
+  <data name="Message15Text" xml:space="preserve">
+    <value>您必须在没有文档的情况下调试遗留代码......祝您好运。我们让你下一班休息</value>
+  </data>
+  <data name="Message16Text" xml:space="preserve">
+    <value>您通过了俄勒冈大学的技术课程。你是一个传奇。你赢了一个回合。</value>
+  </data>
+  <data name="Message17Text" xml:space="preserve">
+    <value>你必须在 sonarqube 中清除 1 天的技术债务，否则你会失去一个班次。</value>
+  </data>
+  <data name="Message18Text" xml:space="preserve">
+    <value>您以 6 分通过了技术……通过了就是通过了。你再扔一次</value>
+  </data>
+  <data name="Message19Text" xml:space="preserve">
+    <value>你求助于编程。你失去了一个回合</value>
+  </data>
+  <data name="Message20Text" xml:space="preserve">
+    <value>您在 gpt 聊天提示中处于全栈状态。这是你一生中最大的成就。你赢得一个回合</value>
+  </data>
   <data name="AuthCodeNotRequested" xml:space="preserve">
     <value>尚未请求验证码。请先索取代码</value>
   </data>
@@ -1249,6 +1245,9 @@
   <data name="UiJoinMatchCodeRequired" xml:space="preserve">
     <value>请输入匹配码</value>
   </data>
+  <data name="UiJoinMatchTitle" xml:space="preserve">
+    <value>加入比赛</value>
+  </data>
   <data name="UiLoadingText" xml:space="preserve">
     <value>加载中...</value>
   </data>
@@ -1276,64 +1275,214 @@
   <data name="WindowTitleGameBoard" xml:space="preserve">
     <value>蛇梯棋 - 游戏板</value>
   </data>
-  <data name="Message1Text" xml:space="preserve">
-    <value>您发现了一个严重的错误...该项目被推迟了。后退 5 个空格。</value>
+  <data name="PasswordRulesText" xml:space="preserve">
+    <value>密码必须至少为 8 个字符，其中 1 个大写字母、1 个小写字母、1 个特殊字符和 1 个数字。</value>
   </data>
-  <data name="Message2Text" xml:space="preserve">
-    <value>构建成功。你充满信心地前进。向前移动 4 个空格。</value>
+  <data name="AuthSessionAlreadyActive" xml:space="preserve">
+    <value>会话已处于活动状态，请注销以继续</value>
   </data>
-  <data name="Message3Text" xml:space="preserve">
-    <value>合并分支中的冲突。真可惜……后退5个空格。</value>
+  <data name="ChatInvalidLobbyIdText" xml:space="preserve">
+    <value>大厅标识符无效</value>
   </data>
-  <data name="Message4Text" xml:space="preserve">
-    <value>您的代码通过了所有单元测试。质量加成：前进4位。</value>
+  <data name="CreateMatchErrorFmt" xml:space="preserve">
+    <value>创建匹配时出错：{0}</value>
   </data>
-  <data name="Message5Text" xml:space="preserve">
-    <value>您必须重新安装 Visual Studio。你浪费了宝贵的时间。后退 5 个空格</value>
+  <data name="errorLoadingProfileStatsText" xml:space="preserve">
+    <value>加载玩家统计数据时发生错误。请稍后重试。</value>
   </data>
-  <data name="Message6Text" xml:space="preserve">
-    <value>您第一次通过了编程基础知识。向前移动 4 个空格。</value>
+  <data name="errorProfileStatsInvalidUserIdText" xml:space="preserve">
+    <value>无法加载统计数据。用户标识符无效。</value>
   </data>
-  <data name="Message7Text" xml:space="preserve">
-    <value>IndexOutOfRangeException：您访问的数组外部返回了 5 个空格。</value>
+  <data name="errorRankingCommunicationText" xml:space="preserve">
+    <value>无法与服务器通信以检索排名。</value>
   </data>
-  <data name="Message8Text" xml:space="preserve">
-    <value>您发现了一个编程模因，它给了您继续下去的力量。您前进 4 个空格</value>
+  <data name="errorRankingServerFaultTextFmt" xml:space="preserve">
+    <value>服务器在检索排名时报告错误：{0}{1}</value>
   </data>
-  <data name="Message9Text" xml:space="preserve">
-    <value>你的技术老师抛弃你去秘鲁，你的项目迟到了，回去5个盒子</value>
+  <data name="errorRankingUnexpectedText" xml:space="preserve">
+    <value>加载玩家排名时发生意外错误。请稍后重试。</value>
   </data>
-  <data name="Message10Text" xml:space="preserve">
-    <value>您完成了序列图。向前移动 4 个空格</value>
+  <data name="friendRequestNoLongerExistsText" xml:space="preserve">
+    <value>该好友请求已不存在或已被处理。</value>
   </data>
-  <data name="Message11Text" xml:space="preserve">
-    <value>NullReferenceException：您在未初始化的情况下前进。你就失去了下一个回合。</value>
+  <data name="FriendUnfriendConfirmText" xml:space="preserve">
+    <value>从您的好友列表中删除该用户吗？</value>
   </data>
-  <data name="Message12Text" xml:space="preserve">
-    <value>你的团队让你独自完成最终项目。你是无人要求的英雄。你赢得了额外回合</value>
+  <data name="FriendUnfriendConfirmTitle" xml:space="preserve">
+    <value>确认动作</value>
   </data>
-  <data name="Message13Text" xml:space="preserve">
-    <value>检测到倦怠……强制休息。你失去了一个回合。</value>
+  <data name="GameCallbackRegistrationErrorText" xml:space="preserve">
+    <value>注册游戏回调时发生错误</value>
   </data>
-  <data name="Message14Text" xml:space="preserve">
-    <value>你通过了本学期最难的一门课。庆祝一下。再次掷骰子</value>
+  <data name="GameDefaultPlayerNameFmt" xml:space="preserve">
+    <value>玩家{0}</value>
   </data>
-  <data name="Message15Text" xml:space="preserve">
-    <value>您必须在没有文档的情况下调试遗留代码......祝您好运。我们让你下一班休息</value>
+  <data name="GameDiceRollFailurePrefixText" xml:space="preserve">
+    <value>无法掷骰子：</value>
   </data>
-  <data name="Message16Text" xml:space="preserve">
-    <value>您通过了俄勒冈大学的技术课程。你是一个传奇。你赢了一个回合。</value>
+  <data name="GameDiceRollUnexpectedErrorText" xml:space="preserve">
+    <value>掷骰子时发生意外错误。</value>
   </data>
-  <data name="Message17Text" xml:space="preserve">
-    <value>你必须在 sonarqube 中清除 1 天的技术债务，否则你会失去一个班次。</value>
+  <data name="GameDiceSlotSelectedFmt" xml:space="preserve">
+    <value>为下一次掷骰选择槽 {0} 中的骰子</value>
   </data>
-  <data name="Message18Text" xml:space="preserve">
-    <value>您以 6 分通过了技术……通过了就是通过了。你再扔一次</value>
+  <data name="GameItemUseCancelledText" xml:space="preserve">
+    <value>物品使用被取消。</value>
   </data>
-  <data name="Message19Text" xml:space="preserve">
-    <value>你求助于编程。你失去了一个回合</value>
+  <data name="GameItemUseFailurePrefixText" xml:space="preserve">
+    <value>无法使用该项目：</value>
   </data>
-  <data name="Message20Text" xml:space="preserve">
-    <value>您在 gpt 聊天提示中处于全栈状态。这是你一生中最大的成就。你赢得一个回合</value>
+  <data name="GameItemUseUnexpectedErrorText" xml:space="preserve">
+    <value>使用该项目时发生错误。</value>
+  </data>
+  <data name="GameSelectTargetPlayerText" xml:space="preserve">
+    <value>通过单击他们的头像来选择目标玩家。</value>
+  </data>
+  <data name="GameStateSyncErrorText" xml:space="preserve">
+    <value>同步游戏状态时发生错误</value>
+  </data>
+  <data name="GameTimeoutKickPlayerText" xml:space="preserve">
+    <value>一名球员因不活跃而被从比赛中除名</value>
+  </data>
+  <data name="GameTimeoutSkipTurnText" xml:space="preserve">
+    <value>一名玩家因时间原因错过了回合</value>
+  </data>
+  <data name="GameUnknownErrorText" xml:space="preserve">
+    <value>发生未知错误</value>
+  </data>
+  <data name="lblProfileUnknownUserText" xml:space="preserve">
+    <value>未知玩家</value>
+  </data>
+  <data name="lblRankingTitle" xml:space="preserve">
+    <value>排行</value>
+  </data>
+  <data name="LobbyCreatedStatusFmt" xml:space="preserve">
+    <value>大厅已创建。代码{0}。限制{1}。于 {2} UTC 到期</value>
+  </data>
+  <data name="LobbyJoinSuccessFmt" xml:space="preserve">
+    <value>已加入{0}。主持人：{1}。 {2}/{3}</value>
+  </data>
+  <data name="LobbyKickedWithoutReasonText" xml:space="preserve">
+    <value>您已被移出大厅。</value>
+  </data>
+  <data name="LobbyKickedWithReasonFmt" xml:space="preserve">
+    <value>您已被移出大厅：{0}</value>
+  </data>
+  <data name="LobbyStartMatchFailedText" xml:space="preserve">
+    <value>比赛无法开始</value>
+  </data>
+  <data name="LobbyStartMatchInProgressText" xml:space="preserve">
+    <value>比赛开始...</value>
+  </data>
+  <data name="OtherReasonMinLengthMessageFmt" xml:space="preserve">
+    <value>举报原因必须至少包含 {0} 个字符。</value>
+  </data>
+  <data name="PodiumCoinsFmt" xml:space="preserve">
+    <value>{0}枚金币</value>
+  </data>
+  <data name="PodiumPositionFmt" xml:space="preserve">
+    <value>#{0}</value>
+  </data>
+  <data name="PodiumTitleDefault" xml:space="preserve">
+    <value>比赛结果</value>
+  </data>
+  <data name="PodiumWinnerFallbackFmt" xml:space="preserve">
+    <value>ID 为 {0} 的玩家</value>
+  </data>
+  <data name="ProfileUnknownUserNameText" xml:space="preserve">
+    <value>未知</value>
+  </data>
+  <data name="ReportConfirmMessageFormat" xml:space="preserve">
+    <value>您是否想因为以下原因举报{0}：{1}？</value>
+  </data>
+  <data name="ReportEndpointNotFoundMessage" xml:space="preserve">
+    <value>报告服务不可用。请稍后重试。</value>
+  </data>
+  <data name="ReportInvalidContextMessage" xml:space="preserve">
+    <value>由于当前上下文无效，无法发送报告</value>
+  </data>
+  <data name="ReportSentSuccessfullyMessage" xml:space="preserve">
+    <value>您的报告已成功发送。</value>
+  </data>
+  <data name="ReportUnknownUserDisplayName" xml:space="preserve">
+    <value>未知用户</value>
+  </data>
+  <data name="UiPasswordWeak" xml:space="preserve">
+    <value>密码长度必须至少为 {0} 个字符，并且至少包含 1 个大写字母、1 个小写字母和 1 个特殊字符。</value>
+  </data>
+  <data name="btnKickPlayerText" xml:space="preserve">
+    <value>踢球员</value>
+  </data>
+  <data name="LobbyKickConfirmTextFmt" xml:space="preserve">
+    <value>您想从大厅中删除{0}吗？</value>
+  </data>
+  <data name="LobbyKickConfirmTitle" xml:space="preserve">
+    <value>删除玩家</value>
+  </data>
+  <data name="LobbyKickedByHostText" xml:space="preserve">
+    <value>您已被主持人从大厅中删除</value>
+  </data>
+  <data name="LobbyKickFailedText" xml:space="preserve">
+    <value>无法将玩家从大厅中移除</value>
+  </data>
+  <data name="LobbyKickPlayerMenuText" xml:space="preserve">
+    <value>踢球员</value>
+  </data>
+  <data name="GameDiceMoveBackwardFmt" xml:space="preserve">
+    <value>您滚动了 {0}，并从 {1} 移回了 {2}（{3} 格）。</value>
+  </data>
+  <data name="GameDiceMoveForwardFmt" xml:space="preserve">
+    <value>您滚动了 {0}，并从 {1} 移动到了 {2}。</value>
+  </data>
+  <data name="GameDiceNoMovementFmt" xml:space="preserve">
+    <value>本回合你没有移动。您仍停留在图块 {0} 上。</value>
+  </data>
+  <data name="GameDiceResultTitle" xml:space="preserve">
+    <value>骰子结果</value>
+  </data>
+  <data name="GameLeftPlayerFallbackNameFmt" xml:space="preserve">
+    <value>玩家{0}</value>
+  </data>
+  <data name="GameLeftPlayerMessageFmt" xml:space="preserve">
+    <value>{0} 退出比赛。</value>
+  </data>
+  <data name="GamePlayerLeftTitle" xml:space="preserve">
+    <value>玩家离开</value>
+  </data>
+  <data name="PodiumUnknownWinnerNameText" xml:space="preserve">
+    <value>未知获胜者</value>
+  </data>
+  <data name="btnApplyText" xml:space="preserve">
+    <value>申请</value>
+  </data>
+  <data name="SkinsAvatarLockedWarn" xml:space="preserve">
+    <value>此头像已锁定。在商店中解锁即可使用。</value>
+  </data>
+  <data name="SkinsAvatarUpdatedSuccess" xml:space="preserve">
+    <value>头像更新成功</value>
+  </data>
+  <data name="SkinsLockedTitle" xml:space="preserve">
+    <value>头像已锁定</value>
+  </data>
+  <data name="SkinsSelectAvatarWarn" xml:space="preserve">
+    <value>请先选择一个头像。</value>
+  </data>
+  <data name="SkinsStatusCurrentText" xml:space="preserve">
+    <value>当前选择的</value>
+  </data>
+  <data name="SkinsStatusLockedText" xml:space="preserve">
+    <value>锁定。到商店购买</value>
+  </data>
+  <data name="SkinsStatusUnlockedText" xml:space="preserve">
+    <value>已解锁。单击“应用”即可使用。</value>
+  </data>
+  <data name="SkinsUpdatedTitle" xml:space="preserve">
+    <value>头像更新</value>
+  </data>
+  <data name="ChatTextTooLongFmt" xml:space="preserve">
+    <value>该消息不能超过 {0} 个字符</value>
+  </data>
+  <data name="lblWinnerLabelText" xml:space="preserve">
+    <value>优胜者</value>
   </data>
 </root>

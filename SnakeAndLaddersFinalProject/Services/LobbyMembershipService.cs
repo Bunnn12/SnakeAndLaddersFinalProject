@@ -20,7 +20,8 @@ namespace SnakeAndLaddersFinalProject.Services
                 }
 
                 if (!string.IsNullOrWhiteSpace(lobbyMember.UserName) &&
-                    string.Equals(lobbyMember.UserName, currentUserName, System.StringComparison.OrdinalIgnoreCase))
+                    string.Equals(lobbyMember.UserName, currentUserName, System.StringComparison.
+                    OrdinalIgnoreCase))
                 {
                     return lobbyMember.IsHost;
                 }
@@ -32,7 +33,8 @@ namespace SnakeAndLaddersFinalProject.Services
             }
 
             if (!string.IsNullOrWhiteSpace(hostUserName) &&
-                string.Equals(hostUserName, currentUserName, System.StringComparison.OrdinalIgnoreCase))
+                string.Equals(hostUserName, currentUserName, System.StringComparison.
+                OrdinalIgnoreCase))
             {
                 return true;
             }
@@ -47,8 +49,8 @@ namespace SnakeAndLaddersFinalProject.Services
             byte maxPlayers,
             string lobbyStatus)
         {
-            return $"Lobby {codigoPartida} — Host: {hostUserName} — " +
-                   $"{membersCount}/{maxPlayers} — {lobbyStatus}";
+            return $"Lobby {codigoPartida} — Host: {hostUserName} — {membersCount}/{maxPlayers}" +
+                $" — {lobbyStatus}";
         }
     }
 }

@@ -9,12 +9,13 @@ namespace SnakeAndLaddersFinalProject.Services
     public sealed class FriendsApi : IDisposable
     {
         private const int DEFAULT_MAX_RESULTS = 20;
+        private const string FRIENDS_ENDPOINT_NAME = "NetTcpBinding_IFriendsService";
 
         private readonly IFriendsService _friendsServiceClient;
 
         public FriendsApi()
         {
-            _friendsServiceClient = new FriendsServiceClient("NetTcpBinding_IFriendsService");
+            _friendsServiceClient = new FriendsServiceClient(FRIENDS_ENDPOINT_NAME);
         }
 
         private static string GetTokenOrNull()

@@ -8,6 +8,10 @@ namespace SnakeAndLaddersFinalProject.Mappers
         private const string DIFFICULTY_NORMAL = "Normal";
         private const string DIFFICULTY_HARD = "Hard";
 
+        private const int BOARD_SIZE_SMALL = 8;
+        private const int BOARD_SIZE_MEDIUM = 10;
+        private const int BOARD_SIZE_LARGE = 12;
+
         public static string MapDifficultyToServerString(DifficultyOption value)
         {
             switch (value)
@@ -25,11 +29,11 @@ namespace SnakeAndLaddersFinalProject.Mappers
         {
             switch (boardSide)
             {
-                case 8:
+                case BOARD_SIZE_SMALL:
                     return BoardSizeOption.EightByEight;
-                case 12:
+                case BOARD_SIZE_LARGE:
                     return BoardSizeOption.TwelveByTwelve;
-                case 10:
+                case BOARD_SIZE_MEDIUM:
                 default:
                     return BoardSizeOption.TenByTen;
             }

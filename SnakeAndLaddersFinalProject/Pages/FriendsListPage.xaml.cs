@@ -15,6 +15,8 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class FriendsListPage : Page
     {
+        private const int MIN_VALID_USER_ID = 1;
+
         private FriendsListViewModel ViewModel
         {
             get { return DataContext as FriendsListViewModel; }
@@ -126,7 +128,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 friendItem = selectedItem;
             }
 
-            if (friendItem == null || friendItem.FriendUserId <= 0)
+            if (friendItem == null || friendItem.FriendUserId < MIN_VALID_USER_ID)
             {
                 return;
             }

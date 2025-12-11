@@ -23,30 +23,12 @@ namespace SnakeAndLaddersFinalProject.Game.Board
             Dictionary<int, BoardLinkDto> linksByStartIndex,
             int startCellIndex)
         {
-            if (cells == null)
-            {
-                throw new ArgumentNullException(nameof(cells));
-            }
-
-            if (connections == null)
-            {
-                throw new ArgumentNullException(nameof(connections));
-            }
-
-            if (cellCentersByIndex == null)
-            {
-                throw new ArgumentNullException(nameof(cellCentersByIndex));
-            }
-
-            if (linksByStartIndex == null)
-            {
-                throw new ArgumentNullException(nameof(linksByStartIndex));
-            }
-
-            Cells = cells;
-            Connections = connections;
-            CellCentersByIndex = cellCentersByIndex;
-            LinksByStartIndex = linksByStartIndex;
+            Cells = cells ?? throw new ArgumentNullException(nameof(cells));
+            Connections = connections ?? throw new ArgumentNullException(nameof(connections));
+            CellCentersByIndex = cellCentersByIndex ?? throw new ArgumentNullException(
+                nameof(cellCentersByIndex));
+            LinksByStartIndex = linksByStartIndex ?? throw new ArgumentNullException(
+                nameof(linksByStartIndex));
             StartCellIndex = startCellIndex;
         }
     }

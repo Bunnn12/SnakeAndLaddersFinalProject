@@ -15,15 +15,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
         public int UserId { get; }
         public string UserName { get; }
 
-        /// <summary>
-        /// Código de skin (por ejemplo "003", "011").
-        /// Es lo que usa SkinAssetHelper para resolver las rutas.
-        /// </summary>
         public string CurrentSkinId { get; }
 
-        /// <summary>
-        /// Id de AvatarDesbloqueado en BD (solo por si lo necesitas para lógica).
-        /// </summary>
         public int? CurrentSkinUnlockedId { get; }
 
         public int CurrentCellIndex
@@ -111,7 +104,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
             CurrentCellIndex = initialCellIndex;
             VerticalOffset = 0;
 
-            // El token se resuelve por código de skin, no por IdAvatarDesbloqueado
             TokenImagePath = SkinAssetHelper.GetTokenPathFromSkinId(CurrentSkinId);
         }
 

@@ -10,16 +10,15 @@
       d:DesignHeight="768"
       d:DesignWidth="1152"
       Title="SignUpPage"
-      util:PageBackground.Key="Auth">
+      util:PageBackground.Key="Auth"
+      Loaded="PageLoaded">
 
-    <!-- ===== Recursos: mismos estilos que Login + pestañas invertidas ===== -->
     <Page.Resources>
         <SolidColorBrush x:Key="LoginBlue" Color="#209AD6"/>
         <SolidColorBrush x:Key="LoginBlueDark" Color="#1A85B3"/>
         <SolidColorBrush x:Key="ButtonPressedColor" Color="#194062"/>
         <SolidColorBrush x:Key="ButtonHoverColor" Color="#30A9E6"/>
 
-        <!-- Botón principal -->
         <Style x:Key="LoginButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource LoginBlue}"/>
             <Setter Property="Foreground" Value="White"/>
@@ -67,7 +66,6 @@
             </Setter>
         </Style>
 
-        <!-- TextBox redondeado -->
         <Style x:Key="RoundedTextBoxStyle" TargetType="TextBox">
             <Setter Property="Background" Value="#FFFBF7E0"/>
             <Setter Property="BorderBrush" Value="#E0E0E0"/>
@@ -102,7 +100,6 @@
             </Setter>
         </Style>
 
-        <!-- PasswordBox redondeado -->
         <Style x:Key="RoundedPasswordBoxStyle" TargetType="PasswordBox">
             <Setter Property="Background" Value="#FFFBF7E0"/>
             <Setter Property="BorderBrush" Value="#E0E0E0"/>
@@ -137,7 +134,6 @@
             </Setter>
         </Style>
 
-        <!-- Botón tipo link -->
         <Style x:Key="LinkButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="{StaticResource LoginBlue}"/>
@@ -174,7 +170,6 @@
             </Setter>
         </Style>
 
-        <!-- Toggle “Login / Sign up” -->
         <Style x:Key="NavLinkToggleStyle" TargetType="ToggleButton">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="#666666"/>
@@ -233,12 +228,10 @@
                TargetType="ToggleButton"
                BasedOn="{StaticResource NavLinkToggleStyle}"/>
 
-        <!-- Estados fijos invertidos (esta página es Sign Up) -->
         <sys:Boolean x:Key="TabChecked_Login">False</sys:Boolean>
         <sys:Boolean x:Key="TabChecked_SignUp">True</sys:Boolean>
     </Page.Resources>
 
-    <!-- ===== Contenedor base: mismo tamaño y fondo ===== -->
     <Grid HorizontalAlignment="Center"
           VerticalAlignment="Center"
           Width="979"
@@ -254,14 +247,16 @@
                 Background="Transparent">
 
             <Button x:Name="btnSettings"
-                    Content="{x:Static language:Lang.btnSettingsText}"
-                    Style="{x:Null}"
-                    Width="120"
-                    Height="30"
-                    Canvas.Left="721"
-                    Canvas.Top="40"/>
+                    Canvas.Left="794"
+                    Canvas.Top="30"
+                    Width="47"
+                    Height="43"
+                    Click="Settings"
+                    Background="{x:Null}"
+                    BorderBrush="{x:Null}">
+                <Image Source="/Assets/Images/Icons/SettingsIcon.png" Stretch="Fill"/>
+            </Button>
 
-            <!-- Pestañas: Login (gris, hace back) y Sign Up (subrayado fijo) -->
             <ToggleButton x:Name="btnNavLogin"
                           Content="{x:Static language:Lang.btnLoginText}"
                           Style="{StaticResource NavLinkToggleStyle}"
@@ -287,7 +282,8 @@
                           HorizontalAlignment="Center"
                           VerticalAlignment="Top"/>
 
-            <Label Content="{x:Static language:Lang.txtNameOfUserText}"
+            <Label x:Name="lblGivenName"
+                   Content="{x:Static language:Lang.txtNameOfUserText}"
                    Canvas.Left="344"
                    Canvas.Top="182"
                    HorizontalAlignment="Center"
@@ -302,9 +298,10 @@
                      VerticalAlignment="Top"
                      Background="White"
                      Height="33"
-                     MaxLength="90"/>
+                     MaxLength="250"/>
 
-            <Label Content="{x:Static language:Lang.txtLastNameOfUserText}"
+            <Label x:Name="lblFamilyName"
+                   Content="{x:Static language:Lang.txtLastNameOfUserText}"
                    Canvas.Left="514"
                    Canvas.Top="182"
                    HorizontalAlignment="Center"
@@ -319,9 +316,10 @@
                      VerticalAlignment="Top"
                      Background="White"
                      Height="33"
-                     MaxLength="90"/>
+                     MaxLength="250"/>
 
-            <Label Content="{x:Static language:Lang.txtUsernameText}"
+            <Label x:Name="lblUsername"
+                   Content="{x:Static language:Lang.txtUsernameText}"
                    Canvas.Left="344"
                    Canvas.Top="236"
                    HorizontalAlignment="Left"
@@ -336,10 +334,10 @@
                      VerticalAlignment="Top"
                      Background="White"
                      Height="30"
-                     MaxLength="90"/>
+                     MaxLength="30"/>
 
-            <!-- Password -->
-            <Label Content="{x:Static language:Lang.pwdPasswordText}"
+            <Label x:Name="lblPassword"
+                   Content="{x:Static language:Lang.pwdPasswordText}"
                    Canvas.Left="514"
                    Canvas.Top="236"
                    HorizontalAlignment="Center"
@@ -355,10 +353,10 @@
                          VerticalAlignment="Top"
                          Background="White"
                          Height="30"
-                         MaxLength="510"/>
+                         MaxLength="50"/>
 
-            <!-- Email -->
-            <Label Content="{x:Static language:Lang.txtRegEmailText}"
+            <Label x:Name="lblEmail"
+                   Content="{x:Static language:Lang.txtRegEmailText}"
                    Canvas.Left="438"
                    Canvas.Top="295"
                    HorizontalAlignment="Left"
@@ -372,9 +370,8 @@
                      VerticalAlignment="Top"
                      Background="White"
                      Height="32"
-                     MaxLength="200"/>
+                     MaxLength="150"/>
 
-            <!-- Botón Sign Up (centrado aprox) -->
             <Button x:Name="btnSignUp"
                     Content="{x:Static language:Lang.btnSignUpText}"
                     Click="GoSignUp"

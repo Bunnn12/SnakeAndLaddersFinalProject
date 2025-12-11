@@ -12,6 +12,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class ChangePasswordPage : Page
     {
+        private const int VERIFICATION_CODE_LENGTH = 6;
         private static readonly ILog _logger = LogManager.GetLogger(typeof(ChangePasswordPage));
 
         private ChangePasswordViewModel ViewModel
@@ -61,7 +62,6 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
 
             viewModel.Email = (txtEmail.Text ?? string.Empty).Trim();
-
             await viewModel.SendCodeAsync();
         }
 
@@ -94,7 +94,6 @@ namespace SnakeAndLaddersFinalProject.Pages
                 Lang.warningTitle,
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
-
         }
 
         private void VerificationCodePreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -117,9 +116,9 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             string filtered = new string(text.Where(char.IsDigit).ToArray());
 
-            if (filtered.Length > 6)
+            if (filtered.Length > VERIFICATION_CODE_LENGTH)
             {
-                filtered = filtered.Substring(0, 6);
+                filtered = filtered.Substring(0, VERIFICATION_CODE_LENGTH);
             }
 
             if (!string.Equals(text, filtered, StringComparison.Ordinal))
@@ -146,13 +145,9 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            for (int index = 0; index < pastedText.Length; index++)
+            if (!IsAllDigits(pastedText))
             {
-                if (!char.IsDigit(pastedText[index]))
-                {
-                    e.CancelCommand();
-                    return;
-                }
+                e.CancelCommand();
             }
         }
 
@@ -163,15 +158,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return false;
             }
 
-            for (int index = 0; index < text.Length; index++)
-            {
-                if (!char.IsDigit(text[index]))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return text.All(char.IsDigit);
         }
 
         private void OnPasswordChangedSuccessfully()

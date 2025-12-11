@@ -109,7 +109,6 @@ namespace SnakeAndLaddersFinalProject.Utilities
             return trimmed;
         }
 
-        // ================= DESCRIPTOR LÓGICO =================
 
         public static SkinAssetDescriptor ResolveAssets(int? skinId)
         {
@@ -120,9 +119,9 @@ namespace SnakeAndLaddersFinalProject.Utilities
                 skinId,
                 skinKey);
 
-            string tokenKey = TOKEN_PREFIX + skinKey; // T003
-            string idleKey = skinKey + IDLE_SUFFIX;   // 003-idle
-            string sadKey = skinKey + SAD_SUFFIX;     // 003-sad
+            string tokenKey = TOKEN_PREFIX + skinKey; 
+            string idleKey = skinKey + IDLE_SUFFIX;   
+            string sadKey = skinKey + SAD_SUFFIX;     
 
             return new SkinAssetDescriptor(skinKey, tokenKey, idleKey, sadKey);
         }
@@ -142,8 +141,6 @@ namespace SnakeAndLaddersFinalProject.Utilities
 
             return new SkinAssetDescriptor(skinKey, tokenKey, idleKey, sadKey);
         }
-
-        // ================= RUTAS =================
 
         public static string GetSkinRelativePath(string skinKey)
         {

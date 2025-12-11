@@ -37,8 +37,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public MatchInvitationViewModel(int lobbyId, string gameCode)
         {
-            this._lobbyId = lobbyId;
-            this._gameCode = (gameCode ?? string.Empty).Trim();
+            _lobbyId = lobbyId;
+            _gameCode = (gameCode ?? string.Empty).Trim();
 
             _invitationClient = new MatchInvitationServiceClient(MATCH_INVITATION_BASIC_ENDPOINT);
             _friendsViewModel = new FriendsListViewModel();
@@ -49,6 +49,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             StatusText = string.Empty;
 
+            InitializeFriends();
+        }
+
+        private void InitializeFriends()
+        {
             if (SessionGuard.HasValidSession())
             {
                 try
@@ -68,7 +73,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     string userMessage = ExceptionHandler.Handle(
                         ex,
-                        $"{nameof(MatchInvitationViewModel)}.FriendsLoad",
+                        "MatchInvitationViewModel.FriendsLoad",
                         _logger);
 
                     StatusText = userMessage;
@@ -169,9 +174,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        public bool CanSendInvitation =>
-            !IsBusy &&
-            SessionGuard.HasValidSession();
+        public bool CanSendInvitation => !IsBusy && SessionGuard.HasValidSession();
 
         public ICommand SendInvitationCommand { get; }
 
@@ -193,50 +196,35 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 if (session == null || string.IsNullOrWhiteSpace(token))
                 {
                     StatusText = Lang.UiInviteFriendInvalidSession;
-                    OnShowMessageRequested(
-                        StatusText,
-                        Lang.errorTitle,
-                        MessageBoxImage.Error);
+                    OnShowMessageRequested(StatusText, Lang.errorTitle, MessageBoxImage.Error);
                     return;
                 }
 
                 if (token.StartsWith(GUEST_TOKEN_PREFIX, StringComparison.Ordinal))
                 {
                     StatusText = Lang.UiInviteFriendGuestsNotAllowed;
-                    OnShowMessageRequested(
-                        StatusText,
-                        Lang.warningTitle,
-                        MessageBoxImage.Warning);
+                    OnShowMessageRequested(StatusText, Lang.warningTitle, MessageBoxImage.Warning);
                     return;
                 }
 
                 if (string.IsNullOrWhiteSpace(GameCode))
                 {
                     StatusText = Lang.UiInviteFriendMissingGameCode;
-                    OnShowMessageRequested(
-                        StatusText,
-                        Lang.warningTitle,
-                        MessageBoxImage.Warning);
+                    OnShowMessageRequested(StatusText, Lang.warningTitle, MessageBoxImage.Warning);
                     return;
                 }
 
                 if (Friends == null || Friends.Count == 0)
                 {
                     StatusText = Lang.InviteNoFriendsInfo;
-                    OnShowMessageRequested(
-                        StatusText,
-                        Lang.infoTitle,
-                        MessageBoxImage.Information);
+                    OnShowMessageRequested(StatusText, Lang.infoTitle, MessageBoxImage.Information);
                     return;
                 }
 
                 if (SelectedFriend == null)
                 {
                     StatusText = Lang.UiInviteFriendSelectFriendRequired;
-                    OnShowMessageRequested(
-                        StatusText,
-                        Lang.warningTitle,
-                        MessageBoxImage.Warning);
+                    OnShowMessageRequested(StatusText, Lang.warningTitle, MessageBoxImage.Warning);
                     return;
                 }
 
@@ -257,10 +245,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 if (result == null)
                 {
                     StatusText = Lang.UiInviteFriendNoResponse;
-                    OnShowMessageRequested(
-                        StatusText,
-                        Lang.errorTitle,
-                        MessageBoxImage.Error);
+                    OnShowMessageRequested(StatusText, Lang.errorTitle, MessageBoxImage.Error);
                     return;
                 }
 
@@ -271,10 +256,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                         : result.Message;
 
                     StatusText = successMessage;
-                    OnShowMessageRequested(
-                        successMessage,
-                        Lang.infoTitle,
-                        MessageBoxImage.Information);
+                    OnShowMessageRequested(successMessage, Lang.infoTitle, MessageBoxImage.Information);
                 }
                 else
                 {
@@ -283,24 +265,18 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                         : result.Message;
 
                     StatusText = failureMessage;
-                    OnShowMessageRequested(
-                        failureMessage,
-                        Lang.errorTitle,
-                        MessageBoxImage.Error);
+                    OnShowMessageRequested(failureMessage, Lang.errorTitle, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
             {
                 string userMessage = ExceptionHandler.Handle(
                     ex,
-                    $"{nameof(MatchInvitationViewModel)}.{nameof(SendInvitationAsync)}",
+                    "MatchInvitationViewModel.SendInvitationAsync",
                     _logger);
 
                 StatusText = userMessage;
-                OnShowMessageRequested(
-                    userMessage,
-                    Lang.errorTitle,
-                    MessageBoxImage.Error);
+                OnShowMessageRequested(userMessage, Lang.errorTitle, MessageBoxImage.Error);
             }
             finally
             {

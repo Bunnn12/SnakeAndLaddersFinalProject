@@ -1,6 +1,6 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 
 namespace SnakeAndLaddersFinalProject.ViewModels.Models
 {
@@ -10,45 +10,37 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
         private const string KEY_PODIUM_COINS_FMT = "PodiumCoinsFmt";
 
         public int UserId { get; private set; }
-
         public string DisplayName { get; private set; }
 
         public string UserName
         {
-            get { return DisplayName; }
-            set { DisplayName = value ?? string.Empty; }
+            get => DisplayName;
+            set => DisplayName = value ?? string.Empty;
         }
 
         public int Position { get; private set; }
+        private int _coins;
+        private bool _isWinner;
+        private string _skinImagePath = string.Empty;
 
-        private int coins;
-        private bool isWinner;
-        private string skinImagePath = string.Empty;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public string PositionText
         {
             get
             {
-                if (Position <= 0)
-                {
-                    return string.Empty;
-                }
-
-                return string.Format(T(KEY_PODIUM_POSITION_FMT), Position);
+                if (Position <= 0) return string.Empty;
+                return string.Format(Lang.ResourceManager.GetString(KEY_PODIUM_POSITION_FMT), Position);
             }
         }
 
         public int Coins
         {
-            get { return coins; }
+            get => _coins;
             set
             {
-                if (coins == value)
-                {
-                    return;
-                }
-
-                coins = value;
+                if (_coins == value) return;
+                _coins = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CoinsText));
             }
@@ -58,97 +50,45 @@ namespace SnakeAndLaddersFinalProject.ViewModels.Models
         {
             get
             {
-                if (Coins <= 0)
-                {
-                    return string.Empty;
-                }
-
-                return string.Format(T(KEY_PODIUM_COINS_FMT), Coins);
+                if (Coins <= 0) return string.Empty;
+                return string.Format(Lang.ResourceManager.GetString(KEY_PODIUM_COINS_FMT), Coins);
             }
         }
 
         public bool IsWinner
         {
-            get { return isWinner; }
+            get => _isWinner;
             set
             {
-                if (isWinner == value)
-                {
-                    return;
-                }
-
-                isWinner = value;
+                if (_isWinner == value) return;
+                _isWinner = value;
                 OnPropertyChanged();
             }
         }
 
         public string SkinImagePath
         {
-            get { return skinImagePath; }
+            get => _skinImagePath;
             set
             {
-                if (string.Equals(skinImagePath, value, StringComparison.Ordinal))
-                {
-                    return;
-                }
-
-                skinImagePath = value ?? string.Empty;
+                if (string.Equals(_skinImagePath, value, System.StringComparison.Ordinal)) return;
+                _skinImagePath = value ?? string.Empty;
                 OnPropertyChanged();
             }
         }
 
-        public PodiumPlayerViewModel(int userId, string displayName, int position, int coins)
+        public PodiumPlayerViewModel(int userId, string displayName, int position, int coins, string skinImagePath = "")
         {
             UserId = userId;
             DisplayName = displayName ?? string.Empty;
             Position = position;
             Coins = coins;
-        }
-
-        public PodiumPlayerViewModel(
-            int userId,
-            string displayName,
-            int position,
-            int coins,
-            string skinImagePath)
-            : this(userId, displayName, position, coins)
-        {
             SkinImagePath = skinImagePath;
-        }
-
-        public PodiumPlayerViewModel(
-            object arg1,
-            object arg2,
-            object arg3,
-            object arg4,
-            object arg5,
-            object arg6,
-            object arg7)
-        {
-            UserId = arg1 is int i ? i : 0;
-            DisplayName = arg2 as string ?? string.Empty;
-            IsWinner = arg3 is bool b && b;
-            Position = arg4 is int p ? p : 0;
-            Coins = arg5 is int c ? c : 0;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private static string T(string key)
-        {
-            return Globalization.LocalizationManager.Current[key];
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler == null)
-            {
-                return;
-            }
-
-            handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -10,7 +10,7 @@ namespace SnakeAndLaddersFinalProject.Windows
 {
     public partial class MatchInvitationWindow : Window
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(MatchInvitationWindow));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(MatchInvitationWindow));
 
         public MatchInvitationWindow(int lobbyId, string gameCode)
         {
@@ -29,7 +29,7 @@ namespace SnakeAndLaddersFinalProject.Windows
                 string userMessage = ExceptionHandler.Handle(
                     ex,
                     $"{nameof(MatchInvitationWindow)}.ctor",
-                    Logger);
+                    _logger);
 
                 MessageBox.Show(
                     this,
@@ -57,12 +57,12 @@ namespace SnakeAndLaddersFinalProject.Windows
             Close();
         }
 
-        private void Close_Click(object sender, RoutedEventArgs e)
+        private void CloseWindow(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void Header_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void HeaderMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ButtonState == MouseButtonState.Pressed)
             {

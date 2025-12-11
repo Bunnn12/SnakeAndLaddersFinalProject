@@ -19,7 +19,7 @@ namespace SnakeAndLaddersFinalProject.Services
 
         public LobbyClientCallback(ILobbyEventsHandler handler)
         {
-            this._handler = handler ?? throw new ArgumentNullException(nameof(handler));
+            _handler = handler ?? throw new ArgumentNullException(nameof(handler));
             _dispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
         }
 
@@ -29,7 +29,6 @@ namespace SnakeAndLaddersFinalProject.Services
             {
                 return;
             }
-
             RunOnUiThreadAsync(() => _handler.HandleLobbyUpdatedAsync(lobby));
         }
 
@@ -62,12 +61,10 @@ namespace SnakeAndLaddersFinalProject.Services
                 return;
             }
 
-            _dispatcher.BeginInvoke(
-                new Action(
-                    () =>
-                    {
-                        _ = actionAsync();
-                    }));
+            _dispatcher.BeginInvoke(new Action(() =>
+            {
+                _ = actionAsync();
+            }));
         }
     }
 }

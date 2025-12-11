@@ -15,8 +15,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(FriendsListViewModel));
 
-        public ObservableCollection<FriendListItemDto> Friends { get; } =
-            new ObservableCollection<FriendListItemDto>();
+        public ObservableCollection<FriendListItemDto> Friends { get; }
+            = new ObservableCollection<FriendListItemDto>();
 
         public void LoadFriends()
         {

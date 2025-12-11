@@ -54,7 +54,6 @@ namespace SnakeAndLaddersFinalProject.Windows
         public ReportsWindow()
         {
             InitializeComponent();
-
             DataContext = new ReportsViewModel();
         }
 

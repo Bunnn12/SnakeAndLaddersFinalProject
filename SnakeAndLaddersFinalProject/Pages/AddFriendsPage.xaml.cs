@@ -13,9 +13,10 @@ namespace SnakeAndLaddersFinalProject.Pages
 {
     public partial class AddFriendsPage : Page
     {
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(AddFriendsPage));
+        private const int DEBOUNCE_MILLISECONDS = 250;
+        private const int DEFAULT_CARET_INDEX = 0;
 
-        private const int DEBOUNCE_MS = 250;
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(AddFriendsPage));
 
         private readonly DispatcherTimer _searchDebounceTimer;
 
@@ -42,7 +43,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             _searchDebounceTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(DEBOUNCE_MS)
+                Interval = TimeSpan.FromMilliseconds(DEBOUNCE_MILLISECONDS)
             };
 
             _searchDebounceTimer.Tick += (_, __) =>
@@ -56,7 +57,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             txtFindFriend.Focus();
             Keyboard.Focus(txtFindFriend);
-            txtFindFriend.CaretIndex = txtFindFriend.Text?.Length ?? 0;
+            txtFindFriend.CaretIndex = txtFindFriend.Text?.Length ?? DEFAULT_CARET_INDEX;
         }
 
         private void FindFriendTextChanged(object sender, TextChangedEventArgs e)

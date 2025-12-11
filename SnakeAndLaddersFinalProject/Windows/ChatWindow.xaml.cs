@@ -14,7 +14,6 @@ namespace SnakeAndLaddersFinalProject.Windows
     public partial class ChatWindow : Window
     {
         private const int WINDOW_MARGIN_PIXELS = 16;
-
         private readonly ChatViewModel _chatViewModel;
 
         public ChatWindow(int lobbyId)
@@ -25,10 +24,8 @@ namespace SnakeAndLaddersFinalProject.Windows
             }
 
             InitializeComponent();
-
             _chatViewModel = new ChatViewModel(lobbyId);
             DataContext = _chatViewModel;
-
             _chatViewModel.Messages.CollectionChanged += MessagesCollectionChanged;
         }
 
@@ -45,7 +42,6 @@ namespace SnakeAndLaddersFinalProject.Windows
             {
                 return;
             }
-
             Left = ownerWindow.Left + ownerWindow.Width - Width - WINDOW_MARGIN_PIXELS;
             Top = ownerWindow.Top + ownerWindow.Height - Height - WINDOW_MARGIN_PIXELS;
         }
@@ -72,29 +68,25 @@ namespace SnakeAndLaddersFinalProject.Windows
                 return;
             }
 
-            Dispatcher.BeginInvoke(
-                new Action(
-                    () =>
-                    {
-                        try
-                        {
-                            lvMessages.UpdateLayout();
-                            object lastItem = lvMessages.Items[lvMessages.Items.Count - 1];
-                            lvMessages.ScrollIntoView(lastItem);
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                try
+                {
+                    lvMessages.UpdateLayout();
+                    object lastItem = lvMessages.Items[lvMessages.Items.Count - 1];
+                    lvMessages.ScrollIntoView(lastItem);
 
-                            ScrollViewer scrollViewer = FindChild<ScrollViewer>(lvMessages);
-                            scrollViewer?.ScrollToEnd();
-                        }
-                        catch
-                        {
-                            
-                        }
-                    }),
-                DispatcherPriority.Background);
+                    ScrollViewer scrollViewer = FindChild<ScrollViewer>(lvMessages);
+                    scrollViewer?.ScrollToEnd();
+                }
+                catch
+                {
+                   
+                }
+            }), DispatcherPriority.Background);
         }
 
-        private static T FindChild<T>(DependencyObject parent)
-            where T : DependencyObject
+        private static T FindChild<T>(DependencyObject parent) where T : DependencyObject
         {
             if (parent == null)
             {
@@ -102,7 +94,6 @@ namespace SnakeAndLaddersFinalProject.Windows
             }
 
             int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
-
             for (int index = 0; index < childrenCount; index++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(parent, index);
@@ -117,20 +108,16 @@ namespace SnakeAndLaddersFinalProject.Windows
                     return nestedChild;
                 }
             }
-
             return null;
         }
 
         private void MessageLoadded(object sender, RoutedEventArgs e)
         {
-            Dispatcher.BeginInvoke(
-                new Action(
-                    () =>
-                    {
-                        taMessage.Focus();
-                        Keyboard.Focus(taMessage);
-                    }),
-                DispatcherPriority.ContextIdle);
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                taMessage.Focus();
+                Keyboard.Focus(taMessage);
+            }), DispatcherPriority.ContextIdle);
         }
 
         private void Close(object sender, RoutedEventArgs e)

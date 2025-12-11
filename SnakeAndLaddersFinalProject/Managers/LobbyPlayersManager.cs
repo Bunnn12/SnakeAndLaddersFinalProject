@@ -10,15 +10,17 @@ namespace SnakeAndLaddersFinalProject.Managers
 {
     public sealed class LobbyPlayersManager
     {
-        private readonly int localUserId;
-        private readonly CornerPlayersViewModel cornerPlayers;
-        private readonly PlayerTokenManager tokenManager;
-        private readonly int startCellIndex;
+        private const int MIN_START_CELL_INDEX = 1;
+        private const int MAX_PODIUM_PLAYERS = 3;
+        private const int FIRST_PODIUM_POSITION = 1;
 
-        private readonly Dictionary<int, string> userNamesById =
-            new Dictionary<int, string>();
+        private readonly int _localUserId;
+        private readonly CornerPlayersViewModel _cornerPlayers;
+        private readonly PlayerTokenManager _tokenManager;
+        private readonly int _startCellIndex;
 
-        private readonly List<LobbyMemberViewModel> lobbyMembers =
+        private readonly Dictionary<int, string> _userNamesById = new Dictionary<int, string>();
+        private readonly List<LobbyMemberViewModel> _lobbyMembers =
             new List<LobbyMemberViewModel>();
 
         public LobbyPlayersManager(
@@ -37,20 +39,20 @@ namespace SnakeAndLaddersFinalProject.Managers
                 throw new ArgumentNullException(nameof(tokenManager));
             }
 
-            if (startCellIndex <= 0)
+            if (startCellIndex < MIN_START_CELL_INDEX)
             {
                 throw new ArgumentOutOfRangeException(nameof(startCellIndex));
             }
 
-            this.localUserId = localUserId;
-            this.cornerPlayers = cornerPlayers;
-            this.tokenManager = tokenManager;
-            this.startCellIndex = startCellIndex;
+            _localUserId = localUserId;
+            _cornerPlayers = cornerPlayers;
+            _tokenManager = tokenManager;
+            _startCellIndex = startCellIndex;
         }
 
         public IReadOnlyList<LobbyMemberViewModel> LobbyMembers
         {
-            get { return lobbyMembers.AsReadOnly(); }
+            get { return _lobbyMembers.AsReadOnly(); }
         }
 
         public void InitializeCornerPlayers(IList<LobbyMemberViewModel> members)
@@ -60,24 +62,25 @@ namespace SnakeAndLaddersFinalProject.Managers
                 return;
             }
 
-            lobbyMembers.Clear();
-            userNamesById.Clear();
+            _lobbyMembers.Clear();
+            _userNamesById.Clear();
 
-            foreach (LobbyMemberViewModel member in members)
+            foreach (var member in members)
             {
-                member.IsLocalPlayer = member.UserId == localUserId;
+                member.IsLocalPlayer = member.UserId == _localUserId;
+                _lobbyMembers.Add(member);
 
-                lobbyMembers.Add(member);
-                userNamesById[member.UserId] = member.UserName ?? string.Empty;
+                string userName = member.UserName ?? string.Empty;
+                _userNamesById[member.UserId] = userName;
             }
 
-            cornerPlayers.InitializeFromLobbyMembers(members);
+            _cornerPlayers.InitializeFromLobbyMembers(members);
         }
 
         public string ResolveUserDisplayName(int userId)
         {
-            if (userNamesById.TryGetValue(userId, out string name) &&
-                !string.IsNullOrWhiteSpace(name))
+            if (_userNamesById.TryGetValue(userId, out string name) && !string.
+                IsNullOrWhiteSpace(name))
             {
                 return name.Trim();
             }
@@ -87,46 +90,41 @@ namespace SnakeAndLaddersFinalProject.Managers
 
         public ReadOnlyCollection<PodiumPlayerViewModel> BuildPodiumPlayers(int winnerUserId)
         {
-            List<PodiumPlayerViewModel> result = new List<PodiumPlayerViewModel>();
+            var result = new List<PodiumPlayerViewModel>();
 
-            if (lobbyMembers.Count == 0)
+            if (_lobbyMembers.Count == 0)
             {
                 return new ReadOnlyCollection<PodiumPlayerViewModel>(result);
             }
 
-            LobbyMemberViewModel winner =
-                lobbyMembers.FirstOrDefault(m => m.UserId == winnerUserId);
-
+            var winner = _lobbyMembers.FirstOrDefault(m => m.UserId == winnerUserId);
             if (winner != null)
             {
-                result.Add(
-                    new PodiumPlayerViewModel(
-                        winner.UserId,
-                        winner.UserName,
-                        1,
-                        0));
+                result.Add(new PodiumPlayerViewModel(
+                    winner.UserId,
+                    winner.UserName,
+                    FIRST_PODIUM_POSITION,
+                    0));
             }
 
-            foreach (LobbyMemberViewModel member in lobbyMembers)
+            foreach (var member in _lobbyMembers)
             {
                 if (member.UserId == winnerUserId)
                 {
                     continue;
                 }
 
-                if (result.Count >= 3)
+                if (result.Count >= MAX_PODIUM_PLAYERS)
                 {
                     break;
                 }
 
                 int position = result.Count + 1;
-
-                result.Add(
-                    new PodiumPlayerViewModel(
-                        member.UserId,
-                        member.UserName,
-                        position,
-                        0));
+                result.Add(new PodiumPlayerViewModel(
+                    member.UserId,
+                    member.UserName,
+                    position,
+                    0));
             }
 
             return new ReadOnlyCollection<PodiumPlayerViewModel>(result);
@@ -134,21 +132,19 @@ namespace SnakeAndLaddersFinalProject.Managers
 
         public void InitializeTokensFromLobbyMembers(IList<LobbyMemberViewModel> members)
         {
-            tokenManager.PlayerTokens.Clear();
+            _tokenManager.PlayerTokens.Clear();
 
             if (members == null || members.Count == 0)
             {
                 return;
             }
 
-            foreach (LobbyMemberViewModel lobbyMember in members)
+            foreach (var lobbyMember in members)
             {
-                tokenManager.CreateFromLobbyMember(
-                    lobbyMember,
-                    startCellIndex);
+                _tokenManager.CreateFromLobbyMember(lobbyMember, _startCellIndex);
             }
 
-            tokenManager.ResetAllTokensToCell(startCellIndex);
+            _tokenManager.ResetAllTokensToCell(_startCellIndex);
         }
     }
 }

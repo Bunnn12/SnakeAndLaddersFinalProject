@@ -39,10 +39,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 message.StickerId,
                 message.StickerCode);
 
-            _uiDispatcher.BeginInvoke(
-                new Action(
-                    () => _chatViewModel.AddIncoming(message)));
-
+            _uiDispatcher.BeginInvoke(new Action(() => _chatViewModel.AddIncoming(message)));
         }
     }
 }

@@ -13,24 +13,23 @@ namespace SnakeAndLaddersFinalProject.Animation
 {
     public sealed class SpriteSheetAnimator
     {
-        private const int MILLISECONDS_IN_SECOND = 1000;
+        private const int MILLISECONDS_PER_SECOND = 1000;
         public const int SPRITE_COLUMNS = 4;
         public const int TOTAL_FRAMES = 16;
+        public const int FIRST_FRAME_INDEX = 0;
+        private const int MIN_FRAME_SIZE = 1;
+        private const double MIN_FRAMES_PER_SECOND = 1.0;
 
         private readonly Image _targetImage;
         private readonly BitmapSource _spriteSheet;
         private readonly int _frameWidth;
         private readonly int _frameHeight;
-        private readonly DispatcherTimer _timer;
+        private readonly DispatcherTimer _frameTimer;
 
         private int _currentFrameIndex;
 
-        public SpriteSheetAnimator(
-            Image targetImage,
-            BitmapSource spriteSheet,
-            int frameWidth,
-            int frameHeight,
-            double framesPerSecond)
+        public SpriteSheetAnimator(Image targetImage, BitmapSource spriteSheet,
+            int frameWidth, int frameHeight, double framesPerSecond)
         {
             if (targetImage == null)
             {
@@ -40,15 +39,15 @@ namespace SnakeAndLaddersFinalProject.Animation
             {
                 throw new ArgumentNullException(nameof(spriteSheet));
             }
-            if (frameWidth <= 0)
+            if (frameWidth < MIN_FRAME_SIZE)
             {
                 throw new ArgumentOutOfRangeException(nameof(frameWidth));
             }
-            if (frameHeight <= 0)
+            if (frameHeight < MIN_FRAME_SIZE)
             {
                 throw new ArgumentOutOfRangeException(nameof(frameHeight));
             }
-            if (framesPerSecond <= 0)
+            if (framesPerSecond < MIN_FRAMES_PER_SECOND)
             {
                 throw new ArgumentOutOfRangeException(nameof(framesPerSecond));
             }
@@ -58,20 +57,20 @@ namespace SnakeAndLaddersFinalProject.Animation
             this._frameWidth = frameWidth;
             this._frameHeight = frameHeight;
 
-            _timer = new DispatcherTimer();
+            _frameTimer = new DispatcherTimer();
 
-            _timer.Interval = TimeSpan.FromMilliseconds(
-                MILLISECONDS_IN_SECOND / framesPerSecond);
-            _timer.Tick += OnTimerTick;
+            _frameTimer.Interval = TimeSpan.FromMilliseconds(
+                MILLISECONDS_PER_SECOND / framesPerSecond);
+            _frameTimer.Tick += OnTimerTick;
         }
         public void Start()
         {
-            _currentFrameIndex = 0;
-            _timer.Start();
+            _currentFrameIndex = FIRST_FRAME_INDEX;
+            _frameTimer.Start();
         }
         public void Stop()
         {
-            _timer.Stop();
+            _frameTimer.Stop();
         }
 
         private void OnTimerTick(object sender, EventArgs e)

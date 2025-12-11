@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using log4net;
-using log4net.Repository.Hierarchy;
 using SnakeAndLaddersFinalProject.Authentication;
 using SnakeAndLaddersFinalProject.ChatService;
 using SnakeAndLaddersFinalProject.Models;
@@ -34,13 +33,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private const int DEFAULT_RECENT_MESSAGES_TAKE = 50;
         private const int MAX_RECEIVED_MESSAGE_SIZE_BYTES = 1_048_576;
-        private const int MAX_MESSAGE_LENGTH = 500;
-
+        private const int MAX_MESSAGE_LENGTH = 300; 
         private const int GUEST_RANDOM_MIN = 10;
         private const int GUEST_RANDOM_MAX = 99;
 
         private const int MIN_CHAT_RECENT_MESSAGES = 1;
-
         private const int NO_STICKER_ID = 0;
 
         private const string SHOP_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IShopService";
@@ -56,17 +53,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private static readonly TimeSpan _duplicateWindow = TimeSpan.FromSeconds(3);
 
         private IChatService _chatServiceProxy;
-        private readonly ObservableCollection<StickerModel> _stickers =
-            new ObservableCollection<StickerModel>();
-
+        private readonly ObservableCollection<StickerModel> _stickers
+            = new ObservableCollection<StickerModel>();
         private bool _areStickersLoaded;
         private string _newMessageText = string.Empty;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public int LobbyId { get; }
-
-        public ObservableCollection<ChatMessageViewModel> Messages { get; } =
-            new ObservableCollection<ChatMessageViewModel>();
-
+        public ObservableCollection<ChatMessageViewModel> Messages { get; }
+            = new ObservableCollection<ChatMessageViewModel>();
         public ObservableCollection<StickerModel> Stickers => _stickers;
 
         public string NewMessage
@@ -75,31 +71,23 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             set
             {
                 string safeText = value ?? string.Empty;
-
                 if (safeText.Length > MAX_MESSAGE_LENGTH)
                 {
                     safeText = safeText.Substring(0, MAX_MESSAGE_LENGTH);
                 }
-
                 _newMessageText = safeText;
                 OnPropertyChanged(nameof(NewMessage));
             }
         }
 
         public bool IsAutoScrollEnabled { get; set; } = true;
-
         public string StatusText { get; private set; } = DEFAULT_STATUS_READY;
-
         public string CurrentUserName { get; }
-
         public int CurrentUserId { get; }
 
         public ICommand SendMessageCommand { get; }
-
         public ICommand CopyMessageCommand { get; }
-
         public ICommand QuoteMessageCommand { get; }
-
         public ICommand OpenStickersCommand { get; }
 
         public ChatViewModel(int lobbyId)
@@ -110,7 +98,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
 
             LobbyId = lobbyId;
-
             CurrentUserId = SessionContext.Current.UserId;
             CurrentUserName = GetSafeUserName();
 
@@ -127,12 +114,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             try
             {
                 IList<ChatMessageDto> recentMessages = await SubscribeAndLoadRecentAsync();
-
                 foreach (ChatMessageDto messageDto in recentMessages)
                 {
                     Messages.Add(new ChatMessageViewModel(messageDto, CurrentUserName));
                 }
-
                 SetStatus(DEFAULT_STATUS_READY);
             }
             catch (Exception ex)
@@ -144,8 +129,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private async Task<IList<ChatMessageDto>> SubscribeAndLoadRecentAsync()
         {
-            List<ChatMessageDto> emptyList = new List<ChatMessageDto>();
-
+            var emptyList = new List<ChatMessageDto>();
             if (_chatServiceProxy == null)
             {
                 return emptyList;
@@ -153,24 +137,21 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             List<ChatMessageDto> recentMessages = emptyList;
 
-            await Task.Run(
-                () =>
+            await Task.Run(() =>
+            {
+                _chatServiceProxy.Subscribe(LobbyId, CurrentUserId);
+                ChatMessageDto[] serviceMessages = _chatServiceProxy.GetRecent(LobbyId,
+                    DEFAULT_RECENT_MESSAGES_TAKE) ?? Array.Empty<ChatMessageDto>();
+
+                if (serviceMessages.Length < MIN_CHAT_RECENT_MESSAGES)
                 {
-                    _chatServiceProxy.Subscribe(LobbyId, CurrentUserId);
-
-                    ChatMessageDto[] serviceMessages =
-                        _chatServiceProxy.GetRecent(LobbyId, DEFAULT_RECENT_MESSAGES_TAKE)
-                        ?? Array.Empty<ChatMessageDto>();
-
-                    if (serviceMessages.Length < MIN_CHAT_RECENT_MESSAGES)
-                    {
-                        recentMessages = emptyList;
-                    }
-                    else
-                    {
-                        recentMessages = new List<ChatMessageDto>(serviceMessages);
-                    }
-                });
+                    recentMessages = emptyList;
+                }
+                else
+                {
+                    recentMessages = new List<ChatMessageDto>(serviceMessages);
+                }
+            });
 
             return recentMessages;
         }
@@ -183,24 +164,29 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private async void Send()
         {
             string messageText = (NewMessage ?? string.Empty).Trim();
-
             if (messageText.Length == 0)
             {
                 return;
             }
 
+            if (messageText.Length > MAX_MESSAGE_LENGTH)
+            {
+                MessageBox.Show(
+                    string.Format(Globalization.LocalizationManager.Current["ChatTextTooLongFmt"],
+                    MAX_MESSAGE_LENGTH),
+                    Globalization.LocalizationManager.Current["UiTitleWarning"],
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
             ChatMessageDto localMessageDto = BuildLocalMessageDto(messageText);
 
-            _logger.InfoFormat(
-                "{0}. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'",
-                LOG_CONTEXT_SEND_TEXT,
-                localMessageDto.Sender,
-                localMessageDto.Text,
-                localMessageDto.StickerId,
+            _logger.InfoFormat("{0}. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'",
+                LOG_CONTEXT_SEND_TEXT, localMessageDto.Sender, localMessageDto.Text, localMessageDto.StickerId,
                 localMessageDto.StickerCode);
 
             Messages.Add(new ChatMessageViewModel(localMessageDto, CurrentUserName));
-
             NewMessage = string.Empty;
 
             if (_chatServiceProxy == null)
@@ -211,14 +197,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                SendMessageResponse2 response = await Task.Run(
-                    () => _chatServiceProxy.SendMessage(
-                        new SendMessageRequest2
-                        {
-                            LobbyId = LobbyId,
-                            Message = localMessageDto
-                        }));
-
+                SendMessageResponse2 response = await Task.Run(() => _chatServiceProxy.SendMessage(
+                    new SendMessageRequest2 { LobbyId = LobbyId, Message = localMessageDto }));
                 if (!response.Ok)
                 {
                     SetStatus(Globalization.LocalizationManager.Current["UiServiceError"]);
@@ -235,13 +215,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private ChatMessageDto BuildLocalMessageDto(string messageText)
         {
             string safeText = messageText ?? string.Empty;
-
             if (safeText.Length > MAX_MESSAGE_LENGTH)
             {
                 safeText = safeText.Substring(0, MAX_MESSAGE_LENGTH);
             }
 
-            ChatMessageDto dto = new ChatMessageDto
+            var dto = new ChatMessageDto
             {
                 Sender = CurrentUserName,
                 SenderId = CurrentUserId,
@@ -252,13 +231,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 StickerCode = string.Empty
             };
 
-            _logger.InfoFormat(
-                "{0}. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'",
-                LOG_CONTEXT_BUILD_TEXT,
-                dto.Sender,
-                dto.Text,
-                dto.StickerId,
-                dto.StickerCode);
+            _logger.InfoFormat("{0}. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'",
+                LOG_CONTEXT_BUILD_TEXT, dto.Sender, dto.Text, dto.StickerId, dto.StickerCode);
 
             return dto;
         }
@@ -270,12 +244,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            _logger.InfoFormat(
-                "{0}. Incoming. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'",
-                LOG_CONTEXT_INCOMING,
-                messageDto.Sender,
-                messageDto.Text,
-                messageDto.StickerId,
+            _logger.InfoFormat("{0}. Incoming. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'",
+                LOG_CONTEXT_INCOMING, messageDto.Sender, messageDto.Text, messageDto.StickerId,
                 messageDto.StickerCode);
 
             if (IsDuplicateIncoming(messageDto))
@@ -283,27 +253,21 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            ChatMessageViewModel chatMessageViewModel = new ChatMessageViewModel(messageDto, CurrentUserName);
-            Messages.Add(chatMessageViewModel);
+            Messages.Add(new ChatMessageViewModel(messageDto, CurrentUserName));
         }
 
         private bool IsDuplicateIncoming(ChatMessageDto messageDto)
         {
-            ChatMessageViewModel lastSameSender = Messages.LastOrDefault(
-                message => string.Equals(
-                    message.Sender,
-                    messageDto.Sender,
-                    StringComparison.OrdinalIgnoreCase));
+            var lastSameSender = Messages.LastOrDefault(message => string.Equals(message.Sender,
+                messageDto.Sender, StringComparison.OrdinalIgnoreCase));
 
             if (lastSameSender == null)
             {
                 return false;
             }
 
-            bool isSameText = string.Equals(
-                (lastSameSender.Text ?? string.Empty).Trim(),
-                (messageDto.Text ?? string.Empty).Trim(),
-                StringComparison.Ordinal);
+            bool isSameText = string.Equals((lastSameSender.Text ?? string.Empty).Trim(),
+                (messageDto.Text ?? string.Empty).Trim(), StringComparison.Ordinal);
 
             if (!isSameText)
             {
@@ -322,24 +286,25 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private IChatService CreateDuplexProxyFromConfig()
         {
             string bindingName = ConfigurationManager.AppSettings[CHAT_BINDING_KEY] ?? DEFAULT_CHAT_BINDING;
-            string address = ConfigurationManager.AppSettings[CHAT_ENDPOINT_ADDRESS_KEY] ?? DEFAULT_CHAT_ENDPOINT_ADDRESS;
-
-            InstanceContext instanceContext = new InstanceContext(new ChatClientCallback(this));
+            string address = ConfigurationManager.AppSettings[CHAT_ENDPOINT_ADDRESS_KEY]
+                ?? DEFAULT_CHAT_ENDPOINT_ADDRESS;
+            var instanceContext = new InstanceContext(new ChatClientCallback(this));
 
             if (IsHttpBinding(bindingName))
             {
-                WSDualHttpBinding wsBinding = new WSDualHttpBinding();
-                EndpointAddress wsEndpoint = new EndpointAddress(address);
-                return new DuplexChannelFactory<IChatService>(instanceContext, wsBinding, wsEndpoint).CreateChannel();
+                var wsBinding = new WSDualHttpBinding();
+                var wsEndpoint = new EndpointAddress(address);
+                return new DuplexChannelFactory<IChatService>(instanceContext, wsBinding, wsEndpoint)
+                    .CreateChannel();
             }
 
-            NetTcpBinding netTcpBinding = new NetTcpBinding(SecurityMode.None)
+            var netTcpBinding = new NetTcpBinding(SecurityMode.None)
             {
                 MaxReceivedMessageSize = MAX_RECEIVED_MESSAGE_SIZE_BYTES
             };
-
-            EndpointAddress endpoint = new EndpointAddress(address);
-            return new DuplexChannelFactory<IChatService>(instanceContext, netTcpBinding, endpoint).CreateChannel();
+            var endpoint = new EndpointAddress(address);
+            return new DuplexChannelFactory<IChatService>(instanceContext, netTcpBinding, endpoint)
+                .CreateChannel();
         }
 
         private static bool IsHttpBinding(string bindingName)
@@ -348,20 +313,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 return false;
             }
-
             string normalized = bindingName.Trim();
-
-            if (normalized.Equals("basicHttpBinding", StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            if (normalized.Equals("wsDualHttpBinding", StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            return false;
+            return normalized.Equals("basicHttpBinding", StringComparison.OrdinalIgnoreCase) ||
+                normalized.Equals("wsDualHttpBinding", StringComparison.OrdinalIgnoreCase);
         }
 
         private void TryRecreateProxy()
@@ -369,13 +323,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             try
             {
                 IChatService newProxy = CreateDuplexProxyFromConfig();
-
-                Task.Run(
-                    () =>
-                    {
-                        newProxy.Subscribe(LobbyId, CurrentUserId);
-                    });
-
+                Task.Run(() => newProxy.Subscribe(LobbyId, CurrentUserId));
                 _chatServiceProxy = newProxy;
             }
             catch (Exception ex)
@@ -384,14 +332,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-
         private static void Copy(ChatMessageViewModel chatMessageViewModel)
         {
             if (chatMessageViewModel == null)
             {
                 return;
             }
-
             string textToCopy = chatMessageViewModel.Text ?? string.Empty;
             Clipboard.SetText(textToCopy);
         }
@@ -402,35 +348,22 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 return;
             }
-
             string originalText = chatMessageViewModel.Text ?? string.Empty;
-            string quoted = string.Format(
-                "> {0}{1}{2}",
-                originalText,
-                Environment.NewLine,
-                NewMessage ?? string.Empty);
-
+            string quoted = string.Format("> {0}{1}{2}", originalText, Environment.NewLine, NewMessage ??
+                string.Empty);
             NewMessage = quoted;
         }
 
         private string GetSafeUserName()
         {
             string userName = SessionContext.Current.UserName;
-
             if (string.IsNullOrWhiteSpace(userName))
             {
                 Random random = new Random();
                 int randomSuffix = random.Next(GUEST_RANDOM_MIN, GUEST_RANDOM_MAX + 1);
-
-                string guestName = string.Format(
-                    CultureInfo.InvariantCulture,
-                    "{0}{1}",
-                    DEFAULT_GUEST_USER_NAME,
+                return string.Format(CultureInfo.InvariantCulture, "{0}{1}", DEFAULT_GUEST_USER_NAME,
                     randomSuffix);
-
-                return guestName;
             }
-
             return userName;
         }
 
@@ -468,13 +401,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(
-                this,
-                new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void OpenStickers()
@@ -483,7 +412,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 return;
             }
-
             ShowStickerPickerAsync();
         }
 
@@ -498,21 +426,18 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 if (Stickers.Count == 0)
                 {
-                    MessageBox.Show(
-                        Globalization.LocalizationManager.Current["ChatNoStickersOwned"],
-                        Globalization.LocalizationManager.Current["UiTitleInfo"],
-                        MessageBoxButton.OK,
+                    MessageBox.Show(Globalization.LocalizationManager.Current["ChatNoStickersOwned"],
+                        Globalization.LocalizationManager.Current["UiTitleInfo"], MessageBoxButton.OK,
                         MessageBoxImage.Information);
                     return;
                 }
 
-                Windows.StickerPickerWindow pickerWindow = new Windows.StickerPickerWindow(Stickers)
+                var pickerWindow = new Windows.StickerPickerWindow(Stickers)
                 {
                     Owner = Application.Current.MainWindow
                 };
 
                 bool? dialogResult = pickerWindow.ShowDialog();
-
                 if (dialogResult == true && pickerWindow.SelectedSticker != null)
                 {
                     SendSticker(pickerWindow.SelectedSticker);
@@ -535,48 +460,33 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            ShopServiceClient shopServiceClient = new ShopServiceClient(SHOP_ENDPOINT_CONFIGURATION_NAME);
+            var shopServiceClient = new ShopServiceClient(SHOP_ENDPOINT_CONFIGURATION_NAME);
 
             try
             {
                 string token = SessionContext.Current.AuthToken ?? string.Empty;
-
-                StickerDto[] serviceStickers = await Task
-                    .Run(() => shopServiceClient.GetUserStickers(token))
+                StickerDto[] serviceStickers = await Task.Run(() => shopServiceClient.GetUserStickers(token))
                     .ConfigureAwait(true);
-
                 StickerDto[] safeStickers = serviceStickers ?? Array.Empty<StickerDto>();
 
                 foreach (StickerDto dto in safeStickers)
                 {
                     string imagePath = BuildStickerAssetPath(dto.StickerCode);
-
-                    StickerModel sticker = new StickerModel(
-                        dto.StickerId,
-                        dto.StickerCode,
-                        dto.StickerName,
-                        imagePath);
-
+                    var sticker = new StickerModel(dto.StickerId, dto.StickerCode, dto.StickerName, imagePath);
                     Stickers.Add(sticker);
                 }
-
                 _areStickersLoaded = true;
             }
             catch (FaultException faultException)
             {
-                MessageBox.Show(
-                    faultException.Message,
-                    Globalization.LocalizationManager.Current["UiTitleError"],
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                MessageBox.Show(faultException.Message, Globalization.LocalizationManager.Current["UiTitleError"],
+                    MessageBoxButton.OK, MessageBoxImage.Error);
                 shopServiceClient.Abort();
             }
             catch (EndpointNotFoundException)
             {
-                MessageBox.Show(
-                    Globalization.LocalizationManager.Current["UiEndpointNotFound"],
-                    Globalization.LocalizationManager.Current["UiTitleError"],
-                    MessageBoxButton.OK,
+                MessageBox.Show(Globalization.LocalizationManager.Current["UiEndpointNotFound"],
+                    Globalization.LocalizationManager.Current["UiTitleError"], MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 shopServiceClient.Abort();
             }
@@ -605,17 +515,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            ChatMessageDto localMessageDto = BuildStickerMessageDto(
-                sticker.StickerId,
-                sticker.StickerCode);
-
-            _logger.InfoFormat(
-                "{0}. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'",
-                LOG_CONTEXT_SEND_STICKER,
-                localMessageDto.Sender,
-                localMessageDto.Text,
-                localMessageDto.StickerId,
-                localMessageDto.StickerCode);
+            ChatMessageDto localMessageDto = BuildStickerMessageDto(sticker.StickerId, sticker.StickerCode);
+            _logger.InfoFormat("{0}. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'",
+                LOG_CONTEXT_SEND_STICKER, localMessageDto.Sender, localMessageDto.Text, localMessageDto.StickerId, localMessageDto.StickerCode);
 
             Messages.Add(new ChatMessageViewModel(localMessageDto, CurrentUserName));
 
@@ -627,13 +529,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                Task.Run(
-                    () => _chatServiceProxy.SendMessage(
-                        new SendMessageRequest2
-                        {
-                            LobbyId = LobbyId,
-                            Message = localMessageDto
-                        }));
+                Task.Run(() => _chatServiceProxy.SendMessage(new SendMessageRequest2 { LobbyId = LobbyId, Message = localMessageDto }));
             }
             catch (Exception ex)
             {
@@ -645,7 +541,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private ChatMessageDto BuildStickerMessageDto(int stickerId, string stickerCode)
         {
-            ChatMessageDto stickerMessageDto = new ChatMessageDto
+            var stickerMessageDto = new ChatMessageDto
             {
                 Sender = CurrentUserName,
                 SenderId = CurrentUserId,
@@ -656,13 +552,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 StickerCode = stickerCode ?? string.Empty
             };
 
-            _logger.InfoFormat(
-                "{0}. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'",
-                LOG_CONTEXT_BUILD_STICKER,
-                stickerMessageDto.Sender,
-                stickerMessageDto.Text,
-                stickerMessageDto.StickerId,
-                stickerMessageDto.StickerCode);
+            _logger.InfoFormat("{0}. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'",
+                LOG_CONTEXT_BUILD_STICKER, stickerMessageDto.Sender, stickerMessageDto.Text, stickerMessageDto.StickerId, stickerMessageDto.StickerCode);
 
             return stickerMessageDto;
         }
@@ -671,14 +562,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             if (SessionContext.Current == null || !SessionContext.Current.IsAuthenticated)
             {
-                MessageBox.Show(
-                    Globalization.LocalizationManager.Current["UiShopRequiresLogin"],
-                    Globalization.LocalizationManager.Current["UiTitleWarning"],
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
+                MessageBox.Show(Globalization.LocalizationManager.Current["UiShopRequiresLogin"], Globalization.LocalizationManager.Current["UiTitleWarning"], MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
-
             return true;
         }
 
@@ -688,7 +574,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 return string.Empty;
             }
-
             return string.Concat(STICKER_ASSET_BASE_PATH, stickerCode, STICKER_ASSET_EXTENSION);
         }
     }

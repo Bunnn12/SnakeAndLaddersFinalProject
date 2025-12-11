@@ -6,17 +6,16 @@ using log4net;
 using SnakeAndLaddersFinalProject.Animation;
 using SnakeAndLaddersFinalProject.GameplayService;
 using SnakeAndLaddersFinalProject.Infrastructure;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 
 namespace SnakeAndLaddersFinalProject.Game.Gameplay
 {
     public sealed class GameplayEventsHandler
     {
-        private const string DICE_RESULT_TITLE = "Resultado del dado";
-        private const string PLAYER_LEFT_TITLE = "Jugador salió";
-        private const string PLAYER_MOVED_ERROR_LOG_MESSAGE = "Error al procesar movimiento desde el servidor.";
+        private const string PLAYER_MOVED_ERROR_LOG_MESSAGE = "Error al procesar movimiento " +
+            "desde el servidor.";
         private const string TURN_CHANGED_ERROR_LOG_MESSAGE = "Error al procesar cambio de turno.";
         private const string PLAYER_LEFT_ERROR_LOG_MESSAGE = "Error al procesar PlayerLeft.";
-
         private const int DEFAULT_DICE_FACE_FOR_ANIMATION = 1;
 
         private readonly GameBoardAnimationService _animationService;
@@ -26,45 +25,20 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
         private readonly int _localUserId;
         private readonly Action<int> _updateTurnFromState;
 
-        public GameplayEventsHandler(
-            GameBoardAnimationService animationService,
-            DiceSpriteAnimator diceSpriteAnimator,
-            AsyncCommand rollDiceCommand,
-            ILog logger,
-            int localUserId,
-            Action<int> updateTurnFromState)
+        public GameplayEventsHandler(GameBoardAnimationService animationService,
+            DiceSpriteAnimator diceSpriteAnimator, AsyncCommand rollDiceCommand,
+            ILog logger, int localUserId, Action<int> updateTurnFromState)
         {
-            if (animationService == null)
-            {
-                throw new ArgumentNullException(nameof(animationService));
-            }
-
-            if (diceSpriteAnimator == null)
-            {
-                throw new ArgumentNullException(nameof(diceSpriteAnimator));
-            }
-
-            if (rollDiceCommand == null)
-            {
-                throw new ArgumentNullException(nameof(rollDiceCommand));
-            }
-
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
-            if (updateTurnFromState == null)
-            {
-                throw new ArgumentNullException(nameof(updateTurnFromState));
-            }
-
-            _animationService = animationService;
-            _diceSpriteAnimator = diceSpriteAnimator;
-            _rollDiceCommand = rollDiceCommand;
-            _logger = logger;
+            _animationService = animationService ?? throw new ArgumentNullException(
+                nameof(animationService));
+            _diceSpriteAnimator = diceSpriteAnimator ?? throw new ArgumentNullException(
+                nameof(diceSpriteAnimator));
+            _rollDiceCommand = rollDiceCommand ?? throw new ArgumentNullException(
+                nameof(rollDiceCommand));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _updateTurnFromState = updateTurnFromState ?? throw new ArgumentNullException(
+                nameof(updateTurnFromState));
             _localUserId = localUserId;
-            _updateTurnFromState = updateTurnFromState;
         }
 
         public Task HandleServerPlayerMovedAsync(PlayerMoveResultDto move)
@@ -73,9 +47,7 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
             {
                 return Task.CompletedTask;
             }
-
-            Task handlerTask = HandlePlayerMovedInternalAsync(move);
-            return handlerTask;
+            return HandlePlayerMovedInternalAsync(move);
         }
 
         private async Task HandlePlayerMovedInternalAsync(PlayerMoveResultDto move)
@@ -87,65 +59,44 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
                 int toIndex = move.ToCellIndex;
                 int diceValue = move.DiceValue;
 
-                // 👇 Para la animación usamos siempre una cara válida (1–6)
                 int diceFaceForAnimation = Math.Abs(diceValue);
                 if (diceFaceForAnimation <= 0)
                 {
                     diceFaceForAnimation = DEFAULT_DICE_FACE_FOR_ANIMATION;
                 }
 
-                await _diceSpriteAnimator
-                    .RollAsync(diceFaceForAnimation)
-                    .ConfigureAwait(false);
+                await _diceSpriteAnimator.PlayRollAnimationAsync(diceFaceForAnimation).
+                    ConfigureAwait(false);
+                await _animationService.AnimateMoveForLocalPlayerAsync(userId, fromIndex,
+                    toIndex, diceValue).
+                    ConfigureAwait(false);
 
-                await _animationService
-                    .AnimateMoveForLocalPlayerAsync(userId, fromIndex, toIndex, diceValue)
-                    .ConfigureAwait(false);
+                await Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    _rollDiceCommand.RaiseCanExecuteChanged();
 
-                await Application.Current.Dispatcher.InvokeAsync(
-                    () =>
+                    if (userId == _localUserId)
                     {
-                        _rollDiceCommand.RaiseCanExecuteChanged();
-
-                        if (userId == _localUserId)
+                        string message;
+                        if (diceValue > 0)
                         {
-                            string message;
-
-                            if (diceValue > 0)
-                            {
-                                message = string.Format(
-                                    "Sacaste {0} y avanzaste de {1} a {2}.",
-                                    diceValue,
-                                    fromIndex,
-                                    toIndex);
-                            }
-                            else if (diceValue < 0)
-                            {
-                                // dado negativo: retrocede
-                                int steps = Math.Abs(diceValue);
-                                message = string.Format(
-                                    "Sacaste {0} y retrocediste de {1} a {2} ({3} casillas).",
-                                    diceValue,
-                                    fromIndex,
-                                    toIndex,
-                                    steps);
-                            }
-                            else
-                            {
-                                // por si algún día llega DiceValue = 0
-                                message = string.Format(
-                                    "No te moviste en este turno. Sigues en la casilla {0}.",
-                                    fromIndex);
-                            }
-
-                            MessageBox.Show(
-                                message,
-                                DICE_RESULT_TITLE,
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Information);
+                            message = string.Format(Lang.GameDiceMoveForwardFmt, diceValue,
+                                fromIndex, toIndex);
                         }
-                    },
-                    DispatcherPriority.Normal);
+                        else if (diceValue < 0)
+                        {
+                            int steps = Math.Abs(diceValue);
+                            message = string.Format(Lang.GameDiceMoveBackwardFmt, diceValue,
+                                fromIndex, toIndex, steps);
+                        }
+                        else
+                        {
+                            message = string.Format(Lang.GameDiceNoMovementFmt, fromIndex);
+                        }
+                        MessageBox.Show(message, Lang.GameDiceResultTitle, MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                    }
+                }, DispatcherPriority.Normal);
             }
             catch (Exception ex)
             {
@@ -168,7 +119,6 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
             {
                 _logger.Error(TURN_CHANGED_ERROR_LOG_MESSAGE, ex);
             }
-
             return Task.CompletedTask;
         }
 
@@ -184,15 +134,11 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
                 if (playerLeftInfo.UserId != _localUserId)
                 {
                     string userName = string.IsNullOrWhiteSpace(playerLeftInfo.UserName)
-                        ? string.Format("Jugador {0}", playerLeftInfo.UserId)
+                        ? string.Format(Lang.GameLeftPlayerFallbackNameFmt, playerLeftInfo.UserId)
                         : playerLeftInfo.UserName;
 
-                    string message = string.Format("{0} abandonó la partida.", userName);
-
-                    MessageBox.Show(
-                        message,
-                        PLAYER_LEFT_TITLE,
-                        MessageBoxButton.OK,
+                    string message = string.Format(Lang.GameLeftPlayerMessageFmt, userName);
+                    MessageBox.Show(message, Lang.GamePlayerLeftTitle, MessageBoxButton.OK,
                         MessageBoxImage.Information);
                 }
 
@@ -205,7 +151,6 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
             {
                 _logger.Error(PLAYER_LEFT_ERROR_LOG_MESSAGE, ex);
             }
-
             return Task.CompletedTask;
         }
     }
