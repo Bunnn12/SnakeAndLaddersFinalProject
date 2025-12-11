@@ -18,8 +18,8 @@ namespace SnakeAndLaddersFinalProject.Converters
         {
             string timeText = value as string;
 
-            if (string.IsNullOrWhiteSpace(timeText) || !TimeSpan.TryParse(timeText,
-                out TimeSpan timeSpan))
+            if (string.IsNullOrWhiteSpace(timeText) ||
+                !TimeSpan.TryParse(timeText, culture, out TimeSpan timeSpan))
             {
                 return new DoubleCollection { DEFAULT_DASH_VISIBLE, DEFAULT_DASH_HIDDEN };
             }
@@ -30,8 +30,12 @@ namespace SnakeAndLaddersFinalProject.Converters
                 remainingSeconds = MIN_REMAINING_SECONDS;
             }
 
-            double progress = Math.Min(MAX_PROGRESS, Math.Max(MIN_PROGRESS, remainingSeconds
-                / (double)TURN_TOTAL_SECONDS));
+            double progress = Math.Min(
+                MAX_PROGRESS,
+                Math.Max(
+                    MIN_PROGRESS,
+                    remainingSeconds / (double)TURN_TOTAL_SECONDS));
+
             return new DoubleCollection { progress, MAX_PROGRESS - progress };
         }
 

@@ -8,8 +8,11 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
 {
     public sealed class InventoryManager : IInventoryManager
     {
-        private const string INVENTORY_SERVICE_ENDPOINT_NAME = "NetTcpBinding_IInventoryService";
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(InventoryManager));
+        private const string INVENTORY_SERVICE_ENDPOINT_NAME =
+            "NetTcpBinding_IInventoryService";
+
+        private static readonly ILog _logger =
+            LogManager.GetLogger(typeof(InventoryManager));
 
         public async Task<InventorySnapshot> GetInventoryAsync(int userId)
         {
@@ -17,7 +20,10 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             {
                 using (var client = CreateClient())
                 {
-                    var snapshotDto = await Task.Run(() => client.GetInventory(userId));
+                    var snapshotDto = await Task
+                        .Run(() => client.GetInventory(userId))
+                        .ConfigureAwait(false);
+
                     var items = new List<InventoryItemData>();
                     var dice = new List<InventoryDiceData>();
 
@@ -25,12 +31,13 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
                     {
                         foreach (var dto in snapshotDto.Items)
                         {
-                            items.Add(new InventoryItemData(
-                                dto.ObjectId,
-                                dto.ObjectCode,
-                                dto.Name,
-                                dto.Quantity,
-                                dto.SlotNumber));
+                            items.Add(
+                                new InventoryItemData(
+                                    dto.ObjectId,
+                                    dto.ObjectCode,
+                                    dto.Name,
+                                    dto.Quantity,
+                                    dto.SlotNumber));
                         }
                     }
 
@@ -38,12 +45,13 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
                     {
                         foreach (var dto in snapshotDto.Dice)
                         {
-                            dice.Add(new InventoryDiceData(
-                                dto.DiceId,
-                                dto.DiceCode,
-                                dto.Name,
-                                dto.Quantity,
-                                dto.SlotNumber));
+                            dice.Add(
+                                new InventoryDiceData(
+                                    dto.DiceId,
+                                    dto.DiceCode,
+                                    dto.Name,
+                                    dto.Quantity,
+                                    dto.SlotNumber));
                         }
                     }
 
@@ -52,56 +60,82 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             }
             catch (Exception ex)
             {
-                _logger.Error("Error loading inventory from service.", ex);
-                throw;
+                const string message = "Error loading inventory from service.";
+                _logger.Error(message, ex);
+                throw new InvalidOperationException(message, ex);
             }
         }
 
-        public async Task UpdateSelectedItemsAsync(int userId, int? slot1ObjectId, int? slot2ObjectId, int? slot3ObjectId)
+        public async Task UpdateSelectedItemsAsync(int userId, int? slot1ObjectId,
+            int? slot2ObjectId, int? slot3ObjectId)
         {
             try
             {
                 using (var client = CreateClient())
                 {
-                    await Task.Run(() => client.UpdateSelectedItems(userId, slot1ObjectId, slot2ObjectId, slot3ObjectId));
+                    await Task
+                        .Run(
+                            () => client.UpdateSelectedItems(
+                                userId,
+                                slot1ObjectId,
+                                slot2ObjectId,
+                                slot3ObjectId))
+                        .ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error("Error updating selected items.", ex);
-                throw;
+                const string message = "Error updating selected items.";
+                _logger.Error(message, ex);
+                throw new InvalidOperationException(message, ex);
             }
         }
 
-        public async Task UpdateSelectedDiceAsync(int userId, int? slot1DiceId, int? slot2DiceId)
+        public async Task UpdateSelectedDiceAsync(int userId, int? slot1DiceId,
+            int? slot2DiceId)
         {
             try
             {
                 using (var client = CreateClient())
                 {
-                    await Task.Run(() => client.UpdateSelectedDice(userId, slot1DiceId, slot2DiceId));
+                    await Task
+                        .Run(
+                            () => client.UpdateSelectedDice(
+                                userId,
+                                slot1DiceId,
+                                slot2DiceId))
+                        .ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error("Error updating selected dice.", ex);
-                throw;
+                const string message = "Error updating selected dice.";
+                _logger.Error(message, ex);
+                throw new InvalidOperationException(message, ex);
             }
         }
 
-        public async Task EquipItemToSlotAsync(int userId, byte slotNumber, int objectId)
+        public async Task EquipItemToSlotAsync(int userId, byte slotNumber,
+            int objectId)
         {
             try
             {
                 using (var client = CreateClient())
                 {
-                    await Task.Run(() => client.EquipItemToSlot(userId, slotNumber, objectId));
+                    await Task
+                        .Run(
+                            () => client.EquipItemToSlot(
+                                userId,
+                                slotNumber,
+                                objectId))
+                        .ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error("Error equipping item to slot.", ex);
-                throw;
+                const string message = "Error equipping item to slot.";
+                _logger.Error(message, ex);
+                throw new InvalidOperationException(message, ex);
             }
         }
 
@@ -111,29 +145,45 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             {
                 using (var client = CreateClient())
                 {
-                    await Task.Run(() => client.UnequipItemFromSlot(userId, slotNumber));
+                    await Task
+                        .Run(
+                            () => client.UnequipItemFromSlot(
+                                userId,
+                                slotNumber))
+                        .ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error("Error unequipping item from slot.", ex);
-                throw;
+                const string message = "Error unequipping item from slot.";
+                _logger.Error(message, ex);
+                throw new InvalidOperationException(message, ex);
             }
         }
 
-        public async Task EquipDiceToSlotAsync(int userId, byte slotNumber, int diceId)
+        public async Task EquipDiceToSlotAsync(
+            int userId,
+            byte slotNumber,
+            int diceId)
         {
             try
             {
                 using (var client = CreateClient())
                 {
-                    await Task.Run(() => client.EquipDiceToSlot(userId, slotNumber, diceId));
+                    await Task
+                        .Run(
+                            () => client.EquipDiceToSlot(
+                                userId,
+                                slotNumber,
+                                diceId))
+                        .ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error("Error equipping dice to slot.", ex);
-                throw;
+                const string message = "Error equipping dice to slot.";
+                _logger.Error(message, ex);
+                throw new InvalidOperationException(message, ex);
             }
         }
 
@@ -143,13 +193,19 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             {
                 using (var client = CreateClient())
                 {
-                    await Task.Run(() => client.UnequipDiceFromSlot(userId, slotNumber));
+                    await Task
+                        .Run(
+                            () => client.UnequipDiceFromSlot(
+                                userId,
+                                slotNumber))
+                        .ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error("Error unequipping dice from slot.", ex);
-                throw;
+                const string message = "Error unequipping dice from slot.";
+                _logger.Error(message, ex);
+                throw new InvalidOperationException(message, ex);
             }
         }
 

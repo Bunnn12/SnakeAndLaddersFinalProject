@@ -12,8 +12,8 @@ namespace SnakeAndLaddersFinalProject.Converters
         private const double MAX_PROGRESS = 1.0;
         private const double MAX_SCALE_FACTOR = 1.0;
 
-        public object Convert(object value, Type targetType, object parameter,
-            CultureInfo culture)
+        public object Convert(object value, Type targetType,
+            object parameter, CultureInfo culture)
         {
             string timeText = value as string;
 
@@ -22,7 +22,7 @@ namespace SnakeAndLaddersFinalProject.Converters
                 return MIN_SCALE_FACTOR;
             }
 
-            if (!TimeSpan.TryParse(timeText, out TimeSpan timeSpan))
+            if (!TimeSpan.TryParse(timeText, culture, out TimeSpan timeSpan))
             {
                 return MIN_SCALE_FACTOR;
             }
@@ -33,14 +33,21 @@ namespace SnakeAndLaddersFinalProject.Converters
                 return MIN_SCALE_FACTOR;
             }
 
-            double progress = Math.Min(MAX_PROGRESS, Math.Max(MIN_PROGRESS, remainingSeconds
-                / (double)TOTAL_SECONDS));
-            double scale = MIN_SCALE_FACTOR + (MAX_SCALE_FACTOR - MIN_SCALE_FACTOR) * progress;
+            double progress = Math.Min(
+                MAX_PROGRESS,
+                Math.Max(
+                    MIN_PROGRESS,
+                    remainingSeconds / (double)TOTAL_SECONDS));
+
+            double scale =
+                MIN_SCALE_FACTOR +
+                (MAX_SCALE_FACTOR - MIN_SCALE_FACTOR) * progress;
+
             return scale;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter,
-            CultureInfo culture)
+        public object ConvertBack(object value, Type targetType,
+            object parameter, CultureInfo culture)
         {
             throw new NotSupportedException();
         }

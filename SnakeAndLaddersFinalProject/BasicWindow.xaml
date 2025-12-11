@@ -10,7 +10,6 @@
 
     <Grid>
         <Grid.Background>
-            <!-- Fondo por defecto -->
             <ImageBrush x:Name="BgBrush"
                         ImageSource="/Assets/Images/BackgroundMainWindow.png"
                         Stretch="UniformToFill"/>
@@ -18,7 +17,6 @@
 
         <Frame x:Name="MainFrame"
                NavigationUIVisibility="Hidden"
-               Background="Transparent"
-               Navigated="MainFrameNavigated"/>
+               Background="Transparent"/>
     </Grid>
 </Window>

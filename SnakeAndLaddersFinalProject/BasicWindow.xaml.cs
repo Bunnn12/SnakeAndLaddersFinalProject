@@ -3,38 +3,25 @@ using SnakeAndLaddersFinalProject.Utilities;
 using SnakeAndLaddersFinalProject.ViewModels;
 using log4net;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
+using System.Windows.Media.Imaging; 
 
 namespace SnakeAndLaddersFinalProject
 {
     public sealed partial class BasicWindow : Window
     {
-        private const string DEFAULT_BACKGROUND_PATH =
-            "Assets/Images/BackgroundMainWindow.png";
-
-        private const string AUTH_BACKGROUND_KEY = "Auth";
-        private const string AUTH_BACKGROUND_PATH =
-            "Assets/Images/Backgrounds/LoginBackground (2).png";
+        private const string DEFAULT_BACKGROUND_PATH = "Assets/Images/BackgroundMainWindow.png";
 
         private static readonly ILog _logger =
             LogManager.GetLogger(typeof(BasicWindow));
-
-        private static readonly IReadOnlyDictionary<string, string> _backgrounds =
-            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                [AUTH_BACKGROUND_KEY] = AUTH_BACKGROUND_PATH,
-            };
 
         private bool _isClosingHandled;
 
         public BasicWindow()
         {
             InitializeComponent();
+            LoadDefaultBackground();
         }
 
         private async void BasicWindowClosing(object sender, CancelEventArgs e)
@@ -71,61 +58,22 @@ namespace SnakeAndLaddersFinalProject
             MainFrame.Navigate(new StartPage());
         }
 
-        private void MainFrameNavigated(object sender, NavigationEventArgs e)
-        {
-            var page = e.Content as Page;
-            if (page == null)
-            {
-                SetBackground(DEFAULT_BACKGROUND_PATH);
-                return;
-            }
-
-            var key = PageBackground.GetKey(page);
-
-            if (!string.IsNullOrWhiteSpace(key) &&
-                _backgrounds.TryGetValue(key, out var path))
-            {
-                SetBackground(path);
-            }
-            else
-            {
-                SetBackground(DEFAULT_BACKGROUND_PATH);
-            }
-        }
-
-        private void SetBackground(string resourcePath)
-        {
-            var path = (resourcePath ?? DEFAULT_BACKGROUND_PATH).TrimStart('/');
-
-            if (!TrySetBackgroundFromPath(path))
-            {
-                var defaultPath = DEFAULT_BACKGROUND_PATH.TrimStart('/');
-                TrySetBackgroundFromPath(defaultPath);
-            }
-        }
-
-        private bool TrySetBackgroundFromPath(string resourcePath)
+        private void LoadDefaultBackground()
         {
             try
             {
-                var uri = new Uri(resourcePath, UriKind.Relative);
-
+                var uri = new Uri(DEFAULT_BACKGROUND_PATH, UriKind.Relative);
                 var bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.UriSource = uri;
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.EndInit();
                 bitmap.Freeze();
-
                 BgBrush.ImageSource = bitmap;
-                return true;
             }
             catch (Exception ex)
             {
-                _logger.Warn(
-                    $"Couldnt charge the image from '{resourcePath}'.",
-                    ex);
-                return false;
+                _logger.Warn($"Could not load default background from '{DEFAULT_BACKGROUND_PATH}'.", ex);
             }
         }
     }

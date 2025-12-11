@@ -16,8 +16,10 @@ namespace SnakeAndLaddersFinalProject.Pages
         private const int BOARD_SIZE_DEFAULT = 10;
         private const int PLAYERS_COUNT_4 = 4;
         private const int PLAYERS_COUNT_3 = 3;
-        private const int PLAYERS_COUNT_DEFAULT = 2; 
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(CreateMatchPage));
+        private const int PLAYERS_COUNT_DEFAULT = 2;
+
+        private static readonly ILog _logger =
+            LogManager.GetLogger(typeof(CreateMatchPage));
 
         public CreateMatchPage()
         {
@@ -30,11 +32,20 @@ namespace SnakeAndLaddersFinalProject.Pages
             {
                 var options = new CreateMatchOptions
                 {
-                    BoardSize = GetSelectedBoardSize(),
-                    Difficulty = GetSelectedDifficulty(),
-                    SpecialTiles = GetSelectedSpecials(),
-                    IsPrivate = chkPrivateRoom.IsChecked == true,
-                    Players = GetSelectedPlayers()
+                    BoardSize = GetSelectedBoardSize(
+                        rdbSize8x8.IsChecked,
+                        rdbSize12x12.IsChecked),
+                    Difficulty = GetSelectedDifficulty(
+                        rdbDiffEasy.IsChecked,
+                        rdbDiffHard.IsChecked),
+                    SpecialTiles = GetSelectedSpecials(
+                        chkSpecialDice.IsChecked,
+                        chkSpecialMessage.IsChecked,
+                        chkSpecialItem.IsChecked),
+                    IsPrivate = chkPrivateRoom.IsChecked is true,
+                    Players = GetSelectedPlayers(
+                        rdbPlayers4.IsChecked,
+                        rdbPlayers3.IsChecked)
                 };
 
                 var lobbyNavigationArgs = new LobbyNavigationArgs
@@ -77,14 +88,16 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private BoardSizeOption GetSelectedBoardSize()
+        private static BoardSizeOption GetSelectedBoardSize(
+            bool? isSize8x8Checked,
+            bool? isSize12x12Checked)
         {
-            if (rdbSize8x8.IsChecked == true)
+            if (isSize8x8Checked is true)
             {
                 return BoardSizeOption.EightByEight;
             }
 
-            if (rdbSize12x12.IsChecked == true)
+            if (isSize12x12Checked is true)
             {
                 return BoardSizeOption.TwelveByTwelve;
             }
@@ -92,14 +105,16 @@ namespace SnakeAndLaddersFinalProject.Pages
             return BoardSizeOption.TenByTen;
         }
 
-        private DifficultyOption GetSelectedDifficulty()
+        private static DifficultyOption GetSelectedDifficulty(
+            bool? isEasyChecked,
+            bool? isHardChecked)
         {
-            if (rdbDiffEasy.IsChecked == true)
+            if (isEasyChecked is true)
             {
                 return DifficultyOption.Easy;
             }
 
-            if (rdbDiffHard.IsChecked == true)
+            if (isHardChecked is true)
             {
                 return DifficultyOption.Hard;
             }
@@ -107,21 +122,24 @@ namespace SnakeAndLaddersFinalProject.Pages
             return DifficultyOption.Medium;
         }
 
-        private SpecialTileOptions GetSelectedSpecials()
+        private static SpecialTileOptions GetSelectedSpecials(
+            bool? isSpecialDiceChecked,
+            bool? isSpecialMessageChecked,
+            bool? isSpecialItemChecked)
         {
             var value = SpecialTileOptions.None;
 
-            if (chkSpecialDice.IsChecked == true)
+            if (isSpecialDiceChecked is true)
             {
                 value |= SpecialTileOptions.Dice;
             }
 
-            if (chkSpecialMessage.IsChecked == true)
+            if (isSpecialMessageChecked is true)
             {
                 value |= SpecialTileOptions.Message;
             }
 
-            if (chkSpecialItem.IsChecked == true)
+            if (isSpecialItemChecked is true)
             {
                 value |= SpecialTileOptions.Item;
             }
@@ -129,14 +147,16 @@ namespace SnakeAndLaddersFinalProject.Pages
             return value;
         }
 
-        private int GetSelectedPlayers()
+        private static int GetSelectedPlayers(
+            bool? isPlayers4Checked,
+            bool? isPlayers3Checked)
         {
-            if (rdbPlayers4.IsChecked == true)
+            if (isPlayers4Checked is true)
             {
                 return PLAYERS_COUNT_4;
             }
 
-            if (rdbPlayers3.IsChecked == true)
+            if (isPlayers3Checked is true)
             {
                 return PLAYERS_COUNT_3;
             }
