@@ -22,12 +22,12 @@ namespace SnakeAndLaddersFinalProject.Utilities
 
     public static class SkinAssetHelper
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(SkinAssetHelper));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(SkinAssetHelper));
 
         private const string DEFAULT_SKIN_KEY = "004";
         private const int SKIN_CODE_DIGITS = 3;
 
-        private const string TOKEN_PREFIX = "T";
+        private const string TOKEN_PREFIX = "Token";
         private const string IDLE_SUFFIX = "-idle";
         private const string SAD_SUFFIX = "-sad";
 
@@ -38,7 +38,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
         {
             if (skinId <= 0)
             {
-                Logger.InfoFormat(
+                _logger.InfoFormat(
                     "NormalizeSkinKey(int): skinId={0} inválido, usando default {1}.",
                     skinId,
                     DEFAULT_SKIN_KEY);
@@ -50,7 +50,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
                 "D" + SKIN_CODE_DIGITS.ToString(CultureInfo.InvariantCulture),
                 CultureInfo.InvariantCulture);
 
-            Logger.InfoFormat(
+            _logger.InfoFormat(
                 "NormalizeSkinKey(int): skinId={0} -> {1}.",
                 skinId,
                 normalized);
@@ -64,7 +64,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
             {
                 var stackTrace = new StackTrace();
 
-                Logger.WarnFormat(
+                _logger.WarnFormat(
                     "NormalizeSkinKey(int?) llamado con NULL o <= 0. Usando default {0}. StackTrace:\n{1}",
                     DEFAULT_SKIN_KEY,
                     stackTrace);
@@ -79,7 +79,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
         {
             if (string.IsNullOrWhiteSpace(skinId))
             {
-                Logger.InfoFormat(
+                _logger.InfoFormat(
                     "NormalizeSkinKey(string): skinId vacío o nulo, usando default {0}.",
                     DEFAULT_SKIN_KEY);
 
@@ -92,7 +92,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
             {
                 string normalizedFromInt = NormalizeSkinKey(numericId);
 
-                Logger.InfoFormat(
+                _logger.InfoFormat(
                     "NormalizeSkinKey(string): raw='{0}' (num={1}) -> {2}.",
                     skinId,
                     numericId,
@@ -101,7 +101,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
                 return normalizedFromInt;
             }
 
-            Logger.InfoFormat(
+            _logger.InfoFormat(
                 "NormalizeSkinKey(string): raw='{0}' no numérico, se usa tal cual -> '{1}'.",
                 skinId,
                 trimmed);
@@ -114,14 +114,14 @@ namespace SnakeAndLaddersFinalProject.Utilities
         {
             string skinKey = NormalizeSkinKey(skinId);
 
-            Logger.InfoFormat(
+            _logger.InfoFormat(
                 "ResolveAssets(int?): skinId={0} -> skinKey='{1}'.",
                 skinId,
                 skinKey);
 
-            string tokenKey = TOKEN_PREFIX + skinKey; 
-            string idleKey = skinKey + IDLE_SUFFIX;   
-            string sadKey = skinKey + SAD_SUFFIX;     
+            string tokenKey = TOKEN_PREFIX + skinKey;
+            string idleKey = skinKey + IDLE_SUFFIX;
+            string sadKey = skinKey + SAD_SUFFIX;
 
             return new SkinAssetDescriptor(skinKey, tokenKey, idleKey, sadKey);
         }
@@ -130,7 +130,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
         {
             string skinKey = NormalizeSkinKey(skinId);
 
-            Logger.InfoFormat(
+            _logger.InfoFormat(
                 "ResolveAssets(string): skinId='{0}' -> skinKey='{1}'.",
                 skinId,
                 skinKey);

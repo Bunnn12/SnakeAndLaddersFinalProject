@@ -1275,12 +1275,6 @@
   <data name="WindowTitleGameBoard" xml:space="preserve">
     <value>Serpientes y escaleras - Juego de mesa</value>
   </data>
-  <data name="PasswordRulesText" xml:space="preserve">
-    <value>La contraseña debe tener al menos 8 caracteres, 1 mayúscula, 1 minúscula, 1 carácter especial y 1 número.</value>
-  </data>
-  <data name="AuthSessionAlreadyActive" xml:space="preserve">
-    <value>La sesión ya está activa, cierre sesión para continuar</value>
-  </data>
   <data name="ChatInvalidLobbyIdText" xml:space="preserve">
     <value>Identificador de lobby no válido</value>
   </data>
@@ -1452,8 +1446,20 @@
   <data name="PodiumUnknownWinnerNameText" xml:space="preserve">
     <value>Ganador desconocido</value>
   </data>
+  <data name="PasswordRulesText" xml:space="preserve">
+    <value>La contraseña debe tener al menos 8 caracteres, 1 mayúscula, 1 minúscula, 1 carácter especial y 1 número.</value>
+  </data>
+  <data name="AuthSessionAlreadyActive" xml:space="preserve">
+    <value>La sesión ya está activa, cierre sesión para continuar</value>
+  </data>
   <data name="btnApplyText" xml:space="preserve">
     <value>Aplicar</value>
+  </data>
+  <data name="ChatTextTooLongFmt" xml:space="preserve">
+    <value>El mensaje no puede exceder los {0} caracteres</value>
+  </data>
+  <data name="lblWinnerLabelText" xml:space="preserve">
+    <value>Ganador</value>
   </data>
   <data name="SkinsAvatarLockedWarn" xml:space="preserve">
     <value>Este avatar está bloqueado. Desbloquéalo en la tienda para usarlo.</value>
@@ -1479,14 +1485,20 @@
   <data name="SkinsUpdatedTitle" xml:space="preserve">
     <value>Avatar actualizado</value>
   </data>
-  <data name="ChatTextTooLongFmt" xml:space="preserve">
-    <value>El mensaje no puede exceder los {0} caracteres</value>
+  <data name="btnCopyLinkText" xml:space="preserve">
+    <value>Copiar enlace</value>
   </data>
-  <data name="lblWinnerLabelText" xml:space="preserve">
-    <value>Ganador</value>
+  <data name="btnLogoutText" xml:space="preserve">
+    <value>Cerrar sesión</value>
   </data>
   <data name="chkEnableText" xml:space="preserve">
     <value>Permitir</value>
+  </data>
+  <data name="colHostHeader" xml:space="preserve">
+    <value>Anfitrión</value>
+  </data>
+  <data name="colMatchCodeHeader" xml:space="preserve">
+    <value>Código</value>
   </data>
   <data name="lblBoardSizeLarge" xml:space="preserve">
     <value>Grande</value>
@@ -1506,6 +1518,9 @@
   <data name="lblDifficultyMedium" xml:space="preserve">
     <value>Medio</value>
   </data>
+  <data name="lblMatchInventoryTitle" xml:space="preserve">
+    <value>Coincidir con el inventario</value>
+  </data>
   <data name="lblPrivateRoom" xml:space="preserve">
     <value>juego privado</value>
   </data>
@@ -1515,19 +1530,97 @@
   <data name="lblSpecialTileTrap" xml:space="preserve">
     <value>Trampa</value>
   </data>
-  <data name="btnCopyLinkText" xml:space="preserve">
-    <value>Copiar enlace</value>
+  <data name="UiGenericErrorTitle" xml:space="preserve">
+    <value>Error</value>
   </data>
-  <data name="lblMatchInventoryTitle" xml:space="preserve">
-    <value>Coincidir con el inventario</value>
+  <data name="UiFriendsLoadError" xml:space="preserve">
+    <value>No se pudieron cargar tus amigos</value>
   </data>
-  <data name="colHostHeader" xml:space="preserve">
-    <value>Anfitrión</value>
+  <data name="UiFriendsSearchError" xml:space="preserve">
+    <value>Ocurrio un error cargando a los usuarios</value>
   </data>
-  <data name="colMatchCodeHeader" xml:space="preserve">
-    <value>Código</value>
+  <data name="UiFriendRequestError" xml:space="preserve">
+    <value>No se pudo mandar la solicitud de amigos</value>
   </data>
-  <data name="btnLogoutText" xml:space="preserve">
-    <value>Cerrar sesión</value>
+  <data name="UiChangePasswordSendCodeError" xml:space="preserve">
+    <value>No se pudo enviar el codigo para cambiar contraseña</value>
+  </data>
+  <data name="UiChangePasswordError" xml:space="preserve">
+    <value>No se pudo cambiar su contraseña</value>
+  </data>
+  <data name="UiChatLoadError" xml:space="preserve">
+    <value>No se pudo cargar el chat</value>
+  </data>
+  <data name="UiChatSendMessageError" xml:space="preserve">
+    <value>No se pudo enviar tu mensaje de chat.</value>
+  </data>
+  <data name="UiChatOpenStickersError" xml:space="preserve">
+    <value>No se pudo abrir el selector de stickers</value>
+  </data>
+  <data name="UiChatLoadStickersError" xml:space="preserve">
+    <value>No se pudieron cargar tus stickers.</value>
+  </data>
+  <data name="UiChatSendStickerError" xml:space="preserve">
+    <value>No se pudo enviar tu sticker</value>
+  </data>
+  <data name="UiCreateMatchError" xml:space="preserve">
+    <value>No se pudo crear la partida con los parámetros seleccionados.</value>
+  </data>
+  <data name="UiEmailVerificationError" xml:space="preserve">
+    <value>No se pudo verificar tu código de correo electrónico.</value>
+  </data>
+  <data name="UiEmailVerificationResendError" xml:space="preserve">
+    <value>No se pudo reenviar el código de verificación a tu correo electrónico.</value>
+  </data>
+  <data name="UiFriendUnfriendError" xml:space="preserve">
+    <value>No se pudo eliminar a tu amigo</value>
+  </data>
+  <data name="UiFriendUnfriendDirectError" xml:space="preserve">
+    <value>No se pudo eliminar a tu amigo</value>
+  </data>
+  <data name="UiInventoryLoadError" xml:space="preserve">
+    <value>No se pudo cargar tu inventario</value>
+  </data>
+  <data name="UiInventoryEquipItemError" xml:space="preserve">
+    <value>No se pudo equipar el objeto seleccionado.</value>
+  </data>
+  <data name="UiInventoryClearItemSlotError" xml:space="preserve">
+    <value>No se pudo quitar el objeto del espacio seleccionado.</value>
+  </data>
+  <data name="UiInventoryEquipDiceError" xml:space="preserve">
+    <value>No se pudo equipar el dado del espacio seleccionado</value>
+  </data>
+  <data name="UiInventoryClearDiceSlotError" xml:space="preserve">
+    <value>No se pudo quitar el dado del espacio seleccionado.</value>
+  </data>
+  <data name="UiLobbyKickMemberError" xml:space="preserve">
+    <value>No se pudo expulsar al jugador del lobby.</value>
+  </data>
+  <data name="UiLobbyCreateError" xml:space="preserve">
+    <value>No se pudo crear el lobby.</value>
+  </data>
+  <data name="UiLobbyJoinError" xml:space="preserve">
+    <value>No te pudiste unir al lobby</value>
+  </data>
+  <data name="UiLobbyStartMatchError" xml:space="preserve">
+    <value>No se pudo iniciar la partida desde el lobby.</value>
+  </data>
+  <data name="UiLobbyLeaveError" xml:space="preserve">
+    <value>No se pudo salir del lobby</value>
+  </data>
+  <data name="UiLobbyNavigateBoardError" xml:space="preserve">
+    <value>No se pudo abrir el tablero de juego para la partida actual.</value>
+  </data>
+  <data name="UiLoginGenericError" xml:space="preserve">
+    <value>No se pudo iniciar sesión.</value>
+  </data>
+  <data name="UiRankingLoadError" xml:space="preserve">
+    <value>No se pudo cargar el ranking de jugadores. Inténtalo de nuevo más tarde</value>
+  </data>
+  <data name="UiSkinsLoadErrorSuffix" xml:space="preserve">
+    <value>No se pudieron cargar tus skins</value>
+  </data>
+  <data name="UiSkinsApplyErrorSuffix" xml:space="preserve">
+    <value>No se pudo aplicar tu skin seleccionada.</value>
   </data>
 </root>

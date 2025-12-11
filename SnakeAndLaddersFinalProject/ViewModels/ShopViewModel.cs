@@ -96,13 +96,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (EndpointNotFoundException)
             {
-                ShowError(T("UiEndpointNotFound"));
+                ShowError(Token("UiEndpointNotFound"));
                 client.Abort();
             }
             catch (Exception ex)
             {
                 _logger.Error("Error initializing coins.", ex);
-                ShowError(T(SHOP_CODE_SERVER_ERROR));
+                ShowError(Token(SHOP_CODE_SERVER_ERROR));
                 client.Abort();
             }
             finally
@@ -206,7 +206,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 if (reward == null)
                 {
-                    ShowError(T(SHOP_CODE_SERVER_ERROR));
+                    ShowError(Token(SHOP_CODE_SERVER_ERROR));
                     return;
                 }
 
@@ -218,7 +218,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     : reward.RewardName;
 
                 string message = string.Format(
-                    T("UiShopPurchaseSuccessFmt"),
+                    Token("UiShopPurchaseSuccessFmt"),
                     obtainedName,
                     CurrentCoins);
 
@@ -232,13 +232,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (EndpointNotFoundException)
             {
-                ShowError(T("UiEndpointNotFound"));
+                ShowError(Token("UiEndpointNotFound"));
                 client.Abort();
             }
             catch (Exception ex)
             {
                 _logger.Error("Error executing purchase.", ex);
-                ShowError(T(SHOP_CODE_SERVER_ERROR));
+                ShowError(Token(SHOP_CODE_SERVER_ERROR));
                 client.Abort();
             }
             finally
@@ -251,19 +251,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             if (SessionContext.Current == null || !SessionContext.Current.IsAuthenticated)
             {
-                ShowWarning(T("UiShopRequiresLogin"));
+                ShowWarning(Token("UiShopRequiresLogin"));
                 return false;
             }
 
             if (SessionContext.Current.UserId <= INVALID_USER_ID)
             {
-                ShowWarning(T("UiShopRequiresRegisteredUser"));
+                ShowWarning(Token("UiShopRequiresRegisteredUser"));
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(SessionContext.Current.AuthToken))
             {
-                ShowWarning(T("UiShopRequiresToken"));
+                ShowWarning(Token("UiShopRequiresToken"));
                 return false;
             }
 
@@ -294,7 +294,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        private static string T(string key)
+        private static string Token(string key)
         {
             return Globalization.LocalizationManager.Current[key];
         }
@@ -303,7 +303,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             MessageBox.Show(
                 message,
-                T(ICON_TITLE_WARNING),
+                Token(ICON_TITLE_WARNING),
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
         }
@@ -312,7 +312,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             MessageBox.Show(
                 message,
-                T(ICON_TITLE_ERROR),
+                Token(ICON_TITLE_ERROR),
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
@@ -321,7 +321,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             MessageBox.Show(
                 message,
-                T(ICON_TITLE_INFO),
+                Token(ICON_TITLE_INFO),
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
         }
@@ -331,37 +331,37 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             switch (code)
             {
                 case SHOP_CODE_INVALID_SESSION:
-                    return T("ShopInvalidSessionError");
+                    return Token("ShopInvalidSessionError");
 
                 case SHOP_CODE_INVALID_USER_ID:
-                    return T("ShopInvalidUserIdError");
+                    return Token("ShopInvalidUserIdError");
 
                 case SHOP_CODE_USER_NOT_FOUND:
-                    return T("ShopUserNotFoundError");
+                    return Token("ShopUserNotFoundError");
 
                 case SHOP_CODE_INSUFFICIENT_COINS:
-                    return T("ShopInsufficientCoinsWarn");
+                    return Token("ShopInsufficientCoinsWarn");
 
                 case SHOP_CODE_NO_AVATARS_FOR_RARITY:
-                    return T("ShopNoAvatarsForRarityWarn");
+                    return Token("ShopNoAvatarsForRarityWarn");
 
                 case SHOP_CODE_NO_STICKER_PACKS:
-                    return T("ShopNoStickerPacksWarn");
+                    return Token("ShopNoStickerPacksWarn");
 
                 case SHOP_CODE_INVALID_DICE:
-                    return T("ShopInvalidDiceError");
+                    return Token("ShopInvalidDiceError");
 
                 case SHOP_CODE_DICE_NOT_FOUND:
-                    return T("ShopDiceNotFoundWarn");
+                    return Token("ShopDiceNotFoundWarn");
 
                 case SHOP_CODE_ITEM_NOT_FOUND:
-                    return T("ShopItemNotFoundWarn");
+                    return Token("ShopItemNotFoundWarn");
 
                 case SHOP_CODE_SERVER_ERROR:
-                    return T("ShopServerError");
+                    return Token("ShopServerError");
 
                 default:
-                    return T("ShopUnknownError");
+                    return Token("ShopUnknownError");
             }
         }
 

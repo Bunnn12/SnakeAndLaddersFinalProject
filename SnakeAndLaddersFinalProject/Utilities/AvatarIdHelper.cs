@@ -10,7 +10,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
         private const int MAX_LENGTH = 5;
         private const int REGEX_TIMEOUT_MILLISECONDS = 100;
 
-        private static readonly Regex AVATAR_ID_PATTERN = new Regex(
+        private static readonly Regex _avatarIdPattern = new Regex(
             @"^A\d{4}$",
             RegexOptions.Compiled | RegexOptions.CultureInvariant,
             TimeSpan.FromMilliseconds(REGEX_TIMEOUT_MILLISECONDS));
@@ -40,7 +40,7 @@ namespace SnakeAndLaddersFinalProject.Utilities
                 return false;
             }
 
-            return AVATAR_ID_PATTERN.IsMatch(normalizedAvatarId);
+            return _avatarIdPattern.IsMatch(normalizedAvatarId);
         }
 
         public static string NormalizeOrDefault(string avatarId)

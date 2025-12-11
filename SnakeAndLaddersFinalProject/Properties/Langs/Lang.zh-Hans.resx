@@ -1275,12 +1275,6 @@
   <data name="WindowTitleGameBoard" xml:space="preserve">
     <value>蛇梯棋 - 游戏板</value>
   </data>
-  <data name="PasswordRulesText" xml:space="preserve">
-    <value>密码必须至少为 8 个字符，其中 1 个大写字母、1 个小写字母、1 个特殊字符和 1 个数字。</value>
-  </data>
-  <data name="AuthSessionAlreadyActive" xml:space="preserve">
-    <value>会话已处于活动状态，请注销以继续</value>
-  </data>
   <data name="ChatInvalidLobbyIdText" xml:space="preserve">
     <value>大厅标识符无效</value>
   </data>
@@ -1452,8 +1446,20 @@
   <data name="PodiumUnknownWinnerNameText" xml:space="preserve">
     <value>未知获胜者</value>
   </data>
+  <data name="PasswordRulesText" xml:space="preserve">
+    <value>密码必须至少为 8 个字符，其中 1 个大写字母、1 个小写字母、1 个特殊字符和 1 个数字。</value>
+  </data>
+  <data name="AuthSessionAlreadyActive" xml:space="preserve">
+    <value>会话已处于活动状态，请注销以继续</value>
+  </data>
   <data name="btnApplyText" xml:space="preserve">
     <value>申请</value>
+  </data>
+  <data name="ChatTextTooLongFmt" xml:space="preserve">
+    <value>该消息不能超过 {0} 个字符</value>
+  </data>
+  <data name="lblWinnerLabelText" xml:space="preserve">
+    <value>优胜者</value>
   </data>
   <data name="SkinsAvatarLockedWarn" xml:space="preserve">
     <value>此头像已锁定。在商店中解锁即可使用。</value>
@@ -1479,14 +1485,20 @@
   <data name="SkinsUpdatedTitle" xml:space="preserve">
     <value>头像更新</value>
   </data>
-  <data name="ChatTextTooLongFmt" xml:space="preserve">
-    <value>该消息不能超过 {0} 个字符</value>
+  <data name="btnCopyLinkText" xml:space="preserve">
+    <value>复制链接</value>
   </data>
-  <data name="lblWinnerLabelText" xml:space="preserve">
-    <value>优胜者</value>
+  <data name="btnLogoutText" xml:space="preserve">
+    <value>退出</value>
   </data>
   <data name="chkEnableText" xml:space="preserve">
     <value>使能够</value>
+  </data>
+  <data name="colHostHeader" xml:space="preserve">
+    <value>主持人</value>
+  </data>
+  <data name="colMatchCodeHeader" xml:space="preserve">
+    <value>代码</value>
   </data>
   <data name="lblBoardSizeLarge" xml:space="preserve">
     <value>大的</value>
@@ -1506,6 +1518,9 @@
   <data name="lblDifficultyMedium" xml:space="preserve">
     <value>中等的</value>
   </data>
+  <data name="lblMatchInventoryTitle" xml:space="preserve">
+    <value>匹配库存</value>
+  </data>
   <data name="lblPrivateRoom" xml:space="preserve">
     <value>私人游戏</value>
   </data>
@@ -1515,19 +1530,98 @@
   <data name="lblSpecialTileTrap" xml:space="preserve">
     <value>陷阱</value>
   </data>
-  <data name="btnCopyLinkText" xml:space="preserve">
-    <value>复制链接</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="UiGenericErrorTitle" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="lblMatchInventoryTitle" xml:space="preserve">
-    <value>匹配库存</value>
+  <data name="UiFriendsLoadError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="colHostHeader" xml:space="preserve">
-    <value>主持人</value>
+  <data name="UiFriendsSearchError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="colMatchCodeHeader" xml:space="preserve">
-    <value>代码</value>
+  <data name="UiFriendRequestError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="btnLogoutText" xml:space="preserve">
-    <value>退出</value>
+  <data name="UiChangePasswordSendCodeError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiChangePasswordError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiChatLoadError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiChatSendMessageError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiChatOpenStickersError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiChatLoadStickersError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiChatSendStickerError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiCreateMatchError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiEmailVerificationError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiEmailVerificationResendError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiFriendUnfriendError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiFriendUnfriendDirectError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiInventoryLoadError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiInventoryEquipItemError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiInventoryClearItemSlotError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiInventoryEquipDiceError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiInventoryClearDiceSlotError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiLobbyKickMemberError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiLobbyCreateError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiLobbyJoinError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiLobbyStartMatchError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiLobbyLeaveError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiLobbyNavigateBoardError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiLoginGenericError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiRankingLoadError" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiSkinsLoadErrorSuffix" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UiSkinsApplyErrorSuffix" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

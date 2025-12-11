@@ -3688,6 +3688,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Your password could not be changed.
+        /// </summary>
+        public static string UiChangePasswordError {
+            get {
+                return ResourceManager.GetString("UiChangePasswordError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a An error occurred while changing your password.
         /// </summary>
         public static string UiChangePasswordGenericError {
@@ -3724,6 +3733,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a the change password code could not be sended.
+        /// </summary>
+        public static string UiChangePasswordSendCodeError {
+            get {
+                return ResourceManager.GetString("UiChangePasswordSendCodeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Your password has been updated successfully.
         /// </summary>
         public static string UiChangePasswordSuccess {
@@ -3742,11 +3760,65 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Chat could not be loaded.
+        /// </summary>
+        public static string UiChatLoadError {
+            get {
+                return ResourceManager.GetString("UiChatLoadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your stickers cant be loaded.
+        /// </summary>
+        public static string UiChatLoadStickersError {
+            get {
+                return ResourceManager.GetString("UiChatLoadStickersError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The stickers selector could not be opened.
+        /// </summary>
+        public static string UiChatOpenStickersError {
+            get {
+                return ResourceManager.GetString("UiChatOpenStickersError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your message could not be sended.
+        /// </summary>
+        public static string UiChatSendMessageError {
+            get {
+                return ResourceManager.GetString("UiChatSendMessageError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your stickers could not be sended.
+        /// </summary>
+        public static string UiChatSendStickerError {
+            get {
+                return ResourceManager.GetString("UiChatSendStickerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a A communication error occurred while contacting the server.
         /// </summary>
         public static string UiCommunicationError {
             get {
                 return ResourceManager.GetString("UiCommunicationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your match could not be created with the parameters you choose.
+        /// </summary>
+        public static string UiCreateMatchError {
+            get {
+                return ResourceManager.GetString("UiCreateMatchError", resourceCulture);
             }
         }
         
@@ -3774,6 +3846,24 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string UiEmailTooLong {
             get {
                 return ResourceManager.GetString("UiEmailTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your email verification code could not be verified.
+        /// </summary>
+        public static string UiEmailVerificationError {
+            get {
+                return ResourceManager.GetString("UiEmailVerificationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your code could not be resendend  to your email.
+        /// </summary>
+        public static string UiEmailVerificationResendError {
+            get {
+                return ResourceManager.GetString("UiEmailVerificationResendError", resourceCulture);
             }
         }
         
@@ -3814,11 +3904,65 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Friend request could not be sended.
+        /// </summary>
+        public static string UiFriendRequestError {
+            get {
+                return ResourceManager.GetString("UiFriendRequestError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your friends could not be loaded.
+        /// </summary>
+        public static string UiFriendsLoadError {
+            get {
+                return ResourceManager.GetString("UiFriendsLoadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a An error ocurred searching the user .
+        /// </summary>
+        public static string UiFriendsSearchError {
+            get {
+                return ResourceManager.GetString("UiFriendsSearchError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a This user could not be removed of your friends.
+        /// </summary>
+        public static string UiFriendUnfriendDirectError {
+            get {
+                return ResourceManager.GetString("UiFriendUnfriendDirectError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your friend could not be unfriend.
+        /// </summary>
+        public static string UiFriendUnfriendError {
+            get {
+                return ResourceManager.GetString("UiFriendUnfriendError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a An error occurred:.
         /// </summary>
         public static string UiGenericError {
             get {
                 return ResourceManager.GetString("UiGenericError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Error.
+        /// </summary>
+        public static string UiGenericErrorTitle {
+            get {
+                return ResourceManager.GetString("UiGenericErrorTitle", resourceCulture);
             }
         }
         
@@ -3864,6 +4008,51 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string UiInvalidInput {
             get {
                 return ResourceManager.GetString("UiInvalidInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The die could not be removed from the selected space..
+        /// </summary>
+        public static string UiInventoryClearDiceSlotError {
+            get {
+                return ResourceManager.GetString("UiInventoryClearDiceSlotError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The object could not be removed from the selected space..
+        /// </summary>
+        public static string UiInventoryClearItemSlotError {
+            get {
+                return ResourceManager.GetString("UiInventoryClearItemSlotError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The dice could not be equiped in the selected space..
+        /// </summary>
+        public static string UiInventoryEquipDiceError {
+            get {
+                return ResourceManager.GetString("UiInventoryEquipDiceError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a This item could not be picked.
+        /// </summary>
+        public static string UiInventoryEquipItemError {
+            get {
+                return ResourceManager.GetString("UiInventoryEquipItemError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your inventory could not be loaded.
+        /// </summary>
+        public static string UiInventoryLoadError {
+            get {
+                return ResourceManager.GetString("UiInventoryLoadError", resourceCulture);
             }
         }
         
@@ -4012,6 +4201,69 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a lobby could not be created.
+        /// </summary>
+        public static string UiLobbyCreateError {
+            get {
+                return ResourceManager.GetString("UiLobbyCreateError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a You were unable to join the lobby..
+        /// </summary>
+        public static string UiLobbyJoinError {
+            get {
+                return ResourceManager.GetString("UiLobbyJoinError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a This user could not be kicked.
+        /// </summary>
+        public static string UiLobbyKickMemberError {
+            get {
+                return ResourceManager.GetString("UiLobbyKickMemberError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a It was impossible to leave the lobby.
+        /// </summary>
+        public static string UiLobbyLeaveError {
+            get {
+                return ResourceManager.GetString("UiLobbyLeaveError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The game board could not be opened for the current game..
+        /// </summary>
+        public static string UiLobbyNavigateBoardError {
+            get {
+                return ResourceManager.GetString("UiLobbyNavigateBoardError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The game could not be started from the lobby..
+        /// </summary>
+        public static string UiLobbyStartMatchError {
+            get {
+                return ResourceManager.GetString("UiLobbyStartMatchError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Log in could not be posible.
+        /// </summary>
+        public static string UiLoginGenericError {
+            get {
+                return ResourceManager.GetString("UiLoginGenericError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Login successful. Welcome!.
         /// </summary>
         public static string UiLoginOk {
@@ -4120,6 +4372,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The player rankings could not be loaded. Please try again later..
+        /// </summary>
+        public static string UiRankingLoadError {
+            get {
+                return ResourceManager.GetString("UiRankingLoadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Resend in {0}s.
         /// </summary>
         public static string UiResendCodeInFmt {
@@ -4197,6 +4458,24 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string UiShopRequiresToken {
             get {
                 return ResourceManager.GetString("UiShopRequiresToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your selected skin could not be applied..
+        /// </summary>
+        public static string UiSkinsApplyErrorSuffix {
+            get {
+                return ResourceManager.GetString("UiSkinsApplyErrorSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your skins could not be loaded.
+        /// </summary>
+        public static string UiSkinsLoadErrorSuffix {
+            get {
+                return ResourceManager.GetString("UiSkinsLoadErrorSuffix", resourceCulture);
             }
         }
         

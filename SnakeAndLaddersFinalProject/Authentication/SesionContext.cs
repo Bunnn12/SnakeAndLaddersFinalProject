@@ -1,12 +1,13 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace SnakeAndLaddersFinalProject.Authentication
 {
     public sealed class SessionContext : INotifyPropertyChanged
     {
-        private const int USER_ID_NOT_SET = 0;
-        private const int DEFAULT_COINS= 0;
-
+        private const int UNAUTHENTICATED_USER_ID = 0;
+        private const int DEFAULT_COINS = 0;
 
         private static readonly SessionContext _currentSessionContext = new SessionContext();
 
@@ -14,10 +15,10 @@ namespace SnakeAndLaddersFinalProject.Authentication
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private int _userId = USER_ID_NOT_SET;
-        private int coins;
+        private int _userId = UNAUTHENTICATED_USER_ID;
+        private int _coins;
         private string _userName = string.Empty;
-        private string email = string.Empty;
+        private string _email = string.Empty;
         private string _authToken = string.Empty;
         private string _profilePhotoId = string.Empty;
         private string _currentSkinId = string.Empty;
@@ -32,30 +33,17 @@ namespace SnakeAndLaddersFinalProject.Authentication
             get => _userId;
             set
             {
-                if (_userId == value)
+                if (SetProperty(ref _userId, value))
                 {
-                    return;
+                    OnPropertyChanged(nameof(IsAuthenticated));
                 }
-
-                _userId = value;
-                OnPropertyChanged(nameof(UserId));
-                OnPropertyChanged(nameof(IsAuthenticated));
             }
         }
 
         public int Coins
         {
-            get => coins;
-            set
-            {
-                if (coins == value)
-                {
-                    return;
-                }
-
-                coins = value;
-                OnPropertyChanged(nameof(Coins));
-            }
+            get => _coins;
+            set => SetProperty(ref _coins, value);
         }
 
         public string UserName
@@ -63,103 +51,51 @@ namespace SnakeAndLaddersFinalProject.Authentication
             get => _userName;
             set
             {
-                if (_userName == value)
+                if (SetProperty(ref _userName, value ?? string.Empty))
                 {
-                    return;
+                    OnPropertyChanged(nameof(IsAuthenticated));
                 }
-
-                _userName = value ?? string.Empty;
-                OnPropertyChanged(nameof(UserName));
-                OnPropertyChanged(nameof(IsAuthenticated));
             }
         }
 
         public string Email
         {
-            get => email;
-            set
-            {
-                if (email == value)
-                {
-                    return;
-                }
-
-                email = value ?? string.Empty;
-                OnPropertyChanged(nameof(Email));
-            }
+            get => _email;
+            set => SetProperty(ref _email, value ?? string.Empty);
         }
 
         public string AuthToken
         {
             get => _authToken;
-            set
-            {
-                if (_authToken == value)
-                {
-                    return;
-                }
-
-                _authToken = value ?? string.Empty;
-                OnPropertyChanged(nameof(AuthToken));
-            }
+            set => SetProperty(ref _authToken, value ?? string.Empty);
         }
 
         public string ProfilePhotoId
         {
             get => _profilePhotoId;
-            set
-            {
-                if (_profilePhotoId == value)
-                {
-                    return;
-                }
-
-                _profilePhotoId = value ?? string.Empty;
-                OnPropertyChanged(nameof(ProfilePhotoId));
-            }
+            set => SetProperty(ref _profilePhotoId, value ?? string.Empty);
         }
 
         public string CurrentSkinId
         {
             get => _currentSkinId;
-            set
-            {
-                if (_currentSkinId == value)
-                {
-                    return;
-                }
-
-                _currentSkinId = value ?? string.Empty;
-                OnPropertyChanged(nameof(CurrentSkinId));
-            }
+            set => SetProperty(ref _currentSkinId, value ?? string.Empty);
         }
 
         public int? CurrentSkinUnlockedId
         {
             get => _currentSkinUnlockedId;
-            set
-            {
-                if (_currentSkinUnlockedId == value)
-                {
-                    return;
-                }
-
-                _currentSkinUnlockedId = value;
-                OnPropertyChanged(nameof(CurrentSkinUnlockedId));
-            }
+            set => SetProperty(ref _currentSkinUnlockedId, value);
         }
 
-        public bool IsAuthenticated => UserId > USER_ID_NOT_SET &&
+        public bool IsAuthenticated =>
+            UserId > UNAUTHENTICATED_USER_ID &&
             !string.IsNullOrWhiteSpace(UserName) &&
             !string.IsNullOrWhiteSpace(AuthToken);
 
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
         public void Clear()
         {
-            UserId = USER_ID_NOT_SET;
+            UserId = UNAUTHENTICATED_USER_ID;
             Coins = DEFAULT_COINS;
             UserName = string.Empty;
             Email = string.Empty;
@@ -169,5 +105,26 @@ namespace SnakeAndLaddersFinalProject.Authentication
             CurrentSkinUnlockedId = null;
         }
 
+        private bool SetProperty<T>(
+            ref T backingField,
+            T value,
+            [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(backingField, value))
+            {
+                return false;
+            }
+
+            backingField = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(
+                this,
+                new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

@@ -47,8 +47,8 @@ namespace SnakeAndLaddersFinalProject.Animation
 
         public bool IsAnimating { get; private set; }
 
-        public async Task AnimateMoveForLocalPlayerAsync(int userId,
-            int fromServerCellIndex, int toIndexServer, int diceValue)
+        public async Task AnimateMoveForLocalPlayerAsync(int userId, int fromServerCellIndex,
+            int toIndexServer, int diceValue)
         {
             int fromVisual = _mapServerIndexToVisual(fromServerCellIndex);
             int toVisual = _mapServerIndexToVisual(toIndexServer);
@@ -83,8 +83,8 @@ namespace SnakeAndLaddersFinalProject.Animation
             }
         }
 
-        private async Task AnimateTokenWalkAsync(PlayerTokenViewModel token,
-            int fromIndexVisual, int toIndexVisual)
+        private async Task AnimateTokenWalkAsync(PlayerTokenViewModel token, int fromIndexVisual,
+            int toIndexVisual)
         {
             if (token == null)
             {
@@ -104,8 +104,7 @@ namespace SnakeAndLaddersFinalProject.Animation
 
             int step = fromIndexVisual < toIndexVisual ? 1 : -1;
 
-            for (int index = fromIndexVisual + step;
-                 index != toIndexVisual + step;
+            for (int index = fromIndexVisual + step; index != toIndexVisual + step;
                  index += step)
             {
                 int cellIndex = index;
@@ -121,8 +120,7 @@ namespace SnakeAndLaddersFinalProject.Animation
             }
         }
 
-        private async Task AnimateLinkSlideAsync(PlayerTokenViewModel token,
-            BoardLinkDto link)
+        private async Task AnimateLinkSlideAsync(PlayerTokenViewModel token, BoardLinkDto link)
         {
             if (token == null || link == null)
             {

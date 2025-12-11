@@ -1530,4 +1530,97 @@
   <data name="lblSpecialTileTrap" xml:space="preserve">
     <value>Trap</value>
   </data>
+  <data name="UiGenericErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="UiFriendsLoadError" xml:space="preserve">
+    <value>Your friends could not be loaded</value>
+  </data>
+  <data name="UiFriendsSearchError" xml:space="preserve">
+    <value>An error ocurred searching the user </value>
+  </data>
+  <data name="UiFriendRequestError" xml:space="preserve">
+    <value>Friend request could not be sended</value>
+  </data>
+  <data name="UiChangePasswordSendCodeError" xml:space="preserve">
+    <value>the change password code could not be sended</value>
+  </data>
+  <data name="UiChangePasswordError" xml:space="preserve">
+    <value>Your password could not be changed</value>
+  </data>
+  <data name="UiChatLoadError" xml:space="preserve">
+    <value>Chat could not be loaded</value>
+  </data>
+  <data name="UiChatSendMessageError" xml:space="preserve">
+    <value>Your message could not be sended</value>
+  </data>
+  <data name="UiChatOpenStickersError" xml:space="preserve">
+    <value>The stickers selector could not be opened</value>
+  </data>
+  <data name="UiChatLoadStickersError" xml:space="preserve">
+    <value>Your stickers cant be loaded</value>
+  </data>
+  <data name="UiChatSendStickerError" xml:space="preserve">
+    <value>Your stickers could not be sended</value>
+  </data>
+  <data name="UiCreateMatchError" xml:space="preserve">
+    <value>Your match could not be created with the parameters you choose</value>
+  </data>
+  <data name="UiEmailVerificationError" xml:space="preserve">
+    <value>Your email verification code could not be verified</value>
+  </data>
+  <data name="UiEmailVerificationResendError" xml:space="preserve">
+    <value>Your code could not be resendend  to your email</value>
+  </data>
+  <data name="UiFriendUnfriendError" xml:space="preserve">
+    <value>Your friend could not be unfriend</value>
+  </data>
+  <data name="UiFriendUnfriendDirectError" xml:space="preserve">
+    <value>This user could not be removed of your friends</value>
+  </data>
+  <data name="UiInventoryLoadError" xml:space="preserve">
+    <value>Your inventory could not be loaded</value>
+  </data>
+  <data name="UiInventoryEquipItemError" xml:space="preserve">
+    <value>This item could not be picked</value>
+  </data>
+  <data name="UiInventoryClearItemSlotError" xml:space="preserve">
+    <value>The object could not be removed from the selected space.</value>
+  </data>
+  <data name="UiInventoryEquipDiceError" xml:space="preserve">
+    <value>The dice could not be equiped in the selected space.</value>
+  </data>
+  <data name="UiInventoryClearDiceSlotError" xml:space="preserve">
+    <value>The die could not be removed from the selected space.</value>
+  </data>
+  <data name="UiLobbyKickMemberError" xml:space="preserve">
+    <value>This user could not be kicked</value>
+  </data>
+  <data name="UiLobbyCreateError" xml:space="preserve">
+    <value>lobby could not be created</value>
+  </data>
+  <data name="UiLobbyJoinError" xml:space="preserve">
+    <value>You were unable to join the lobby.</value>
+  </data>
+  <data name="UiLobbyStartMatchError" xml:space="preserve">
+    <value>The game could not be started from the lobby.</value>
+  </data>
+  <data name="UiLobbyLeaveError" xml:space="preserve">
+    <value>It was impossible to leave the lobby</value>
+  </data>
+  <data name="UiLobbyNavigateBoardError" xml:space="preserve">
+    <value>The game board could not be opened for the current game.</value>
+  </data>
+  <data name="UiLoginGenericError" xml:space="preserve">
+    <value>Log in could not be posible</value>
+  </data>
+  <data name="UiRankingLoadError" xml:space="preserve">
+    <value>The player rankings could not be loaded. Please try again later.</value>
+  </data>
+  <data name="UiSkinsLoadErrorSuffix" xml:space="preserve">
+    <value>Your skins could not be loaded</value>
+  </data>
+  <data name="UiSkinsApplyErrorSuffix" xml:space="preserve">
+    <value>Your selected skin could not be applied.</value>
+  </data>
 </root>
