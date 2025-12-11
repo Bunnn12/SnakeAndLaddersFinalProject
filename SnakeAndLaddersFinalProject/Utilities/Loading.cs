@@ -31,8 +31,6 @@ namespace SnakeAndLaddersFinalProject.Utilities
             {
                 CancellationToken cancellationToken = linkedCts.Token;
 
-                object previous = mainFrame.Content;
-
                 await owner.Dispatcher.InvokeAsync(() =>
                 {
                     mainFrame.Navigate(new SnakeAndLaddersFinalProject.Pages.LoadingPage());

@@ -4,29 +4,24 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:SnakeAndLaddersFinalProject.Pages"
+      xmlns:language="clr-namespace:SnakeAndLaddersFinalProject.Properties.Langs"
       mc:Ignorable="d"
       d:DesignHeight="720"
       d:DesignWidth="1280"
       Title="CreateMatchPage"
       Background="Transparent">
 
-    <!-- ===== RECURSOS ===== -->
     <Page.Resources>
-        <!-- Mismo storyboard que usas en MainPage -->
         <Storyboard x:Key="MainPageVideoStoryboard"
                     RepeatBehavior="Forever">
-            <!-- Usa el mismo Source que en MainPage -->
             <MediaTimeline
                 Source="pack://siteoforigin:,,,/Assets/Videos/MainPageVideo.mp4"
                 Storyboard.TargetName="VideoBg" />
-            <!-- Si en MainPage usas pack://application:,,,/..., cámbialo igual aquí -->
         </Storyboard>
     </Page.Resources>
 
-    <!-- ===== LAYOUT RAÍZ ===== -->
     <Grid Background="Transparent">
 
-        <!-- VIDEO DE FONDO -->
         <MediaElement x:Name="VideoBg"
                       IsMuted="True"
                       Stretch="UniformToFill"
@@ -41,7 +36,6 @@
             </MediaElement.Triggers>
         </MediaElement>
 
-        <!-- TARJETA CENTRADA -->
         <Border Margin="24"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -59,10 +53,8 @@
                                   Opacity="0.55" />
             </Border.Effect>
 
-            <!-- IMPORTANTE: solo un hijo directo (ScrollViewer) -->
             <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-                <!-- Tu layout original dentro del ScrollViewer -->
                 <Grid Margin="8">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -73,7 +65,6 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Botón Back (nuevo) -->
                     <Button x:Name="btnBack"
                             Grid.Row="0"
                             HorizontalAlignment="Left"
@@ -83,6 +74,7 @@
                             Height="40"
                             Background="Transparent"
                             BorderBrush="Transparent"
+                            ToolTip="{x:Static language:Lang.btnBackText}"
                             Click="Back">
                         <Image Source="/Assets/Images/Icons/BackIcon.png"
                                Width="32"
@@ -91,20 +83,18 @@
                                RenderOptions.BitmapScalingMode="NearestNeighbor" />
                     </Button>
 
-                    <!-- Título -->
                     <TextBlock x:Name="lblTitle"
                                Grid.Row="0"
-                               Text="Ajustes de la partida"
+                               Text="{x:Static language:Lang.lblMatchSettingsText}"
                                FontSize="20"
                                FontWeight="SemiBold"
                                Margin="0,6,0,6"
                                Foreground="White"
                                HorizontalAlignment="Center"/>
 
-                    <!-- Tamaño -->
                     <StackPanel Grid.Row="1" Margin="0,0,0,5">
                         <TextBlock x:Name="lblBoardSize"
-                                   Text="Tamaño"
+                                   Text="{x:Static language:Lang.lblBoardSizeText}"
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Margin="0,0,0,8"
@@ -131,7 +121,7 @@
                                                    FontSize="18"
                                                    FontWeight="Bold"
                                                    HorizontalAlignment="Center" Foreground="White"/>
-                                        <TextBlock Text="Pequeño"
+                                        <TextBlock Text="{x:Static language:Lang.lblBoardSizeSmall}"
                                                    FontSize="12"
                                                    Opacity="0.8"
                                                    HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
@@ -157,7 +147,7 @@
                                                    FontSize="18"
                                                    FontWeight="Bold"
                                                    HorizontalAlignment="Center" Foreground="White"/>
-                                        <TextBlock Text="Estándar"
+                                        <TextBlock Text="{x:Static language:Lang.lblBoardSizeStandard}"
                                                    FontSize="12"
                                                    Opacity="0.8"
                                                    HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
@@ -182,7 +172,7 @@
                                                    FontSize="18"
                                                    FontWeight="Bold"
                                                    HorizontalAlignment="Center" Foreground="White"/>
-                                        <TextBlock Text="Grande"
+                                        <TextBlock Text="{x:Static language:Lang.lblBoardSizeLarge}"
                                                    FontSize="12"
                                                    Opacity="0.8"
                                                    HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
@@ -192,10 +182,9 @@
                         </UniformGrid>
                     </StackPanel>
 
-                    <!-- Dificultad -->
                     <StackPanel Grid.Row="2" Margin="0,0,0,16">
                         <TextBlock x:Name="lblDifficulty"
-                                   Text="Dificultad"
+                                   Text="{x:Static language:Lang.lblDifficultyText}"
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Margin="0,0,0,8"
@@ -214,7 +203,7 @@
                                                Source="/Assets/Images/Icons/EasyDifficultyIcon.png"
                                                Stretch="Fill"
                                                Width="70"/>
-                                        <TextBlock Text="Fácil"
+                                        <TextBlock Text="{x:Static language:Lang.lblDifficultyEasy}"
                                                    FontSize="12"
                                                    Opacity="0.8"
                                                    HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
@@ -234,7 +223,7 @@
                                                Source="/Assets/Images/Icons/MediumDifficultyIcon.png"
                                                Stretch="Fill"
                                                Width="70"/>
-                                        <TextBlock Text="Medio"
+                                        <TextBlock Text="{x:Static language:Lang.lblDifficultyMedium}"
                                                    FontSize="12"
                                                    Opacity="0.8"
                                                    HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
@@ -254,7 +243,7 @@
                                                Source="/Assets/Images/Icons/HardDifficultyIcon.png"
                                                Stretch="Fill"
                                                Width="68"/>
-                                        <TextBlock Text="Difícil"
+                                        <TextBlock Text="{x:Static language:Lang.lblDifficultyHard}"
                                                    FontSize="12"
                                                    Opacity="0.8"
                                                    HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
@@ -264,10 +253,9 @@
                         </UniformGrid>
                     </StackPanel>
 
-                    <!-- Casillas especiales -->
                     <StackPanel Grid.Row="3" Margin="0,0,0,16">
                         <TextBlock x:Name="lblSpecialTiles"
-                                   Text="Casillas especiales"
+                                   Text="{x:Static language:Lang.lblSpecialTilesText}"
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Margin="0,0,0,8"
@@ -283,7 +271,7 @@
                                                Source="/Assets/Images/Icons/SpecialDileTileIcon.png"
                                                Stretch="Fill"
                                                Width="54"/>
-                                        <TextBlock Text="Dado"
+                                        <TextBlock Text="{x:Static language:Lang.lblDiceSectionTitle}"
                                                    FontSize="12"
                                                    Opacity="0.8"
                                                    HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
@@ -301,7 +289,7 @@
                                                Source="/Assets/Images/Icons/SpecialMessageTileIcon.png"
                                                Stretch="Fill"
                                                Width="55"/>
-                                        <TextBlock Text="Mensaje"
+                                        <TextBlock Text="{x:Static language:Lang.lblSpecialTileMessage}"
                                                    FontSize="12"
                                                    Opacity="0.8"
                                                    HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
@@ -319,7 +307,7 @@
                                                Source="/Assets/Images/Icons/SpecialItemTileIcon.png"
                                                Stretch="Fill"
                                                Width="62"/>
-                                        <TextBlock Text="Trampa"
+                                        <TextBlock Text="{x:Static language:Lang.lblSpecialTileTrap}"
                                                    FontSize="12"
                                                    Opacity="0.8"
                                                    HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
@@ -329,23 +317,22 @@
                         </UniformGrid>
                     </StackPanel>
 
-                    <!-- Sala privada / Jugadores -->
                     <StackPanel Grid.Row="4" Margin="0,0,0,16">
                         <TextBlock x:Name="lblPrivacy"
-                                   Text="Sala privada"
+                                   Text="{x:Static language:Lang.lblPrivateRoom}"
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Margin="0,0,0,8"
                                    Foreground="White"/>
                         <DockPanel LastChildFill="True">
                             <CheckBox x:Name="chkPrivateRoom"
-                                      Content="Habilitar"
+                                      Content="{x:Static language:Lang.chkEnableText}"
                                       Margin="0,0,8,0"
                                       VerticalAlignment="Center" Foreground="White"/>
                         </DockPanel>
 
                         <TextBlock x:Name="lblPlayers"
-                                   Text="Jugadores"
+                                   Text="{x:Static language:Lang.lblPlayersText}"
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Margin="0,16,0,8"
@@ -369,12 +356,11 @@
                         </UniformGrid>
                     </StackPanel>
 
-                    <!-- Botón crear -->
                     <StackPanel Grid.Row="5"
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Right">
                         <Button x:Name="btnCreateRoom"
-                                Content="Crear sala"
+                                Content="{x:Static language:Lang.btnCreateMatchText}"
                                 Padding="16,8"
                                 Margin="0,8,0,0"
                                 Click="CreateRoom"/>

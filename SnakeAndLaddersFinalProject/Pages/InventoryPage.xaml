@@ -14,22 +14,14 @@
           Background="#001A33">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <!-- barra superior -->
             <RowDefinition Height="Auto" />
-            <!-- título Items -->
             <RowDefinition Height="*" />
-            <!-- grid Items -->
             <RowDefinition Height="Auto" />
-            <!-- título Dados -->
             <RowDefinition Height="*" />
-            <!-- grid Dados -->
             <RowDefinition Height="Auto" />
-            <!-- Inventario Juicio label -->
             <RowDefinition Height="Auto" />
-            <!-- slots items + dados -->
         </Grid.RowDefinitions>
 
-        <!-- Barra superior con back -->
         <Border Grid.Row="0"
                 BorderBrush="#F5F1C5"
                 BorderThickness="2"
@@ -53,15 +45,13 @@
             </DockPanel>
         </Border>
 
-        <!-- Título Items -->
         <TextBlock Grid.Row="1"
-                   Text="Items"
+                   Text="{x:Static language:Lang.lblItemSectionTitle}"
                    Margin="4,0,0,8"
                    FontSize="18"
                    FontWeight="Bold"
                    Foreground="#F5F1C5" />
 
-        <!-- Items: ícono + cantidad -->
         <Border Grid.Row="2"
                 BorderBrush="#F5F1C5"
                 BorderThickness="2"
@@ -99,15 +89,13 @@
             </ListBox>
         </Border>
 
-        <!-- Título Dados -->
         <TextBlock Grid.Row="3"
-                   Text="Dados"
+                   Text="{x:Static language:Lang.lblDiceSectionTitle}"
                    Margin="4,12,0,4"
                    FontSize="18"
                    FontWeight="Bold"
                    Foreground="#F5F1C5" />
 
-        <!-- Dados: ícono + cantidad -->
         <Border Grid.Row="4"
                 BorderBrush="#F5F1C5"
                 BorderThickness="2"
@@ -145,21 +133,19 @@
             </ListBox>
         </Border>
 
-        <!-- Label Inventario Juicio -->
         <TextBlock Grid.Row="5"
-                   Text="Inventario Juicio"
+                   Text="{x:Static language:Lang.lblMatchInventoryTitle}"
                    Margin="4,12,0,4"
                    FontSize="16"
                    FontWeight="Bold"
                    Foreground="#F5F1C5" />
 
-        <!-- Slots items + dados -->
         <Border Grid.Row="6"
                 BorderBrush="#F5F1C5"
                 BorderThickness="2"
                 Padding="6">
             <controls:InventorySlotsControl HorizontalAlignment="Center" />
-            
+
         </Border>
     </Grid>
 </Page>

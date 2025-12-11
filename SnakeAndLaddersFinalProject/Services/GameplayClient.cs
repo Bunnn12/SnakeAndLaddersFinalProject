@@ -30,7 +30,7 @@ namespace SnakeAndLaddersFinalProject.Services
 
         public Task<RollDiceResponseDto> GetRollDiceAsync(
             int gameId,
-            int userId,
+            int playerUserId,
             byte? diceSlotNumber)
         {
             return Task.Run(
@@ -39,7 +39,7 @@ namespace SnakeAndLaddersFinalProject.Services
                     var request = new RollDiceRequestDto
                     {
                         GameId = gameId,
-                        PlayerUserId = userId,
+                        PlayerUserId = playerUserId,
                         DiceSlotNumber = diceSlotNumber
                     };
 
@@ -47,9 +47,8 @@ namespace SnakeAndLaddersFinalProject.Services
                 });
         }
 
-        public Task RegisterTurnTimeoutAsync(int gameId, int userId)
+        public Task RegisterTurnTimeoutAsync(int gameId, int playerUserId)
         {
-            
             return Task.Run(
                 () =>
                 {
@@ -72,34 +71,34 @@ namespace SnakeAndLaddersFinalProject.Services
                 });
         }
 
-        public Task JoinGameAsync(int gameId, int userId, string userName)
+        public Task JoinGameAsync(int gameId, int playerUserId, string userName)
         {
             return Task.Run(
                 () =>
                 {
-                    _gameplayProxy.JoinGame(gameId, userId, userName);
+                    _gameplayProxy.JoinGame(gameId, playerUserId, userName);
                 });
         }
 
-        public Task LeaveGameAsync(int gameId, int userId, string reason)
+        public Task LeaveGameAsync(int gameId, int playerUserId, string reason)
         {
             return Task.Run(
                 () =>
                 {
-                    _gameplayProxy.LeaveGame(gameId, userId, reason);
+                    _gameplayProxy.LeaveGame(gameId, playerUserId, reason);
                 });
         }
 
         public Task<UseItemResponseDto> UseItemAsync(
             int gameId,
-            int userId,
+            int playerUserId,
             byte itemSlotNumber,
             int? targetUserId)
         {
             var request = new UseItemRequestDto
             {
                 GameId = gameId,
-                PlayerUserId = userId,
+                PlayerUserId = playerUserId,
                 ItemSlotNumber = itemSlotNumber,
                 TargetUserId = targetUserId
             };
@@ -109,48 +108,31 @@ namespace SnakeAndLaddersFinalProject.Services
 
         public void Dispose()
         {
-            try
+            DisposeCommunicationObject(_gameplayProxy as ICommunicationObject);
+            DisposeCommunicationObject(_channelFactory);
+        }
+
+        private static void DisposeCommunicationObject(ICommunicationObject communicationObject)
+        {
+            if (communicationObject == null)
             {
-                if (_gameplayProxy is ICommunicationObject communicationObject)
-                {
-                    if (communicationObject.State == CommunicationState.Faulted)
-                    {
-                        communicationObject.Abort();
-                    }
-                    else
-                    {
-                        communicationObject.Close();
-                    }
-                }
-            }
-            catch
-            {
-                if (_gameplayProxy is ICommunicationObject communicationObject)
-                {
-                    communicationObject.Abort();
-                }
+                return;
             }
 
             try
             {
-                if (_channelFactory != null)
+                if (communicationObject.State == CommunicationState.Faulted)
                 {
-                    if (_channelFactory.State == CommunicationState.Faulted)
-                    {
-                        _channelFactory.Abort();
-                    }
-                    else
-                    {
-                        _channelFactory.Close();
-                    }
+                    communicationObject.Abort();
+                }
+                else
+                {
+                    communicationObject.Close();
                 }
             }
             catch
             {
-                if (_channelFactory != null)
-                {
-                    _channelFactory.Abort();
-                }
+                communicationObject.Abort();
             }
         }
     }

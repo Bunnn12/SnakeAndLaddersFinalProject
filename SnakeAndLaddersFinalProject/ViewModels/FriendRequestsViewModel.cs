@@ -54,7 +54,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        public bool ValidateSearchUsername(string username, out string normalizedUsername)
+        public static bool ValidateSearchUsername(string username, out string normalizedUsername)
         {
             normalizedUsername = InputValidator.Normalize(username);
 

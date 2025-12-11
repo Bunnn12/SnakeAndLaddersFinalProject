@@ -76,8 +76,8 @@ namespace SnakeAndLaddersFinalProject.Managers
                 throw new ArgumentNullException(nameof(getIsTargetSelectionActive));
             _setIsRollRequestInProgress = setIsRollRequestInProgress ??
                 throw new ArgumentNullException(nameof(setIsRollRequestInProgress));
-            _raiseAllCanExecuteChanged = raiseAllCanExecuteChanged ?? throw new ArgumentNullException(
-                nameof(raiseAllCanExecuteChanged));
+            _raiseAllCanExecuteChanged = raiseAllCanExecuteChanged ??
+                throw new ArgumentNullException(nameof(raiseAllCanExecuteChanged));
             _syncGameStateAsync = syncGameStateAsync ?? throw new ArgumentNullException(
                 nameof(syncGameStateAsync));
             _initializeInventoryAsync = initializeInventoryAsync ?? throw new ArgumentNullException(
@@ -150,7 +150,8 @@ namespace SnakeAndLaddersFinalProject.Managers
                 await ShowGrantedRewardsAsync(response, _gameWindowTitle).ConfigureAwait(false);
                 _diceSelectionManager.ResetSelection();
 
-                _logger.InfoFormat("RollDice request accepted. UserId={0}, From={1}, To={2}, Dice={3}",
+                _logger.InfoFormat("RollDice request accepted. UserId={0}, From={1}," +
+                    " To={2}, Dice={3}",
                     _localUserId, response.FromCellIndex, response.ToCellIndex, response.DiceValue);
 
                 await _syncGameStateAsync().ConfigureAwait(false);
@@ -183,10 +184,10 @@ namespace SnakeAndLaddersFinalProject.Managers
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                string text = "¡Has obtenido ";
+                string text = "You have obtained ";
                 if (!string.IsNullOrWhiteSpace(response.GrantedItemCode))
                 {
-                    text += string.Format("un ítem ({0})", response.GrantedItemCode);
+                    text += string.Format("an ítem ({0})", response.GrantedItemCode);
                 }
                 if (!string.IsNullOrWhiteSpace(response.GrantedDiceCode))
                 {
@@ -194,7 +195,7 @@ namespace SnakeAndLaddersFinalProject.Managers
                     {
                         text += " y ";
                     }
-                    text += string.Format("un dado ({0})", response.GrantedDiceCode);
+                    text += string.Format("a dice ({0})", response.GrantedDiceCode);
                 }
                 text += "!";
                 MessageBox.Show(text, gameWindowTitle, MessageBoxButton.OK,

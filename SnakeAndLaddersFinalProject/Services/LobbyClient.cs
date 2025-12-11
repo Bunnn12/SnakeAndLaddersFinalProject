@@ -9,7 +9,6 @@ namespace SnakeAndLaddersFinalProject.Services
     {
         private const string LOBBY_ENDPOINT_NAME = "NetTcpBinding_ILobbyService";
 
-        private readonly LobbyClientCallback _callback;
         private readonly LobbyServiceClient _client;
         private bool _isDisposed;
 
@@ -20,8 +19,8 @@ namespace SnakeAndLaddersFinalProject.Services
                 throw new ArgumentNullException(nameof(eventsHandler));
             }
 
-            _callback = new LobbyClientCallback(eventsHandler);
-            var context = new InstanceContext(_callback);
+            var callback = new LobbyClientCallback(eventsHandler);
+            var context = new InstanceContext(callback);
             _client = new LobbyServiceClient(context, LOBBY_ENDPOINT_NAME);
         }
 

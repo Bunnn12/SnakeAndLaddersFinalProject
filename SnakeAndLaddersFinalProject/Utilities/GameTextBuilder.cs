@@ -7,18 +7,25 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
 {
     public static class GameTextBuilder
     {
+        private const string ITEM_CODE_ROCKET = "IT_ROCKET";
+        private const string ITEM_CODE_ANCHOR = "IT_ANCHOR";
+        private const string ITEM_CODE_FREEZE = "IT_FREEZE";
+        private const string ITEM_CODE_SHIELD = "IT_SHIELD";
+
         public static string BuildEffectsText(TokenStateDto tokenState)
         {
             List<string> effectTexts = new List<string>();
 
             if (tokenState.HasShield && tokenState.RemainingShieldTurns > 0)
             {
-                effectTexts.Add(string.Format(Lang.GameEffectsShieldFmt, tokenState.RemainingShieldTurns));
+                effectTexts.Add(
+                    string.Format(Lang.GameEffectsShieldFmt, tokenState.RemainingShieldTurns));
             }
 
             if (tokenState.RemainingFrozenTurns > 0)
             {
-                effectTexts.Add(string.Format(Lang.GameEffectsFrozenFmt, tokenState.RemainingFrozenTurns));
+                effectTexts.Add(
+                    string.Format(Lang.GameEffectsFrozenFmt, tokenState.RemainingFrozenTurns));
             }
 
             if (tokenState.HasPendingRocketBonus)
@@ -36,59 +43,121 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
 
         public static string BuildItemUsedMessage(ItemUsedNotificationDto notification)
         {
-            string actorPlayer = string.Format(Lang.PodiumDefaultPlayerNameFmt, notification.UserId);
-            string targetPlayer = notification.TargetUserId.HasValue
-                ? string.Format(Lang.PodiumDefaultPlayerNameFmt, notification.TargetUserId.Value)
-                : null;
+            if (notification == null)
+            {
+                throw new ArgumentNullException(nameof(notification));
+            }
+
+            string actorPlayer = FormatPlayerName(notification.UserId);
+            string targetPlayer = FormatTargetPlayerName(notification.TargetUserId);
 
             ItemEffectResultDto effectResult = notification.EffectResult;
-            bool isBlockedByShield = effectResult != null && effectResult.WasBlockedByShield;
-            bool isWithNoMovement = effectResult != null && effectResult.FromCellIndex == effectResult.ToCellIndex;
+            bool isBlockedByShield = IsBlockedByShield(effectResult);
+            bool isWithNoMovement = IsWithNoMovement(effectResult);
 
             switch (notification.ItemCode)
             {
-                case "IT_ROCKET":
-                    if (isBlockedByShield && targetPlayer != null)
-                    {
-                        return string.Format(
-                            Lang.GameItemRocketBlockedFmt,actorPlayer,targetPlayer);
-                    }
+                case ITEM_CODE_ROCKET:
+                    return BuildRocketMessage(actorPlayer, targetPlayer, isBlockedByShield);
 
-                    return string.Format(Lang.GameItemRocketUsedFmt, actorPlayer);
+                case ITEM_CODE_ANCHOR:
+                    return BuildAnchorMessage(actorPlayer, targetPlayer, isWithNoMovement);
 
-                case "IT_ANCHOR":
-                    if (isWithNoMovement && targetPlayer != null)
-                    {
-                        return string.Format(
-                            Lang.GameItemAnchorBlockedFmt, actorPlayer,targetPlayer);
-                    }
+                case ITEM_CODE_FREEZE:
+                    return BuildFreezeMessage(actorPlayer, targetPlayer, isBlockedByShield);
 
-                    if (targetPlayer == null)
-                    {
-                        return string.Format( Lang.GameItemAnchorUsedFmt, actorPlayer);
-                    }
-
-                    return string.Format(Lang.GameItemAnchorUsedOnPlayerFmt, actorPlayer, targetPlayer);
-
-                case "IT_FREEZE":
-                    if (isBlockedByShield && targetPlayer != null)
-                    {
-                        return string.Format(Lang.GameItemFreezeBlockedFmt, actorPlayer, targetPlayer);
-                    }
-
-                    if (targetPlayer == null)
-                    {
-                        return string.Format(Lang.GameItemFreezeUsedFmt, actorPlayer);
-                    }
-
-                    return string.Format(Lang.GameItemFreezeAppliedFmt, actorPlayer, targetPlayer);
-
-                case "IT_SHIELD":
+                case ITEM_CODE_SHIELD:
                     return string.Format(Lang.GameItemShieldUsedFmt, actorPlayer);
 
                 default:
                     return string.Format(Lang.GameItemGenericUsedFmt, actorPlayer);
             }
+        }
+
+        private static string FormatPlayerName(int userId)
+        {
+            return string.Format(Lang.PodiumDefaultPlayerNameFmt, userId);
+        }
+
+        private static string FormatTargetPlayerName(int? targetUserId)
+        {
+            if (!targetUserId.HasValue)
+            {
+                return null;
+            }
+
+            return FormatPlayerName(targetUserId.Value);
+        }
+
+        private static bool IsBlockedByShield(ItemEffectResultDto effectResult)
+        {
+            return effectResult != null && effectResult.WasBlockedByShield;
+        }
+
+        private static bool IsWithNoMovement(ItemEffectResultDto effectResult)
+        {
+            return effectResult != null &&
+                   effectResult.FromCellIndex == effectResult.ToCellIndex;
+        }
+
+        private static string BuildRocketMessage(string actorPlayer,
+            string targetPlayer, bool isBlockedByShield)
+        {
+            if (isBlockedByShield && targetPlayer != null)
+            {
+                return string.Format(
+                    Lang.GameItemRocketBlockedFmt,
+                    actorPlayer,
+                    targetPlayer);
+            }
+
+            return string.Format(Lang.GameItemRocketUsedFmt, actorPlayer);
+        }
+
+        private static string BuildAnchorMessage(
+            string actorPlayer,
+            string targetPlayer,
+            bool isWithNoMovement)
+        {
+            if (isWithNoMovement && targetPlayer != null)
+            {
+                return string.Format(
+                    Lang.GameItemAnchorBlockedFmt,
+                    actorPlayer,
+                    targetPlayer);
+            }
+
+            if (targetPlayer == null)
+            {
+                return string.Format(Lang.GameItemAnchorUsedFmt, actorPlayer);
+            }
+
+            return string.Format(
+                Lang.GameItemAnchorUsedOnPlayerFmt,
+                actorPlayer,
+                targetPlayer);
+        }
+
+        private static string BuildFreezeMessage(string actorPlayer, string targetPlayer,
+            bool isBlockedByShield)
+        {
+            if (isBlockedByShield && targetPlayer != null)
+            {
+                return string.Format(
+                    Lang.GameItemFreezeBlockedFmt,
+                    actorPlayer,
+                    targetPlayer);
+            }
+
+            if (targetPlayer == null)
+            {
+                return string.Format(Lang.GameItemFreezeUsedFmt, actorPlayer);
+            }
+
+            return string.Format(
+                Lang.GameItemFreezeAppliedFmt,
+                actorPlayer,
+                targetPlayer);
         }
     }
 }

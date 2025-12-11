@@ -1485,4 +1485,49 @@
   <data name="SkinsUpdatedTitle" xml:space="preserve">
     <value>Avatar Updated</value>
   </data>
+  <data name="btnCopyLinkText" xml:space="preserve">
+    <value>Copy link</value>
+  </data>
+  <data name="btnLogoutText" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="chkEnableText" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="colHostHeader" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="colMatchCodeHeader" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="lblBoardSizeLarge" xml:space="preserve">
+    <value>Large</value>
+  </data>
+  <data name="lblBoardSizeSmall" xml:space="preserve">
+    <value>Small</value>
+  </data>
+  <data name="lblBoardSizeStandard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="lblDifficultyEasy" xml:space="preserve">
+    <value>Easy</value>
+  </data>
+  <data name="lblDifficultyHard" xml:space="preserve">
+    <value>Hard</value>
+  </data>
+  <data name="lblDifficultyMedium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="lblMatchInventoryTitle" xml:space="preserve">
+    <value>Match inventory</value>
+  </data>
+  <data name="lblPrivateRoom" xml:space="preserve">
+    <value>Private game</value>
+  </data>
+  <data name="lblSpecialTileMessage" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="lblSpecialTileTrap" xml:space="preserve">
+    <value>Trap</value>
+  </data>
 </root>

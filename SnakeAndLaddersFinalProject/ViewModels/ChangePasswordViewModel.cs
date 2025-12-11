@@ -286,7 +286,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        private bool IsStrongPassword(string password)
+        private static bool IsStrongPassword(string password)
         {
             if (string.IsNullOrEmpty(password) || password.Length < PASSWORD_MIN_LENGTH)
             {
@@ -301,7 +301,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             return hasUpper && hasLower && hasDigit && hasSpecial;
         }
 
-        private void HandleRequestCodeError(AuthResult result)
+        private static void HandleRequestCodeError(AuthResult result)
         {
             string code = result.Code ?? string.Empty;
             Dictionary<string, string> meta = result.Meta ?? new Dictionary<string, string>();
@@ -323,7 +323,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             ShowError(UI_CHANGE_PASSWORD_GENERIC_ERROR);
         }
 
-        private void HandleChangePasswordError(AuthResult result)
+        private static void HandleChangePasswordError(AuthResult result)
         {
             string code = result.Code ?? string.Empty;
 

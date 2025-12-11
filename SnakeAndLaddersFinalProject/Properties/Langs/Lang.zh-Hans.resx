@@ -1485,4 +1485,49 @@
   <data name="lblWinnerLabelText" xml:space="preserve">
     <value>优胜者</value>
   </data>
+  <data name="chkEnableText" xml:space="preserve">
+    <value>使能够</value>
+  </data>
+  <data name="lblBoardSizeLarge" xml:space="preserve">
+    <value>大的</value>
+  </data>
+  <data name="lblBoardSizeSmall" xml:space="preserve">
+    <value>小的</value>
+  </data>
+  <data name="lblBoardSizeStandard" xml:space="preserve">
+    <value>标准</value>
+  </data>
+  <data name="lblDifficultyEasy" xml:space="preserve">
+    <value>简单的</value>
+  </data>
+  <data name="lblDifficultyHard" xml:space="preserve">
+    <value>难的</value>
+  </data>
+  <data name="lblDifficultyMedium" xml:space="preserve">
+    <value>中等的</value>
+  </data>
+  <data name="lblPrivateRoom" xml:space="preserve">
+    <value>私人游戏</value>
+  </data>
+  <data name="lblSpecialTileMessage" xml:space="preserve">
+    <value>信息</value>
+  </data>
+  <data name="lblSpecialTileTrap" xml:space="preserve">
+    <value>陷阱</value>
+  </data>
+  <data name="btnCopyLinkText" xml:space="preserve">
+    <value>复制链接</value>
+  </data>
+  <data name="lblMatchInventoryTitle" xml:space="preserve">
+    <value>匹配库存</value>
+  </data>
+  <data name="colHostHeader" xml:space="preserve">
+    <value>主持人</value>
+  </data>
+  <data name="colMatchCodeHeader" xml:space="preserve">
+    <value>代码</value>
+  </data>
+  <data name="btnLogoutText" xml:space="preserve">
+    <value>退出</value>
+  </data>
 </root>

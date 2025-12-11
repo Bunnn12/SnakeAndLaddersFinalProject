@@ -11,7 +11,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class EmailVerificationViewModel
     {
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(EmailVerificationViewModel));
+        private static readonly ILog _logger = LogManager.GetLogger(
+            typeof(EmailVerificationViewModel));
 
         private const int DEFAULT_RESEND_COOLDOWN_SECONDS = 45;
         private const int VERIFICATION_CODE_LENGTH = 6;
@@ -133,13 +134,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     int seconds = DEFAULT_RESEND_COOLDOWN_SECONDS;
 
                     if (result.Meta != null &&
-                        result.Meta.TryGetValue(META_KEY_SECONDS, out string secondsText))
+                        result.Meta.TryGetValue(META_KEY_SECONDS, out string secondsText) &&
+                        int.TryParse(secondsText, out int parsedSeconds))
                     {
-                        if (int.TryParse(secondsText, out int parsedSeconds))
-                        {
-                            seconds = parsedSeconds;
-                        }
+                        seconds = parsedSeconds;
                     }
+
 
                     ShowWarn(string.Format(T(KEY_AUTH_THROTTLE_WAIT_FMT), seconds));
                     ResendCooldownRequested?.Invoke(seconds);

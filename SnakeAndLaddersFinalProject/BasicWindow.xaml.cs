@@ -1,6 +1,7 @@
 ﻿using SnakeAndLaddersFinalProject.Pages;
 using SnakeAndLaddersFinalProject.Utilities;
 using SnakeAndLaddersFinalProject.ViewModels;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,10 +14,15 @@ namespace SnakeAndLaddersFinalProject
 {
     public sealed partial class BasicWindow : Window
     {
-        private const string DEFAULT_BACKGROUND_PATH = "Assets/Images/BackgroundMainWindow.png";
+        private const string DEFAULT_BACKGROUND_PATH =
+            "Assets/Images/BackgroundMainWindow.png";
+
         private const string AUTH_BACKGROUND_KEY = "Auth";
-        private const string AUTH_BACKGROUND_PATH = "/Assets/Images/Backgrounds/LoginBackground (2).png";
-        private const string PACK_URI_FORMAT = "pack://application:,,,/{0}";
+        private const string AUTH_BACKGROUND_PATH =
+            "Assets/Images/Backgrounds/LoginBackground (2).png";
+
+        private static readonly ILog _logger =
+            LogManager.GetLogger(typeof(BasicWindow));
 
         private static readonly IReadOnlyDictionary<string, string> _backgrounds =
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -31,7 +37,7 @@ namespace SnakeAndLaddersFinalProject
             InitializeComponent();
         }
 
-        private async void BasicWindow_Closing(object sender, CancelEventArgs e)
+        private async void BasicWindowClosing(object sender, CancelEventArgs e)
         {
             if (_isClosingHandled)
             {
@@ -41,26 +47,31 @@ namespace SnakeAndLaddersFinalProject
             _isClosingHandled = true;
 
             if (MainFrame.Content is LobbyPage lobbyPage &&
-                lobbyPage.DataContext is LobbyViewModel vm)
+                lobbyPage.DataContext is LobbyViewModel lobbyViewModel)
             {
-                await vm.TryLeaveLobbySilentlyAsync().ConfigureAwait(true);
+                await lobbyViewModel
+                    .TryLeaveLobbySilentlyAsync()
+                    .ConfigureAwait(true);
             }
 
             try
             {
-                await AuthClientHelper.LogoutAsync().ConfigureAwait(true);
+                await AuthClientHelper
+                    .LogoutAsync()
+                    .ConfigureAwait(true);
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.Warn("Logout error, an error ocurred while closing the window", ex);
             }
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Pages.StartPage());
+            MainFrame.Navigate(new StartPage());
         }
 
-        private void MainFrame_Navigated(object sender, NavigationEventArgs e)
+        private void MainFrameNavigated(object sender, NavigationEventArgs e)
         {
             var page = e.Content as Page;
             if (page == null)
@@ -71,7 +82,8 @@ namespace SnakeAndLaddersFinalProject
 
             var key = PageBackground.GetKey(page);
 
-            if (!string.IsNullOrWhiteSpace(key) && _backgrounds.TryGetValue(key, out var path))
+            if (!string.IsNullOrWhiteSpace(key) &&
+                _backgrounds.TryGetValue(key, out var path))
             {
                 SetBackground(path);
             }
@@ -83,33 +95,37 @@ namespace SnakeAndLaddersFinalProject
 
         private void SetBackground(string resourcePath)
         {
+            var path = (resourcePath ?? DEFAULT_BACKGROUND_PATH).TrimStart('/');
+
+            if (!TrySetBackgroundFromPath(path))
+            {
+                var defaultPath = DEFAULT_BACKGROUND_PATH.TrimStart('/');
+                TrySetBackgroundFromPath(defaultPath);
+            }
+        }
+
+        private bool TrySetBackgroundFromPath(string resourcePath)
+        {
             try
             {
-                var path = (resourcePath ?? string.Empty).TrimStart('/');
-                var packUri = new Uri(string.Format(PACK_URI_FORMAT, path), UriKind.Absolute);
+                var uri = new Uri(resourcePath, UriKind.Relative);
 
-                var bmp = new BitmapImage();
-                bmp.BeginInit();
-                bmp.UriSource = packUri;
-                bmp.CacheOption = BitmapCacheOption.OnLoad;
-                bmp.EndInit();
-                bmp.Freeze();
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = uri;
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+                bitmap.Freeze();
 
-                BgBrush.ImageSource = bmp;
+                BgBrush.ImageSource = bitmap;
+                return true;
             }
-            catch
+            catch (Exception ex)
             {
-                var defPath = DEFAULT_BACKGROUND_PATH.TrimStart('/');
-                var defUri = new Uri(string.Format(PACK_URI_FORMAT, defPath), UriKind.Absolute);
-
-                var bmp = new BitmapImage();
-                bmp.BeginInit();
-                bmp.UriSource = defUri;
-                bmp.CacheOption = BitmapCacheOption.OnLoad;
-                bmp.EndInit();
-                bmp.Freeze();
-
-                BgBrush.ImageSource = bmp;
+                _logger.Warn(
+                    $"Couldnt charge the image from '{resourcePath}'.",
+                    ex);
+                return false;
             }
         }
     }

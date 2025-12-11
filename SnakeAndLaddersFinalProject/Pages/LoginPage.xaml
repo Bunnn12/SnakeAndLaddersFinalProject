@@ -194,114 +194,120 @@
         <sys:Boolean x:Key="TabChecked_SignUp">False</sys:Boolean>
     </Page.Resources>
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="979" Height="450">
-        <Image Source="/Pages/loginFrame.png"
-               Stretch="Fill"
-               Panel.ZIndex="0"
-               Margin="318,29,319,37"/>
+    <Grid>
+        <Image Source="/Assets/Images/Backgrounds/LoginBackground (2).png" 
+               Stretch="UniformToFill" 
+               Panel.ZIndex="-1"/>
 
-        <Grid Panel.ZIndex="1" Height="450" VerticalAlignment="Top" Background="Transparent" Margin="0,10,1,0">
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="979" Height="450">
+            <Image Source="/Pages/loginFrame.png"
+                   Stretch="Fill"
+                   Panel.ZIndex="0"
+                   Margin="318,29,319,37"/>
 
-            <Button x:Name="btnSettings"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Margin="0,30,138,0"
-                    Click="Settings"
-                    Background="{x:Null}"
-                    BorderBrush="{x:Null}">
-                <Image Height="43"
-                       Width="47"
-                       Source="/Assets/Images/Icons/SettingsIcon.png"
-                       Stretch="Fill" />
-            </Button>
+            <Grid Panel.ZIndex="1" Height="450" VerticalAlignment="Top" Background="Transparent" Margin="0,10,1,0">
 
-            <ToggleButton x:Name="btnNavLogin"
-                          Content="{x:Static language:Lang.btnLoginText}"
-                          Style="{StaticResource NavLinkToggleStyle}"
-                          IsChecked="{Binding Source={StaticResource TabChecked_Login}, Mode=OneWay}"
-                          Click="NavLogin"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Top"
-                          Margin="355,146,0,0"
-                          Width="122"
-                          FontSize="18"/>
+                <Button x:Name="btnSettings"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="0,30,138,0"
+                        Click="Settings"
+                        Background="{x:Null}"
+                        BorderBrush="{x:Null}">
+                    <Image Height="43"
+                           Width="47"
+                           Source="/Assets/Images/Icons/SettingsIcon.png"
+                           Stretch="Fill" />
+                </Button>
 
-            <ToggleButton x:Name="btnSignUp"
-                          Content="{x:Static language:Lang.btnSignUpText}"
-                          Click="SignUp"
-                          TabIndex="5"
-                          Style="{StaticResource NavLinkToggleStyle}"
-                          IsChecked="{Binding Source={StaticResource TabChecked_SignUp}, Mode=OneWay}"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Top"
-                          Margin="541,147,0,0"
-                          Width="100"
-                          FontSize="18" Foreground="#FF4B4B4B"/>
+                <ToggleButton x:Name="btnNavLogin"
+                              Content="{x:Static language:Lang.btnLoginText}"
+                              Style="{StaticResource NavLinkToggleStyle}"
+                              IsChecked="{Binding Source={StaticResource TabChecked_Login}, Mode=OneWay}"
+                              Click="NavLogin"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Margin="355,146,0,0"
+                              Width="122"
+                              FontSize="18"/>
 
-            <Label x:Name="lblUsername"
-                   Content="{x:Static language:Lang.txtUsernameText}"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Margin="407,175,0,0"
-                   Height="23" FontFamily="Yu Gothic UI"/>
+                <ToggleButton x:Name="btnSignUp"
+                              Content="{x:Static language:Lang.btnSignUpText}"
+                              Click="SignUp"
+                              TabIndex="5"
+                              Style="{StaticResource NavLinkToggleStyle}"
+                              IsChecked="{Binding Source={StaticResource TabChecked_SignUp}, Mode=OneWay}"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Margin="541,147,0,0"
+                              Width="100"
+                              FontSize="18" Foreground="#FF4B4B4B"/>
 
-            <TextBox x:Name="txtUsername"
-                     MaxLength="50"
-                     TabIndex="0"
-                     Style="{StaticResource RoundedTextBoxStyle}"
-                     Width="164"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Top"
-                     Margin="0,202,0,0"
-                     Background="White"/>
+                <Label x:Name="lblUsername"
+                       Content="{x:Static language:Lang.txtUsernameText}"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Margin="407,175,0,0"
+                       Height="23" FontFamily="Yu Gothic UI"/>
 
-            <Label x:Name="lblPassword"
-                   Content="{x:Static language:Lang.pwdPasswordText}"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Margin="407,234,0,0"
-                   Height="23" FontFamily="Yu Gothic UI"/>
-
-            <PasswordBox x:Name="pwdPassword"
-                         MaxLength="64"
-                         TabIndex="1"
-                         Style="{StaticResource RoundedPasswordBoxStyle}"
+                <TextBox x:Name="txtUsername"
+                         MaxLength="50"
+                         TabIndex="0"
+                         Style="{StaticResource RoundedTextBoxStyle}"
                          Width="164"
                          HorizontalAlignment="Center"
                          VerticalAlignment="Top"
-                         Margin="0,257,0,0"
+                         Margin="0,202,0,0"
                          Background="White"/>
 
-            <Button x:Name="btnLogin"
-                    Content="{x:Static language:Lang.btnLoginText}"
-                    Click="Login"
-                    TabIndex="2"
-                    Style="{StaticResource LoginButtonStyle}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    Width="164"
-                    Margin="0,300,0,0"/>
+                <Label x:Name="lblPassword"
+                       Content="{x:Static language:Lang.pwdPasswordText}"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Margin="407,234,0,0"
+                       Height="23" FontFamily="Yu Gothic UI"/>
 
-            <Button x:Name="btnPlayAsGuest"
-                    Content="{x:Static language:Lang.btnPlayAsGuestText}"
-                    Click="PlayAsGuest"
-                    TabIndex="3"
-                    Style="{StaticResource LoginButtonStyle}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    Width="164"
-                    Margin="0,334,0,0"
-                    Background="#FF194053"/>
+                <PasswordBox x:Name="pwdPassword"
+                             MaxLength="64"
+                             TabIndex="1"
+                             Style="{StaticResource RoundedPasswordBoxStyle}"
+                             Width="164"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Top"
+                             Margin="0,257,0,0"
+                             Background="White"/>
 
-            <Button x:Name="btnForgottenPassword"
-                Content="{x:Static language:Lang.btnForgottenPasswordText}"
-                TabIndex="4"
-                Style="{StaticResource LinkButtonStyle}"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                Margin="0,358,0,0"
-                Click="ForgottenPassword" />
+                <Button x:Name="btnLogin"
+                        Content="{x:Static language:Lang.btnLoginText}"
+                        Click="Login"
+                        TabIndex="2"
+                        Style="{StaticResource LoginButtonStyle}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Width="164"
+                        Margin="0,300,0,0"/>
 
+                <Button x:Name="btnPlayAsGuest"
+                        Content="{x:Static language:Lang.btnPlayAsGuestText}"
+                        Click="PlayAsGuest"
+                        TabIndex="3"
+                        Style="{StaticResource LoginButtonStyle}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Width="164"
+                        Margin="0,334,0,0"
+                        Background="#FF194053"/>
+
+                <Button x:Name="btnForgottenPassword"
+                        Content="{x:Static language:Lang.btnForgottenPasswordText}"
+                        TabIndex="4"
+                        Style="{StaticResource LinkButtonStyle}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Margin="0,358,0,0"
+                        Click="ForgottenPassword" />
+
+            </Grid>
         </Grid>
     </Grid>
 </Page>

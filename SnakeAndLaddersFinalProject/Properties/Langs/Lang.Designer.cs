@@ -313,6 +313,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Copy link.
+        /// </summary>
+        public static string btnCopyLinkText {
+            get {
+                return ResourceManager.GetString("btnCopyLinkText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Create Match.
         /// </summary>
         public static string btnCreateMatchText {
@@ -426,6 +435,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string btnLoginText {
             get {
                 return ResourceManager.GetString("btnLoginText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Logout.
+        /// </summary>
+        public static string btnLogoutText {
+            get {
+                return ResourceManager.GetString("btnLogoutText", resourceCulture);
             }
         }
         
@@ -655,11 +673,38 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Enable.
+        /// </summary>
+        public static string chkEnableText {
+            get {
+                return ResourceManager.GetString("chkEnableText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Notes.
         /// </summary>
         public static string colFriendNoteHeader {
             get {
                 return ResourceManager.GetString("colFriendNoteHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Host.
+        /// </summary>
+        public static string colHostHeader {
+            get {
+                return ResourceManager.GetString("colHostHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Code.
+        /// </summary>
+        public static string colMatchCodeHeader {
+            get {
+                return ResourceManager.GetString("colMatchCodeHeader", resourceCulture);
             }
         }
         
@@ -1393,6 +1438,33 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Large.
+        /// </summary>
+        public static string lblBoardSizeLarge {
+            get {
+                return ResourceManager.GetString("lblBoardSizeLarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Small.
+        /// </summary>
+        public static string lblBoardSizeSmall {
+            get {
+                return ResourceManager.GetString("lblBoardSizeSmall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Standard.
+        /// </summary>
+        public static string lblBoardSizeStandard {
+            get {
+                return ResourceManager.GetString("lblBoardSizeStandard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Board size .
         /// </summary>
         public static string lblBoardSizeText {
@@ -1564,6 +1636,33 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Easy.
+        /// </summary>
+        public static string lblDifficultyEasy {
+            get {
+                return ResourceManager.GetString("lblDifficultyEasy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Hard.
+        /// </summary>
+        public static string lblDifficultyHard {
+            get {
+                return ResourceManager.GetString("lblDifficultyHard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Medium.
+        /// </summary>
+        public static string lblDifficultyMedium {
+            get {
+                return ResourceManager.GetString("lblDifficultyMedium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Difficulty.
         /// </summary>
         public static string lblDifficultyText {
@@ -1717,6 +1816,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Match inventory.
+        /// </summary>
+        public static string lblMatchInventoryTitle {
+            get {
+                return ResourceManager.GetString("lblMatchInventoryTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Match List.
         /// </summary>
         public static string lblMatchListTitle {
@@ -1767,6 +1875,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         public static string lblPlayersText {
             get {
                 return ResourceManager.GetString("lblPlayersText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Private game.
+        /// </summary>
+        public static string lblPrivateRoom {
+            get {
+                return ResourceManager.GetString("lblPrivateRoom", resourceCulture);
             }
         }
         
@@ -1942,11 +2059,29 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Message.
+        /// </summary>
+        public static string lblSpecialTileMessage {
+            get {
+                return ResourceManager.GetString("lblSpecialTileMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Special tiles.
         /// </summary>
         public static string lblSpecialTilesText {
             get {
                 return ResourceManager.GetString("lblSpecialTilesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Trap.
+        /// </summary>
+        public static string lblSpecialTileTrap {
+            get {
+                return ResourceManager.GetString("lblSpecialTileTrap", resourceCulture);
             }
         }
         
@@ -2212,7 +2347,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a You finished a sequence diagram. Move forward 4 spaces.
         /// </summary>
         public static string Message10Text {
             get {
@@ -2221,7 +2356,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a NullReferenceException: You advanced without initializing. You lose your next turn..
         /// </summary>
         public static string Message11Text {
             get {
@@ -2230,7 +2365,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a Your team left you alone on the final project. You are the hero no one asked for. you earned an extra turn.
         /// </summary>
         public static string Message12Text {
             get {
@@ -2239,7 +2374,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a Burnout detected… take a mandatory break. You lose a turn..
         /// </summary>
         public static string Message13Text {
             get {
@@ -2248,7 +2383,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a You passed the most difficult class of the semester. To celebrate. roll the dice again.
         /// </summary>
         public static string Message14Text {
             get {
@@ -2257,7 +2392,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a You had to debug legacy code without documentation... good luck. we let you rest the next shift.
         /// </summary>
         public static string Message15Text {
             get {
@@ -2266,7 +2401,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a You passed technologies at UO. You are a legend. You win a turn..
         /// </summary>
         public static string Message16Text {
             get {
@@ -2275,7 +2410,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a You have to clear 1 day of technical debt in sonarqube you lose a shift..
         /// </summary>
         public static string Message17Text {
             get {
@@ -2284,7 +2419,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a You passed technologies with 6...passing is passing. you throw again.
         /// </summary>
         public static string Message18Text {
             get {
@@ -2293,7 +2428,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a You resorted to programming. you lose a turn.
         /// </summary>
         public static string Message19Text {
             get {
@@ -2302,7 +2437,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a You found a critical bug... the project was delayed. Go back 5 spaces..
         /// </summary>
         public static string Message1Text {
             get {
@@ -2311,7 +2446,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a You are full stack in gpt chat prompts. It is your greatest achievement in life. you win a turn.
         /// </summary>
         public static string Message20Text {
             get {
@@ -2320,7 +2455,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a Successful build. You move forward with confidence. Move forward 4 spaces..
         /// </summary>
         public static string Message2Text {
             get {
@@ -2329,7 +2464,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a Merge conflict in your branch. What a shame... go back 5 spaces..
         /// </summary>
         public static string Message3Text {
             get {
@@ -2338,7 +2473,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a Your code passed all unit tests. Quality bonus: advance 4 spaces..
         /// </summary>
         public static string Message4Text {
             get {
@@ -2347,7 +2482,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a You had to reinstall Visual Studio. You waste valuable time. go back 5 spaces.
         /// </summary>
         public static string Message5Text {
             get {
@@ -2356,7 +2491,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a You passed Programming Fundamentals the first time. Move forward 4 spaces..
         /// </summary>
         public static string Message6Text {
             get {
@@ -2365,7 +2500,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a IndexOutOfRangeException: you accessed outside the array goes back 5 spaces..
         /// </summary>
         public static string Message7Text {
             get {
@@ -2374,7 +2509,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a You found a programming meme that gave you the strength to continue. You advance 4 spaces.
         /// </summary>
         public static string Message8Text {
             get {
@@ -2383,7 +2518,7 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a Your technology teacher abandoned you to go to Peru and you were late in the project, go back 5 boxes.
         /// </summary>
         public static string Message9Text {
             get {

@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="BasicWindow" Height="450" Width="800"
-        Closing="BasicWindow_Closing"
-        Loaded="Window_Loaded">
+        Closing="BasicWindowClosing"
+        Loaded="WindowLoaded">
 
     <Grid>
         <Grid.Background>
@@ -19,6 +19,6 @@
         <Frame x:Name="MainFrame"
                NavigationUIVisibility="Hidden"
                Background="Transparent"
-               Navigated="MainFrame_Navigated"/>
+               Navigated="MainFrameNavigated"/>
     </Grid>
 </Window>

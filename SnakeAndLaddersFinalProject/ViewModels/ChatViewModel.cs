@@ -41,7 +41,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const int NO_STICKER_ID = 0;
 
         private const string SHOP_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IShopService";
-        private const string STICKER_ASSET_BASE_PATH = "pack://application:,,,/Assets/Images/Stickers/";
+        private const string STICKER_ASSET_BASE_PATH_KEY = "StickerAssetBasePath";
         private const string STICKER_ASSET_EXTENSION = ".png";
 
         private const string LOG_CONTEXT_BUILD_TEXT = "Chat.BuildLocalMessageDto";
@@ -49,6 +49,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string LOG_CONTEXT_SEND_TEXT = "Chat.SendText";
         private const string LOG_CONTEXT_SEND_STICKER = "Chat.SendSticker";
         private const string LOG_CONTEXT_INCOMING = "Chat.AddIncoming";
+        private const string LOG_MESSAGE_WITH_STICKER_FORMAT =
+            "{0}. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'";
 
         private static readonly TimeSpan _duplicateWindow = TimeSpan.FromSeconds(3);
 
@@ -104,8 +106,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             _chatServiceProxy = CreateDuplexProxyFromConfig();
 
             SendMessageCommand = new RelayCommand(_ => Send(), _ => CanSend());
-            CopyMessageCommand = new RelayCommand(message => Copy(message as ChatMessageViewModel));
-            QuoteMessageCommand = new RelayCommand(message => Quote(message as ChatMessageViewModel));
+            CopyMessageCommand = new RelayCommand(message => Copy(
+                message as ChatMessageViewModel));
+            QuoteMessageCommand = new RelayCommand(message => Quote(
+                message as ChatMessageViewModel));
             OpenStickersCommand = new RelayCommand(_ => OpenStickers());
         }
 
@@ -183,8 +187,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             ChatMessageDto localMessageDto = BuildLocalMessageDto(messageText);
 
             _logger.InfoFormat("{0}. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'",
-                LOG_CONTEXT_SEND_TEXT, localMessageDto.Sender, localMessageDto.Text, localMessageDto.StickerId,
-                localMessageDto.StickerCode);
+                LOG_CONTEXT_SEND_TEXT, localMessageDto.Sender, localMessageDto.Text,
+                localMessageDto.StickerId,localMessageDto.StickerCode);
 
             Messages.Add(new ChatMessageViewModel(localMessageDto, CurrentUserName));
             NewMessage = string.Empty;
@@ -231,7 +235,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 StickerCode = string.Empty
             };
 
-            _logger.InfoFormat("{0}. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'",
+            _logger.InfoFormat(LOG_MESSAGE_WITH_STICKER_FORMAT,
                 LOG_CONTEXT_BUILD_TEXT, dto.Sender, dto.Text, dto.StickerId, dto.StickerCode);
 
             return dto;
@@ -244,8 +248,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
-            _logger.InfoFormat("{0}. Incoming. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'",
-                LOG_CONTEXT_INCOMING, messageDto.Sender, messageDto.Text, messageDto.StickerId,
+            _logger.InfoFormat(LOG_MESSAGE_WITH_STICKER_FORMAT, LOG_CONTEXT_INCOMING,
+                messageDto.Sender, messageDto.Text, messageDto.StickerId,
                 messageDto.StickerCode);
 
             if (IsDuplicateIncoming(messageDto))
@@ -285,7 +289,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private IChatService CreateDuplexProxyFromConfig()
         {
-            string bindingName = ConfigurationManager.AppSettings[CHAT_BINDING_KEY] ?? DEFAULT_CHAT_BINDING;
+            string bindingName = ConfigurationManager.AppSettings[CHAT_BINDING_KEY] ??
+                DEFAULT_CHAT_BINDING;
             string address = ConfigurationManager.AppSettings[CHAT_ENDPOINT_ADDRESS_KEY]
                 ?? DEFAULT_CHAT_ENDPOINT_ADDRESS;
             var instanceContext = new InstanceContext(new ChatClientCallback(this));
@@ -294,7 +299,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 var wsBinding = new WSDualHttpBinding();
                 var wsEndpoint = new EndpointAddress(address);
-                return new DuplexChannelFactory<IChatService>(instanceContext, wsBinding, wsEndpoint)
+                return new DuplexChannelFactory<IChatService>(instanceContext, wsBinding,
+                    wsEndpoint)
                     .CreateChannel();
             }
 
@@ -349,12 +355,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
             string originalText = chatMessageViewModel.Text ?? string.Empty;
-            string quoted = string.Format("> {0}{1}{2}", originalText, Environment.NewLine, NewMessage ??
-                string.Empty);
+            string quoted = string.Format("> {0}{1}{2}", originalText, Environment.NewLine,
+                NewMessage ?? string.Empty);
             NewMessage = quoted;
         }
 
-        private string GetSafeUserName()
+        private static string GetSafeUserName()
         {
             string userName = SessionContext.Current.UserName;
             if (string.IsNullOrWhiteSpace(userName))
@@ -479,8 +485,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (FaultException faultException)
             {
-                MessageBox.Show(faultException.Message, Globalization.LocalizationManager.Current["UiTitleError"],
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(faultException.Message, Globalization.LocalizationManager.
+                    Current["UiTitleError"],MessageBoxButton.OK, MessageBoxImage.Error);
                 shopServiceClient.Abort();
             }
             catch (EndpointNotFoundException)
@@ -516,8 +522,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
 
             ChatMessageDto localMessageDto = BuildStickerMessageDto(sticker.StickerId, sticker.StickerCode);
-            _logger.InfoFormat("{0}. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'",
-                LOG_CONTEXT_SEND_STICKER, localMessageDto.Sender, localMessageDto.Text, localMessageDto.StickerId, localMessageDto.StickerCode);
+            _logger.InfoFormat(LOG_MESSAGE_WITH_STICKER_FORMAT,
+                LOG_CONTEXT_SEND_STICKER, localMessageDto.Sender, localMessageDto.Text,
+                localMessageDto.StickerId, localMessageDto.StickerCode);
 
             Messages.Add(new ChatMessageViewModel(localMessageDto, CurrentUserName));
 
@@ -529,7 +536,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                Task.Run(() => _chatServiceProxy.SendMessage(new SendMessageRequest2 { LobbyId = LobbyId, Message = localMessageDto }));
+                Task.Run(() => _chatServiceProxy.SendMessage(new SendMessageRequest2 { LobbyId = LobbyId,
+                    Message = localMessageDto }));
             }
             catch (Exception ex)
             {
@@ -552,20 +560,36 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 StickerCode = stickerCode ?? string.Empty
             };
 
-            _logger.InfoFormat("{0}. Sender={1}, Text='{2}', StickerId={3}, StickerCode='{4}'",
-                LOG_CONTEXT_BUILD_STICKER, stickerMessageDto.Sender, stickerMessageDto.Text, stickerMessageDto.StickerId, stickerMessageDto.StickerCode);
+            _logger.InfoFormat(LOG_MESSAGE_WITH_STICKER_FORMAT,
+                LOG_CONTEXT_BUILD_STICKER, stickerMessageDto.Sender, stickerMessageDto.Text,
+                stickerMessageDto.StickerId, stickerMessageDto.StickerCode);
 
             return stickerMessageDto;
         }
 
-        private bool IsUserAuthenticatedForStickers()
+        private static bool IsUserAuthenticatedForStickers()
         {
             if (SessionContext.Current == null || !SessionContext.Current.IsAuthenticated)
             {
-                MessageBox.Show(Globalization.LocalizationManager.Current["UiShopRequiresLogin"], Globalization.LocalizationManager.Current["UiTitleWarning"], MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(Globalization.LocalizationManager.Current["UiShopRequiresLogin"],
+                    Globalization.LocalizationManager.Current["UiTitleWarning"],
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
             return true;
+        }
+
+        private static string GetStickerAssetBasePath()
+        {
+            string configuredPath =
+                ConfigurationManager.AppSettings[STICKER_ASSET_BASE_PATH_KEY];
+
+            if (string.IsNullOrWhiteSpace(configuredPath))
+            {
+                return string.Empty;
+            }
+
+            return configuredPath.Trim();
         }
 
         internal static string BuildStickerAssetPath(string stickerCode)
@@ -574,7 +598,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 return string.Empty;
             }
-            return string.Concat(STICKER_ASSET_BASE_PATH, stickerCode, STICKER_ASSET_EXTENSION);
+
+            string basePath = GetStickerAssetBasePath();
+            if (string.IsNullOrWhiteSpace(basePath))
+            {
+                return string.Empty;
+            }
+
+            return string.Concat(basePath, stickerCode, STICKER_ASSET_EXTENSION);
         }
     }
 }

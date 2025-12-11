@@ -293,16 +293,6 @@
                     </Border>
 
                     <!-- Settings -->
-                    <Button x:Name="btnSettings"
-                            Grid.Column="2"
-                            Style="{StaticResource BtnIcon}"
-                            Width="80" Height="80"
-                            ToolTip="{x:Static language:Lang.btnSettingsText}">
-                        <Image Width="47" Height="43"
-                               Source="/Assets/Images/Icons/SettingsIcon.png"
-                               Stretch="Fill"
-                               RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                    </Button>
                 </Grid>
 
                 <!-- CONTENIDO PRINCIPAL -->

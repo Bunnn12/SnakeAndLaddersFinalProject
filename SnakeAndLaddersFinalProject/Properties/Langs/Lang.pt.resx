@@ -1485,4 +1485,49 @@
   <data name="lblWinnerLabelText" xml:space="preserve">
     <value>Ganhador</value>
   </data>
+  <data name="chkEnableText" xml:space="preserve">
+    <value>Habilitar</value>
+  </data>
+  <data name="lblBoardSizeLarge" xml:space="preserve">
+    <value>Grande</value>
+  </data>
+  <data name="lblBoardSizeSmall" xml:space="preserve">
+    <value>Pequeno</value>
+  </data>
+  <data name="lblBoardSizeStandard" xml:space="preserve">
+    <value>Padrão</value>
+  </data>
+  <data name="lblDifficultyEasy" xml:space="preserve">
+    <value>Fácil</value>
+  </data>
+  <data name="lblDifficultyHard" xml:space="preserve">
+    <value>Difícil</value>
+  </data>
+  <data name="lblDifficultyMedium" xml:space="preserve">
+    <value>Médio</value>
+  </data>
+  <data name="lblPrivateRoom" xml:space="preserve">
+    <value>Jogo privado</value>
+  </data>
+  <data name="lblSpecialTileMessage" xml:space="preserve">
+    <value>Mensagem</value>
+  </data>
+  <data name="lblSpecialTileTrap" xml:space="preserve">
+    <value>Armadilha</value>
+  </data>
+  <data name="btnCopyLinkText" xml:space="preserve">
+    <value>Copiar link</value>
+  </data>
+  <data name="lblMatchInventoryTitle" xml:space="preserve">
+    <value>Inventário correspondente</value>
+  </data>
+  <data name="colHostHeader" xml:space="preserve">
+    <value>Hospedar</value>
+  </data>
+  <data name="colMatchCodeHeader" xml:space="preserve">
+    <value>Código</value>
+  </data>
+  <data name="btnLogoutText" xml:space="preserve">
+    <value>Sair</value>
+  </data>
 </root>

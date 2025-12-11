@@ -21,7 +21,6 @@
 
     <Grid Background="Transparent">
 
-        <!-- FONDO VIDEO -->
         <MediaElement x:Name="VideoBg"
                       IsMuted="True"
                       Stretch="UniformToFill"
@@ -36,7 +35,6 @@
             </MediaElement.Triggers>
         </MediaElement>
 
-        <!-- TARJETA -->
         <Border Margin="24"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -54,22 +52,15 @@
                                   Opacity="0.55" />
             </Border.Effect>
 
-            <!-- CONTENIDO SIN SCROLLVIEWER EXTERNO -->
             <Grid Margin="8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <!-- título -->
                     <RowDefinition Height="Auto"/>
-                    <!-- barra superior -->
                     <RowDefinition Height="Auto"/>
-                    <!-- buscar -->
                     <RowDefinition Height="*"/>
-                    <!-- lista -->
                     <RowDefinition Height="Auto"/>
-                    <!-- barra inferior -->
                 </Grid.RowDefinitions>
 
-                <!-- Título -->
                 <TextBlock x:Name="lblTitle"
                            Grid.Row="0"
                            Text="{x:Static language:Lang.lblMatchListTitle}"
@@ -79,7 +70,6 @@
                            Foreground="White"
                            HorizontalAlignment="Center" />
 
-                <!-- Barra superior -->
                 <Grid Grid.Row="1"
                       Margin="0,0,0,12">
                     <Grid.ColumnDefinitions>
@@ -106,7 +96,6 @@
                             Click="Settings" />
                 </Grid>
 
-                <!-- Buscar por código -->
                 <StackPanel Grid.Row="2"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center"
@@ -131,34 +120,31 @@
                             Click="JoinByCode" />
                 </StackPanel>
 
-                <!-- LISTA DE PARTIDAS -->
-                <!-- LISTA DE PARTIDAS (estilo original) -->
                 <Grid Grid.Row="3" Margin="0,0,0,12">
                     <DataGrid x:Name="tvMatchList"
-              AutoGenerateColumns="False"
-              IsReadOnly="True"
-              SelectionMode="Single"
-              ItemsSource="{Binding PublicLobbies}"
-              MouseDoubleClick="TvMatchListMouseDoubleClick">
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              SelectionMode="Single"
+                              ItemsSource="{Binding PublicLobbies}"
+                              MouseDoubleClick="TvMatchListMouseDoubleClick">
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Código"
-                                Binding="{Binding CodigoPartida}"
-                                Width="*" />
-                            <DataGridTextColumn Header="Host"
-                                Binding="{Binding HostUserName}"
-                                Width="*" />
-                            <DataGridTextColumn Header="Jugadores"
-                                Binding="{Binding CurrentPlayers}" />
-                            <DataGridTextColumn Header="Dificultad"
-                                Binding="{Binding Difficulty}"
-                                Width="*" />
+                            <DataGridTextColumn Header="{x:Static language:Lang.colMatchCodeHeader}"
+                                                Binding="{Binding CodigoPartida}"
+                                                Width="*" />
+                            <DataGridTextColumn Header="{x:Static language:Lang.colHostHeader}"
+                                                Binding="{Binding HostUserName}"
+                                                Width="*" />
+                            <DataGridTextColumn Header="{x:Static language:Lang.lblPlayersText}"
+                                                Binding="{Binding CurrentPlayers}" />
+                            <DataGridTextColumn Header="{x:Static language:Lang.lblDifficultyText}"
+                                                Binding="{Binding Difficulty}"
+                                                Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
 
 
-                <!-- Barra inferior -->
                 <StackPanel Grid.Row="4"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center"/>

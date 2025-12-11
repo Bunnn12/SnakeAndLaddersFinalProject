@@ -285,19 +285,6 @@
                                    FontWeight="Bold"
                                    FontSize="36"/>
                     </Border>
-
-                    <Button x:Name="btnSettings"
-                            Grid.Column="1"
-                            Grid.ColumnSpan="2"
-                            Margin="1088,0,0,-24"
-                            Style="{StaticResource BtnIcon}"
-                            ToolTip="{x:Static language:Lang.btnSettingsText}">
-                        <Image Width="56"
-                               Height="52"
-                               Source="/Assets/Images/Icons/SettingsIcon.png"
-                               Stretch="Fill"
-                               RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                    </Button>
                 </Grid>
 
                 <!-- Content -->
