@@ -11,6 +11,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     public sealed class ProfileStatsViewModel
     {
         private const string STATS_SERVICE_ENDPOINT_CONFIGURATION_NAME = "NetTcpBinding_IStatsService";
+        private const int MIN_VALID_USER_ID = 1;
+
+        private const string CONTEXT_LOAD_STATS = "ProfileStatsViewModel.LoadStats";
 
         private static readonly ILog _logger = LogManager.GetLogger(typeof(ProfileStatsViewModel));
 
@@ -92,9 +95,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public void LoadStats()
         {
-            if (TargetUserId <= 0)
+            if (TargetUserId < MIN_VALID_USER_ID)
             {
-                _logger.Warn("ProfileStatsPage: targetUserId inválido.");
+                _logger.Warn("ProfileStatsViewModel.LoadStats: invalid TargetUserId.");
                 MessageBox.Show(
                     Lang.errorProfileStatsInvalidUserIdText,
                     Lang.errorTitle,
@@ -112,7 +115,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 if (stats == null)
                 {
-                    _logger.Warn("ProfileStatsPage: GetPlayerStatsByUserId devolvió null.");
+                    _logger.Warn("ProfileStatsViewModel.LoadStats: GetPlayerStatsByUserId returned null.");
                     ResetStatsToZero();
                     return;
                 }
@@ -121,26 +124,28 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.Error("Error loading player stats.", ex);
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    CONTEXT_LOAD_STATS,
+                    _logger);
+
+                ResetStatsToZero();
+
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    ConnectionLostHandlerException.HandleConnectionLost();
+                    return;
+                }
 
                 MessageBox.Show(
-                    Lang.errorLoadingProfileStatsText,
+                    userMessage,
                     Lang.errorTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
-
-                ResetStatsToZero();
             }
             finally
             {
-                try
-                {
-                    client.Close();
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error("Error while closing StatsServiceClient in ProfileStatsPage.", ex);
-                }
+                SafeClose(client);
             }
         }
 
@@ -156,7 +161,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             MatchesWon = stats.MatchesWon;
             WinPercentage = stats.WinPercentage;
             Coins = stats.Coins;
-
             RankingPosition = stats.RankingPosition;
         }
 
@@ -167,6 +171,30 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             WinPercentage = 0m;
             Coins = 0;
             RankingPosition = null;
+        }
+
+        private static void SafeClose(StatsServiceClient client)
+        {
+            if (client == null)
+            {
+                return;
+            }
+
+            try
+            {
+                if (client.State == System.ServiceModel.CommunicationState.Faulted)
+                {
+                    client.Abort();
+                }
+                else
+                {
+                    client.Close();
+                }
+            }
+            catch
+            {
+                client.Abort();
+            }
         }
     }
 }

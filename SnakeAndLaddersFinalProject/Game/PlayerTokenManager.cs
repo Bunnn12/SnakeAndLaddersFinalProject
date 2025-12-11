@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using SnakeAndLaddersFinalProject.ViewModels.Models;
@@ -10,7 +11,9 @@ namespace SnakeAndLaddersFinalProject.Game
     public sealed class PlayerTokenManager
     {
         private const double TOKEN_OFFSET_DIAGONAL = 0.18;
-        private static readonly Point[] _tokenCellOffSet =
+        private const string DEFAULT_PLAYER_NAME_FORMAT = "Jugador {0}";
+
+        private static readonly Point[] _tokenCellOffsets =
         {
             new Point(-TOKEN_OFFSET_DIAGONAL, -TOKEN_OFFSET_DIAGONAL),
             new Point(TOKEN_OFFSET_DIAGONAL, -TOKEN_OFFSET_DIAGONAL),
@@ -25,10 +28,10 @@ namespace SnakeAndLaddersFinalProject.Game
             ObservableCollection<PlayerTokenViewModel> playerTokens,
             IReadOnlyDictionary<int, Point> cellCentersByIndex)
         {
-            this._playerTokens = playerTokens
+            _playerTokens = playerTokens
                 ?? throw new ArgumentNullException(nameof(playerTokens));
 
-            this._cellCentersByIndex = cellCentersByIndex
+            _cellCentersByIndex = cellCentersByIndex
                 ?? throw new ArgumentNullException(nameof(cellCentersByIndex));
         }
 
@@ -46,24 +49,24 @@ namespace SnakeAndLaddersFinalProject.Game
                 throw new ArgumentNullException(nameof(member));
             }
 
-            var token = new PlayerTokenViewModel(
+            var playerToken = new PlayerTokenViewModel(
                 member.UserId,
                 member.UserName,
                 member.CurrentSkinId,
                 member.CurrentSkinUnlockedId,
                 startCellIndex);
 
-            _playerTokens.Add(token);
-            UpdateTokenPositionFromCell(token, startCellIndex);
+            _playerTokens.Add(playerToken);
+            UpdateTokenPositionFromCell(playerToken, startCellIndex);
 
-            return token;
+            return playerToken;
         }
 
         public void ResetAllTokensToCell(int cellIndex)
         {
-            foreach (var token in _playerTokens)
+            foreach (PlayerTokenViewModel playerToken in _playerTokens)
             {
-                UpdateTokenPositionFromCell(token, cellIndex);
+                UpdateTokenPositionFromCell(playerToken, cellIndex);
             }
         }
 
@@ -71,23 +74,30 @@ namespace SnakeAndLaddersFinalProject.Game
             int userId,
             int initialCellIndex)
         {
-            var token = _playerTokens.FirstOrDefault(t => t.UserId == userId);
-            if (token != null)
+            PlayerTokenViewModel existingToken = _playerTokens
+                .FirstOrDefault(playerToken => playerToken.UserId == userId);
+
+            if (existingToken != null)
             {
-                return token;
+                return existingToken;
             }
 
-            token = new PlayerTokenViewModel(
+            string userName = string.Format(
+                CultureInfo.CurrentCulture,
+                DEFAULT_PLAYER_NAME_FORMAT,
+                userId);
+
+            var newToken = new PlayerTokenViewModel(
                 userId,
-                $"Jugador {userId}",
+                userName,
                 null,
                 null,
                 initialCellIndex);
 
-            _playerTokens.Add(token);
-            UpdateTokenPositionFromCell(token, initialCellIndex);
+            _playerTokens.Add(newToken);
+            UpdateTokenPositionFromCell(newToken, initialCellIndex);
 
-            return token;
+            return newToken;
         }
 
         public void UpdateTokenPositionFromCell(
@@ -106,30 +116,30 @@ namespace SnakeAndLaddersFinalProject.Game
 
             token.CurrentCellIndex = cellIndex;
 
-            var tokensInCell = _playerTokens
-                .Where(t => t.CurrentCellIndex == cellIndex)
-                .OrderBy(t => t.UserId)
+            List<PlayerTokenViewModel> tokensInCell = _playerTokens
+                .Where(playerToken => playerToken.CurrentCellIndex == cellIndex)
+                .OrderBy(playerToken => playerToken.UserId)
                 .ToList();
 
             if (tokensInCell.Count == 1)
             {
-                var onlyToken = tokensInCell[0];
+                PlayerTokenViewModel onlyToken = tokensInCell[0];
                 onlyToken.X = center.X;
                 onlyToken.Y = center.Y;
                 return;
             }
 
-            for (int i = 0; i < tokensInCell.Count; i++)
+            for (int index = 0; index < tokensInCell.Count; index++)
             {
-                var currentToken = tokensInCell[i];
+                PlayerTokenViewModel currentToken = tokensInCell[index];
 
-                int slotIndex = i;
-                if (slotIndex >= _tokenCellOffSet.Length)
+                int slotIndex = index;
+                if (slotIndex >= _tokenCellOffsets.Length)
                 {
-                    slotIndex = _tokenCellOffSet.Length - 1;
+                    slotIndex = _tokenCellOffsets.Length - 1;
                 }
 
-                Point offset = _tokenCellOffSet[slotIndex];
+                Point offset = _tokenCellOffsets[slotIndex];
 
                 currentToken.X = center.X + offset.X;
                 currentToken.Y = center.Y + offset.Y;

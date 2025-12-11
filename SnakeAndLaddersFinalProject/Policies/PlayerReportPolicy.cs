@@ -2,14 +2,14 @@
 
 namespace SnakeAndLaddersFinalProject.Policies
 {
-    public sealed class PlayerReportPolicy
+    public static class PlayerReportPolicy
     {
         private const int MIN_REGISTERED_USER_ID = 1;
 
         private const string PROPERTY_USER_ID = "UserId";
         private const string PROPERTY_USER_NAME = "UserName";
 
-        public bool CanCurrentUserReportTarget(int currentUserId, object memberDataContext)
+        public static bool CanCurrentUserReportTarget(int currentUserId, object memberDataContext)
         {
             if (currentUserId < MIN_REGISTERED_USER_ID)
             {
@@ -31,12 +31,12 @@ namespace SnakeAndLaddersFinalProject.Policies
             return true;
         }
 
-        public int GetMemberUserId(object dataContext)
+        public static int GetMemberUserId(object dataContext)
         {
             return GetMemberUserIdInternal(dataContext);
         }
 
-        public string GetMemberUserName(object dataContext)
+        public static string GetMemberUserName(object dataContext)
         {
             return GetMemberUserNameInternal(dataContext);
         }

@@ -17,20 +17,29 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const int DEFAULT_RESEND_COOLDOWN_SECONDS = 45;
         private const int VERIFICATION_CODE_LENGTH = 6;
 
-        private const string AUTH_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IAuthService";
+        private const string AUTH_ENDPOINT_CONFIGURATION_NAME =
+            "BasicHttpBinding_IAuthService";
+
+        private const string AUTH_CODE_OK = "Auth.Ok";
+        private const string AUTH_CODE_EMAIL_REQUIRED = "Auth.EmailRequired";
+        private const string AUTH_CODE_EMAIL_ALREADY_EXISTS = "Auth.EmailAlreadyExists";
+        private const string AUTH_CODE_USERNAME_ALREADY_EXISTS = "Auth.UserNameAlreadyExists";
+        private const string AUTH_CODE_INVALID_CREDENTIALS = "Auth.InvalidCredentials";
         private const string AUTH_CODE_THROTTLE_WAIT = "Auth.ThrottleWait";
+        private const string AUTH_CODE_EXPIRED = "Auth.CodeExpired";
+        private const string AUTH_CODE_INVALID = "Auth.CodeInvalid";
+        private const string AUTH_CODE_EMAIL_SEND_FAILED = "Auth.EmailSendFailed";
 
         private const string META_KEY_SECONDS = "seconds";
 
         private const string KEY_AUTH_THROTTLE_WAIT_FMT = "AuthThrottleWaitFmt";
         private const string KEY_UI_VERIFICATION_CODE_REQUIRED = "UiVerificationCodeRequired";
         private const string KEY_UI_ACCOUNT_CREATED_FMT = "UiAccountCreatedFmt";
+        private const string KEY_UI_VERIFICATION_SENT_FMT = "UiVerificationSentFmt";
 
         private readonly RegistrationDto _pendingDto;
 
-
         public event Action<int> ResendCooldownRequested;
-
         public event Action NavigateToLoginRequested;
 
         public EmailVerificationViewModel(RegistrationDto pendingDto)
@@ -50,11 +59,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             if (!IsNumericCode(trimmedCode) || trimmedCode.Length != VERIFICATION_CODE_LENGTH)
             {
-                ShowWarn(MapAuth("Auth.CodeInvalid", null));
+                ShowWarn(MapAuth(AUTH_CODE_INVALID, null));
                 return;
             }
 
-            AuthServiceClient client = new AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
+            var client = new AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
 
             try
             {
@@ -92,18 +101,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                string userMessage = ExceptionHandler.Handle(
+                UiExceptionHelper.ShowModuleError(
                     ex,
-                    "EmailVerificationPage.VerificateCode",
-                    _logger);
+                    nameof(VerificateCodeAsync),
+                    _logger,
+                    Lang.UiEmailVerificationError);
 
-                MessageBox.Show(
-                    userMessage,
-                    Lang.errorTitle,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-
-                client.Abort();
+                SafeAbort(client, nameof(VerificateCodeAsync), _logger);
             }
         }
 
@@ -113,7 +117,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 .Trim()
                 .ToLowerInvariant();
 
-            AuthServiceClient client = new AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
+            var client = new AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
 
             try
             {
@@ -124,7 +128,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 if (result.Success)
                 {
-                    ShowInfo(string.Format(T("UiVerificationSentFmt"), email));
+                    ShowInfo(string.Format(T(KEY_UI_VERIFICATION_SENT_FMT), email));
                     ResendCooldownRequested?.Invoke(DEFAULT_RESEND_COOLDOWN_SECONDS);
                     return;
                 }
@@ -133,13 +137,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     int seconds = DEFAULT_RESEND_COOLDOWN_SECONDS;
 
-                    if (result.Meta != null &&
-                        result.Meta.TryGetValue(META_KEY_SECONDS, out string secondsText) &&
-                        int.TryParse(secondsText, out int parsedSeconds))
+                    if (result.Meta != null
+                        && result.Meta.TryGetValue(META_KEY_SECONDS, out string secondsText)
+                        && int.TryParse(secondsText, out int parsedSeconds))
                     {
                         seconds = parsedSeconds;
                     }
-
 
                     ShowWarn(string.Format(T(KEY_AUTH_THROTTLE_WAIT_FMT), seconds));
                     ResendCooldownRequested?.Invoke(seconds);
@@ -150,18 +153,32 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                string userMessage = ExceptionHandler.Handle(
+                UiExceptionHelper.ShowModuleError(
                     ex,
-                    "EmailVerificationPage.ResendCode",
-                    _logger);
+                    nameof(ResendCodeAsync),
+                    _logger,
+                    Lang.UiEmailVerificationResendError);
 
-                MessageBox.Show(
-                    userMessage,
-                    Lang.errorTitle,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                SafeAbort(client, nameof(ResendCodeAsync), _logger);
+            }
+        }
 
+        private static void SafeAbort(AuthServiceClient client, string operationName, ILog logger)
+        {
+            if (client == null)
+            {
+                return;
+            }
+
+            try
+            {
                 client.Abort();
+            }
+            catch (Exception ex)
+            {
+                logger.Warn(
+                    $"Error while aborting AuthServiceClient in '{operationName}'.",
+                    ex);
             }
         }
 
@@ -212,35 +229,35 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             switch (code)
             {
-                case "Auth.Ok":
+                case AUTH_CODE_OK:
                     return T("AuthOk");
 
-                case "Auth.EmailRequired":
+                case AUTH_CODE_EMAIL_REQUIRED:
                     return T("AuthEmailRequired");
 
-                case "Auth.EmailAlreadyExists":
+                case AUTH_CODE_EMAIL_ALREADY_EXISTS:
                     return T("AuthEmailAlreadyExists");
 
-                case "Auth.UserNameAlreadyExists":
+                case AUTH_CODE_USERNAME_ALREADY_EXISTS:
                     return T("AuthUserNameAlreadyExists");
 
-                case "Auth.InvalidCredentials":
+                case AUTH_CODE_INVALID_CREDENTIALS:
                     return T("AuthInvalidCredentials");
 
-                case "Auth.ThrottleWait":
+                case AUTH_CODE_THROTTLE_WAIT:
                     return string.Format(
                         T(KEY_AUTH_THROTTLE_WAIT_FMT),
                         metaDictionary.ContainsKey(META_KEY_SECONDS)
                             ? metaDictionary[META_KEY_SECONDS]
                             : DEFAULT_RESEND_COOLDOWN_SECONDS.ToString());
 
-                case "Auth.CodeExpired":
+                case AUTH_CODE_EXPIRED:
                     return T("AuthCodeExpired");
 
-                case "Auth.CodeInvalid":
+                case AUTH_CODE_INVALID:
                     return T("AuthCodeInvalid");
 
-                case "Auth.EmailSendFailed":
+                case AUTH_CODE_EMAIL_SEND_FAILED:
                     return T("AuthEmailSendFailed");
 
                 default:

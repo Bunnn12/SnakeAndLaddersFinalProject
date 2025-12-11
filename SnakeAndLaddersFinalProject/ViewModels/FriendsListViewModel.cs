@@ -15,8 +15,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(FriendsListViewModel));
 
-        public ObservableCollection<FriendListItemDto> Friends { get; }
-            = new ObservableCollection<FriendListItemDto>();
+        public ObservableCollection<FriendListItemDto> Friends { get; } =
+            new ObservableCollection<FriendListItemDto>();
 
         public void LoadFriends()
         {
@@ -39,8 +39,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.Error("Failed loading friends.", ex);
-                MessageBox.Show(Lang.errorLoadingFriendsListText, Lang.errorTitle);
+                UiExceptionHelper.ShowModuleError(
+                    ex,
+                    nameof(LoadFriends),
+                    _logger,
+                    Lang.UiFriendsLoadError);
             }
         }
 
@@ -72,23 +75,26 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                using (var friendsApi = new FriendsApi())
+                using (FriendsApi friendsApi = new FriendsApi())
                 {
                     friendsApi.Remove(friendItem.FriendLinkId);
                 }
 
                 Friends.Remove(friendItem);
-                MessageBox.Show(Lang.friendRemovedOkText, Lang.infoTitle);
-            }
-            catch (FaultException ex)
-            {
-                _logger.WarnFormat("Unfriend fault: {0} - {1}", ex.Code, ex.Message);
-                MessageBox.Show(ex.Message, Lang.errorTitle);
+
+                MessageBox.Show(
+                    Lang.friendRemovedOkText,
+                    Lang.infoTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                _logger.Error("Error removing friend.", ex);
-                MessageBox.Show(Lang.errorRemovingFriendText, Lang.errorTitle);
+                UiExceptionHelper.ShowModuleError(
+                    ex,
+                    nameof(UnfriendWithConfirmation),
+                    _logger,
+                    Lang.UiFriendUnfriendError);
             }
         }
 
@@ -112,12 +118,20 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
 
                 Friends.Remove(friendItem);
-                MessageBox.Show(Lang.friendRemovedOkText, Lang.infoTitle);
+
+                MessageBox.Show(
+                    Lang.friendRemovedOkText,
+                    Lang.infoTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                _logger.Error("Error removing friend.", ex);
-                MessageBox.Show(Lang.errorRemovingFriendText, Lang.errorTitle);
+                UiExceptionHelper.ShowModuleError(
+                    ex,
+                    nameof(UnfriendDirect),
+                    _logger,
+                    Lang.UiFriendUnfriendDirectError);
             }
         }
     }

@@ -20,7 +20,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string MATCH_INVITATION_BASIC_ENDPOINT = "BasicHttpBinding_IMatchInvitationService";
         private const string GUEST_TOKEN_PREFIX = "GUEST-";
 
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(MatchInvitationViewModel));
+        private static readonly ILog _logger =
+            LogManager.GetLogger(typeof(MatchInvitationViewModel));
 
         private readonly MatchInvitationServiceClient _invitationClient;
         private readonly FriendsListViewModel _friendsViewModel;
@@ -45,7 +46,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             Friends = _friendsViewModel.Friends;
 
-            SendInvitationCommand = new AsyncCommand(SendInvitationAsync, () => CanSendInvitation);
+            SendInvitationCommand = new AsyncCommand(
+                SendInvitationAsync,
+                () => CanSendInvitation);
 
             StatusText = string.Empty;
 
@@ -174,7 +177,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        public bool CanSendInvitation => !IsBusy && SessionGuard.HasValidSession();
+        public bool CanSendInvitation
+        {
+            get { return !IsBusy && SessionGuard.HasValidSession(); }
+        }
 
         public ICommand SendInvitationCommand { get; }
 
@@ -220,10 +226,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     _logger);
 
                 StatusText = userMessage;
+
                 OnShowMessageRequested(
                     userMessage,
                     Lang.errorTitle,
                     MessageBoxImage.Error);
+
+                SafeAbort(_invitationClient, "SendInvitationAsync");
                 OnRequestClose();
             }
             finally
@@ -236,7 +245,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             token = string.Empty;
 
-            var session = SessionContext.Current;
+            SessionContext session = SessionContext.Current;
             string sessionToken = session?.AuthToken;
 
             if (session == null || string.IsNullOrWhiteSpace(sessionToken))
@@ -296,7 +305,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             token = string.Empty;
             StatusText = message;
-            OnShowMessageRequested(message, title, icon);
+
+            OnShowMessageRequested(
+                message,
+                title,
+                icon);
+
             return false;
         }
 
@@ -305,10 +319,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             if (result == null)
             {
                 StatusText = Lang.UiInviteFriendNoResponse;
+
                 OnShowMessageRequested(
                     StatusText,
                     Lang.errorTitle,
                     MessageBoxImage.Error);
+
                 return;
             }
 
@@ -321,6 +337,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     : result.Message;
 
                 StatusText = message;
+
                 OnShowMessageRequested(
                     message,
                     Lang.infoTitle,
@@ -333,18 +350,23 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     : result.Message;
 
                 StatusText = message;
+
                 OnShowMessageRequested(
                     message,
                     Lang.errorTitle,
                     MessageBoxImage.Error);
             }
         }
+
         private void RaiseCanExecutes()
         {
             (SendInvitationCommand as AsyncCommand)?.RaiseCanExecuteChanged();
         }
 
-        private void OnShowMessageRequested(string message, string title, MessageBoxImage icon)
+        private void OnShowMessageRequested(
+            string message,
+            string title,
+            MessageBoxImage icon)
         {
             ShowMessageRequested?.Invoke(message, title, icon);
         }
@@ -353,9 +375,30 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
         private void OnRequestClose()
         {
             RequestClose?.Invoke();
+        }
+
+        private static void SafeAbort(MatchInvitationServiceClient client, string operationName)
+        {
+            if (client == null)
+            {
+                return;
+            }
+
+            try
+            {
+                client.Abort();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Handle(
+                    ex,
+                    $"MatchInvitationViewModel.{operationName}.Abort",
+                    _logger);
+            }
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using log4net;
-using SnakeAndLaddersFinalProject.GameBoardService;
 using SnakeAndLaddersFinalProject.GameplayService;
 using SnakeAndLaddersFinalProject.Infrastructure;
 using SnakeAndLaddersFinalProject.Utilities;
@@ -12,6 +11,18 @@ namespace SnakeAndLaddersFinalProject.Managers
 {
     public sealed class GameStateSynchronizer
     {
+        private const string CONNECTION_LOST_MESSAGE =
+            "Connection lost while syncing game state.";
+
+        private const string SYNC_EXCEPTION_CONTEXT =
+            "GameStateSynchronizer.SyncGameStateAsync";
+
+        private const string LOG_CLIENT_NULL_MESSAGE =
+            "IGameplayClient provider returned null in SyncGameStateAsync. GameId={0}.";
+
+        private const string LOG_STATE_NULL_MESSAGE =
+            "GetGameStateAsync returned null state for GameId={0}.";
+
         private readonly int _gameId;
         private readonly ILog _logger;
         private readonly Func<IGameplayClient> _gameplayClientProvider;
@@ -23,34 +34,42 @@ namespace SnakeAndLaddersFinalProject.Managers
         private readonly Action<string, string, MessageBoxImage> _showErrorMessage;
 
         public GameStateSynchronizer(
-            int gameId,
-            ILog logger,
-            Func<IGameplayClient> gameplayClientProvider,
-            Action markServerEventReceived,
-            Func<GetGameStateResponseDto, bool, Task> applyGameStateAsync,
-            Func<Exception, string, bool> handleConnectionException,
-            string syncErrorLogMessage,
-            string errorDialogTitle,
-            Action<string, string, MessageBoxImage> showErrorMessage)
+            GameStateSynchronizerDependencies dependencies,
+            GameStateSynchronizerUiConfig uiConfig)
         {
-            if (gameId <= 0) throw new ArgumentOutOfRangeException(nameof(gameId));
+            if (dependencies == null)
+            {
+                throw new ArgumentNullException(nameof(dependencies));
+            }
 
-            _gameId = gameId;
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _gameplayClientProvider = gameplayClientProvider ?? throw new ArgumentNullException(
-                nameof(gameplayClientProvider));
-            _markServerEventReceived = markServerEventReceived ?? throw new ArgumentNullException(
-                nameof(markServerEventReceived));
-            _applyGameStateAsync = applyGameStateAsync ?? throw new ArgumentNullException(
-                nameof(applyGameStateAsync));
-            _handleConnectionException = handleConnectionException ??
-                throw new ArgumentNullException(nameof(handleConnectionException));
-            _syncErrorLogMessage = syncErrorLogMessage ?? throw new ArgumentNullException(
-                nameof(syncErrorLogMessage));
-            _errorDialogTitle = errorDialogTitle ?? throw new ArgumentNullException(
-                nameof(errorDialogTitle));
-            _showErrorMessage = showErrorMessage ?? throw new ArgumentNullException(
-                nameof(showErrorMessage));
+            if (uiConfig == null)
+            {
+                throw new ArgumentNullException(nameof(uiConfig));
+            }
+
+            if (dependencies.GameId <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(dependencies.GameId));
+            }
+
+            _gameId = dependencies.GameId;
+            _logger = dependencies.Logger
+                ?? throw new ArgumentNullException(nameof(dependencies));
+            _gameplayClientProvider = dependencies.GameplayClientProvider
+                ?? throw new ArgumentNullException(nameof(dependencies));
+            _markServerEventReceived = dependencies.MarkServerEventReceived
+                ?? throw new ArgumentNullException(nameof(dependencies));
+            _applyGameStateAsync = dependencies.ApplyGameStateAsync
+                ?? throw new ArgumentNullException(nameof(dependencies));
+            _handleConnectionException = dependencies.HandleConnectionException
+                ?? throw new ArgumentNullException(nameof(dependencies));
+
+            _syncErrorLogMessage = uiConfig.SyncErrorLogMessage
+                ?? throw new ArgumentNullException(nameof(uiConfig));
+            _errorDialogTitle = uiConfig.ErrorDialogTitle
+                ?? throw new ArgumentNullException(nameof(uiConfig));
+            _showErrorMessage = uiConfig.ShowErrorMessage
+                ?? throw new ArgumentNullException(nameof(uiConfig));
         }
 
         public async Task SyncGameStateAsync(bool forceUpdateTokenPositions)
@@ -58,32 +77,106 @@ namespace SnakeAndLaddersFinalProject.Managers
             IGameplayClient client = _gameplayClientProvider();
             if (client == null)
             {
+                _logger.WarnFormat(LOG_CLIENT_NULL_MESSAGE, _gameId);
                 return;
             }
 
             try
             {
-                GetGameStateResponseDto stateResponse = await client.GetGameStateAsync(_gameId)
-                    .ConfigureAwait(false);
+                GetGameStateResponseDto stateResponse =
+                    await client.GetGameStateAsync(_gameId).ConfigureAwait(false);
+
                 if (stateResponse == null)
                 {
+                    _logger.WarnFormat(LOG_STATE_NULL_MESSAGE, _gameId);
                     return;
                 }
 
                 _markServerEventReceived();
+
                 await _applyGameStateAsync(stateResponse, forceUpdateTokenPositions)
                     .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                if (_handleConnectionException(ex, "Connection lost while syncing game state."))
+                bool isConnectionIssue =
+                    _handleConnectionException(ex, CONNECTION_LOST_MESSAGE);
+
+                if (isConnectionIssue)
                 {
                     return;
                 }
 
-                ExceptionHandler.Handle(ex, "GameBoardViewModel.SyncGameStateAsync", _logger);
-                _showErrorMessage(_syncErrorLogMessage, _errorDialogTitle, MessageBoxImage.Error);
+                ExceptionHandler.Handle(ex, SYNC_EXCEPTION_CONTEXT, _logger);
+
+                _showErrorMessage(
+                    _syncErrorLogMessage,
+                    _errorDialogTitle,
+                    MessageBoxImage.Error);
             }
         }
+    }
+
+    public sealed class GameStateSynchronizerDependencies
+    {
+        public GameStateSynchronizerDependencies(
+            int gameId,
+            ILog logger,
+            Func<IGameplayClient> gameplayClientProvider,
+            Action markServerEventReceived,
+            Func<GetGameStateResponseDto, bool, Task> applyGameStateAsync,
+            Func<Exception, string, bool> handleConnectionException)
+        {
+            if (gameId <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(gameId));
+            }
+
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            GameplayClientProvider = gameplayClientProvider
+                ?? throw new ArgumentNullException(nameof(gameplayClientProvider));
+            MarkServerEventReceived = markServerEventReceived
+                ?? throw new ArgumentNullException(nameof(markServerEventReceived));
+            ApplyGameStateAsync = applyGameStateAsync
+                ?? throw new ArgumentNullException(nameof(applyGameStateAsync));
+            HandleConnectionException = handleConnectionException
+                ?? throw new ArgumentNullException(nameof(handleConnectionException));
+
+            GameId = gameId;
+        }
+
+        public int GameId { get; }
+
+        public ILog Logger { get; }
+
+        public Func<IGameplayClient> GameplayClientProvider { get; }
+
+        public Action MarkServerEventReceived { get; }
+
+        public Func<GetGameStateResponseDto, bool, Task> ApplyGameStateAsync { get; }
+
+        public Func<Exception, string, bool> HandleConnectionException { get; }
+    }
+
+    public sealed class GameStateSynchronizerUiConfig
+    {
+        public GameStateSynchronizerUiConfig(
+            string syncErrorLogMessage,
+            string errorDialogTitle,
+            Action<string, string, MessageBoxImage> showErrorMessage)
+        {
+            SyncErrorLogMessage = syncErrorLogMessage
+                ?? throw new ArgumentNullException(nameof(syncErrorLogMessage));
+            ErrorDialogTitle = errorDialogTitle
+                ?? throw new ArgumentNullException(nameof(errorDialogTitle));
+            ShowErrorMessage = showErrorMessage
+                ?? throw new ArgumentNullException(nameof(showErrorMessage));
+        }
+
+        public string SyncErrorLogMessage { get; }
+
+        public string ErrorDialogTitle { get; }
+
+        public Action<string, string, MessageBoxImage> ShowErrorMessage { get; }
     }
 }

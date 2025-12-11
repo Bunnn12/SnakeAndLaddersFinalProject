@@ -109,7 +109,7 @@ namespace SnakeAndLaddersFinalProject.Services
             }
         }
 
-        public BoardDefinitionDto GetBoard(int gameId)
+        public static BoardDefinitionDto GetBoard(int gameId)
         {
             if (gameId <= 0)
             {

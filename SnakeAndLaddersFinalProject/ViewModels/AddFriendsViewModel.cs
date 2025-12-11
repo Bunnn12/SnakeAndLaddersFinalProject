@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Windows;
 using log4net;
 using SnakeAndLaddersFinalProject.FriendsService;
 using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.Services;
-using System.Windows;
 using SnakeAndLaddersFinalProject.Utilities;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
@@ -26,9 +26,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public void RunSearch(string searchTerm)
         {
-            searchTerm = (searchTerm ?? string.Empty).Trim();
+            string normalizedSearchTerm = (searchTerm ?? string.Empty).Trim();
 
-            if (searchTerm.Length < MIN_SEARCH_TERM_LENGTH)
+            if (normalizedSearchTerm.Length < MIN_SEARCH_TERM_LENGTH)
             {
                 SearchResults.Clear();
                 return;
@@ -40,7 +40,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     SearchResults.Clear();
 
-                    foreach (UserBriefDto user in friendsApi.SearchUsers(searchTerm,
+                    foreach (UserBriefDto user in friendsApi.SearchUsers(
+                        normalizedSearchTerm,
                         SEARCH_MAX_RESULTS))
                     {
                         SearchResults.Add(user);
@@ -49,16 +50,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                string userMessage = ExceptionHandler.Handle(
+                UiExceptionHelper.ShowModuleError(
                     ex,
-                    "AddFriendsViewModel.RunSearch",
-                    _logger);
-
-                MessageBox.Show(
-                    userMessage,
-                    Lang.errorTitle,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                    nameof(RunSearch),
+                    _logger,
+                    Lang.UiFriendsSearchError); 
             }
         }
 
@@ -92,16 +88,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                string userMessage = ExceptionHandler.Handle(
+                UiExceptionHelper.ShowModuleError(
                     ex,
-                    "AddFriendsViewModel.AddFriend",
-                    _logger);
-
-                MessageBox.Show(
-                    userMessage,
-                    Lang.errorTitle,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                    nameof(AddFriend),
+                    _logger,
+                    Lang.UiFriendRequestError); 
             }
         }
     }

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.ServiceModel;
 using System.Windows;
 using log4net;
 using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.StatsService;
+using SnakeAndLaddersFinalProject.Utilities;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
@@ -16,7 +16,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private const string STATS_ENDPOINT_NAME = "BasicHttpBinding_IStatsService";
 
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(RankingViewModel));
+        private static readonly ILog _logger =
+            LogManager.GetLogger(typeof(RankingViewModel));
 
         public ObservableCollection<PlayerRankingItemViewModel> Players { get; }
 
@@ -50,7 +51,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                     foreach (var player in orderedPlayers)
                     {
-                        PlayerRankingItemViewModel playerRankingViewModel = new PlayerRankingItemViewModel
+                        var playerRankingViewModel = new PlayerRankingItemViewModel
                         {
                             Position = currentPosition,
                             Username = player.Username,
@@ -62,40 +63,20 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     }
                 }
             }
-            catch (FaultException faultException)
+            catch (Exception ex)
             {
-                _logger.Warn("FaultException al cargar el ranking.", faultException);
-
-                string message = string.Format(
-                    Lang.errorRankingServerFaultTextFmt,
-                    faultException.Message);
+                ExceptionHandler.Handle(
+                    ex,
+                    "RankingViewModel.LoadRanking",
+                    _logger);
 
                 MessageBox.Show(
-                    message,
-                    Lang.lblRankingTitle,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-            }
-            catch (CommunicationException communicationException)
-            {
-                _logger.Error("CommunicationException al cargar el ranking.", communicationException);
-
-                MessageBox.Show(
-                    Lang.errorRankingCommunicationText,
-                    Lang.lblRankingTitle,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-            }
-            catch (Exception exception)
-            {
-                _logger.Error("Error inesperado al cargar el ranking.", exception);
-
-                MessageBox.Show(
-                    Lang.errorRankingUnexpectedText,
+                    Lang.UiRankingLoadError,
                     Lang.lblRankingTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
         }
+
     }
 }

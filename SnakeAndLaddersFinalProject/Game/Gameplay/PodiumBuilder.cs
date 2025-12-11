@@ -11,11 +11,21 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
 {
     public sealed class PodiumBuilder
     {
-        private readonly string _unknownWinnerName = Lang.PodiumUnknownWinnerNameText;
+
         private const int FIRST_PODIUM_POSITION = 1;
         private const int MAX_PODIUM_PLAYERS = 3;
         private const int INVALID_USER_ID = 0;
+        private const int DEFAULT_PODIUM_REWARD = 0;
+        private const int TOKENS_COUNT_NOT_AVAILABLE = -1;
 
+        private const string LOG_PREFIX = "PodiumBuilder.BuildPodium: ";
+        private const string LOG_STATE_NULL = LOG_PREFIX + "stateResponse is null.";
+        private const string LOG_GAME_NOT_FINISHED = LOG_PREFIX + "game is not finished.";
+        private const string LOG_TOKENS_EMPTY = LOG_PREFIX + "no tokens available in state.";
+        private const string LOG_NO_MEMBERS = LOG_PREFIX + "no members from corner players.";
+        private const string LOG_NO_PODIUM_PLAYERS = LOG_PREFIX + "no podium players were generated.";
+
+        private readonly string _unknownWinnerName = Lang.PodiumUnknownWinnerNameText;
         private readonly ILog _logger;
 
         public PodiumBuilder(ILog logger)
@@ -29,34 +39,30 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
         {
             if (stateResponse == null)
             {
-                _logger.Warn("PodiumBuilder.BuildPodium: stateResponse is null.");
-                return null;
+                _logger.Warn(LOG_STATE_NULL);
+                return BuildEmptyPodium();
             }
 
-            _logger.InfoFormat(
-                "PodiumBuilder.BuildPodium: IsFinished={0}, Tokens={1}, WinnerUserId={2}",
-                stateResponse.IsFinished,
-                stateResponse.Tokens == null ? -1 : stateResponse.Tokens.Length,
-                stateResponse.WinnerUserId);
+            LogStateInfo(stateResponse);
 
             if (!stateResponse.IsFinished)
             {
-                _logger.Info("PodiumBuilder.BuildPodium: the game is not finished.");
-                return null;
+                _logger.Info(LOG_GAME_NOT_FINISHED);
+                return BuildEmptyPodium();
             }
 
             if (stateResponse.Tokens == null || stateResponse.Tokens.Length == 0)
             {
-                _logger.Warn("PodiumBuilder.BuildPodium: there are no tokens in state.");
-                return null;
+                _logger.Warn(LOG_TOKENS_EMPTY);
+                return BuildEmptyPodium();
             }
 
             List<LobbyMemberViewModel> allMembers = BuildMembersFromCornerPlayers(cornerPlayers);
 
             if (allMembers.Count == 0)
             {
-                _logger.Warn("PodiumBuilder.BuildPodium: there are no members in CornerPlayers.");
-                return null;
+                _logger.Warn(LOG_NO_MEMBERS);
+                return BuildEmptyPodium();
             }
 
             List<PodiumPlayerViewModel> podiumPlayers =
@@ -64,54 +70,70 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
 
             if (podiumPlayers.Count == 0)
             {
-                _logger.Warn("PodiumBuilder.BuildPodium: no podium players could be built");
-                return null;
+                _logger.Warn(LOG_NO_PODIUM_PLAYERS);
+                return BuildEmptyPodium();
             }
 
             int winnerUserId = ResolveWinnerUserId(stateResponse, podiumPlayers);
             string winnerName = ResolveWinnerName(winnerUserId, podiumPlayers, allMembers);
 
-            PodiumViewModel podiumViewModel = new PodiumViewModel();
-            podiumViewModel.Initialize(
+            return BuildPodiumViewModel(winnerUserId, winnerName, podiumPlayers);
+        }
+
+        private static PodiumViewModel BuildPodiumViewModel(
+            int winnerUserId,
+            string winnerName,
+            List<PodiumPlayerViewModel> podiumPlayers)
+        {
+            var podium = new PodiumViewModel();
+            podium.Initialize(
                 winnerUserId,
                 winnerName,
                 podiumPlayers.AsReadOnly());
 
-            return podiumViewModel;
+            return podium;
+        }
+
+        private PodiumViewModel BuildEmptyPodium()
+        {
+            return BuildPodiumViewModel(
+                INVALID_USER_ID,
+                _unknownWinnerName,
+                new List<PodiumPlayerViewModel>());
         }
 
         private static List<LobbyMemberViewModel> BuildMembersFromCornerPlayers(
             CornerPlayersViewModel cornerPlayers)
         {
-            List<LobbyMemberViewModel> allMembers = new List<LobbyMemberViewModel>();
+            var members = new List<LobbyMemberViewModel>();
 
             if (cornerPlayers == null)
             {
-                return allMembers;
+                return members;
             }
 
             if (cornerPlayers.TopLeftPlayer != null)
             {
-                allMembers.Add(cornerPlayers.TopLeftPlayer);
+                members.Add(cornerPlayers.TopLeftPlayer);
             }
 
             if (cornerPlayers.TopRightPlayer != null)
             {
-                allMembers.Add(cornerPlayers.TopRightPlayer);
+                members.Add(cornerPlayers.TopRightPlayer);
             }
 
             if (cornerPlayers.BottomLeftPlayer != null)
             {
-                allMembers.Add(cornerPlayers.BottomLeftPlayer);
+                members.Add(cornerPlayers.BottomLeftPlayer);
             }
 
             if (cornerPlayers.BottomRightPlayer != null)
             {
-                allMembers.Add(cornerPlayers.BottomRightPlayer);
+                members.Add(cornerPlayers.BottomRightPlayer);
             }
 
-            return allMembers
-                .GroupBy(m => m.UserId)
+            return members
+                .GroupBy(member => member.UserId)
                 .Select(group => group.First())
                 .ToList();
         }
@@ -120,28 +142,28 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
             GetGameStateResponseDto stateResponse,
             List<LobbyMemberViewModel> allMembers)
         {
-            List<TokenStateDto> orderedTokens = stateResponse.Tokens
+            var orderedTokens = stateResponse.Tokens
                 .OrderByDescending(token => token.CellIndex)
                 .ToList();
 
-            List<PodiumPlayerViewModel> podiumPlayers = new List<PodiumPlayerViewModel>();
+            var podiumPlayers = new List<PodiumPlayerViewModel>();
             int position = FIRST_PODIUM_POSITION;
 
             foreach (TokenStateDto token in orderedTokens)
             {
-                LobbyMemberViewModel member = allMembers
-                    .FirstOrDefault(m => m.UserId == token.UserId);
+                LobbyMemberViewModel member =
+                    allMembers.FirstOrDefault(m => m.UserId == token.UserId);
 
                 if (member == null)
                 {
                     continue;
                 }
 
-                PodiumPlayerViewModel podiumPlayer = new PodiumPlayerViewModel(
+                var podiumPlayer = new PodiumPlayerViewModel(
                     member.UserId,
                     member.UserName,
                     position,
-                    0,
+                    DEFAULT_PODIUM_REWARD,
                     member.SkinImagePath);
 
                 podiumPlayers.Add(podiumPlayer);
@@ -184,25 +206,36 @@ namespace SnakeAndLaddersFinalProject.Game.Gameplay
                 return _unknownWinnerName;
             }
 
-            LobbyMemberViewModel winnerMember = allMembers
-                .FirstOrDefault(member => member.UserId == winnerUserId);
+            LobbyMemberViewModel cornerMember =
+                allMembers.FirstOrDefault(member => member.UserId == winnerUserId);
 
-            if (winnerMember != null &&
-                !string.IsNullOrWhiteSpace(winnerMember.UserName))
+            if (cornerMember != null && !string.IsNullOrWhiteSpace(cornerMember.UserName))
             {
-                return winnerMember.UserName;
+                return cornerMember.UserName;
             }
 
-            PodiumPlayerViewModel podiumWinner = podiumPlayers
-                .FirstOrDefault(player => player.UserId == winnerUserId);
+            PodiumPlayerViewModel podiumMember =
+                podiumPlayers.FirstOrDefault(player => player.UserId == winnerUserId);
 
-            if (podiumWinner != null &&
-                !string.IsNullOrWhiteSpace(podiumWinner.UserName))
+            if (podiumMember != null && !string.IsNullOrWhiteSpace(podiumMember.UserName))
             {
-                return podiumWinner.UserName;
+                return podiumMember.UserName;
             }
 
             return _unknownWinnerName;
+        }
+        private void LogStateInfo(GetGameStateResponseDto stateResponse)
+        {
+            int tokensCount =
+                stateResponse.Tokens == null
+                    ? TOKENS_COUNT_NOT_AVAILABLE
+                    : stateResponse.Tokens.Length;
+
+            _logger.InfoFormat(
+                LOG_PREFIX + "IsFinished={0}, Tokens={1}, WinnerUserId={2}",
+                stateResponse.IsFinished,
+                tokensCount,
+                stateResponse.WinnerUserId);
         }
     }
 }

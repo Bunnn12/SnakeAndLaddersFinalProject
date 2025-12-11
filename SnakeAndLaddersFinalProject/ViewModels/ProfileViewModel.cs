@@ -17,13 +17,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private const int MAX_FIRST_NAME_LENGTH = 100;
         private const int MAX_LAST_NAME_LENGTH = 255;
-        private const int MAX_DESCRIPTION_LENGTH = 510; 
+        private const int MAX_DESCRIPTION_LENGTH = 510;
 
         private const int MIN_FIRST_NAME_LENGTH = 1;
         private const int MIN_LAST_NAME_LENGTH = 1;
         private const int MIN_DESCRIPTION_LENGTH = 0;
 
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(ProfileViewModel));
+        private static readonly ILog _logger =
+            LogManager.GetLogger(typeof(ProfileViewModel));
 
         public AccountDto LoadedAccount { get; private set; }
 
@@ -44,7 +45,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public bool LoadProfile()
         {
-            var session = SessionContext.Current;
+            SessionContext session = SessionContext.Current;
 
             if (session == null || !session.IsAuthenticated)
             {
@@ -90,24 +91,22 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.Error("Error loading profile.", ex);
+                ExceptionHandler.Handle(
+                    ex,
+                    "ProfileViewModel.LoadProfile",
+                    _logger);
+
                 MessageBox.Show(
                     Lang.ProfileAccountInfoLoadError,
                     Lang.UiTitleError,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
+
                 return false;
             }
             finally
             {
-                try
-                {
-                    client.Close();
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error("Error while closing UserServiceClient.", ex);
-                }
+                SafeCloseClient(client, "ProfileViewModel.LoadProfile");
             }
         }
 
@@ -122,12 +121,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                AvatarProfileOptionsDto optionsDto = client.GetAvatarOptions(LoadedAccount.UserId);
+                AvatarProfileOptionsDto optionsDto =
+                    client.GetAvatarOptions(LoadedAccount.UserId);
+
                 var options = new List<AvatarProfileOptionViewModel>();
 
-                if (optionsDto != null && optionsDto.Avatars != null)
+                if (optionsDto?.Avatars != null)
                 {
-                    foreach (var avatarDto in optionsDto.Avatars)
+                    foreach (AvatarProfileOptionDto avatarDto in optionsDto.Avatars)
                     {
                         if (string.IsNullOrWhiteSpace(avatarDto.AvatarCode))
                         {
@@ -148,24 +149,24 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.Error("Error loading avatar options.", ex);
+                ExceptionHandler.Handle(
+                    ex,
+                    "ProfileViewModel.LoadAvatarOptions",
+                    _logger);
+
+                // Aquí preferiste no mostrar MessageBox, solo fallar silencioso:
                 return false;
             }
             finally
             {
-                try
-                {
-                    client.Close();
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error("Error while closing UserServiceClient after loading avatar options.",
-                        ex);
-                }
+                SafeCloseClient(client, "ProfileViewModel.LoadAvatarOptions");
             }
         }
 
-        public static bool ValidateProfileInputs(string firstName, string lastName, string description)
+        public static bool ValidateProfileInputs(
+            string firstName,
+            string lastName,
+            string description)
         {
             string normalizedFirstName = InputValidator.Normalize(firstName);
             string normalizedLastName = InputValidator.Normalize(lastName);
@@ -183,10 +184,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return false;
             }
 
-            if (!InputValidator.IsLengthInRange(normalizedFirstName, MIN_FIRST_NAME_LENGTH,
-                MAX_FIRST_NAME_LENGTH))
+            if (!InputValidator.IsLengthInRange(
+                    normalizedFirstName,
+                    MIN_FIRST_NAME_LENGTH,
+                    MAX_FIRST_NAME_LENGTH))
             {
-                ShowWarn(string.Format(Lang.ProfileFirstNameTooLongFmt, MAX_FIRST_NAME_LENGTH));
+                ShowWarn(
+                    string.Format(
+                        Lang.ProfileFirstNameTooLongFmt,
+                        MAX_FIRST_NAME_LENGTH));
                 return false;
             }
 
@@ -196,10 +202,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return false;
             }
 
-            if (!InputValidator.IsLengthInRange(normalizedLastName, MIN_LAST_NAME_LENGTH,
-                MAX_LAST_NAME_LENGTH))
+            if (!InputValidator.IsLengthInRange(
+                    normalizedLastName,
+                    MIN_LAST_NAME_LENGTH,
+                    MAX_LAST_NAME_LENGTH))
             {
-                ShowWarn(string.Format(Lang.ProfileLastNameTooLongFmt, MAX_LAST_NAME_LENGTH));
+                ShowWarn(
+                    string.Format(
+                        Lang.ProfileLastNameTooLongFmt,
+                        MAX_LAST_NAME_LENGTH));
                 return false;
             }
 
@@ -211,17 +222,23 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             if (!string.IsNullOrEmpty(normalizedDescription))
             {
-                if (!InputValidator.IsLengthInRange(normalizedDescription,
-                    MIN_DESCRIPTION_LENGTH,
-                    MAX_DESCRIPTION_LENGTH))
+                if (!InputValidator.IsLengthInRange(
+                        normalizedDescription,
+                        MIN_DESCRIPTION_LENGTH,
+                        MAX_DESCRIPTION_LENGTH))
                 {
-                    ShowWarn(string.Format(Lang.ProfileDescriptionTooLongFmt,
-                        MAX_DESCRIPTION_LENGTH));
+                    ShowWarn(
+                        string.Format(
+                            Lang.ProfileDescriptionTooLongFmt,
+                            MAX_DESCRIPTION_LENGTH));
                     return false;
                 }
 
-                if (!InputValidator.IsSafeText(normalizedDescription, MIN_DESCRIPTION_LENGTH,
-                    MAX_DESCRIPTION_LENGTH, allowNewLines: true))
+                if (!InputValidator.IsSafeText(
+                        normalizedDescription,
+                        MIN_DESCRIPTION_LENGTH,
+                        MAX_DESCRIPTION_LENGTH,
+                        allowNewLines: true))
                 {
                     ShowWarn(Lang.ProfileInvalidCharactersText);
                     return false;
@@ -237,10 +254,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 return false;
             }
+
             return text.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
         }
 
-        public bool TryUpdateProfile(string firstName, string lastName, string description)
+        public bool TryUpdateProfile(
+            string firstName,
+            string lastName,
+            string description)
         {
             if (LoadedAccount == null)
             {
@@ -264,7 +285,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                var updated = client.UpdateProfile(request);
+                AccountDto updated = client.UpdateProfile(request);
 
                 if (updated == null)
                 {
@@ -285,20 +306,17 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.Error("Error updating profile.", ex);
+                ExceptionHandler.Handle(
+                    ex,
+                    "ProfileViewModel.TryUpdateProfile",
+                    _logger);
+
                 ShowError(Lang.ProfileUpdateErrorText);
                 return false;
             }
             finally
             {
-                try
-                {
-                    client.Close();
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error("Error while closing UserServiceClient after update.", ex);
-                }
+                SafeCloseClient(client, "ProfileViewModel.TryUpdateProfile");
             }
         }
 
@@ -314,26 +332,24 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             try
             {
                 client.DeactivateAccount(LoadedAccount.UserId);
+
                 ShowInfo(Lang.ProfileDeactivateSuccessText);
                 Application.Current.Shutdown();
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.Error("Error deactivating account.", ex);
+                ExceptionHandler.Handle(
+                    ex,
+                    "ProfileViewModel.TryDeactivateAccount",
+                    _logger);
+
                 ShowError(Lang.ProfileDeactivateErrorText);
                 return false;
             }
             finally
             {
-                try
-                {
-                    client.Close();
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error("Error while closing UserServiceClient after deactivate.", ex);
-                }
+                SafeCloseClient(client, "ProfileViewModel.TryDeactivateAccount");
             }
         }
 
@@ -357,7 +373,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     ProfilePhotoId = avatarId
                 };
 
-                var updated = client.UpdateProfile(request);
+                AccountDto updated = client.UpdateProfile(request);
 
                 if (updated == null)
                 {
@@ -378,21 +394,39 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.Error("Error updating avatar.", ex);
+                ExceptionHandler.Handle(
+                    ex,
+                    "ProfileViewModel.TryUpdateAvatar",
+                    _logger);
+
                 ShowError(Lang.ProfileAvatarUpdateErrorText);
                 return false;
             }
             finally
             {
-                try
-                {
-                    client.Close();
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error("Error while closing UserServiceClient after avatar update.",
-                        ex);
-                }
+                SafeCloseClient(client, "ProfileViewModel.TryUpdateAvatar");
+            }
+        }
+
+        private static void SafeCloseClient(
+            UserServiceClient client,
+            string operationName)
+        {
+            if (client == null)
+            {
+                return;
+            }
+
+            try
+            {
+                client.Close();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Handle(
+                    ex,
+                    $"{nameof(ProfileViewModel)}.{operationName}.CloseClient",
+                    _logger);
             }
         }
 

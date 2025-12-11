@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using log4net;
 using SnakeAndLaddersFinalProject.Authentication;
 using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.Utilities;
@@ -33,6 +34,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         private const string KICK_TYPE_PERMANENT = "S4";
 
         private static readonly Random _guestRandom = new Random();
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(LoginPage));
 
         private LoginViewModel ViewModel
         {
@@ -103,74 +105,99 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private async void Login(object sender, RoutedEventArgs e)
         {
-            string identifier = txtUsername.Text?.Trim() ?? string.Empty;
-            string password = pwdPassword.Password ?? string.Empty;
-
-            var viewModel = ViewModel;
-            if (viewModel == null)
+            try
             {
-                ShowError(Lang.UiGenericError);
-                return;
-            }
+                string identifier = txtUsername.Text?.Trim() ?? string.Empty;
+                string password = pwdPassword.Password ?? string.Empty;
 
-            string[] errors = LoginViewModel.ValidateLogin(identifier, password);
-            if (errors.Any())
-            {
-                ShowWarn(string.Join("\n", errors));
-                return;
-            }
-
-            NavigateToLoadingPage();
-
-            await Task.Delay(LOGIN_LOADING_DELAY_MILLISECONDS).ConfigureAwait(true);
-
-            var result = await viewModel.LoginAsync(identifier, password).ConfigureAwait(true);
-
-            if (result.IsEndpointNotFound)
-            {
-                NavigateToLoginPage();
-                ShowError(Lang.UiEndpointNotFound);
-                return;
-            }
-
-            if (result.IsGenericError)
-            {
-                NavigateToLoginPage();
-                ShowError(Lang.UiGenericError);
-                return;
-            }
-
-            if (result.IsSuccess)
-            {
-                NavigateToMainPage();
-
-                if (!result.HasAuthToken)
+                LoginViewModel viewModel = ViewModel;
+                if (viewModel == null)
                 {
-                    ShowWarn(Lang.UiSessionTokenMissingWarn);
+                    ShowError(Lang.UiGenericError);
+                    return;
                 }
 
-                return;
-            }
+                string[] errors = LoginViewModel.ValidateLogin(identifier, password);
+                if (errors.Any())
+                {
+                    ShowWarn(string.Join("\n", errors));
+                    return;
+                }
 
-            NavigateToLoginPage();
-            ShowWarn(MapAuth(result.Code, result.Meta));
+                NavigateToLoadingPage();
+
+                await Task.Delay(LOGIN_LOADING_DELAY_MILLISECONDS)
+                    .ConfigureAwait(true);
+
+                LoginViewModel.LoginServiceResult result =
+                    await viewModel.LoginAsync(identifier, password)
+                        .ConfigureAwait(true);
+
+                if (result.IsSuccess)
+                {
+                    NavigateToMainPage();
+
+                    if (!result.HasAuthToken)
+                    {
+                        ShowWarn(Lang.UiSessionTokenMissingWarn);
+                    }
+
+                    return;
+                }
+
+                NavigateToLoginPage();
+
+                if (result.IsGenericError || result.IsEndpointNotFound)
+                {
+                    string technicalMessage = result.UserMessage;
+
+                    if (string.IsNullOrWhiteSpace(technicalMessage))
+                    {
+                        technicalMessage = Lang.UiGenericError;
+                    }
+
+                    ShowError(technicalMessage);
+                    return;
+                }
+
+                ShowWarn(MapAuth(result.Code, result.Meta));
+            }
+            catch (Exception ex)
+            {
+                UiExceptionHelper.ShowModuleError(
+                    ex,
+                    "LoginPage.Login",
+                    _logger,
+                    Lang.UiLoginGenericError);
+
+                NavigateToLoginPage();
+            }
         }
 
         private void PlayAsGuest(object sender, RoutedEventArgs e)
         {
             try
             {
-                var session = SessionContext.Current;
+                SessionContext session = SessionContext.Current;
                 if (session == null)
                 {
                     ShowError(Lang.UiGenericError);
                     return;
                 }
 
-                int suffix = _guestRandom.Next(GUEST_SUFFIX_MIN_VALUE, GUEST_SUFFIX_MAX_EXCLUSIVE);
-                string guestName = string.Format("{0}{1:D2}", Lang.UiGuestNamePrefix, suffix);
+                int suffix = _guestRandom.Next(
+                    GUEST_SUFFIX_MIN_VALUE,
+                    GUEST_SUFFIX_MAX_EXCLUSIVE);
 
-                int guestRandomId = _guestRandom.Next(GUEST_ID_MIN_VALUE, GUEST_ID_MAX_EXCLUSIVE);
+                string guestName = string.Format(
+                    "{0}{1:D2}",
+                    Lang.UiGuestNamePrefix,
+                    suffix);
+
+                int guestRandomId = _guestRandom.Next(
+                    GUEST_ID_MIN_VALUE,
+                    GUEST_ID_MAX_EXCLUSIVE);
+
                 int guestUserId = guestRandomId * -1;
 
                 session.UserId = guestUserId;
@@ -183,9 +210,13 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 NavigateToMainPage();
             }
-            catch
+            catch (Exception ex)
             {
-                ShowError(Lang.UiUnexpectedNavigationError);
+                UiExceptionHelper.ShowModuleError(
+                    ex,
+                    "LoginPage.PlayAsGuest",
+                    _logger,
+                    Lang.UiUnexpectedNavigationError);
             }
         }
 
@@ -237,28 +268,32 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void NavigateToLoginPage()
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                if (TryGetMainFrame(out Frame mainFrame))
+            Application.Current.Dispatcher.Invoke(
+                () =>
                 {
-                    mainFrame.Navigate(new LoginPage());
-                    return;
-                }
-                NavigationService?.Navigate(new LoginPage());
-            });
+                    if (TryGetMainFrame(out Frame mainFrame))
+                    {
+                        mainFrame.Navigate(new LoginPage());
+                        return;
+                    }
+
+                    NavigationService?.Navigate(new LoginPage());
+                });
         }
 
         private void NavigateToMainPage()
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                if (TryGetMainFrame(out Frame mainFrame))
+            Application.Current.Dispatcher.Invoke(
+                () =>
                 {
-                    mainFrame.Navigate(new MainPage());
-                    return;
-                }
-                NavigationService?.Navigate(new MainPage());
-            });
+                    if (TryGetMainFrame(out Frame mainFrame))
+                    {
+                        mainFrame.Navigate(new MainPage());
+                        return;
+                    }
+
+                    NavigationService?.Navigate(new MainPage());
+                });
         }
 
         private bool TryGetMainFrame(out Frame mainFrame)
@@ -270,31 +305,34 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void ShowWarn(string message)
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                MessageBox.Show(
-                    message,
-                    Lang.UiTitleWarning,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-            });
+            Application.Current.Dispatcher.Invoke(
+                () =>
+                {
+                    MessageBox.Show(
+                        message,
+                        Lang.UiTitleWarning,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                });
         }
 
         private void ShowError(string message)
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                MessageBox.Show(
-                    message,
-                    Lang.UiTitleError,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-            });
+            Application.Current.Dispatcher.Invoke(
+                () =>
+                {
+                    MessageBox.Show(
+                        message,
+                        Lang.UiTitleError,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                });
         }
 
         private static string MapAuth(string code, Dictionary<string, string> meta)
         {
-            var metaDictionary = meta ?? new Dictionary<string, string>();
+            Dictionary<string, string> metaDictionary =
+                meta ?? new Dictionary<string, string>();
 
             switch (code)
             {
@@ -336,17 +374,20 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return Lang.AuthAccountDeleted;
 
                 case "Auth.Banned":
-                    if (metaDictionary.TryGetValue(META_KEY_SANCTION_TYPE, out string sanctionType) &&
-                        string.Equals(sanctionType, KICK_TYPE_PERMANENT,
-                        StringComparison.OrdinalIgnoreCase))
+                    if (metaDictionary.TryGetValue(META_KEY_SANCTION_TYPE, out string sanctionType)
+                        && string.Equals(
+                            sanctionType,
+                            KICK_TYPE_PERMANENT,
+                            StringComparison.OrdinalIgnoreCase))
                     {
                         return Lang.AuthBannedPermanent;
                     }
 
-                    if (metaDictionary.TryGetValue(META_KEY_BAN_ENDS_AT_UTC, out string rawDate) &&
-                        DateTime.TryParse(rawDate, out DateTime banEndsUtc))
+                    if (metaDictionary.TryGetValue(META_KEY_BAN_ENDS_AT_UTC, out string rawDate)
+                        && DateTime.TryParse(rawDate, out DateTime banEndsUtc))
                     {
                         DateTime local = banEndsUtc.ToLocalTime();
+
                         return string.Format(
                             Lang.AuthBannedUntilFmt,
                             local.ToString(BAN_DATE_DISPLAY_FORMAT));
@@ -355,7 +396,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return Lang.AuthBannedGeneric;
 
                 case AUTH_CODE_SESSION_ALREADY_ACTIVE:
-                    return "Lang.AuthSessionAlreadyActive"; 
+                    return Lang.AuthSessionAlreadyActive;
 
                 default:
                     return Lang.AuthServerError;

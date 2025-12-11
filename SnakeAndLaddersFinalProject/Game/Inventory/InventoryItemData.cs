@@ -4,6 +4,15 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
 {
     public sealed class InventoryItemData
     {
+        public int ObjectId { get; }
+
+        public string ObjectCode { get; }
+
+        public string Name { get; }
+
+        public int Quantity { get; }
+
+        public byte? SlotNumber { get; }
         public InventoryItemData(
             int objectId,
             string objectCode,
@@ -32,15 +41,5 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             Quantity = quantity;
             SlotNumber = slotNumber;
         }
-
-        public int ObjectId { get; }
-
-        public string ObjectCode { get; }
-
-        public string Name { get; }
-
-        public int Quantity { get; }
-
-        public byte? SlotNumber { get; }
     }
 }

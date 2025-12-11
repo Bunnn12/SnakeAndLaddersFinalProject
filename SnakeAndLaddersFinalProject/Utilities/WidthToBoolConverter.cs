@@ -16,7 +16,9 @@ namespace SnakeAndLaddersFinalProject.Utilities
         {
             double width = 0.0;
             if (value is double widthValue)
+            {
                 width = double.IsNaN(widthValue) || double.IsInfinity(widthValue) ? 0.0 : Math.Max(0.0, widthValue);
+            }
 
             double threshold = DefaultThreshold;
 

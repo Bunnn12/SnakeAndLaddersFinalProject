@@ -171,8 +171,6 @@
     <Compile Include="Converters\TokensForCellConverter.cs" />
     <Compile Include="Converters\TurnTimeToBrushConverter.cs" />
     <Compile Include="Converters\TurnTimeToPieGeometryConverter.cs" />
-    <Compile Include="Converters\TurnTimeToScaleConverter.cs" />
-    <Compile Include="Converters\TurnTimeToStrokeDashConverter.cs" />
     <Compile Include="CreateMatchOptions.cs" />
     <Compile Include="FriendsApi.cs" />
     <Compile Include="Animation\GameBoardAnimationService.cs" />
@@ -225,6 +223,7 @@
     </Compile>
     <Compile Include="Policies\LobbyMessages.cs" />
     <Compile Include="Policies\PlayerReportPolicy.cs" />
+    <Compile Include="Services\ChatClientFactory.cs" />
     <Compile Include="Services\GameBoardClient.cs" />
     <Compile Include="Services\GameplayClient.cs" />
     <Compile Include="Navigation\LobbyNavigationArgs.cs" />
@@ -300,12 +299,13 @@
     <Compile Include="Utilities\SkinAssetHelper.cs" />
     <Compile Include="Utilities\TextBoxCharCounterHelper.cs" />
     <Compile Include="Utilities\TurnTimerTextFormatter.cs" />
+    <Compile Include="Utilities\UiExceptionHelper.cs" />
     <Compile Include="Utilities\WidthToBoolConverter.cs" />
     <Compile Include="ViewModels\AddFriendsViewModel.cs" />
     <Compile Include="ViewModels\AvatarProfileOptionViewModel.cs" />
     <Compile Include="ViewModels\AvatarSkinItemViewModel.cs" />
     <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
-    <Compile Include="ViewModels\ChatClientCallback.cs" />
+    <Compile Include="Services\ChatClientCallback.cs" />
     <Compile Include="ViewModels\ChatMessageViewModel.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\CornerPlayersViewModel.cs" />

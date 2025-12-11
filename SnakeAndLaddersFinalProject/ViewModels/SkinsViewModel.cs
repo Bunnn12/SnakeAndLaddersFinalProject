@@ -19,6 +19,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string USER_SERVICE_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IUserService";
         private const string SKIN_PREFIX_AVATAR = "A";
 
+        private const string CONTEXT_LOAD_SKINS = "SkinsViewModel.LoadAsync";
+        private const string CONTEXT_APPLY_SELECTION = "SkinsViewModel.ApplySelectionAsync";
+
         private static readonly ILog _logger = LogManager.GetLogger(typeof(SkinsViewModel));
 
         private readonly ObservableCollection<AvatarSkinItemViewModel> _avatarOptions
@@ -110,6 +113,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 if (options == null || options.Avatars == null)
                 {
                     _logger.Warn("GetAvatarOptions returned null or empty list.");
+                    _avatarOptions.Clear();
+                    SelectedAvatar = null;
                     return;
                 }
 
@@ -150,9 +155,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                string userMessage = ExceptionHandler.Handle(ex, "SkinsViewModel.LoadAsync",
-                    _logger);
-                MessageBox.Show(userMessage, Lang.errorTitle, MessageBoxButton.OK,
+                string baseMessage = ExceptionHandler.Handle(ex, CONTEXT_LOAD_SKINS, _logger);
+                string userMessage = string.Concat(baseMessage, " ", Lang.UiSkinsLoadErrorSuffix);
+
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    ConnectionLostHandlerException.HandleConnectionLost();
+                    return;
+                }
+
+                MessageBox.Show(
+                    userMessage,
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
             finally
@@ -213,21 +228,30 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             if (SessionContext.Current == null || !SessionContext.Current.IsAuthenticated)
             {
-                MessageBox.Show(Lang.UiShopRequiresLogin, Lang.UiTitleInfo, MessageBoxButton.OK,
+                MessageBox.Show(
+                    Lang.UiShopRequiresLogin,
+                    Lang.UiTitleInfo,
+                    MessageBoxButton.OK,
                     MessageBoxImage.Information);
                 return;
             }
 
             if (SelectedAvatar == null)
             {
-                MessageBox.Show(Lang.SkinsSelectAvatarWarn, Lang.UiTitleInfo, MessageBoxButton.OK,
+                MessageBox.Show(
+                    Lang.SkinsSelectAvatarWarn,
+                    Lang.UiTitleInfo,
+                    MessageBoxButton.OK,
                     MessageBoxImage.Information);
                 return;
             }
 
             if (!SelectedAvatar.IsUnlocked)
             {
-                MessageBox.Show(Lang.SkinsAvatarLockedWarn, Lang.SkinsLockedTitle, MessageBoxButton.OK,
+                MessageBox.Show(
+                    Lang.SkinsAvatarLockedWarn,
+                    Lang.SkinsLockedTitle,
+                    MessageBoxButton.OK,
                     MessageBoxImage.Information);
                 return;
             }
@@ -248,7 +272,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     AvatarCode = SelectedAvatar.AvatarCode
                 };
 
-                AccountDto result = await client.SelectAvatarForProfileAsync(request).ConfigureAwait(false);
+                AccountDto result = await client.SelectAvatarForProfileAsync(request)
+                    .ConfigureAwait(false);
 
                 if (result != null)
                 {
@@ -262,14 +287,29 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                     await Application.Current.Dispatcher.InvokeAsync(async () => await LoadAsync());
 
-                    MessageBox.Show(Lang.SkinsAvatarUpdatedSuccess, Lang.SkinsUpdatedTitle, MessageBoxButton.OK,
+                    MessageBox.Show(
+                        Lang.SkinsAvatarUpdatedSuccess,
+                        Lang.SkinsUpdatedTitle,
+                        MessageBoxButton.OK,
                         MessageBoxImage.Information);
                 }
             }
             catch (Exception ex)
             {
-                string userMessage = ExceptionHandler.Handle(ex, "SkinsViewModel.ApplySelectionAsync", _logger);
-                MessageBox.Show(userMessage, Lang.errorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                string baseMessage = ExceptionHandler.Handle(ex, CONTEXT_APPLY_SELECTION, _logger);
+                string userMessage = string.Concat(baseMessage, " ", Lang.UiSkinsApplyErrorSuffix);
+
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    ConnectionLostHandlerException.HandleConnectionLost();
+                    return;
+                }
+
+                MessageBox.Show(
+                    userMessage,
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
             finally
             {
@@ -304,7 +344,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?
+                .Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

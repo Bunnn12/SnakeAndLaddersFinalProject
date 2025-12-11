@@ -111,10 +111,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public ObservableCollection<GameBoardConnectionViewModel> Connections { get; }
 
         public CornerPlayersViewModel CornerPlayers { get; }
+
         private static string BuildPackUri(string relativePath)
         {
             return string.Format("pack://application:,,,/{0}", relativePath);
         }
+
         public ObservableCollection<PlayerTokenViewModel> PlayerTokens
         {
             get { return _tokenManager.PlayerTokens; }
@@ -261,13 +263,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        public GameBoardViewModel(BoardDefinitionDto boardDefinition,int gameId,
-            int localUserId, string currentUserName)
+        public GameBoardViewModel(
+            BoardDefinitionDto boardDefinition,
+            int gameId,
+            int localUserId,
+            string currentUserName)
         {
             ValidateConstructorArguments(boardDefinition, gameId, localUserId);
 
-            this._gameId = gameId;
-            this._localUserId = localUserId;
+            _gameId = gameId;
+            _localUserId = localUserId;
 
             Rows = boardDefinition.Rows;
             Columns = boardDefinition.Columns;
@@ -302,31 +307,48 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             _podiumBuilder = new PodiumBuilder(_logger);
 
-            _diceSelectionManager = new DiceSelectionManager(
-                MIN_DICE_SLOT,
-                MAX_DICE_SLOT,
-                HasDiceInSlot,
+            var diceSelectionCallbacks = new DiceSelectionCallbacks(
                 value => _selectedDiceSlotNumber = value,
                 value => IsDiceSlot1Selected = value,
                 value => IsDiceSlot2Selected = value,
                 value => LastItemNotification = value);
 
+            _diceSelectionManager = new DiceSelectionManager(
+                MIN_DICE_SLOT,
+                MAX_DICE_SLOT,
+                HasDiceInSlot,
+                diceSelectionCallbacks);
+
+            var itemUsageDependencies = new ItemUsageManagerDependencies
+            {
+                Inventory = Inventory,
+                GetGameplayClient = () => _gameplayClient,
+                Logger = _logger,
+                GetIsUseItemInProgress = () => _isUseItemInProgress,
+                SetIsUseItemInProgress = value => _isUseItemInProgress = value,
+                GetIsTargetSelectionActive = () => IsTargetSelectionActive,
+                SetIsTargetSelectionActive = value => IsTargetSelectionActive = value,
+                GetPendingItemSlotNumber = () => _pendingItemSlotNumber,
+                SetPendingItemSlotNumber = value => _pendingItemSlotNumber = value,
+                SetLastItemNotification = value => LastItemNotification = value,
+                RefreshInventoryAsync = () => Inventory.InitializeAsync(),
+                SyncGameStateAsync = () => SafeSyncGameStateAsync(true),
+                RaiseAllCanExecuteChanged = RaiseAllCanExecuteChanged
+            };
+
+            var itemUsageMessages = new ItemUsageMessages
+            {
+                UnknownErrorMessage = Lang.GameUnknownErrorText,
+                UseItemFailureMessagePrefix = Lang.GameItemUseFailurePrefixText,
+                UseItemUnexpectedErrorMessage = Lang.GameItemUseUnexpectedErrorText,
+                GameWindowTitle = Lang.WindowTitleGameBoard
+            };
+
             _itemUsageController = new ItemUsageManager(
-                this._gameId,
-                this._localUserId,
-                Inventory,
-                () => _gameplayClient,
-                _logger,
-                () => _isUseItemInProgress,
-                value => _isUseItemInProgress = value,
-                () => IsTargetSelectionActive,
-                value => IsTargetSelectionActive = value,
-                () => _pendingItemSlotNumber,
-                value => _pendingItemSlotNumber = value,
-                value => LastItemNotification = value,
-                () => Inventory.InitializeAsync(),
-                () => SafeSyncGameStateAsync(true),
-                RaiseAllCanExecuteChanged);
+                _gameId,
+                _localUserId,
+                itemUsageDependencies,
+                itemUsageMessages);
 
             _useItemFromSlot1Command = new AsyncCommand(
                 () => _itemUsageController.PrepareItemTargetSelectionAsync(
@@ -350,29 +372,18 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 _ => _diceSelectionManager.SelectSlot(MIN_DICE_SLOT),
                 _ => _diceSelectionManager.CanSelectSlot(
                     MIN_DICE_SLOT,
-                    IsMyTurn,
-                    _animationService.IsAnimating,
-                    _isRollRequestInProgress,
-                    _isUseItemInProgress,
-                    IsTargetSelectionActive));
+                    BuildDiceSelectionState()));
 
             _selectDiceSlot2Command = new RelayCommand<int>(
                 _ => _diceSelectionManager.SelectSlot(MAX_DICE_SLOT),
                 _ => _diceSelectionManager.CanSelectSlot(
                     MAX_DICE_SLOT,
-                    IsMyTurn,
-                    _animationService.IsAnimating,
-                    _isRollRequestInProgress,
-                    _isUseItemInProgress,
-                    IsTargetSelectionActive));
+                    BuildDiceSelectionState()));
 
             _selectTargetUserCommand = new RelayCommand<int>(
-                async userId => await _itemUsageController.OnTargetUserSelectedAsync(
-                    userId,
-                    Lang.GameUnknownErrorText,
-                    Lang.GameItemUseFailurePrefixText,
-                    Lang.GameItemUseUnexpectedErrorText,
-                    Lang.WindowTitleGameBoard),
+                async userId => await _itemUsageController
+                    .OnTargetUserSelectedAsync(userId)
+                    .ConfigureAwait(false),
                 _ => IsTargetSelectionActive);
 
             _cancelItemUseCommand = new RelayCommand<int>(
@@ -394,39 +405,55 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             _serverInactivityGuard.ServerInactivityTimeoutDetected += OnServerInactivityTimeoutDetected;
             _serverInactivityGuard.Start();
 
-            _gameStateSynchronizer = new GameStateSynchronizer(
+            var gameStateSyncDependencies = new GameStateSynchronizerDependencies(
                 gameId,
                 _logger,
                 () => _gameplayClient,
                 MarkServerEventReceived,
                 ApplyGameStateAsync,
-                HandleConnectionException,
+                HandleConnectionException);
+
+            var gameStateSyncUiConfig = new GameStateSynchronizerUiConfig(
                 Lang.GameStateSyncErrorText,
                 Lang.errorTitle,
                 ShowMessage);
 
+            _gameStateSynchronizer = new GameStateSynchronizer(
+                gameStateSyncDependencies,
+                gameStateSyncUiConfig);
+
+            var diceRollDependencies = new DiceRollManagerDependencies
+            {
+                DiceSelectionManager = _diceSelectionManager,
+                GameplayClientProvider = () => _gameplayClient,
+                Logger = _logger,
+                GetIsMyTurn = () => IsMyTurn,
+                GetIsAnimating = () => _animationService.IsAnimating,
+                GetIsRollRequestInProgress = () => _isRollRequestInProgress,
+                GetIsUseItemInProgress = () => _isUseItemInProgress,
+                GetIsTargetSelectionActive = () => IsTargetSelectionActive,
+                SetIsRollRequestInProgress = value => _isRollRequestInProgress = value,
+                RaiseAllCanExecuteChanged = RaiseAllCanExecuteChanged,
+                SyncGameStateAsync = () => SafeSyncGameStateAsync(false),
+                InitializeInventoryAsync = SafeInitializeInventoryAsync,
+                MarkServerEventReceived = MarkServerEventReceived,
+                HandleConnectionException = HandleConnectionException,
+                ShowMessage = ShowMessage
+            };
+
+            var diceRollMessages = new DiceRollMessages
+            {
+                UnknownErrorMessage = Lang.GameUnknownErrorText,
+                RollDiceFailureMessagePrefix = Lang.GameDiceRollFailurePrefixText,
+                RollDiceUnexpectedErrorMessage = Lang.GameDiceRollUnexpectedErrorText,
+                GameWindowTitle = Lang.WindowTitleGameBoard
+            };
+
             _diceRollManager = new DiceRollManager(
                 gameId,
                 localUserId,
-                _diceSelectionManager,
-                () => _gameplayClient,
-                _logger,
-                () => IsMyTurn,
-                () => _animationService.IsAnimating,
-                () => _isRollRequestInProgress,
-                () => _isUseItemInProgress,
-                () => IsTargetSelectionActive,
-                value => _isRollRequestInProgress = value,
-                RaiseAllCanExecuteChanged,
-                () => SafeSyncGameStateAsync(false),
-                SafeInitializeInventoryAsync,
-                MarkServerEventReceived,
-                HandleConnectionException,
-                ShowMessage,
-                Lang.GameUnknownErrorText,
-                Lang.GameDiceRollFailurePrefixText,
-                Lang.GameDiceRollUnexpectedErrorText,
-                Lang.WindowTitleGameBoard);
+                diceRollDependencies,
+                diceRollMessages);
 
             _rollDiceCommand = new AsyncCommand(
                 () => _diceRollManager.RollDiceForLocalPlayerAsync(),
@@ -437,14 +464,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 _diceAnimator,
                 _rollDiceCommand,
                 _logger,
-                this._localUserId,
+                _localUserId,
                 UpdateTurnFromState);
 
-            _serverEventsRouter = new GameplayServerEventsRouter(
+            var routerDependencies = new GameplayServerEventsRouterDependencies(
                 eventsHandler,
                 _gameStateSynchronizer,
                 Inventory,
-                _logger,
+                _logger);
+
+            var routerUiConfig = new GameplayServerEventsRouterUiConfig(
                 MarkServerEventReceived,
                 ShowMessage,
                 value => LastItemNotification = value,
@@ -452,6 +481,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 Lang.GameTimeoutSkipTurnText,
                 Lang.GameTimeoutKickPlayerText,
                 Lang.WindowTitleGameBoard);
+
+            _serverEventsRouter = new GameplayServerEventsRouter(
+                routerDependencies,
+                routerUiConfig);
         }
 
         public Task InitializeInventoryAsync()
@@ -595,6 +628,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
 
             _tokenManager.ResetAllTokensToCell(_startCellIndex);
+        }
+
+        private DiceSelectionState BuildDiceSelectionState()
+        {
+            return new DiceSelectionState(
+                IsMyTurn,
+                _animationService.IsAnimating,
+                _isRollRequestInProgress,
+                _isUseItemInProgress,
+                IsTargetSelectionActive);
         }
 
         private void UpdateTurnTimerText(int seconds)

@@ -5,6 +5,7 @@ using System.Windows.Input;
 using log4net;
 using SnakeAndLaddersFinalProject.Navigation;
 using SnakeAndLaddersFinalProject.Properties.Langs;
+using SnakeAndLaddersFinalProject.Utilities;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
@@ -124,7 +125,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             try
             {
-                CreateMatchOptions options = new CreateMatchOptions
+                var options = new CreateMatchOptions
                 {
                     BoardSize = BoardSize,
                     Difficulty = Difficulty,
@@ -133,18 +134,26 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     Players = Players
                 };
 
-                LobbyNavigationArgs lobbyNavigationArgs = new LobbyNavigationArgs
+                var lobbyNavigationArgs = new LobbyNavigationArgs
                 {
                     Mode = LobbyEntryMode.Create,
                     CreateOptions = options
                 };
 
+                ErrorMessage = string.Empty;
                 NavigateToLobbyRequested?.Invoke(this, lobbyNavigationArgs);
             }
             catch (Exception ex)
             {
-                _logger.Error("Error al preparar la navegación al lobby.", ex);
-                ErrorMessage = string.Format(Lang.CreateMatchErrorFmt, ex.Message);
+                string genericMessage = ExceptionHandler.Handle(
+                    ex,
+                    nameof(CreateRoom),
+                    _logger);
+
+                ErrorMessage = string.Format(
+                    "{0} {1}",
+                    genericMessage,
+                    Lang.UiCreateMatchError);
             }
         }
 

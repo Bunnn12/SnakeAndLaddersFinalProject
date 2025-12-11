@@ -1,19 +1,20 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows;
-using SnakeAndLaddersFinalProject.Authentication;
-using SnakeAndLaddersFinalProject.ShopService;
-using SnakeAndLaddersFinalProject.Properties.Langs;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using log4net;
+using SnakeAndLaddersFinalProject.Authentication;
+using SnakeAndLaddersFinalProject.Infrastructure;
+using SnakeAndLaddersFinalProject.Properties.Langs;
+using SnakeAndLaddersFinalProject.ShopService;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class ShopViewModel : INotifyPropertyChanged
     {
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(ShopViewModel));
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(ShopViewModel));
 
         private const string ICON_TITLE_WARNING = "UiTitleWarning";
         private const string ICON_TITLE_ERROR = "UiTitleError";
@@ -32,11 +33,22 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string SHOP_CODE_ITEM_NOT_FOUND = "SHOP_ITEM_NOT_FOUND";
         private const string SHOP_CODE_SERVER_ERROR = "SHOP_SERVER_ERROR";
 
+        private const string TOKEN_UI_SHOP_REQUIRES_LOGIN = "UiShopRequiresLogin";
+        private const string TOKEN_UI_SHOP_REQUIRES_REGISTERED_USER = "UiShopRequiresRegisteredUser";
+        private const string TOKEN_UI_SHOP_REQUIRES_TOKEN = "UiShopRequiresToken";
+        private const string TOKEN_UI_ENDPOINT_NOT_FOUND = "UiEndpointNotFound";
+        private const string TOKEN_UI_SHOP_PURCHASE_SUCCESS_FMT = "UiShopPurchaseSuccessFmt";
+
+        private const string CONTEXT_INITIALIZE_COINS = "ShopViewModel.InitializeCoinsAsync";
+        private const string CONTEXT_EXECUTE_PURCHASE = "ShopViewModel.ExecutePurchaseAsync";
+
         private const int DICE_ID_NEGATIVE = 1;
         private const int DICE_ID_ONE_TO_THREE = 2;
         private const int DICE_ID_FOUR_TO_SIX = 3;
         private const int MIN_COINS = 0;
         private const int INVALID_USER_ID = 0;
+
+        private const string UNKNOWN_REWARD_PLACEHOLDER = "-";
 
         private int _currentCoins;
 
@@ -51,6 +63,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     return;
                 }
+
                 _currentCoins = value;
                 OnPropertyChanged();
             }
@@ -76,9 +89,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 string token = SessionContext.Current.AuthToken ?? string.Empty;
 
-                int coins = await Task
-                    .Run(() => client.GetCurrentCoins(token))
-                    .ConfigureAwait(true);
+                int coins = await Task.Run(() => client.GetCurrentCoins(token));
 
                 if (coins < MIN_COINS)
                 {
@@ -94,15 +105,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 ShowError(mapped);
                 client.Abort();
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                ShowError(Token("UiEndpointNotFound"));
+                string message = ExceptionHandler.Handle(ex, CONTEXT_INITIALIZE_COINS, Logger);
+                ShowError(message);
                 client.Abort();
             }
             catch (Exception ex)
             {
-                _logger.Error("Error initializing coins.", ex);
-                ShowError(Token(SHOP_CODE_SERVER_ERROR));
+                string message = ExceptionHandler.Handle(ex, CONTEXT_INITIALIZE_COINS, Logger);
+                ShowError(message);
                 client.Abort();
             }
             finally
@@ -200,9 +212,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                ShopRewardDto reward = await Task
-                    .Run(() => operation(client))
-                    .ConfigureAwait(true);
+                ShopRewardDto reward = await Task.Run(() => operation(client));
 
                 if (reward == null)
                 {
@@ -214,11 +224,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 SessionContext.Current.Coins = reward.CoinsAfter;
 
                 string obtainedName = string.IsNullOrWhiteSpace(reward.RewardName)
-                    ? "-"
+                    ? UNKNOWN_REWARD_PLACEHOLDER
                     : reward.RewardName;
 
                 string message = string.Format(
-                    Token("UiShopPurchaseSuccessFmt"),
+                    Token(TOKEN_UI_SHOP_PURCHASE_SUCCESS_FMT),
                     obtainedName,
                     CurrentCoins);
 
@@ -230,15 +240,16 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 ShowError(mapped);
                 client.Abort();
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                ShowError(Token("UiEndpointNotFound"));
+                string message = ExceptionHandler.Handle(ex, CONTEXT_EXECUTE_PURCHASE, Logger);
+                ShowError(message);
                 client.Abort();
             }
             catch (Exception ex)
             {
-                _logger.Error("Error executing purchase.", ex);
-                ShowError(Token(SHOP_CODE_SERVER_ERROR));
+                string message = ExceptionHandler.Handle(ex, CONTEXT_EXECUTE_PURCHASE, Logger);
+                ShowError(message);
                 client.Abort();
             }
             finally
@@ -251,19 +262,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             if (SessionContext.Current == null || !SessionContext.Current.IsAuthenticated)
             {
-                ShowWarning(Token("UiShopRequiresLogin"));
+                ShowWarning(Token(TOKEN_UI_SHOP_REQUIRES_LOGIN));
                 return false;
             }
 
             if (SessionContext.Current.UserId <= INVALID_USER_ID)
             {
-                ShowWarning(Token("UiShopRequiresRegisteredUser"));
+                ShowWarning(Token(TOKEN_UI_SHOP_REQUIRES_REGISTERED_USER));
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(SessionContext.Current.AuthToken))
             {
-                ShowWarning(Token("UiShopRequiresToken"));
+                ShowWarning(Token(TOKEN_UI_SHOP_REQUIRES_TOKEN));
                 return false;
             }
 
@@ -367,7 +378,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?
+                .Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

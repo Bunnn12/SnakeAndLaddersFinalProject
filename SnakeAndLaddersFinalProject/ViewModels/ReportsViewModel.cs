@@ -11,13 +11,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class ReportsViewModel
     {
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(ReportsViewModel));
+        private static readonly ILog _logger =
+            LogManager.GetLogger(typeof(ReportsViewModel));
 
         private const int MIN_REGISTERED_USER_ID = 1;
         private const int MIN_REASON_LENGTH = 5;
         private const int MAX_REASON_LENGTH = 500;
 
-        private const string PLAYER_REPORT_SERVICE_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IPlayerReportService";
+        private const string PLAYER_REPORT_SERVICE_ENDPOINT_CONFIGURATION_NAME =
+            "BasicHttpBinding_IPlayerReportService";
 
         private const string REASON_KEY_HARASSMENT = "Harassment";
         private const string REASON_KEY_INAPPROPRIATE_LANGUAGE = "InappropriateLanguage";
@@ -113,12 +115,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return Lang.btnHarassmentText;
             }
 
-            if (string.Equals(reasonKey, REASON_KEY_INAPPROPRIATE_LANGUAGE, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(reasonKey, REASON_KEY_INAPPROPRIATE_LANGUAGE,
+                StringComparison.OrdinalIgnoreCase))
             {
                 return Lang.btnInappropiateLangText;
             }
 
-            if (string.Equals(reasonKey, REASON_KEY_TOXIC_BEHAVIOR, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(reasonKey, REASON_KEY_TOXIC_BEHAVIOR,
+                StringComparison.OrdinalIgnoreCase))
             {
                 return Lang.btnToxicBehaviorText;
             }
@@ -160,12 +164,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 ReportReason = reasonText
             };
 
-            var client = new PlayerReportServiceClient(PLAYER_REPORT_SERVICE_ENDPOINT_CONFIGURATION_NAME);
+            var client = new PlayerReportServiceClient(
+                PLAYER_REPORT_SERVICE_ENDPOINT_CONFIGURATION_NAME);
 
             try
             {
                 client.CreateReport(reportDto);
-                client.Close();
 
                 MessageBox.Show(
                     Lang.ReportSentSuccessfullyMessage,
@@ -173,10 +177,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
             }
-            catch (FaultException<ServiceFault> faultException)
+            catch (FaultException<ServiceFault> ex)
             {
-                string faultCode = faultException.Detail != null
-                    ? faultException.Detail.Code
+                ExceptionHandler.Handle(
+                    ex,
+                    "ReportsViewModel.SendReport.Fault",
+                    _logger);
+
+                string faultCode = ex.Detail != null
+                    ? ex.Detail.Code
                     : null;
 
                 string translated = PlayerReportErrorMapper.GetMessageForCode(faultCode);
@@ -186,38 +195,62 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     Lang.reportUserTittle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
-
-                client.Abort();
             }
             catch (EndpointNotFoundException ex)
             {
-                _logger.Error("Endpoint not found while sending report.", ex);
+                ExceptionHandler.Handle(
+                    ex,
+                    "ReportsViewModel.SendReport.EndpointNotFound",
+                    _logger);
 
                 MessageBox.Show(
                     Lang.ReportEndpointNotFoundMessage,
                     Lang.reportUserTittle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
-
-                client.Abort();
             }
             catch (Exception ex)
             {
-                string technicalMessage = ExceptionHandler.Handle(
+                ExceptionHandler.Handle(
                     ex,
                     "ReportsViewModel.SendReport",
                     _logger);
 
-                string userMessage = string.Format(
-                    "{0} {1}",
-                    Lang.ReportGenericErrorMessage,
-                    technicalMessage);
-
                 MessageBox.Show(
-                    userMessage,
-                    Lang.errorTitle,
+                    Lang.ReportGenericErrorMessage,
+                    Lang.reportUserTittle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
+            }
+            finally
+            {
+                SafeCloseClient(client);
+            }
+        }
+
+        private static void SafeCloseClient(PlayerReportServiceClient client)
+        {
+            if (client == null)
+            {
+                return;
+            }
+
+            try
+            {
+                if (client.State == CommunicationState.Faulted)
+                {
+                    client.Abort();
+                    return;
+                }
+
+                client.Close();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Handle(
+                    ex,
+                    "ReportsViewModel.SafeCloseClient",
+                    _logger);
 
                 client.Abort();
             }

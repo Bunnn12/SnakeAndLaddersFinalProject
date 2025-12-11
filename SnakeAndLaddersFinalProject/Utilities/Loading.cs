@@ -20,12 +20,21 @@ namespace SnakeAndLaddersFinalProject.Utilities
             int minMilliseconds = DEFAULT_MIN_LOADING_MILLISECONDS,
             CancellationToken externalToken = default)
         {
-            if (owner == null) throw new ArgumentNullException(nameof(owner));
-            if (work == null) throw new ArgumentNullException(nameof(work));
+            if (owner == null)
+            {
+                throw new ArgumentNullException(nameof(owner));
+            }
+            if (work == null)
+            {
+                throw new ArgumentNullException(nameof(work));
+            }
 
             Frame mainFrame = owner.FindName("MainFrame") as Frame;
+
             if (mainFrame == null)
+            {
                 throw new InvalidOperationException(Lang.LoadingMainFrameNotFoundError);
+            }
 
             using (CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(externalToken))
             {

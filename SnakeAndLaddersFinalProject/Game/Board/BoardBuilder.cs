@@ -3,6 +3,7 @@ using SnakeAndLaddersFinalProject.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 
@@ -11,8 +12,22 @@ namespace SnakeAndLaddersFinalProject.Game.Board
     public static class BoardBuilder
     {
         private const int MIN_INDEX = 1;
+
         private const double CELL_CENTER_VERTICAL_ADJUST = -0.18;
         private const double CELL_CENTER_OFFSET = 0.5;
+        private const int MIN_BOARD_DIMENSION = 1;
+
+        private const string ERROR_CELL_NOT_FOUND_MESSAGE =
+            "No se encontró la celda con índice {0}.";
+
+        private const string ERROR_INVALID_ROWS_MESSAGE =
+            "El número de filas del tablero debe ser mayor que cero.";
+
+        private const string ERROR_INVALID_COLUMNS_MESSAGE =
+            "El número de columnas del tablero debe ser mayor que cero.";
+
+        private const string ERROR_EMPTY_CELLS_MESSAGE =
+            "El tablero no contiene celdas definidas.";
 
         public static BoardBuildResult Build(BoardDefinitionDto boardDefinition)
         {
@@ -21,71 +36,147 @@ namespace SnakeAndLaddersFinalProject.Game.Board
                 throw new ArgumentNullException(nameof(boardDefinition));
             }
 
-            ObservableCollection<GameBoardCellViewModel> cells =
-                new ObservableCollection<GameBoardCellViewModel>();
+            ValidateBoardDefinition(boardDefinition);
+
+            var cellCentersByIndex = new Dictionary<int, Point>();
+            var linksByStartIndex = new Dictionary<int, BoardLinkDto>();
+
+            ObservableCollection<GameBoardCellViewModel> cells = BuildCells(
+                boardDefinition,
+                cellCentersByIndex);
 
             ObservableCollection<GameBoardConnectionViewModel> connections =
-                new ObservableCollection<GameBoardConnectionViewModel>();
+                BuildConnections(
+                    boardDefinition,
+                    cells,
+                    linksByStartIndex);
 
-            Dictionary<int, Point> cellCentersByIndex = new Dictionary<int, Point>();
-            Dictionary<int, BoardLinkDto> linksByStartIndex = new Dictionary<int, BoardLinkDto>();
+            int startCellIndex = ResolveStartCellIndex(cells);
 
+            return new BoardBuildResult(
+                cells,
+                connections,
+                cellCentersByIndex,
+                linksByStartIndex,
+                startCellIndex);
+        }
+
+        private static void ValidateBoardDefinition(BoardDefinitionDto boardDefinition)
+        {
+            if (boardDefinition.Rows < MIN_BOARD_DIMENSION)
+            {
+                throw new InvalidOperationException(ERROR_INVALID_ROWS_MESSAGE);
+            }
+
+            if (boardDefinition.Columns < MIN_BOARD_DIMENSION)
+            {
+                throw new InvalidOperationException(ERROR_INVALID_COLUMNS_MESSAGE);
+            }
+
+            if (boardDefinition.Cells == null || !boardDefinition.Cells.Any())
+            {
+                throw new InvalidOperationException(ERROR_EMPTY_CELLS_MESSAGE);
+            }
+        }
+
+        private static ObservableCollection<GameBoardCellViewModel> BuildCells(
+            BoardDefinitionDto boardDefinition,
+            IDictionary<int, Point> cellCentersByIndex)
+        {
             int rows = boardDefinition.Rows;
             int columns = boardDefinition.Columns;
 
             Dictionary<int, BoardCellDto> cellsByIndex = boardDefinition.Cells.ToDictionary(
                 boardCell => boardCell.Index);
 
+            var cells = new ObservableCollection<GameBoardCellViewModel>();
+
             for (int rowFromTop = 0; rowFromTop < rows; rowFromTop++)
             {
-                int rowFromBottom = (rows - 1) - rowFromTop;
                 for (int columnFromLeft = 0; columnFromLeft < columns; columnFromLeft++)
                 {
-                    int zeroBasedIndex = (rowFromBottom * columns) + columnFromLeft;
-                    int index = zeroBasedIndex + MIN_INDEX;
+                    int index = GetCellIndex(rowFromTop, columnFromLeft);
 
                     if (!cellsByIndex.TryGetValue(index, out BoardCellDto boardCellDto))
                     {
-                        string message = string.Format("No se encontró la celda con índice {0}.",
+                        string message = string.Format(
+                            CultureInfo.CurrentCulture,
+                            ERROR_CELL_NOT_FOUND_MESSAGE,
                             index);
+
                         throw new InvalidOperationException(message);
                     }
 
-                    GameBoardCellViewModel cellViewModel = new GameBoardCellViewModel(
-                        boardCellDto);
+                    var cellViewModel = new GameBoardCellViewModel(boardCellDto);
                     cells.Add(cellViewModel);
 
                     double centerX = columnFromLeft + CELL_CENTER_OFFSET;
-                    double centerY = rowFromTop + CELL_CENTER_OFFSET + CELL_CENTER_VERTICAL_ADJUST;
-                    Point cellCenter = new Point(centerX, centerY);
+                    double centerY = rowFromTop + CELL_CENTER_OFFSET +
+                        CELL_CENTER_VERTICAL_ADJUST;
+
+                    var cellCenter = new Point(centerX, centerY);
                     cellCentersByIndex[index] = cellCenter;
                 }
             }
 
-            if (boardDefinition.Links != null)
+            int GetCellIndex(int rowFromTopIndex, int columnFromLeftIndex)
             {
-                foreach (BoardLinkDto link in boardDefinition.Links)
+                int rowFromBottomIndex = (rows - MIN_INDEX) - rowFromTopIndex;
+                int zeroBasedIndex = (rowFromBottomIndex * columns) +
+                    columnFromLeftIndex;
+
+                return zeroBasedIndex + MIN_INDEX;
+            }
+
+            return cells;
+        }
+
+        private static ObservableCollection<GameBoardConnectionViewModel> BuildConnections(
+            BoardDefinitionDto boardDefinition,
+            ObservableCollection<GameBoardCellViewModel> cells,
+            IDictionary<int, BoardLinkDto> linksByStartIndex)
+        {
+            var connections = new ObservableCollection<GameBoardConnectionViewModel>();
+
+            if (boardDefinition.Links == null)
+            {
+                return connections;
+            }
+
+            int rows = boardDefinition.Rows;
+            int columns = boardDefinition.Columns;
+
+            foreach (BoardLinkDto link in boardDefinition.Links)
+            {
+                if (!linksByStartIndex.ContainsKey(link.StartIndex))
                 {
-                    if (!linksByStartIndex.ContainsKey(link.StartIndex))
-                    {
-                        linksByStartIndex[link.StartIndex] = link;
-                    }
-                    GameBoardConnectionViewModel connectionViewModel = new GameBoardConnectionViewModel(
-                        link, rows, columns, cells);
-                    connections.Add(connectionViewModel);
+                    linksByStartIndex[link.StartIndex] = link;
                 }
+
+                var connectionViewModel = new GameBoardConnectionViewModel(
+                    link,
+                    rows,
+                    columns,
+                    cells);
+
+                connections.Add(connectionViewModel);
             }
 
-            int startCellIndex = MIN_INDEX;
-            GameBoardCellViewModel startCellViewModel = cells.FirstOrDefault(cell => cell.IsStart);
+            return connections;
+        }
 
-            if (startCellViewModel != null)
+        private static int ResolveStartCellIndex(
+            ObservableCollection<GameBoardCellViewModel> cells)
+        {
+            GameBoardCellViewModel startCell = cells.FirstOrDefault(
+                cell => cell.IsStart);
+
+            if (startCell == null)
             {
-                startCellIndex = startCellViewModel.Index;
+                return MIN_INDEX;
             }
 
-            return new BoardBuildResult(cells, connections, cellCentersByIndex, linksByStartIndex,
-                startCellIndex);
+            return startCell.Index;
         }
     }
 }

@@ -9,6 +9,7 @@ using log4net;
 using SnakeAndLaddersFinalProject.Authentication;
 using SnakeAndLaddersFinalProject.Game.Inventory;
 using SnakeAndLaddersFinalProject.Mappers;
+using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.Utilities;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
@@ -22,6 +23,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const byte MAX_DICE_SLOT = 2;
 
         private static readonly ILog _logger = LogManager.GetLogger(typeof(InventoryViewModel));
+
         private readonly IInventoryManager _inventoryManager;
 
         private InventoryItemViewModel _slot1Item;
@@ -49,11 +51,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public ICommand ClearDiceSlot1Command { get; }
         public ICommand ClearDiceSlot2Command { get; }
 
-        public InventoryViewModel() : this(new InventoryManager()) { }
+        public InventoryViewModel()
+            : this(new InventoryManager())
+        {
+        }
 
         public InventoryViewModel(IInventoryManager inventoryManager)
         {
             _inventoryManager = inventoryManager ?? throw new ArgumentNullException(nameof(inventoryManager));
+
             Items = new ObservableCollection<InventoryItemViewModel>();
             Dice = new ObservableCollection<InventoryDiceViewModel>();
 
@@ -117,55 +123,91 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             return LoadInventoryAsync();
         }
 
-        private async void OnRefreshExecuted() => await LoadInventoryAsync();
-        private async void OnSetItemSlotExecuted(byte slotNumber) => await SetItemSlotAsync(slotNumber);
-        private async void OnClearItemSlotExecuted(byte slotNumber) => await ClearItemSlotAsync(slotNumber);
-        private async void OnSetDiceSlotExecuted(byte slotNumber) => await SetDiceSlotAsync(slotNumber);
-        private async void OnClearDiceSlotExecuted(byte slotNumber) => await ClearDiceSlotAsync(slotNumber);
+        private async void OnRefreshExecuted()
+        {
+            await LoadInventoryAsync();
+        }
+
+        private async void OnSetItemSlotExecuted(byte slotNumber)
+        {
+            await SetItemSlotAsync(slotNumber);
+        }
+
+        private async void OnClearItemSlotExecuted(byte slotNumber)
+        {
+            await ClearItemSlotAsync(slotNumber);
+        }
+
+        private async void OnSetDiceSlotExecuted(byte slotNumber)
+        {
+            await SetDiceSlotAsync(slotNumber);
+        }
+
+        private async void OnClearDiceSlotExecuted(byte slotNumber)
+        {
+            await ClearDiceSlotAsync(slotNumber);
+        }
 
         private async Task LoadInventoryAsync()
         {
             int userId = SessionContext.Current.UserId;
-            if (!IsValidUserId(userId)) return;
+
+            if (!IsValidUserId(userId))
+            {
+                return;
+            }
 
             try
             {
-                var snapshot = await _inventoryManager.GetInventoryAsync(userId);
+                InventorySnapshot snapshot = await _inventoryManager.GetInventoryAsync(userId);
+
                 Items.Clear();
                 Dice.Clear();
 
-                foreach (var item in snapshot.Items)
+                foreach (InventoryItemData item in snapshot.Items)
                 {
-                    Items.Add(new InventoryItemViewModel
-                    {
-                        ObjectId = item.ObjectId,
-                        ObjectCode = item.ObjectCode,
-                        Name = item.Name,
-                        Quantity = item.Quantity,
-                        SlotNumber = item.SlotNumber,
-                        IconPath = InventoryIconMapper.GetItemIconPath(item.ObjectCode)
-                    });
+                    Items.Add(
+                        new InventoryItemViewModel
+                        {
+                            ObjectId = item.ObjectId,
+                            ObjectCode = item.ObjectCode,
+                            Name = item.Name,
+                            Quantity = item.Quantity,
+                            SlotNumber = item.SlotNumber,
+                            IconPath = InventoryIconMapper.GetItemIconPath(item.ObjectCode)
+                        });
                 }
+
                 RefreshSlotItems();
 
-                foreach (var diceData in snapshot.Dice)
+                foreach (InventoryDiceData diceData in snapshot.Dice)
                 {
-                    if (diceData.Quantity <= 0) continue;
-                    Dice.Add(new InventoryDiceViewModel
+                    if (diceData.Quantity <= 0)
                     {
-                        DiceId = diceData.DiceId,
-                        DiceCode = diceData.DiceCode,
-                        Name = diceData.Name,
-                        Quantity = diceData.Quantity,
-                        SlotNumber = diceData.SlotNumber,
-                        IconPath = InventoryIconMapper.GetDiceIconPath(diceData.DiceCode)
-                    });
+                        continue;
+                    }
+
+                    Dice.Add(
+                        new InventoryDiceViewModel
+                        {
+                            DiceId = diceData.DiceId,
+                            DiceCode = diceData.DiceCode,
+                            Name = diceData.Name,
+                            Quantity = diceData.Quantity,
+                            SlotNumber = diceData.SlotNumber,
+                            IconPath = InventoryIconMapper.GetDiceIconPath(diceData.DiceCode)
+                        });
                 }
+
                 RefreshDiceSlots();
             }
             catch (Exception ex)
             {
-                ExceptionHandler.Handle(ex, "InventoryViewModel.LoadInventoryAsync", _logger);
+                UiExceptionHelper.ShowModuleError(
+                    ex,
+                    nameof(LoadInventoryAsync),
+                    _logger,
+                    Lang.UiInventoryLoadError);
             }
         }
 
@@ -184,25 +226,49 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private async Task SetItemSlotAsync(byte slotNumber)
         {
-            if (_selectedItem == null) return;
+            if (_selectedItem == null)
+            {
+                return;
+            }
+
             int userId = SessionContext.Current.UserId;
-            if (!IsValidUserId(userId) || slotNumber < MIN_ITEM_SLOT || slotNumber > MAX_ITEM_SLOT) return;
+
+            if (!IsValidUserId(userId)
+                || slotNumber < MIN_ITEM_SLOT
+                || slotNumber > MAX_ITEM_SLOT)
+            {
+                return;
+            }
 
             try
             {
-                await _inventoryManager.EquipItemToSlotAsync(userId, slotNumber, _selectedItem.ObjectId);
+                await _inventoryManager.EquipItemToSlotAsync(
+                    userId,
+                    slotNumber,
+                    _selectedItem.ObjectId);
+
                 await LoadInventoryAsync();
             }
             catch (Exception ex)
             {
-                ExceptionHandler.Handle(ex, "InventoryViewModel.SetItemSlotAsync", _logger);
+                UiExceptionHelper.ShowModuleError(
+                    ex,
+                    nameof(SetItemSlotAsync),
+                    _logger,
+                    Lang.UiInventoryEquipItemError);
             }
         }
 
         private async Task ClearItemSlotAsync(byte slotNumber)
         {
             int userId = SessionContext.Current.UserId;
-            if (!IsValidUserId(userId) || slotNumber < MIN_ITEM_SLOT || slotNumber > MAX_ITEM_SLOT) return;
+
+            if (!IsValidUserId(userId)
+                || slotNumber < MIN_ITEM_SLOT
+                || slotNumber > MAX_ITEM_SLOT)
+            {
+                return;
+            }
 
             try
             {
@@ -211,31 +277,59 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                ExceptionHandler.Handle(ex, "InventoryViewModel.ClearItemSlotAsync", _logger);
+                UiExceptionHelper.ShowModuleError(
+                    ex,
+                    nameof(ClearItemSlotAsync),
+                    _logger,
+                    Lang.UiInventoryClearItemSlotError);
             }
         }
 
         private async Task SetDiceSlotAsync(byte slotNumber)
         {
-            if (_selectedDice == null) return;
+            if (_selectedDice == null)
+            {
+                return;
+            }
+
             int userId = SessionContext.Current.UserId;
-            if (!IsValidUserId(userId) || slotNumber < MIN_DICE_SLOT || slotNumber > MAX_DICE_SLOT) return;
+
+            if (!IsValidUserId(userId)
+                || slotNumber < MIN_DICE_SLOT
+                || slotNumber > MAX_DICE_SLOT)
+            {
+                return;
+            }
 
             try
             {
-                await _inventoryManager.EquipDiceToSlotAsync(userId, slotNumber, _selectedDice.DiceId);
+                await _inventoryManager.EquipDiceToSlotAsync(
+                    userId,
+                    slotNumber,
+                    _selectedDice.DiceId);
+
                 await LoadInventoryAsync();
             }
             catch (Exception ex)
             {
-                ExceptionHandler.Handle(ex, "InventoryViewModel.SetDiceSlotAsync", _logger);
+                UiExceptionHelper.ShowModuleError(
+                    ex,
+                    nameof(SetDiceSlotAsync),
+                    _logger,
+                    Lang.UiInventoryEquipDiceError);
             }
         }
 
         private async Task ClearDiceSlotAsync(byte slotNumber)
         {
             int userId = SessionContext.Current.UserId;
-            if (!IsValidUserId(userId) || slotNumber < MIN_DICE_SLOT || slotNumber > MAX_DICE_SLOT) return;
+
+            if (!IsValidUserId(userId)
+                || slotNumber < MIN_DICE_SLOT
+                || slotNumber > MAX_DICE_SLOT)
+            {
+                return;
+            }
 
             try
             {
@@ -244,20 +338,36 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                ExceptionHandler.Handle(ex, "InventoryViewModel.ClearDiceSlotAsync", _logger);
+                UiExceptionHelper.ShowModuleError(
+                    ex,
+                    nameof(ClearDiceSlotAsync),
+                    _logger,
+                    Lang.UiInventoryClearDiceSlotError);
             }
         }
 
-        private static bool IsValidUserId(int userId) => userId >= MIN_VALID_USER_ID;
+        private static bool IsValidUserId(int userId)
+        {
+            return userId >= MIN_VALID_USER_ID;
+        }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(
+                this,
+                new PropertyChangedEventArgs(propertyName));
         }
 
-        private void SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        private void SetProperty<T>(
+            ref T storage,
+            T value,
+            [CallerMemberName] string propertyName = null)
         {
-            if (Equals(storage, value)) return;
+            if (Equals(storage, value))
+            {
+                return;
+            }
+
             storage = value;
             OnPropertyChanged(propertyName);
         }

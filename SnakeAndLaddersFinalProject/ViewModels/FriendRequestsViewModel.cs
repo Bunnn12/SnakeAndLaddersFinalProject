@@ -15,13 +15,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const int USERNAME_MIN_LENGTH = 3;
         private const int USERNAME_MAX_LENGTH = 50;
 
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(FriendRequestsViewModel));
+        private static readonly ILog _logger =
+            LogManager.GetLogger(typeof(FriendRequestsViewModel));
 
-        public ObservableCollection<FriendRequestItemDto> IncomingRequests { get; }
-            = new ObservableCollection<FriendRequestItemDto>();
+        public ObservableCollection<FriendRequestItemDto> IncomingRequests { get; } =
+            new ObservableCollection<FriendRequestItemDto>();
 
-        public ObservableCollection<FriendRequestItemDto> OutgoingRequests { get; }
-            = new ObservableCollection<FriendRequestItemDto>();
+        public ObservableCollection<FriendRequestItemDto> OutgoingRequests { get; } =
+            new ObservableCollection<FriendRequestItemDto>();
 
         public void LoadData()
         {
@@ -49,8 +50,26 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.Error("Error loading friend requests.", ex);
-                MessageBox.Show(Lang.errorLoadingRequestsText, Lang.errorTitle);
+                string genericMessage = ExceptionHandler.Handle(
+                    ex,
+                    nameof(LoadData),
+                    _logger);
+
+                string finalMessage = string.Format(
+                    "{0} {1}",
+                    genericMessage,
+                    Lang.errorLoadingRequestsText);
+
+                MessageBox.Show(
+                    finalMessage,
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    ConnectionLostHandlerException.HandleConnectionLost();
+                }
             }
         }
 
@@ -83,11 +102,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
 
                 IncomingRequests.Remove(requestItem);
-                MessageBox.Show(Lang.friendAcceptedText, Lang.infoTitle);
+
+                MessageBox.Show(
+                    Lang.friendAcceptedText,
+                    Lang.infoTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                _logger.Error("Error accepting friend request.", ex);
+                string genericMessage = ExceptionHandler.Handle(
+                    ex,
+                    nameof(AcceptRequest),
+                    _logger);
 
                 LoadData();
 
@@ -97,13 +124,27 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     MessageBox.Show(
                         Lang.friendRequestNoLongerExistsText,
-                        Lang.infoTitle);
+                        Lang.infoTitle,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
                 }
                 else
                 {
+                    string finalMessage = string.Format(
+                        "{0} {1}",
+                        genericMessage,
+                        Lang.errorAcceptingRequestText);
+
                     MessageBox.Show(
-                        Lang.errorAcceptingRequestText,
-                        Lang.errorTitle);
+                        finalMessage,
+                        Lang.errorTitle,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    ConnectionLostHandlerException.HandleConnectionLost();
                 }
             }
         }
@@ -125,11 +166,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
 
                 IncomingRequests.Remove(requestItem);
-                MessageBox.Show(Lang.friendRejectedText, Lang.infoTitle);
+
+                MessageBox.Show(
+                    Lang.friendRejectedText,
+                    Lang.infoTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                _logger.Error("Error rejecting friend request.", ex);
+                string genericMessage = ExceptionHandler.Handle(
+                    ex,
+                    nameof(RejectRequest),
+                    _logger);
 
                 LoadData();
 
@@ -139,13 +188,27 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     MessageBox.Show(
                         Lang.friendRequestNoLongerExistsText,
-                        Lang.infoTitle);
+                        Lang.infoTitle,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
                 }
                 else
                 {
+                    string finalMessage = string.Format(
+                        "{0} {1}",
+                        genericMessage,
+                        Lang.errorRejectingRequestText);
+
                     MessageBox.Show(
-                        Lang.errorRejectingRequestText,
-                        Lang.errorTitle);
+                        finalMessage,
+                        Lang.errorTitle,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    ConnectionLostHandlerException.HandleConnectionLost();
                 }
             }
         }
@@ -167,11 +230,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
 
                 OutgoingRequests.Remove(requestItem);
-                MessageBox.Show(Lang.friendRequestCanceledText, Lang.infoTitle);
+
+                MessageBox.Show(
+                    Lang.friendRequestCanceledText,
+                    Lang.infoTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                _logger.Error("Error canceling friend request.", ex);
+                string genericMessage = ExceptionHandler.Handle(
+                    ex,
+                    nameof(CancelRequest),
+                    _logger);
 
                 LoadData();
 
@@ -181,13 +252,27 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     MessageBox.Show(
                         Lang.friendRequestNoLongerExistsText,
-                        Lang.infoTitle);
+                        Lang.infoTitle,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
                 }
                 else
                 {
+                    string finalMessage = string.Format(
+                        "{0} {1}",
+                        genericMessage,
+                        Lang.errorCancelingRequestText);
+
                     MessageBox.Show(
-                        Lang.errorCancelingRequestText,
-                        Lang.errorTitle);
+                        finalMessage,
+                        Lang.errorTitle,
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    ConnectionLostHandlerException.HandleConnectionLost();
                 }
             }
         }

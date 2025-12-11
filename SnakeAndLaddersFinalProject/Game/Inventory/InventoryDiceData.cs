@@ -4,6 +4,12 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
 {
     public sealed class InventoryDiceData
     {
+
+        public int DiceId { get; }
+        public string DiceCode { get; }
+        public string Name { get; }
+        public int Quantity { get; }
+        public byte? SlotNumber { get; }
         public InventoryDiceData(int diceId, string diceCode, string name, int quantity, byte? slotNumber)
         {
             if (string.IsNullOrWhiteSpace(diceCode))
@@ -25,11 +31,5 @@ namespace SnakeAndLaddersFinalProject.Game.Inventory
             Quantity = quantity;
             SlotNumber = slotNumber;
         }
-
-        public int DiceId { get; }
-        public string DiceCode { get; }
-        public string Name { get; }
-        public int Quantity { get; }
-        public byte? SlotNumber { get; }
     }
 }

@@ -3,7 +3,7 @@ namespace SnakeAndLaddersFinalProject.Mappers
 {
     internal static class InventoryIconMapper
     {
-        private const string BASE_PATH = "pack://application:,,,/Assets/Images/Icons/";
+        private const string BASE_PATH = "IconsBasePath";
 
         private const string ICON_ANCHOR = "AnchorIcon.png";
         private const string ICON_ROCKET = "RocketIcon.png";

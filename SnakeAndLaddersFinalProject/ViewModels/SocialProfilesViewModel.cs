@@ -25,13 +25,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string FACEBOOK_URL_KEY = "SocialProfiles.FacebookHomeUrl";
         private const string TWITTER_URL_KEY = "SocialProfiles.TwitterHomeUrl";
 
-        private const int PROFILE_LINK_MIN_LENGTH = 10; 
+        private const int PROFILE_LINK_MIN_LENGTH = 10;
         private const int PROFILE_LINK_MAX_LENGTH = 255;
         private const int MIN_VALID_USER_ID = 1;
+
+        private const string CONTEXT_LOAD_PROFILES = "SocialProfilesViewModel.LoadSocialProfiles";
+        private const string CONTEXT_LINK_PROFILE = "SocialProfilesViewModel.TryLinkProfile";
+        private const string CONTEXT_UNLINK_PROFILE = "SocialProfilesViewModel.TryUnlinkProfile";
+        private const string CONTEXT_OPEN_BROWSER = "SocialProfilesViewModel.TryOpenBrowser";
 
         private readonly string _instagramUrl;
         private readonly string _facebookUrl;
         private readonly string _twitterUrl;
+
         public SocialProfileItemViewModel Instagram { get; }
         public SocialProfileItemViewModel Facebook { get; }
         public SocialProfileItemViewModel Twitter { get; }
@@ -65,7 +71,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                SocialProfileDto[] profiles = client.GetSocialProfiles(userId) ?? Array.Empty<SocialProfileDto>();
+                SocialProfileDto[] profiles =
+                    client.GetSocialProfiles(userId) ?? Array.Empty<SocialProfileDto>();
 
                 ApplyProfileList(Instagram, profiles);
                 ApplyProfileList(Facebook, profiles);
@@ -73,10 +80,22 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.Error("Error loading social profiles.", ex);
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    CONTEXT_LOAD_PROFILES,
+                    _logger);
+
                 ApplyProfileList(Instagram, Array.Empty<SocialProfileDto>());
                 ApplyProfileList(Facebook, Array.Empty<SocialProfileDto>());
                 ApplyProfileList(Twitter, Array.Empty<SocialProfileDto>());
+
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    ConnectionLostHandlerException.HandleConnectionLost();
+                    return;
+                }
+
+                ShowError(userMessage);
             }
             finally
             {
@@ -130,8 +149,18 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.Error("Error linking social profile.", ex);
-                ShowError(Lang.SocialProfileLinkError);
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    CONTEXT_LINK_PROFILE,
+                    _logger);
+
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    ConnectionLostHandlerException.HandleConnectionLost();
+                    return false;
+                }
+
+                ShowError(userMessage);
                 return false;
             }
             finally
@@ -165,8 +194,18 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.Error("Error unlinking social profile.", ex);
-                ShowError(Lang.SocialProfileUnlinkError);
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    CONTEXT_UNLINK_PROFILE,
+                    _logger);
+
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    ConnectionLostHandlerException.HandleConnectionLost();
+                    return false;
+                }
+
+                ShowError(userMessage);
                 return false;
             }
             finally
@@ -268,13 +307,19 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.Error("Error opening browser.", ex);
-                ShowError(Lang.SocialBrowserOpenError);
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    CONTEXT_OPEN_BROWSER,
+                    _logger);
+
+                ShowError(userMessage);
                 return false;
             }
         }
 
-        private static void ApplyProfileList(SocialProfileItemViewModel item, IEnumerable<SocialProfileDto> profiles)
+        private static void ApplyProfileList(
+            SocialProfileItemViewModel item,
+            IEnumerable<SocialProfileDto> profiles)
         {
             if (item == null || profiles == null)
             {
@@ -299,6 +344,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 return;
             }
+
             GetItem(dto.Network)?.SetProfileLink(dto.ProfileLink);
         }
 
@@ -319,6 +365,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             {
                 return;
             }
+
             try
             {
                 if (client.State == CommunicationState.Faulted)
@@ -338,17 +385,29 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private static void ShowWarn(string message)
         {
-            MessageBox.Show(message, Lang.UiTitleWarning, MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(
+                message,
+                Lang.UiTitleWarning,
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
         }
 
         private static void ShowInfo(string message)
         {
-            MessageBox.Show(message, Lang.UiTitleInfo, MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(
+                message,
+                Lang.UiTitleInfo,
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
         }
 
         private static void ShowError(string message)
         {
-            MessageBox.Show(message, Lang.UiTitleError, MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(
+                message,
+                Lang.UiTitleError,
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
     }
 }

@@ -1,48 +1,68 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.ServiceModel;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using log4net;
+﻿using log4net;
 using SnakeAndLaddersFinalProject.AuthService;
 using SnakeAndLaddersFinalProject.Infrastructure;
 using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.Utilities;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class ChangePasswordViewModel : INotifyPropertyChanged
     {
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(ChangePasswordViewModel));
+        private static readonly ILog _logger =
+            LogManager.GetLogger(typeof(ChangePasswordViewModel));
 
-        private const string AUTH_ENDPOINT_CONFIGURATION_NAME = "BasicHttpBinding_IAuthService";
+        private const string AUTH_ENDPOINT_CONFIGURATION_NAME =
+            "BasicHttpBinding_IAuthService";
 
-        private const string AUTH_CODE_INVALID_CREDENTIALS = "Auth.InvalidCredentials";
-        private const string AUTH_CODE_PASSWORD_REUSED = "Auth.PasswordReused";
-        private const string AUTH_CODE_PASSWORD_WEAK = "Auth.PasswordWeak";
-        private const string AUTH_CODE_CODE_NOT_REQUESTED = "Auth.CodeNotRequested";
-        private const string AUTH_CODE_CODE_EXPIRED = "Auth.CodeExpired";
-        private const string AUTH_CODE_CODE_INVALID = "Auth.CodeInvalid";
-        private const string AUTH_CODE_THROTTLE_WAIT = "Auth.ThrottleWait";
-        private const string AUTH_CODE_EMAIL_NOT_FOUND = "Auth.EmailNotFound";
+        private const string AUTH_CODE_INVALID_CREDENTIALS =
+            "Auth.InvalidCredentials";
+        private const string AUTH_CODE_PASSWORD_REUSED =
+            "Auth.PasswordReused";
+        private const string AUTH_CODE_PASSWORD_WEAK =
+            "Auth.PasswordWeak";
+        private const string AUTH_CODE_CODE_NOT_REQUESTED =
+            "Auth.CodeNotRequested";
+        private const string AUTH_CODE_CODE_EXPIRED =
+            "Auth.CodeExpired";
+        private const string AUTH_CODE_CODE_INVALID =
+            "Auth.CodeInvalid";
+        private const string AUTH_CODE_THROTTLE_WAIT =
+            "Auth.ThrottleWait";
+        private const string AUTH_CODE_EMAIL_NOT_FOUND =
+            "Auth.EmailNotFound";
 
         private const string META_KEY_SECONDS = "seconds";
 
-        private const string UI_CHANGE_PASSWORD_GENERIC_ERROR = "UiChangePasswordGenericError";
-        private const string UI_CHANGE_PASSWORD_PASSWORDS_DO_NOT_MATCH = "UiChangePasswordPasswordsDoNotMatch";
-        private const string UI_CHANGE_PASSWORD_REUSED_PASSWORD = "UiChangePasswordReusedPassword";
-        private const string UI_CHANGE_PASSWORD_SUCCESS = "UiChangePasswordSuccess";
-        private const string UI_CHANGE_PASSWORD_WEAK_PASSWORD = "UiChangePasswordWeakPassword";
-        private const string UI_CHANGE_PASSWORD_CODE_SENT = "UiChangePasswordCodeSent";
-        private const string UI_CHANGE_PASSWORD_CODE_NOT_REQUESTED = "UiChangePasswordCodeNotRequested";
-        private const string UI_CHANGE_PASSWORD_CODE_EXPIRED = "UiChangePasswordCodeExpired";
-        private const string UI_CHANGE_PASSWORD_CODE_INVALID = "UiChangePasswordCodeInvalid";
-        private const string UI_CHANGE_PASSWORD_INVALID_EMAIL_FORMAT = "UiChangePasswordInvalidEmailFormat";
-        private const string UI_CHANGE_PASSWORD_EMAIL_NOT_FOUND = "UiChangePasswordEmailNotFound";
+        private const string UI_CHANGE_PASSWORD_GENERIC_ERROR =
+            "UiChangePasswordGenericError";
+        private const string UI_CHANGE_PASSWORD_PASSWORDS_DO_NOT_MATCH =
+            "UiChangePasswordPasswordsDoNotMatch";
+        private const string UI_CHANGE_PASSWORD_REUSED_PASSWORD =
+            "UiChangePasswordReusedPassword";
+        private const string UI_CHANGE_PASSWORD_SUCCESS =
+            "UiChangePasswordSuccess";
+        private const string UI_CHANGE_PASSWORD_WEAK_PASSWORD =
+            "UiChangePasswordWeakPassword";
+        private const string UI_CHANGE_PASSWORD_CODE_SENT =
+            "UiChangePasswordCodeSent";
+        private const string UI_CHANGE_PASSWORD_CODE_NOT_REQUESTED =
+            "UiChangePasswordCodeNotRequested";
+        private const string UI_CHANGE_PASSWORD_CODE_EXPIRED =
+            "UiChangePasswordCodeExpired";
+        private const string UI_CHANGE_PASSWORD_CODE_INVALID =
+            "UiChangePasswordCodeInvalid";
+        private const string UI_CHANGE_PASSWORD_INVALID_EMAIL_FORMAT =
+            "UiChangePasswordInvalidEmailFormat";
+        private const string UI_CHANGE_PASSWORD_EMAIL_NOT_FOUND =
+            "UiChangePasswordEmailNotFound";
 
         private const string UI_TITLE_INFO = "UiTitleInfo";
         private const string UI_TITLE_WARNING = "UiTitleWarning";
@@ -80,6 +100,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     return;
                 }
+
                 _email = value ?? string.Empty;
                 OnPropertyChanged();
             }
@@ -94,6 +115,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     return;
                 }
+
                 _verificationCode = value ?? string.Empty;
                 OnPropertyChanged();
             }
@@ -108,6 +130,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     return;
                 }
+
                 _newPassword = value ?? string.Empty;
                 OnPropertyChanged();
             }
@@ -122,6 +145,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 {
                     return;
                 }
+
                 _confirmPassword = value ?? string.Empty;
                 OnPropertyChanged();
             }
@@ -129,35 +153,20 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         public async Task SendCodeAsync()
         {
-            string normalizedEmail = InputValidator.Normalize(Email);
-
-            if (string.IsNullOrWhiteSpace(normalizedEmail))
+            if (!TryBuildValidEmailForCode(out string normalizedEmail))
             {
-                ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_GENERIC_ERROR));
                 return;
             }
 
-            if (normalizedEmail.Length < EMAIL_MIN_LENGTH || normalizedEmail.Length >
-                EMAIL_MAX_LENGTH)
-            {
-                ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_INVALID_EMAIL_FORMAT));
-                return;
-            }
-
-            if (!InputValidator.IsValidEmail(normalizedEmail))
-            {
-                ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_INVALID_EMAIL_FORMAT));
-                return;
-            }
-
-            AuthServiceClient authClient = new AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
+            AuthServiceClient authClient =
+                new AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
 
             try
             {
-                _logger.Info("Requesting password change verification code (forgot password).");
 
-                AuthResult result = await Task.Run(() => authClient.RequestPasswordChangeCode(
-                    normalizedEmail));
+                AuthResult result = await Task.Run(
+                    () => authClient.RequestPasswordChangeCode(normalizedEmail));
+
                 authClient.Close();
 
                 if (result == null)
@@ -175,82 +184,42 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 HandleRequestCodeError(result);
             }
-            catch (EndpointNotFoundException ex)
-            {
-                authClient.Abort();
-                string userMessage = ExceptionHandler.Handle(ex, "ChangePasswordPage.SendCode." +
-                    "EndpointNotFound", _logger);
-                ShowErrorMessage(userMessage);
-            }
             catch (Exception ex)
             {
                 authClient.Abort();
-                string userMessage = ExceptionHandler.Handle(ex, "ChangePasswordPage.SendCode", _logger);
-                ShowErrorMessage(userMessage);
+
+                UiExceptionHelper.ShowModuleError(
+                    ex,
+                    nameof(SendCodeAsync),
+                    _logger,
+                    Lang.UiChangePasswordSendCodeError);
             }
         }
 
         public async Task ChangePasswordAsync()
         {
-            string normalizedEmail = InputValidator.Normalize(Email);
-            string normalizedCode = InputValidator.Normalize(VerificationCode);
-            string newPasswordLocal = (NewPassword ?? string.Empty).Trim();
-            string confirmPasswordLocal = (ConfirmPassword ?? string.Empty).Trim();
-
-            if (string.IsNullOrWhiteSpace(normalizedEmail)
-                || string.IsNullOrWhiteSpace(newPasswordLocal)
-                || string.IsNullOrWhiteSpace(confirmPasswordLocal)
-                || string.IsNullOrWhiteSpace(normalizedCode))
+            if (!TryBuildChangePasswordInput(out ChangePasswordInput input))
             {
-                ShowError(UI_CHANGE_PASSWORD_GENERIC_ERROR);
-                return;
-            }
-
-            if (normalizedEmail.Length > EMAIL_MAX_LENGTH || !InputValidator.IsValidEmail(normalizedEmail))
-            {
-                ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_INVALID_EMAIL_FORMAT));
-                return;
-            }
-
-            if (!string.Equals(newPasswordLocal, confirmPasswordLocal, StringComparison.Ordinal))
-            {
-                ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_PASSWORDS_DO_NOT_MATCH));
-                return;
-            }
-
-            if (newPasswordLocal.Length > PASSWORD_MAX_LENGTH)
-            {
-                ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_WEAK_PASSWORD));
-                return;
-            }
-
-            if (!IsStrongPassword(newPasswordLocal))
-            {
-                ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_WEAK_PASSWORD));
-                return;
-            }
-
-            if (normalizedCode.Length != VERIFICATION_CODE_EXACT_LENGTH ||
-                !normalizedCode.All(char.IsDigit))
-            {
-                ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_CODE_INVALID));
                 return;
             }
 
             ChangePasswordRequestDto request = new ChangePasswordRequestDto
             {
-                Email = normalizedEmail,
-                NewPassword = newPasswordLocal,
-                VerificationCode = normalizedCode
+                Email = input.Email,
+                NewPassword = input.NewPassword,
+                VerificationCode = input.VerificationCode
             };
 
-            AuthServiceClient authClient = new AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
+            AuthServiceClient authClient =
+                new AuthServiceClient(AUTH_ENDPOINT_CONFIGURATION_NAME);
 
             try
             {
                 _logger.Info("Sending ChangePassword request (forgot password).");
 
-                AuthResult result = await Task.Run(() => authClient.ChangePassword(request));
+                AuthResult result = await Task.Run(
+                    () => authClient.ChangePassword(request));
+
                 authClient.Close();
 
                 if (result == null)
@@ -270,25 +239,124 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 HandleChangePasswordError(result);
             }
-            catch (EndpointNotFoundException ex)
-            {
-                authClient.Abort();
-                string userMessage = ExceptionHandler.Handle(ex, "ChangePasswordPage.ChangePassword." +
-                    "EndpointNotFound", _logger);
-                ShowErrorMessage(userMessage);
-            }
             catch (Exception ex)
             {
                 authClient.Abort();
-                string userMessage = ExceptionHandler.Handle(ex, "ChangePasswordPage." +
-                    "ChangePassword", _logger);
-                ShowErrorMessage(userMessage);
+
+                UiExceptionHelper.ShowModuleError(
+                    ex,
+                    nameof(ChangePasswordAsync),
+                    _logger,
+                    Lang.UiChangePasswordError);
             }
+        }
+
+        private bool TryBuildValidEmailForCode(out string normalizedEmail)
+        {
+            normalizedEmail = InputValidator.Normalize(Email);
+
+            if (string.IsNullOrWhiteSpace(normalizedEmail))
+            {
+                ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_GENERIC_ERROR));
+                return false;
+            }
+
+            if (!IsEmailLengthValid(normalizedEmail) ||
+                !InputValidator.IsValidEmail(normalizedEmail))
+            {
+                ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_INVALID_EMAIL_FORMAT));
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool TryBuildChangePasswordInput(out ChangePasswordInput input)
+        {
+            input = null;
+
+            string normalizedEmail = InputValidator.Normalize(Email);
+            string normalizedCode = InputValidator.Normalize(VerificationCode);
+            string newPasswordLocal = (NewPassword ?? string.Empty).Trim();
+            string confirmPasswordLocal = (ConfirmPassword ?? string.Empty).Trim();
+
+            if (string.IsNullOrWhiteSpace(normalizedEmail)
+                || string.IsNullOrWhiteSpace(newPasswordLocal)
+                || string.IsNullOrWhiteSpace(confirmPasswordLocal)
+                || string.IsNullOrWhiteSpace(normalizedCode))
+            {
+                ShowError(UI_CHANGE_PASSWORD_GENERIC_ERROR);
+                return false;
+            }
+
+            if (!IsEmailLengthValid(normalizedEmail) ||
+                !InputValidator.IsValidEmail(normalizedEmail))
+            {
+                ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_INVALID_EMAIL_FORMAT));
+                return false;
+            }
+
+            if (!ArePasswordsConsistent(newPasswordLocal, confirmPasswordLocal))
+            {
+                return false;
+            }
+
+            if (!IsPasswordWithinMaxLength(newPasswordLocal) ||
+                !IsStrongPassword(newPasswordLocal))
+            {
+                ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_WEAK_PASSWORD));
+                return false;
+            }
+
+            if (!IsVerificationCodeValid(normalizedCode))
+            {
+                ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_CODE_INVALID));
+                return false;
+            }
+
+            input = new ChangePasswordInput(
+                normalizedEmail,
+                normalizedCode,
+                newPasswordLocal,
+                confirmPasswordLocal);
+
+            return true;
+        }
+
+        private static bool IsEmailLengthValid(string normalizedEmail)
+        {
+            return normalizedEmail.Length >= EMAIL_MIN_LENGTH &&
+                   normalizedEmail.Length <= EMAIL_MAX_LENGTH;
+        }
+
+        private static bool ArePasswordsConsistent(
+            string newPassword,
+            string confirmPassword)
+        {
+            if (!string.Equals(newPassword, confirmPassword, StringComparison.Ordinal))
+            {
+                ShowWarn(
+                    GetLocalizedString(UI_CHANGE_PASSWORD_PASSWORDS_DO_NOT_MATCH));
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool IsPasswordWithinMaxLength(string password)
+        {
+            if (password.Length > PASSWORD_MAX_LENGTH)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private static bool IsStrongPassword(string password)
         {
-            if (string.IsNullOrEmpty(password) || password.Length < PASSWORD_MIN_LENGTH)
+            if (string.IsNullOrEmpty(password) ||
+                password.Length < PASSWORD_MIN_LENGTH)
             {
                 return false;
             }
@@ -301,15 +369,33 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             return hasUpper && hasLower && hasDigit && hasSpecial;
         }
 
+        private static bool IsVerificationCodeValid(string normalizedCode)
+        {
+            if (normalizedCode.Length != VERIFICATION_CODE_EXACT_LENGTH)
+            {
+                return false;
+            }
+
+            if (!normalizedCode.All(char.IsDigit))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private static void HandleRequestCodeError(AuthResult result)
         {
             string code = result.Code ?? string.Empty;
-            Dictionary<string, string> meta = result.Meta ?? new Dictionary<string, string>();
+            Dictionary<string, string> meta =
+                result.Meta ?? new Dictionary<string, string>();
 
             if (string.Equals(code, AUTH_CODE_THROTTLE_WAIT, StringComparison.Ordinal))
             {
                 int seconds = GetSecondsFromMeta(meta);
-                _logger.WarnFormat("Password change code throttled. Wait {0} seconds.", seconds);
+                _logger.WarnFormat(
+                    "Password change code throttled. Wait {0} seconds.",
+                    seconds);
                 ShowWarn(GetLocalizedString(UI_CHANGE_PASSWORD_GENERIC_ERROR));
                 return;
             }
@@ -411,7 +497,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private static void ShowError(string messageKey)
         {
-            string message = Globalization.LocalizationManager.Current[messageKey];
+            string message =
+                Globalization.LocalizationManager.Current[messageKey];
             ShowErrorMessage(message);
         }
 
@@ -434,8 +521,31 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private void OnPropertyChanged([CallerMemberName] string name = null)
         {
-            var handler = PropertyChanged;
+            PropertyChangedEventHandler handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        private sealed class ChangePasswordInput
+        {
+            public ChangePasswordInput(
+                string email,
+                string verificationCode,
+                string newPassword,
+                string confirmPassword)
+            {
+                Email = email;
+                VerificationCode = verificationCode;
+                NewPassword = newPassword;
+                ConfirmPassword = confirmPassword;
+            }
+
+            public string Email { get; }
+
+            public string VerificationCode { get; }
+
+            public string NewPassword { get; }
+
+            public string ConfirmPassword { get; }
         }
     }
 }

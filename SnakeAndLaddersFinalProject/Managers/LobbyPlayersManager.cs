@@ -13,13 +13,18 @@ namespace SnakeAndLaddersFinalProject.Managers
         private const int MIN_START_CELL_INDEX = 1;
         private const int MAX_PODIUM_PLAYERS = 3;
         private const int FIRST_PODIUM_POSITION = 1;
+        private const int DEFAULT_PODIUM_COINS = 0;
+
+        private const string DEFAULT_PLAYER_NAME_FORMAT = "Jugador {0}";
 
         private readonly int _localUserId;
         private readonly CornerPlayersViewModel _cornerPlayers;
         private readonly PlayerTokenManager _tokenManager;
         private readonly int _startCellIndex;
 
-        private readonly Dictionary<int, string> _userNamesById = new Dictionary<int, string>();
+        private readonly Dictionary<int, string> _userNamesById =
+            new Dictionary<int, string>();
+
         private readonly List<LobbyMemberViewModel> _lobbyMembers =
             new List<LobbyMemberViewModel>();
 
@@ -57,15 +62,17 @@ namespace SnakeAndLaddersFinalProject.Managers
 
         public void InitializeCornerPlayers(IList<LobbyMemberViewModel> members)
         {
-            if (members == null)
-            {
-                return;
-            }
-
             _lobbyMembers.Clear();
             _userNamesById.Clear();
 
-            foreach (var member in members)
+            if (members == null)
+            {
+                _cornerPlayers.InitializeFromLobbyMembers(
+                    Array.Empty<LobbyMemberViewModel>());
+                return;
+            }
+
+            foreach (LobbyMemberViewModel member in members)
             {
                 member.IsLocalPlayer = member.UserId == _localUserId;
                 _lobbyMembers.Add(member);
@@ -79,16 +86,17 @@ namespace SnakeAndLaddersFinalProject.Managers
 
         public string ResolveUserDisplayName(int userId)
         {
-            if (_userNamesById.TryGetValue(userId, out string name) && !string.
-                IsNullOrWhiteSpace(name))
+            if (_userNamesById.TryGetValue(userId, out string name) &&
+                !string.IsNullOrWhiteSpace(name))
             {
                 return name.Trim();
             }
 
-            return string.Format("Jugador {0}", userId);
+            return string.Format(DEFAULT_PLAYER_NAME_FORMAT, userId);
         }
 
-        public ReadOnlyCollection<PodiumPlayerViewModel> BuildPodiumPlayers(int winnerUserId)
+        public ReadOnlyCollection<PodiumPlayerViewModel> BuildPodiumPlayers(
+            int winnerUserId)
         {
             var result = new List<PodiumPlayerViewModel>();
 
@@ -97,17 +105,20 @@ namespace SnakeAndLaddersFinalProject.Managers
                 return new ReadOnlyCollection<PodiumPlayerViewModel>(result);
             }
 
-            var winner = _lobbyMembers.FirstOrDefault(m => m.UserId == winnerUserId);
+            LobbyMemberViewModel winner =
+                _lobbyMembers.FirstOrDefault(m => m.UserId == winnerUserId);
+
             if (winner != null)
             {
-                result.Add(new PodiumPlayerViewModel(
-                    winner.UserId,
-                    winner.UserName,
-                    FIRST_PODIUM_POSITION,
-                    0));
+                result.Add(
+                    new PodiumPlayerViewModel(
+                        winner.UserId,
+                        winner.UserName,
+                        FIRST_PODIUM_POSITION,
+                        DEFAULT_PODIUM_COINS));
             }
 
-            foreach (var member in _lobbyMembers)
+            foreach (LobbyMemberViewModel member in _lobbyMembers)
             {
                 if (member.UserId == winnerUserId)
                 {
@@ -120,11 +131,13 @@ namespace SnakeAndLaddersFinalProject.Managers
                 }
 
                 int position = result.Count + 1;
-                result.Add(new PodiumPlayerViewModel(
-                    member.UserId,
-                    member.UserName,
-                    position,
-                    0));
+
+                result.Add(
+                    new PodiumPlayerViewModel(
+                        member.UserId,
+                        member.UserName,
+                        position,
+                        DEFAULT_PODIUM_COINS));
             }
 
             return new ReadOnlyCollection<PodiumPlayerViewModel>(result);
@@ -139,7 +152,7 @@ namespace SnakeAndLaddersFinalProject.Managers
                 return;
             }
 
-            foreach (var lobbyMember in members)
+            foreach (LobbyMemberViewModel lobbyMember in members)
             {
                 _tokenManager.CreateFromLobbyMember(lobbyMember, _startCellIndex);
             }
