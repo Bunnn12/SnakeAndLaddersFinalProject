@@ -7,6 +7,7 @@ using log4net;
 using SnakeAndLaddersFinalProject.SocialProfileService;
 using SnakeAndLaddersFinalProject.Utilities;
 using Lang = SnakeAndLaddersFinalProject.Properties.Langs.Lang;
+using System.Configuration;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
@@ -18,25 +19,44 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private const string INSTAGRAM_HOST = "instagram.com";
         private const string FACEBOOK_HOST = "facebook.com";
         private const string TWITTER_HOST = "twitter.com";
-        private const string X_HOST = "x.com"; 
+        private const string X_HOST = "x.com";
 
-        private const string INSTAGRAM_URL = "https://www.instagram.com/";
-        private const string FACEBOOK_URL = "https://www.facebook.com/";
-        private const string TWITTER_URL = "https://x.com/";
+        private const string INSTAGRAM_URL_KEY = "SocialProfiles.InstagramHomeUrl";
+        private const string FACEBOOK_URL_KEY = "SocialProfiles.FacebookHomeUrl";
+        private const string TWITTER_URL_KEY = "SocialProfiles.TwitterHomeUrl";
 
         private const int PROFILE_LINK_MIN_LENGTH = 10; 
         private const int PROFILE_LINK_MAX_LENGTH = 255;
         private const int MIN_VALID_USER_ID = 1;
 
+        private readonly string _instagramUrl;
+        private readonly string _facebookUrl;
+        private readonly string _twitterUrl;
         public SocialProfileItemViewModel Instagram { get; }
         public SocialProfileItemViewModel Facebook { get; }
         public SocialProfileItemViewModel Twitter { get; }
 
         public SocialProfilesViewModel()
         {
+            _instagramUrl = GetConfiguredUrl(INSTAGRAM_URL_KEY);
+            _facebookUrl = GetConfiguredUrl(FACEBOOK_URL_KEY);
+            _twitterUrl = GetConfiguredUrl(TWITTER_URL_KEY);
+
             Instagram = new SocialProfileItemViewModel(SocialNetworkType.Instagram);
             Facebook = new SocialProfileItemViewModel(SocialNetworkType.Facebook);
             Twitter = new SocialProfileItemViewModel(SocialNetworkType.Twitter);
+        }
+
+        private static string GetConfiguredUrl(string key)
+        {
+            string value = ConfigurationManager.AppSettings[key];
+
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return string.Empty;
+            }
+
+            return value;
         }
 
         public void LoadSocialProfiles(int userId)
@@ -189,19 +209,27 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public bool TryOpenNetworkHome(SocialNetworkType network)
         {
             string url;
+
             switch (network)
             {
                 case SocialNetworkType.Instagram:
-                    url = INSTAGRAM_URL;
+                    url = _instagramUrl;
                     break;
                 case SocialNetworkType.Facebook:
-                    url = FACEBOOK_URL;
+                    url = _facebookUrl;
                     break;
                 case SocialNetworkType.Twitter:
-                    url = TWITTER_URL;
+                    url = _twitterUrl;
                     break;
                 default:
                     return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                _logger.Warn("No URL configured for social network home.");
+                ShowError(Lang.SocialBrowserOpenError);
+                return false;
             }
 
             return TryOpenBrowser(url);
