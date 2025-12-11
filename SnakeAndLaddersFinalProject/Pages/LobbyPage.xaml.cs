@@ -25,14 +25,14 @@ namespace SnakeAndLaddersFinalProject.Pages
         private static readonly ILog _logger = LogManager.GetLogger(typeof(LobbyPage));
 
         private readonly LobbyNavigationArgs _lobbyNavigationArgs;
-        private readonly PlayerReportPolicy _playerReportPolicy = new PlayerReportPolicy();
 
         private LobbyViewModel ViewModel
         {
             get { return DataContext as LobbyViewModel; }
         }
 
-        public LobbyPage() : this(new LobbyNavigationArgs { Mode = LobbyEntryMode.Create })
+        public LobbyPage()
+            : this(new LobbyNavigationArgs { Mode = LobbyEntryMode.Create })
         {
         }
 
@@ -49,7 +49,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var viewModel = ViewModel;
+            LobbyViewModel viewModel = ViewModel;
             if (viewModel == null)
             {
                 return;
@@ -72,6 +72,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                     {
                         viewModel.ApplyCreateOptions(_lobbyNavigationArgs.CreateOptions);
                     }
+
                     viewModel.CreateLobbyCommand?.Execute(null);
                 }
                 else if (_lobbyNavigationArgs.Mode == LobbyEntryMode.Join)
@@ -97,7 +98,7 @@ namespace SnakeAndLaddersFinalProject.Pages
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            var viewModel = ViewModel;
+            LobbyViewModel viewModel = ViewModel;
             if (viewModel == null)
             {
                 return;
@@ -112,7 +113,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             try
             {
-                var viewModel = ViewModel;
+                LobbyViewModel viewModel = ViewModel;
                 if (viewModel == null)
                 {
                     return;
@@ -150,7 +151,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            var boardPage = new GameBoardPage
+            GameBoardPage boardPage = new GameBoardPage
             {
                 DataContext = boardViewModel
             };
@@ -163,8 +164,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                var currentWindow = Window.GetWindow(this);
-                var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
+                Window currentWindow = Window.GetWindow(this);
+                Frame mainFrame = currentWindow?.FindName("MainFrame") as Frame;
 
                 if (mainFrame != null)
                 {
@@ -172,7 +173,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                var navigationWindow = new NavigationWindow
+                NavigationWindow navigationWindow = new NavigationWindow
                 {
                     Owner = currentWindow,
                     ShowsNavigationUI = false,
@@ -204,8 +205,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                var currentWindow = Window.GetWindow(this);
-                var mainFrame = currentWindow?.FindName("MainFrame") as Frame;
+                Window currentWindow = Window.GetWindow(this);
+                Frame mainFrame = currentWindow?.FindName("MainFrame") as Frame;
 
                 if (mainFrame != null)
                 {
@@ -222,7 +223,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             try
             {
-                var lobbyViewModel = ViewModel;
+                LobbyViewModel lobbyViewModel = ViewModel;
                 if (lobbyViewModel == null)
                 {
                     MessageBox.Show(
@@ -233,7 +234,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                var lobbyId = lobbyViewModel.LobbyId;
+                int lobbyId = lobbyViewModel.LobbyId;
                 if (lobbyId <= 0)
                 {
                     MessageBox.Show(
@@ -244,8 +245,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                var ownerWindow = Window.GetWindow(this);
-                var chatWindow = new ChatWindow(lobbyId)
+                Window ownerWindow = Window.GetWindow(this);
+                ChatWindow chatWindow = new ChatWindow(lobbyId)
                 {
                     Owner = ownerWindow
                 };
@@ -253,22 +254,28 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                string userMessage = ExceptionHandler.Handle(ex, "LobbyPage.OpenChat",
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    "LobbyPage.OpenChat",
                     _logger);
-                MessageBox.Show(userMessage, Lang.errorTitle, MessageBoxButton.OK,
+
+                MessageBox.Show(
+                    userMessage,
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
         }
 
         private void LeaveLobby(object sender, RoutedEventArgs e)
         {
-            var lobbyViewModel = ViewModel;
+            LobbyViewModel lobbyViewModel = ViewModel;
             lobbyViewModel?.LeaveLobbyCommand?.Execute(null);
         }
 
         private void StartMatch(object sender, RoutedEventArgs e)
         {
-            var lobbyViewModel = ViewModel;
+            LobbyViewModel lobbyViewModel = ViewModel;
             lobbyViewModel?.StartMatchCommand?.Execute(null);
         }
 
@@ -276,7 +283,7 @@ namespace SnakeAndLaddersFinalProject.Pages
         {
             try
             {
-                var lobbyViewModel = ViewModel;
+                LobbyViewModel lobbyViewModel = ViewModel;
                 if (lobbyViewModel == null)
                 {
                     MessageBox.Show(
@@ -287,8 +294,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                if (lobbyViewModel.LobbyId <= 0 || string.IsNullOrWhiteSpace(lobbyViewModel.
-                    CodigoPartida))
+                if (lobbyViewModel.LobbyId <= 0 ||
+                    string.IsNullOrWhiteSpace(lobbyViewModel.CodigoPartida))
                 {
                     MessageBox.Show(
                         Lang.UiInviteFriendNoMatchCode,
@@ -298,8 +305,9 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                var ownerWindow = Window.GetWindow(this);
-                var inviteWindow = new MatchInvitationWindow(lobbyViewModel.LobbyId,
+                Window ownerWindow = Window.GetWindow(this);
+                MatchInvitationWindow inviteWindow = new MatchInvitationWindow(
+                    lobbyViewModel.LobbyId,
                     lobbyViewModel.CodigoPartida)
                 {
                     Owner = ownerWindow
@@ -308,9 +316,15 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
             catch (Exception ex)
             {
-                string userMessage = ExceptionHandler.Handle(ex, "LobbyPage.OpenMatchInvitation",
+                string userMessage = ExceptionHandler.Handle(
+                    ex,
+                    "LobbyPage.OpenMatchInvitation",
                     _logger);
-                MessageBox.Show(userMessage, Lang.errorTitle, MessageBoxButton.OK,
+
+                MessageBox.Show(
+                    userMessage,
+                    Lang.errorTitle,
+                    MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
         }
@@ -331,21 +345,21 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 int currentUserId = SessionContext.Current.UserId;
 
-                if (!_playerReportPolicy.CanCurrentUserReportTarget(currentUserId, member))
+                if (!PlayerReportPolicy.CanCurrentUserReportTarget(currentUserId, member))
                 {
                     return;
                 }
 
-                int reportedUserId = _playerReportPolicy.GetMemberUserId(member);
-                string reportedUserName = _playerReportPolicy.GetMemberUserName(member);
+                int reportedUserId = PlayerReportPolicy.GetMemberUserId(member);
+                string reportedUserName = PlayerReportPolicy.GetMemberUserName(member);
 
                 if (reportedUserId < MIN_VALID_USER_ID)
                 {
                     return;
                 }
 
-                var ownerWindow = Window.GetWindow(this);
-                var reportsWindow = new ReportsWindow
+                Window ownerWindow = Window.GetWindow(this);
+                ReportsWindow reportsWindow = new ReportsWindow
                 {
                     Owner = ownerWindow,
                     ReporterUserId = currentUserId,
@@ -357,6 +371,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             catch (Exception ex)
             {
                 _logger.Error("Error opening ReportsWindow.", ex);
+
                 MessageBox.Show(
                     Lang.ReportsWindowOpenErrorText,
                     Lang.reportUserTittle,
@@ -374,8 +389,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                var member = button.Tag as LobbyMemberViewModel;
-                var viewModel = ViewModel;
+                LobbyMemberViewModel member = button.Tag as LobbyMemberViewModel;
+                LobbyViewModel viewModel = ViewModel;
 
                 if (member == null || viewModel == null || button.ContextMenu == null)
                 {
@@ -383,10 +398,11 @@ namespace SnakeAndLaddersFinalProject.Pages
                 }
 
                 int currentUserId = SessionContext.Current.UserId;
-                bool canReport = _playerReportPolicy.CanCurrentUserReportTarget(currentUserId, member);
+                bool canReport =
+                    PlayerReportPolicy.CanCurrentUserReportTarget(currentUserId, member);
                 bool canKick = viewModel.CanCurrentUserKickMember(member);
 
-                foreach (var item in button.ContextMenu.Items.OfType<MenuItem>())
+                foreach (MenuItem item in button.ContextMenu.Items.OfType<MenuItem>())
                 {
                     if (Equals(item.Tag, CONTEXT_MENU_TAG_REPORT))
                     {
@@ -422,8 +438,8 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                var member = menuItem.DataContext as LobbyMemberViewModel;
-                var viewModel = ViewModel;
+                LobbyMemberViewModel member = menuItem.DataContext as LobbyMemberViewModel;
+                LobbyViewModel viewModel = ViewModel;
 
                 if (member == null || viewModel == null)
                 {
@@ -435,7 +451,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                var result = MessageBox.Show(
+                MessageBoxResult result = MessageBox.Show(
                     string.Format(Lang.LobbyKickConfirmTextFmt, member.UserName),
                     Lang.LobbyKickConfirmTitle,
                     MessageBoxButton.YesNo,
@@ -446,11 +462,12 @@ namespace SnakeAndLaddersFinalProject.Pages
                     return;
                 }
 
-                await viewModel.KickMemberAsync(member);
+                await viewModel.KickMemberAsync(member).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 _logger.Error("Error kicking player from menu item.", ex);
+
                 MessageBox.Show(
                     Lang.LobbyKickFailedText,
                     Lang.errorTitle,

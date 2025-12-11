@@ -1623,4 +1623,7 @@
   <data name="UiSkinsApplyErrorSuffix" xml:space="preserve">
     <value>No se pudo aplicar tu skin seleccionada.</value>
   </data>
+  <data name="UiLobbyPublicListUnavailable" xml:space="preserve">
+    <value>No se pudo obtener la lista de lobbies públicos. Verifica la conexión con el servidor.</value>
+  </data>
 </root>

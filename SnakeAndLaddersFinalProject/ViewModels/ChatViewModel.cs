@@ -598,6 +598,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    return;
+                }
+
                 UiExceptionHelper.ShowModuleError(
                     ex,
                     nameof(SendSticker),

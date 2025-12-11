@@ -1624,4 +1624,7 @@
   <data name="UiSkinsApplyErrorSuffix" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="UiLobbyPublicListUnavailable" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
 </root>

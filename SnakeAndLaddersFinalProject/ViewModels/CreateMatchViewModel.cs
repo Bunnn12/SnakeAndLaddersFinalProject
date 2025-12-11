@@ -145,6 +145,12 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
+
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    return;
+                }
+
                 string genericMessage = ExceptionHandler.Handle(
                     ex,
                     nameof(CreateRoom),

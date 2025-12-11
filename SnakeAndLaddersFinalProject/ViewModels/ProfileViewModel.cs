@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using log4net;
 using SnakeAndLaddersFinalProject.Authentication;
@@ -10,7 +12,7 @@ using SnakeAndLaddersFinalProject.Utilities;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
-    public sealed class ProfileViewModel
+    public sealed class ProfileViewModel : INotifyPropertyChanged
     {
         private const string USER_SERVICE_ENDPOINT_CONFIGURATION_NAME =
             "NetTcpBinding_IUserService";
@@ -26,16 +28,59 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private static readonly ILog _logger =
             LogManager.GetLogger(typeof(ProfileViewModel));
 
-        public AccountDto LoadedAccount { get; private set; }
+        private AccountDto _loadedAccount;
+        private string _avatarId;
+        private IList<AvatarProfileOptionViewModel> _avatarOptions =
+            new List<AvatarProfileOptionViewModel>();
 
-        public string AvatarId { get; private set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public AccountDto LoadedAccount
+        {
+            get { return _loadedAccount; }
+            private set
+            {
+                if (!Equals(_loadedAccount, value))
+                {
+                    _loadedAccount = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string AvatarId
+        {
+            get { return _avatarId; }
+            private set
+            {
+                if (string.Equals(_avatarId, value, StringComparison.Ordinal))
+                {
+                    return;
+                }
+
+                _avatarId = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasAvatar));
+            }
+        }
 
         public bool HasAvatar
         {
             get { return !string.IsNullOrWhiteSpace(AvatarId); }
         }
 
-        public IList<AvatarProfileOptionViewModel> AvatarOptions { get; private set; }
+        public IList<AvatarProfileOptionViewModel> AvatarOptions
+        {
+            get { return _avatarOptions; }
+            private set
+            {
+                if (!ReferenceEquals(_avatarOptions, value))
+                {
+                    _avatarOptions = value ?? new List<AvatarProfileOptionViewModel>();
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public ProfileViewModel()
         {
@@ -74,9 +119,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             try
             {
-                LoadedAccount = client.GetProfileByUsername(userName);
+                AccountDto account = client.GetProfileByUsername(userName);
 
-                if (LoadedAccount == null)
+                if (account == null)
                 {
                     MessageBox.Show(
                         Lang.ProfileNotFoundText,
@@ -86,7 +131,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     return false;
                 }
 
+                LoadedAccount = account;
                 AvatarId = LoadedAccount.ProfilePhotoId;
+
+                if (SessionContext.Current != null)
+                {
+                    SessionContext.Current.ProfilePhotoId = LoadedAccount.ProfilePhotoId;
+                }
+
                 return true;
             }
             catch (Exception ex)
@@ -154,7 +206,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     "ProfileViewModel.LoadAvatarOptions",
                     _logger);
 
-                // Aquí preferiste no mostrar MessageBox, solo fallar silencioso:
                 return false;
             }
             finally
@@ -455,6 +506,18 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 Lang.UiTitleError,
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
+        }
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+
+            if (handler == null)
+            {
+                return;
+            }
+
+            handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

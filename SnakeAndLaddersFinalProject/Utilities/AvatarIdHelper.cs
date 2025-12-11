@@ -24,6 +24,12 @@ namespace SnakeAndLaddersFinalProject.Utilities
 
             string trimmedAvatarId = avatarId.Trim();
 
+            int dotIndex = trimmedAvatarId.IndexOf('.');
+            if (dotIndex > 0)
+            {
+                trimmedAvatarId = trimmedAvatarId.Substring(0, dotIndex);
+            }
+
             if (trimmedAvatarId.Length > MAX_LENGTH)
             {
                 return null;

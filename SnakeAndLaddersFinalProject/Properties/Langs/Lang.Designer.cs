@@ -4246,6 +4246,15 @@ namespace SnakeAndLaddersFinalProject.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The list of public lobbies could not be retrieved. Please check your connection to the server..
+        /// </summary>
+        public static string UiLobbyPublicListUnavailable {
+            get {
+                return ResourceManager.GetString("UiLobbyPublicListUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The game could not be started from the lobby..
         /// </summary>
         public static string UiLobbyStartMatchError {

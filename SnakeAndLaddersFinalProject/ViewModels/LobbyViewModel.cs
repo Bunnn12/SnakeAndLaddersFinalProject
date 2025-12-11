@@ -116,11 +116,37 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             Members.CollectionChanged += OnMembersChanged;
 
-            if (CurrentUserId != LobbyMessages.INVALID_USER_ID)
+            TrySubscribePublicLobbies();
+        }
+
+        private void TrySubscribePublicLobbies()
+        {
+            if (CurrentUserId == LobbyMessages.INVALID_USER_ID)
+            {
+                return;
+            }
+
+            try
             {
                 _lobbyClient.SubscribePublicLobbies(CurrentUserId);
             }
+            catch (Exception ex)
+            {
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    return;
+                }
+
+                UiExceptionHelper.ShowModuleError(
+                    ex,
+                    nameof(TrySubscribePublicLobbies),
+                    _logger,
+                    Lang.UiLobbyPublicListUnavailable);
+
+                StatusText = Lang.UiLobbyPublicListUnavailable;
+            }
         }
+
 
         public async Task TryLeaveLobbySilentlyAsync()
         {
@@ -261,6 +287,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    return;
+                }
+
                 UiExceptionHelper.ShowModuleError(
                     ex,
                     nameof(KickMemberAsync),

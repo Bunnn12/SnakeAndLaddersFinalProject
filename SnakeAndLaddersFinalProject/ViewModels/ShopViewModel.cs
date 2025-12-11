@@ -7,14 +7,14 @@ using System.Windows;
 using log4net;
 using SnakeAndLaddersFinalProject.Authentication;
 using SnakeAndLaddersFinalProject.Infrastructure;
-using SnakeAndLaddersFinalProject.Properties.Langs;
+using SnakeAndLaddersFinalProject.Utilities;
 using SnakeAndLaddersFinalProject.ShopService;
 
 namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class ShopViewModel : INotifyPropertyChanged
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(ShopViewModel));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ShopViewModel));
 
         private const string ICON_TITLE_WARNING = "UiTitleWarning";
         private const string ICON_TITLE_ERROR = "UiTitleError";
@@ -41,6 +41,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private const string CONTEXT_INITIALIZE_COINS = "ShopViewModel.InitializeCoinsAsync";
         private const string CONTEXT_EXECUTE_PURCHASE = "ShopViewModel.ExecutePurchaseAsync";
+        private const string CONTEXT_SAFE_CLOSE = "ShopViewModel.SafeClose";
 
         private const int DICE_ID_NEGATIVE = 1;
         private const int DICE_ID_ONE_TO_THREE = 2;
@@ -98,6 +99,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 CurrentCoins = coins;
                 SessionContext.Current.Coins = coins;
+
+                SafeClose(client);
             }
             catch (FaultException faultEx)
             {
@@ -107,19 +110,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (EndpointNotFoundException ex)
             {
-                string message = ExceptionHandler.Handle(ex, CONTEXT_INITIALIZE_COINS, Logger);
+                string message = ExceptionHandler.Handle(ex, CONTEXT_INITIALIZE_COINS, _logger);
                 ShowError(message);
                 client.Abort();
             }
             catch (Exception ex)
             {
-                string message = ExceptionHandler.Handle(ex, CONTEXT_INITIALIZE_COINS, Logger);
+                string message = ExceptionHandler.Handle(ex, CONTEXT_INITIALIZE_COINS, _logger);
                 ShowError(message);
                 client.Abort();
-            }
-            finally
-            {
-                SafeClose(client);
             }
         }
 
@@ -217,6 +216,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 if (reward == null)
                 {
                     ShowError(Token(SHOP_CODE_SERVER_ERROR));
+                    client.Abort();
                     return;
                 }
 
@@ -233,6 +233,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     CurrentCoins);
 
                 ShowInfo(message);
+
+                SafeClose(client);
             }
             catch (FaultException faultEx)
             {
@@ -242,19 +244,15 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (EndpointNotFoundException ex)
             {
-                string message = ExceptionHandler.Handle(ex, CONTEXT_EXECUTE_PURCHASE, Logger);
+                string message = ExceptionHandler.Handle(ex, CONTEXT_EXECUTE_PURCHASE, _logger);
                 ShowError(message);
                 client.Abort();
             }
             catch (Exception ex)
             {
-                string message = ExceptionHandler.Handle(ex, CONTEXT_EXECUTE_PURCHASE, Logger);
+                string message = ExceptionHandler.Handle(ex, CONTEXT_EXECUTE_PURCHASE, _logger);
                 ShowError(message);
                 client.Abort();
-            }
-            finally
-            {
-                SafeClose(client);
             }
         }
 
@@ -299,8 +297,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     client.Close();
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                // No se traga la excepción: se registra con ExceptionHandler y se aborta el cliente.
+                ExceptionHandler.Handle(ex, CONTEXT_SAFE_CLOSE, _logger);
                 client.Abort();
             }
         }

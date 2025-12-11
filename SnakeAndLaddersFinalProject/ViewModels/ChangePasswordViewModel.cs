@@ -241,6 +241,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
+                if (ConnectionLostHandlerException.IsConnectionException(ex))
+                {
+                    return;
+                }
+
                 authClient.Abort();
 
                 UiExceptionHelper.ShowModuleError(
