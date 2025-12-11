@@ -12,7 +12,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 {
     public sealed class ProfileViewModel
     {
-        private const string USER_SERVICE_ENDPOINT_CONFIGURATION_NAME = "NetTcpBinding_IUserService";
+        private const string USER_SERVICE_ENDPOINT_CONFIGURATION_NAME =
+            "NetTcpBinding_IUserService";
 
         private const int MAX_FIRST_NAME_LENGTH = 100;
         private const int MAX_LAST_NAME_LENGTH = 255;
@@ -158,12 +159,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error("Error while closing UserServiceClient after loading avatar options.", ex);
+                    _logger.Error("Error while closing UserServiceClient after loading avatar options.",
+                        ex);
                 }
             }
         }
 
-        public bool ValidateProfileInputs(string firstName, string lastName, string description)
+        public static bool ValidateProfileInputs(string firstName, string lastName, string description)
         {
             string normalizedFirstName = InputValidator.Normalize(firstName);
             string normalizedLastName = InputValidator.Normalize(lastName);
@@ -181,7 +183,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return false;
             }
 
-            if (!InputValidator.IsLengthInRange(normalizedFirstName, MIN_FIRST_NAME_LENGTH, MAX_FIRST_NAME_LENGTH))
+            if (!InputValidator.IsLengthInRange(normalizedFirstName, MIN_FIRST_NAME_LENGTH,
+                MAX_FIRST_NAME_LENGTH))
             {
                 ShowWarn(string.Format(Lang.ProfileFirstNameTooLongFmt, MAX_FIRST_NAME_LENGTH));
                 return false;
@@ -193,7 +196,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return false;
             }
 
-            if (!InputValidator.IsLengthInRange(normalizedLastName, MIN_LAST_NAME_LENGTH, MAX_LAST_NAME_LENGTH))
+            if (!InputValidator.IsLengthInRange(normalizedLastName, MIN_LAST_NAME_LENGTH,
+                MAX_LAST_NAME_LENGTH))
             {
                 ShowWarn(string.Format(Lang.ProfileLastNameTooLongFmt, MAX_LAST_NAME_LENGTH));
                 return false;
@@ -207,13 +211,17 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             if (!string.IsNullOrEmpty(normalizedDescription))
             {
-                if (!InputValidator.IsLengthInRange(normalizedDescription, MIN_DESCRIPTION_LENGTH, MAX_DESCRIPTION_LENGTH))
+                if (!InputValidator.IsLengthInRange(normalizedDescription,
+                    MIN_DESCRIPTION_LENGTH,
+                    MAX_DESCRIPTION_LENGTH))
                 {
-                    ShowWarn(string.Format(Lang.ProfileDescriptionTooLongFmt, MAX_DESCRIPTION_LENGTH));
+                    ShowWarn(string.Format(Lang.ProfileDescriptionTooLongFmt,
+                        MAX_DESCRIPTION_LENGTH));
                     return false;
                 }
 
-                if (!InputValidator.IsSafeText(normalizedDescription, MIN_DESCRIPTION_LENGTH, MAX_DESCRIPTION_LENGTH, allowNewLines: true))
+                if (!InputValidator.IsSafeText(normalizedDescription, MIN_DESCRIPTION_LENGTH,
+                    MAX_DESCRIPTION_LENGTH, allowNewLines: true))
                 {
                     ShowWarn(Lang.ProfileInvalidCharactersText);
                     return false;
@@ -382,7 +390,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error("Error while closing UserServiceClient after avatar update.", ex);
+                    _logger.Error("Error while closing UserServiceClient after avatar update.",
+                        ex);
                 }
             }
         }

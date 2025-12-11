@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using log4net;
 using SnakeAndLaddersFinalProject.Properties.Langs;
 using SnakeAndLaddersFinalProject.ViewModels;
 
@@ -13,6 +14,7 @@ namespace SnakeAndLaddersFinalProject.Windows
 {
     public partial class ChatWindow : Window
     {
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ChatWindow));
         private const int WINDOW_MARGIN_PIXELS = 16;
         private readonly ChatViewModel _chatViewModel;
 
@@ -79,9 +81,9 @@ namespace SnakeAndLaddersFinalProject.Windows
                     ScrollViewer scrollViewer = FindChild<ScrollViewer>(lvMessages);
                     scrollViewer?.ScrollToEnd();
                 }
-                catch
+                catch (Exception ex) 
                 {
-                   
+                    _logger.Warn("Error while auto-scrolling chat messages.", ex);
                 }
             }), DispatcherPriority.Background);
         }

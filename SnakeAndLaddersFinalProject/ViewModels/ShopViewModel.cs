@@ -102,7 +102,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             catch (Exception ex)
             {
                 _logger.Error("Error initializing coins.", ex);
-                ShowError(T("ShopServerError"));
+                ShowError(T(SHOP_CODE_SERVER_ERROR));
                 client.Abort();
             }
             finally
@@ -206,7 +206,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
                 if (reward == null)
                 {
-                    ShowError(T("ShopServerError"));
+                    ShowError(T(SHOP_CODE_SERVER_ERROR));
                     return;
                 }
 
@@ -238,7 +238,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             catch (Exception ex)
             {
                 _logger.Error("Error executing purchase.", ex);
-                ShowError(T("ShopServerError"));
+                ShowError(T(SHOP_CODE_SERVER_ERROR));
                 client.Abort();
             }
             finally
@@ -299,7 +299,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             return Globalization.LocalizationManager.Current[key];
         }
 
-        private void ShowWarning(string message)
+        private static void ShowWarning(string message)
         {
             MessageBox.Show(
                 message,
@@ -308,7 +308,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 MessageBoxImage.Warning);
         }
 
-        private void ShowError(string message)
+        private static void ShowError(string message)
         {
             MessageBox.Show(
                 message,
@@ -317,7 +317,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 MessageBoxImage.Error);
         }
 
-        private void ShowInfo(string message)
+        private static void ShowInfo(string message)
         {
             MessageBox.Show(
                 message,
@@ -326,7 +326,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 MessageBoxImage.Information);
         }
 
-        private string MapShopCode(string code)
+        private static string MapShopCode(string code)
         {
             switch (code)
             {

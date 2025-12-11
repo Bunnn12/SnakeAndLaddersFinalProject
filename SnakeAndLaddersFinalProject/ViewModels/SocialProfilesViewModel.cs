@@ -274,7 +274,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        private void ApplyProfileList(SocialProfileItemViewModel item, IEnumerable<SocialProfileDto> profiles)
+        private static void ApplyProfileList(SocialProfileItemViewModel item, IEnumerable<SocialProfileDto> profiles)
         {
             if (item == null || profiles == null)
             {

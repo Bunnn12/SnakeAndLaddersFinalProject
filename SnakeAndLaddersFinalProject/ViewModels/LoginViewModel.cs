@@ -15,9 +15,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private static readonly ILog _logger = LogManager.GetLogger(typeof(LoginViewModel));
 
         private const int IDENTIFIER_MIN_LENGTH = 1;
-        private const int IDENTIFIER_MAX_LENGTH = 150; 
+        private const int IDENTIFIER_MAX_LENGTH = 150;
         private const int PASSWORD_MIN_LENGTH = 1;
-        private const int PASSWORD_MAX_LENGTH = 50; 
+        private const int PASSWORD_MAX_LENGTH = 50;
         private const int INVALID_USER_ID = 0;
         private const int DEFAULT_SKIN_UNLOCKED_ID = 0;
 
@@ -31,73 +31,89 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             public Dictionary<string, string> Meta { get; set; } = new Dictionary<string, string>();
         }
 
-        public string[] ValidateLogin(string identifier, string password)
+        public static string[] ValidateLogin(string identifier, string password)
         {
-            var errors = new List<string>();
-
             string normalizedIdentifier = InputValidator.Normalize(identifier);
             string normalizedPassword = InputValidator.Normalize(password);
 
+            var errors = new List<string>();
+
+            AddIdentifierValidationErrors(normalizedIdentifier, errors);
+            AddPasswordValidationErrors(normalizedPassword, errors);
+
+            return errors.ToArray();
+        }
+
+        private static void AddIdentifierValidationErrors(
+            string normalizedIdentifier,
+            ICollection<string> errors)
+        {
             if (!InputValidator.IsRequired(normalizedIdentifier))
             {
                 errors.Add(T("UiIdentifierRequired"));
+                return;
             }
-            else
-            {
-                if (!InputValidator.IsLengthInRange(
-                        normalizedIdentifier,
-                        IDENTIFIER_MIN_LENGTH,
-                        IDENTIFIER_MAX_LENGTH))
-                {
-                    if (normalizedIdentifier.Length < IDENTIFIER_MIN_LENGTH)
-                    {
-                        errors.Add(T("UiIdentifierTooShort"));
-                    }
-                    else
-                    {
-                        errors.Add(T("UiIdentifierTooLong"));
-                    }
-                }
 
-                if (normalizedIdentifier.Contains("@"))
-                {
-                    if (!InputValidator.IsValidEmail(normalizedIdentifier))
-                    {
-                        errors.Add(T("UiEmailInvalid"));
-                    }
-                }
-                else if (!InputValidator.IsIdentifierText(
+            if (!InputValidator.IsLengthInRange(
                     normalizedIdentifier,
                     IDENTIFIER_MIN_LENGTH,
                     IDENTIFIER_MAX_LENGTH))
-                {
+            {
+                string messageKey =
+                    normalizedIdentifier.Length < IDENTIFIER_MIN_LENGTH
+                        ? "UiIdentifierTooShort"
+                        : "UiIdentifierTooLong";
 
-                }
+                errors.Add(T(messageKey));
+                return;
             }
 
+            if (normalizedIdentifier.Contains("@"))
+            {
+                if (!InputValidator.IsValidEmail(normalizedIdentifier))
+                {
+                    errors.Add(T("UiEmailInvalid"));
+                }
+
+                return;
+            }
+
+            if (!InputValidator.IsIdentifierText(
+                    normalizedIdentifier,
+                    IDENTIFIER_MIN_LENGTH,
+                    IDENTIFIER_MAX_LENGTH))
+            {
+                errors.Add(T("UiIdentifierInvalid"));
+            }
+        }
+
+        private static void AddPasswordValidationErrors(
+            string normalizedPassword,
+            ICollection<string> errors)
+        {
             if (!InputValidator.IsRequired(normalizedPassword))
             {
                 errors.Add(T("UiPasswordRequired"));
-            }
-            else
-            {
-                if (!InputValidator.IsLengthInRange(
-                        normalizedPassword,
-                        PASSWORD_MIN_LENGTH,
-                        PASSWORD_MAX_LENGTH))
-                {
-                    if (normalizedPassword.Length < PASSWORD_MIN_LENGTH)
-                    {
-                        errors.Add(T("UiPasswordTooShort"));
-                    }
-                    else
-                    {
-                        errors.Add(T("UiPasswordTooLong"));
-                    }
-                }
+                return;
             }
 
-            return errors.ToArray();
+            if (!InputValidator.IsLengthInRange(
+                    normalizedPassword,
+                    PASSWORD_MIN_LENGTH,
+                    PASSWORD_MAX_LENGTH))
+            {
+                string messageKey =
+                    normalizedPassword.Length < PASSWORD_MIN_LENGTH
+                        ? "UiPasswordTooShort"
+                        : "UiPasswordTooLong";
+
+                errors.Add(T(messageKey));
+            }
+        }
+
+        private static string T(string key)
+        {
+            return Properties.Langs.Lang.ResourceManager.GetString(key);
         }
 
         public async Task<LoginServiceResult> LoginAsync(string identifier, string password)
@@ -178,11 +194,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 result.IsGenericError = true;
                 return result;
             }
-        }
-
-        private static string T(string key)
-        {
-            return Properties.Langs.Lang.ResourceManager.GetString(key);
         }
     }
 }

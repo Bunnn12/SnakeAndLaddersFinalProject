@@ -32,8 +32,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private FriendListItemDto _selectedFriend;
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public event Action RequestClose;
         public event Action<string, string, MessageBoxImage> ShowMessageRequested;
+        public event Action RequestClose;
 
         public MatchInvitationViewModel(int lobbyId, string gameCode)
         {
@@ -185,46 +185,13 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 return;
             }
 
+            IsBusy = true;
+            StatusText = string.Empty;
+
             try
             {
-                IsBusy = true;
-                StatusText = string.Empty;
-
-                var session = SessionContext.Current;
-                string token = session?.AuthToken;
-
-                if (session == null || string.IsNullOrWhiteSpace(token))
+                if (!TryValidateInvitation(out string token))
                 {
-                    StatusText = Lang.UiInviteFriendInvalidSession;
-                    OnShowMessageRequested(StatusText, Lang.errorTitle, MessageBoxImage.Error);
-                    return;
-                }
-
-                if (token.StartsWith(GUEST_TOKEN_PREFIX, StringComparison.Ordinal))
-                {
-                    StatusText = Lang.UiInviteFriendGuestsNotAllowed;
-                    OnShowMessageRequested(StatusText, Lang.warningTitle, MessageBoxImage.Warning);
-                    return;
-                }
-
-                if (string.IsNullOrWhiteSpace(GameCode))
-                {
-                    StatusText = Lang.UiInviteFriendMissingGameCode;
-                    OnShowMessageRequested(StatusText, Lang.warningTitle, MessageBoxImage.Warning);
-                    return;
-                }
-
-                if (Friends == null || Friends.Count == 0)
-                {
-                    StatusText = Lang.InviteNoFriendsInfo;
-                    OnShowMessageRequested(StatusText, Lang.infoTitle, MessageBoxImage.Information);
-                    return;
-                }
-
-                if (SelectedFriend == null)
-                {
-                    StatusText = Lang.UiInviteFriendSelectFriendRequired;
-                    OnShowMessageRequested(StatusText, Lang.warningTitle, MessageBoxImage.Warning);
                     return;
                 }
 
@@ -240,33 +207,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     request.FriendUserId,
                     request.GameCode);
 
-                OperationResult result = await _invitationClient.InviteFriendToGameAsync(request);
+                OperationResult result =
+                    await _invitationClient.InviteFriendToGameAsync(request);
 
-                if (result == null)
-                {
-                    StatusText = Lang.UiInviteFriendNoResponse;
-                    OnShowMessageRequested(StatusText, Lang.errorTitle, MessageBoxImage.Error);
-                    return;
-                }
-
-                if (result.Success)
-                {
-                    string successMessage = string.IsNullOrWhiteSpace(result.Message)
-                        ? Lang.UiInviteFriendSuccessDefault
-                        : result.Message;
-
-                    StatusText = successMessage;
-                    OnShowMessageRequested(successMessage, Lang.infoTitle, MessageBoxImage.Information);
-                }
-                else
-                {
-                    string failureMessage = string.IsNullOrWhiteSpace(result.Message)
-                        ? Lang.UiInviteFriendFailureDefault
-                        : result.Message;
-
-                    StatusText = failureMessage;
-                    OnShowMessageRequested(failureMessage, Lang.errorTitle, MessageBoxImage.Error);
-                }
+                HandleInvitationResult(result);
             }
             catch (Exception ex)
             {
@@ -276,7 +220,11 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     _logger);
 
                 StatusText = userMessage;
-                OnShowMessageRequested(userMessage, Lang.errorTitle, MessageBoxImage.Error);
+                OnShowMessageRequested(
+                    userMessage,
+                    Lang.errorTitle,
+                    MessageBoxImage.Error);
+                OnRequestClose();
             }
             finally
             {
@@ -284,6 +232,113 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
+        private bool TryValidateInvitation(out string token)
+        {
+            token = string.Empty;
+
+            var session = SessionContext.Current;
+            string sessionToken = session?.AuthToken;
+
+            if (session == null || string.IsNullOrWhiteSpace(sessionToken))
+            {
+                return FailInvitation(
+                    Lang.UiInviteFriendInvalidSession,
+                    Lang.errorTitle,
+                    MessageBoxImage.Error,
+                    out token);
+            }
+
+            if (sessionToken.StartsWith(GUEST_TOKEN_PREFIX, StringComparison.Ordinal))
+            {
+                return FailInvitation(
+                    Lang.UiInviteFriendGuestsNotAllowed,
+                    Lang.warningTitle,
+                    MessageBoxImage.Warning,
+                    out token);
+            }
+
+            if (string.IsNullOrWhiteSpace(GameCode))
+            {
+                return FailInvitation(
+                    Lang.UiInviteFriendMissingGameCode,
+                    Lang.warningTitle,
+                    MessageBoxImage.Warning,
+                    out token);
+            }
+
+            if (Friends == null || Friends.Count == 0)
+            {
+                return FailInvitation(
+                    Lang.InviteNoFriendsInfo,
+                    Lang.infoTitle,
+                    MessageBoxImage.Information,
+                    out token);
+            }
+
+            if (SelectedFriend == null)
+            {
+                return FailInvitation(
+                    Lang.UiInviteFriendSelectFriendRequired,
+                    Lang.warningTitle,
+                    MessageBoxImage.Warning,
+                    out token);
+            }
+
+            token = sessionToken;
+            return true;
+        }
+
+        private bool FailInvitation(
+            string message,
+            string title,
+            MessageBoxImage icon,
+            out string token)
+        {
+            token = string.Empty;
+            StatusText = message;
+            OnShowMessageRequested(message, title, icon);
+            return false;
+        }
+
+        private void HandleInvitationResult(OperationResult result)
+        {
+            if (result == null)
+            {
+                StatusText = Lang.UiInviteFriendNoResponse;
+                OnShowMessageRequested(
+                    StatusText,
+                    Lang.errorTitle,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            string message;
+
+            if (result.Success)
+            {
+                message = string.IsNullOrWhiteSpace(result.Message)
+                    ? Lang.UiInviteFriendSuccessDefault
+                    : result.Message;
+
+                StatusText = message;
+                OnShowMessageRequested(
+                    message,
+                    Lang.infoTitle,
+                    MessageBoxImage.Information);
+            }
+            else
+            {
+                message = string.IsNullOrWhiteSpace(result.Message)
+                    ? Lang.UiInviteFriendFailureDefault
+                    : result.Message;
+
+                StatusText = message;
+                OnShowMessageRequested(
+                    message,
+                    Lang.errorTitle,
+                    MessageBoxImage.Error);
+            }
+        }
         private void RaiseCanExecutes()
         {
             (SendInvitationCommand as AsyncCommand)?.RaiseCanExecuteChanged();
@@ -297,6 +352,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+        private void OnRequestClose()
+        {
+            RequestClose?.Invoke();
         }
     }
 }

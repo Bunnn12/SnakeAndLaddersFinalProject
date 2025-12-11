@@ -111,10 +111,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 result.Code = AUTH_CODE_OK;
                 return result;
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
                 ShowError(T("UiEndpointNotFound"));
-                _logger.Warn("No se ha encontrado el endpoint de AuthService.");
+                _logger.Warn("No se ha encontrado el endpoint de AuthService.", ex);
                 authClient.Abort();
                 result.IsEndpointNotFound = true;
                 return result;

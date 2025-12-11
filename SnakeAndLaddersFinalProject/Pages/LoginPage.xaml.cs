@@ -113,7 +113,7 @@ namespace SnakeAndLaddersFinalProject.Pages
                 return;
             }
 
-            string[] errors = viewModel.ValidateLogin(identifier, password);
+            string[] errors = LoginViewModel.ValidateLogin(identifier, password);
             if (errors.Any())
             {
                 ShowWarn(string.Join("\n", errors));

@@ -114,7 +114,7 @@ namespace SnakeAndLaddersFinalProject.Pages
             string lastName = (txtLastName.Text ?? string.Empty).Trim();
             string description = (txtDescription.Text ?? string.Empty).Trim();
 
-            if (!viewModel.ValidateProfileInputs(firstName, lastName, description))
+            if (!ProfileViewModel.ValidateProfileInputs(firstName, lastName, description))
             {
                 return;
             }
