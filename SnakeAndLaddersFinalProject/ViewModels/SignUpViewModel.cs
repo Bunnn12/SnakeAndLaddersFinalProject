@@ -105,7 +105,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     return result;
                 }
 
-                ShowInfo(string.Format(Globalization("UiVerificationSentFmt"), registrationDto.Email));
+                ShowInfo(string.Format(T("UiVerificationSentFmt"), registrationDto.Email));
                 result.IsSuccess = true;
                 result.Registration = registrationDto;
                 result.Code = AUTH_CODE_OK;
@@ -113,7 +113,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (EndpointNotFoundException)
             {
-                ShowError(Globalization("UiEndpointNotFound"));
+                ShowError(T("UiEndpointNotFound"));
                 _logger.Warn("No se ha encontrado el endpoint de AuthService.");
                 authClient.Abort();
                 result.IsEndpointNotFound = true;
@@ -121,7 +121,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
             catch (Exception ex)
             {
-                ShowError($"{Globalization("UiGenericError")} {ex.Message}");
+                ShowError($"{T("UiGenericError")} {ex.Message}");
                 _logger.Error("Error inesperado al registrar usuario.", ex);
                 authClient.Abort();
                 result.IsGenericError = true;
@@ -145,88 +145,127 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             var errors = new List<string>();
 
-            if (!InputValidator.IsRequired(input.GivenName))
-            {
-                errors.Add(Globalization("UiFirstNameRequired"));
-            }
-            else
-            {
-                if (input.GivenName.Length < NAME_MIN_LENGTH || input.GivenName.Length > NAME_MAX_LENGTH)
-                {
-                    errors.Add(Globalization("UiFirstNameTooLong"));
-                }
-                else if (!IsAllLettersOrUnicode(input.GivenName))
-                {
-                    errors.Add(Globalization("UiFirstNameLettersOnly"));
-                }
-            }
-
-            if (!InputValidator.IsRequired(input.FamilyName))
-            {
-                errors.Add(Globalization("UiLastNameRequired"));
-            }
-            else
-            {
-                if (input.FamilyName.Length < NAME_MIN_LENGTH || input.FamilyName.Length > NAME_MAX_LENGTH)
-                {
-                    errors.Add(Globalization("UiLastNameTooLong"));
-                }
-                else if (!IsAllLettersOrUnicode(input.FamilyName))
-                {
-                    errors.Add(Globalization("UiLastNameLettersOnly"));
-                }
-            }
-
-            if (!InputValidator.IsRequired(input.Username))
-            {
-                errors.Add(Globalization("UiUserNameRequired"));
-            }
-            else
-            {
-                if (input.Username.Length < USERNAME_MIN_LENGTH || input.Username.Length > USERNAME_MAX_LENGTH)
-                {
-                    errors.Add(Globalization("UiUserNameTooLong"));
-                }
-                else if (!InputValidator.IsIdentifierText(input.Username, USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH))
-                {
-                    errors.Add(Globalization("UiUserNameInvalid"));
-                }
-            }
-
-            if (!InputValidator.IsRequired(input.EmailAddress))
-            {
-                errors.Add(Globalization("UiEmailRequired"));
-            }
-            else
-            {
-                if (input.EmailAddress.Length < EMAIL_MIN_LENGTH || input.EmailAddress.Length > EMAIL_MAX_LENGTH)
-                {
-                    errors.Add(Globalization("UiEmailTooLong"));
-                }
-                else if (!InputValidator.IsValidEmail(input.EmailAddress))
-                {
-                    errors.Add(Globalization("UiEmailInvalid"));
-                }
-            }
-
-            if (!InputValidator.IsRequired(input.PlainPassword))
-            {
-                errors.Add(Globalization("UiPasswordRequired"));
-            }
-            else
-            {
-                if (input.PlainPassword.Length < MIN_PASSWORD_LENGTH || input.PlainPassword.Length > PASSWORD_MAX_LENGTH)
-                {
-                    errors.Add(Globalization("UiPasswordTooLong"));
-                }
-
-                if (!IsStrongPassword(input.PlainPassword))
-                {
-                    errors.Add(string.Format(Globalization("UiPasswordWeak"), MIN_PASSWORD_LENGTH));
-                }
-            }
+            errors.AddRange(ValidateGivenName(input.GivenName));
+            errors.AddRange(ValidateFamilyName(input.FamilyName));
+            errors.AddRange(ValidateUserName(input.Username));
+            errors.AddRange(ValidateEmail(input.EmailAddress));
+            errors.AddRange(ValidatePassword(input.PlainPassword));
 
             return errors.ToArray();
+        }
+        private static IEnumerable<string> ValidateName(string name, string requiredKey,
+            string lengthKey, string lettersOnlyKey)
+        {
+            var errors = new List<string>();
+
+            if (!InputValidator.IsRequired(name))
+            {
+                errors.Add(T(requiredKey));
+                return errors;
+            }
+
+            if (name.Length < NAME_MIN_LENGTH || name.Length > NAME_MAX_LENGTH)
+            {
+                errors.Add(T(lengthKey));
+            }
+            else if (!IsAllLettersOrUnicode(name))
+            {
+                errors.Add(T(lettersOnlyKey));
+            }
+
+            return errors;
+        }
+        private static IEnumerable<string> ValidateGivenName(string givenName)
+        {
+            return ValidateName(
+                givenName,
+                "UiFirstNameRequired",
+                "UiFirstNameTooLong",
+                "UiFirstNameLettersOnly");
+        }
+
+        private static IEnumerable<string> ValidateFamilyName(string familyName)
+        {
+            return ValidateName(
+                familyName,
+                "UiLastNameRequired",
+                "UiLastNameTooLong",
+                "UiLastNameLettersOnly");
+        }
+
+        private static IEnumerable<string> ValidateUserName(string userName)
+        {
+            var errors = new List<string>();
+
+            if (!InputValidator.IsRequired(userName))
+            {
+                errors.Add(T("UiUserNameRequired"));
+                return errors;
+            }
+
+            if (userName.Length < USERNAME_MIN_LENGTH || userName.Length > USERNAME_MAX_LENGTH)
+            {
+                errors.Add(T("UiUserNameTooLong"));
+                return errors;
+            }
+
+            if (!InputValidator.IsIdentifierText(
+                    userName,
+                    USERNAME_MIN_LENGTH,
+                    USERNAME_MAX_LENGTH))
+            {
+                errors.Add(T("UiUserNameInvalid"));
+            }
+
+            return errors;
+        }
+
+        private static IEnumerable<string> ValidateEmail(string email)
+        {
+            var errors = new List<string>();
+
+            if (!InputValidator.IsRequired(email))
+            {
+                errors.Add(T("UiEmailRequired"));
+                return errors;
+            }
+
+            if (email.Length < EMAIL_MIN_LENGTH || email.Length > EMAIL_MAX_LENGTH)
+            {
+                errors.Add(T("UiEmailTooLong"));
+                return errors;
+            }
+
+            if (!InputValidator.IsValidEmail(email))
+            {
+                errors.Add(T("UiEmailInvalid"));
+            }
+
+            return errors;
+        }
+
+        private static IEnumerable<string> ValidatePassword(string plainPassword)
+        {
+            var errors = new List<string>();
+
+            if (!InputValidator.IsRequired(plainPassword))
+            {
+                errors.Add(T("UiPasswordRequired"));
+                return errors;
+            }
+
+            if (plainPassword.Length < MIN_PASSWORD_LENGTH ||
+                plainPassword.Length > PASSWORD_MAX_LENGTH)
+            {
+                errors.Add(T("UiPasswordTooLong"));
+            }
+
+            if (!IsStrongPassword(plainPassword))
+            {
+                errors.Add(string.Format(T("UiPasswordWeak"), MIN_PASSWORD_LENGTH));
+            }
+
+            return errors;
         }
 
         private static bool IsAllLettersOrUnicode(string text)
@@ -254,7 +293,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             return hasUpper && hasLower && hasDigit && hasSpecial;
         }
 
-        private static string Globalization(string key)
+        private static string T(string key)
         {
             return SnakeAndLaddersFinalProject.Globalization.LocalizationManager.Current[key];
         }
@@ -263,7 +302,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             MessageBox.Show(
                 message,
-                Globalization("UiTitleWarning"),
+                T("UiTitleWarning"),
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
         }
@@ -272,7 +311,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             MessageBox.Show(
                 message,
-                Globalization("UiTitleInfo"),
+                T("UiTitleInfo"),
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
         }
@@ -281,7 +320,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             MessageBox.Show(
                 message,
-                Globalization("UiTitleError"),
+                T("UiTitleError"),
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
@@ -293,31 +332,31 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             switch (code)
             {
                 case AUTH_CODE_OK:
-                    return Globalization("AuthOk");
+                    return T("AuthOk");
                 case AUTH_CODE_EMAIL_REQUIRED:
-                    return Globalization("AuthEmailRequired");
+                    return T("AuthEmailRequired");
                 case AUTH_CODE_EMAIL_ALREADY_EXISTS:
-                    return Globalization("AuthEmailAlreadyExists");
+                    return T("AuthEmailAlreadyExists");
                 case AUTH_CODE_USERNAME_ALREADY_EXISTS:
-                    return Globalization("AuthUserNameAlreadyExists");
+                    return T("AuthUserNameAlreadyExists");
                 case AUTH_CODE_INVALID_CREDENTIALS:
-                    return Globalization("AuthInvalidCredentials");
+                    return T("AuthInvalidCredentials");
                 case AUTH_CODE_THROTTLE_WAIT:
                     return string.Format(
-                        Globalization("AuthThrottleWaitFmt"),
+                        T("AuthThrottleWaitFmt"),
                         metaDictionary.TryGetValue(META_KEY_SECONDS, out string secondsText)
                             ? secondsText
                             : DEFAULT_THROTTLE_SECONDS_TEXT);
                 case AUTH_CODE_NOT_REQUESTED:
-                    return Globalization("AuthCodeNotRequested");
+                    return T("AuthCodeNotRequested");
                 case AUTH_CODE_EXPIRED:
-                    return Globalization("AuthCodeExpired");
+                    return T("AuthCodeExpired");
                 case AUTH_CODE_INVALID:
-                    return Globalization("AuthCodeInvalid");
+                    return T("AuthCodeInvalid");
                 case AUTH_CODE_EMAIL_SEND_FAILED:
-                    return Globalization("AuthEmailSendFailed");
+                    return T("AuthEmailSendFailed");
                 default:
-                    return Globalization("AuthServerError");
+                    return T("AuthServerError");
             }
         }
     }
