@@ -1627,4 +1627,100 @@
   <data name="UiLobbyPublicListUnavailable" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="UiGenericErrorTitle" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="UiFriendsLoadError" xml:space="preserve">
+    <value>无法加载您的好友</value>
+  </data>
+  <data name="UiFriendsSearchError" xml:space="preserve">
+    <value>搜索用户时出错</value>
+  </data>
+  <data name="UiFriendRequestError" xml:space="preserve">
+    <value>无法发送好友请求</value>
+  </data>
+  <data name="UiChangePasswordSendCodeError" xml:space="preserve">
+    <value>无法发送更改密码代码</value>
+  </data>
+  <data name="UiChangePasswordError" xml:space="preserve">
+    <value>您的密码无法更改</value>
+  </data>
+  <data name="UiChatLoadError" xml:space="preserve">
+    <value>聊天无法加载</value>
+  </data>
+  <data name="UiChatSendMessageError" xml:space="preserve">
+    <value>您的消息无法发送</value>
+  </data>
+  <data name="UiChatOpenStickersError" xml:space="preserve">
+    <value>无法打开贴纸选择器</value>
+  </data>
+  <data name="UiChatLoadStickersError" xml:space="preserve">
+    <value>您的贴纸无法加载</value>
+  </data>
+  <data name="UiChatSendStickerError" xml:space="preserve">
+    <value>无法发送您的贴纸</value>
+  </data>
+  <data name="UiCreateMatchError" xml:space="preserve">
+    <value>无法使用您选择的参数创建您的匹配</value>
+  </data>
+  <data name="UiEmailVerificationError" xml:space="preserve">
+    <value>您的邮箱验证码无法验证</value>
+  </data>
+  <data name="UiEmailVerificationResendError" xml:space="preserve">
+    <value>您的代码无法重新发送到您的电子邮件</value>
+  </data>
+  <data name="UiFriendUnfriendError" xml:space="preserve">
+    <value>你的朋友无法解除好友关系</value>
+  </data>
+  <data name="UiFriendUnfriendDirectError" xml:space="preserve">
+    <value>无法从您的好友中删除该用户</value>
+  </data>
+  <data name="UiInventoryLoadError" xml:space="preserve">
+    <value>无法加载您的库存</value>
+  </data>
+  <data name="UiInventoryEquipItemError" xml:space="preserve">
+    <value>该商品无法选取</value>
+  </data>
+  <data name="UiInventoryClearItemSlotError" xml:space="preserve">
+    <value>无法从所选空间中删除该对象。</value>
+  </data>
+  <data name="UiInventoryEquipDiceError" xml:space="preserve">
+    <value>所选空间无法装备骰子。</value>
+  </data>
+  <data name="UiInventoryClearDiceSlotError" xml:space="preserve">
+    <value>无法将骰子从选定的空间中移除。</value>
+  </data>
+  <data name="UiLobbyKickMemberError" xml:space="preserve">
+    <value>该用户无法被踢出</value>
+  </data>
+  <data name="UiLobbyCreateError" xml:space="preserve">
+    <value>无法创建大厅</value>
+  </data>
+  <data name="UiLobbyJoinError" xml:space="preserve">
+    <value>您无法加入大厅。</value>
+  </data>
+  <data name="UiLobbyStartMatchError" xml:space="preserve">
+    <value>游戏无法从大厅开始。</value>
+  </data>
+  <data name="UiLobbyLeaveError" xml:space="preserve">
+    <value>无法离开大厅</value>
+  </data>
+  <data name="UiLobbyNavigateBoardError" xml:space="preserve">
+    <value>无法打开当前游戏的游戏板。</value>
+  </data>
+  <data name="UiLoginGenericError" xml:space="preserve">
+    <value>无法登录</value>
+  </data>
+  <data name="UiRankingLoadError" xml:space="preserve">
+    <value>无法加载玩家排名。请稍后重试。</value>
+  </data>
+  <data name="UiSkinsLoadErrorSuffix" xml:space="preserve">
+    <value>无法加载您的皮肤</value>
+  </data>
+  <data name="UiSkinsApplyErrorSuffix" xml:space="preserve">
+    <value>无法应用您选择的皮肤。</value>
+  </data>
+  <data name="UiLobbyPublicListUnavailable" xml:space="preserve">
+    <value>无法检索公共大厅列表。请检查您与服务器的连接。</value>
+  </data>
 </root>
