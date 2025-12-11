@@ -337,7 +337,8 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 case "Auth.Banned":
                     if (metaDictionary.TryGetValue(META_KEY_SANCTION_TYPE, out string sanctionType) &&
-                        string.Equals(sanctionType, KICK_TYPE_PERMANENT, StringComparison.OrdinalIgnoreCase))
+                        string.Equals(sanctionType, KICK_TYPE_PERMANENT,
+                        StringComparison.OrdinalIgnoreCase))
                     {
                         return Lang.AuthBannedPermanent;
                     }

@@ -28,7 +28,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             public bool IsGenericError { get; set; }
             public bool HasAuthToken { get; set; }
             public string Code { get; set; } = string.Empty;
-            public Dictionary<string, string> Meta { get; set; } = new Dictionary<string, string>();
+            public Dictionary<string, string> Meta { get; set; } = new Dictionary<string,
+                string>();
         }
 
         public static string[] ValidateLogin(string identifier, string password)
@@ -159,7 +160,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                     int? currentSkinUnlockedId = response.CurrentSkinUnlockedId;
 
                     session.UserId = userId;
-                    session.UserName = string.IsNullOrWhiteSpace(displayName) ? normalizedIdentifier : displayName;
+                    session.UserName = string.IsNullOrWhiteSpace(displayName) ? normalizedIdentifier
+                        : displayName;
                     session.Email = normalizedIdentifier.Contains("@") ? normalizedIdentifier : string.Empty;
                     session.ProfilePhotoId = AvatarIdHelper.NormalizeOrDefault(profilePhotoId);
                     session.AuthToken = token;
@@ -172,7 +174,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 }
 
                 string code = response?.Code ?? string.Empty;
-                Dictionary<string, string> meta = response?.Meta ?? new Dictionary<string, string>();
+                Dictionary<string, string> meta = response?.Meta ?? new Dictionary<string,
+                    string>();
 
                 result.IsSuccess = false;
                 result.Code = code;

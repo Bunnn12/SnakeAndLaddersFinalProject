@@ -170,8 +170,26 @@ namespace SnakeAndLaddersFinalProject.Managers
             }
 
             _markServerEventReceived();
+
             int seconds = timerInfo.RemainingSeconds;
-            Application.Current.Dispatcher.Invoke(() => _updateTurnTimerText(seconds));
+
+            var dispatcher = Application.Current?.Dispatcher;
+
+            if (dispatcher == null)
+            {
+                _updateTurnTimerText(seconds);
+                return Task.CompletedTask;
+            }
+
+            if (dispatcher.CheckAccess())
+            {
+                _updateTurnTimerText(seconds);
+            }
+            else
+            {
+                dispatcher.BeginInvoke(new Action(() => _updateTurnTimerText(seconds)));
+            }
+
             return Task.CompletedTask;
         }
     }

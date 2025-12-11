@@ -43,7 +43,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public event Action CurrentUserKickedFromLobby;
         public event Action NavigateToMainPageRequested;
 
-        private readonly GameBoardClient _gameBoardClient;
         private readonly LobbyClient _lobbyClient;
         private readonly LobbyBoardService _lobbyBoardService;
 
@@ -98,9 +97,9 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         {
             InitializeCurrentUser();
 
-            _gameBoardClient = new GameBoardClient();
+            var gameBoardClient = new GameBoardClient();
             _lobbyClient = new LobbyClient(this);
-            _lobbyBoardService = new LobbyBoardService(_gameBoardClient);
+            _lobbyBoardService = new LobbyBoardService(gameBoardClient);
 
             CreateLobbyCommand = new AsyncCommand(CreateLobbyAsync);
             JoinLobbyCommand = new AsyncCommand(JoinLobbyAsync, CanJoinLobby);

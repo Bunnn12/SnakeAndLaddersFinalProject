@@ -493,7 +493,8 @@ namespace SnakeAndLaddersFinalProject.Pages
 
                 string profileLink = dialog.ProfileLink;
 
-                bool linked = _socialProfilesViewModel.TryLinkProfile(userId, network, profileLink);
+                bool linked = _socialProfilesViewModel.TryLinkProfile(userId, network,
+                    profileLink);
                 if (!linked)
                 {
                     return;

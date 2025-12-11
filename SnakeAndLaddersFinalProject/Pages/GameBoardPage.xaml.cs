@@ -77,10 +77,8 @@ namespace SnakeAndLaddersFinalProject.Pages
 
             _currentViewModel = viewModel;
             _currentViewModel.PodiumRequested += OnPodiumRequested;
-            _currentViewModel.NavigateToPodiumRequested += OnNavigateToPodiumRequested;
 
-            _logger.Info("GameBoardPage: suscribed to PodiumRequested and " +
-                "NavigateToPodiumRequested.");
+            _logger.Info("GameBoardPage: subscribed to PodiumRequested.");
         }
 
         private void DetachFromViewModel()
@@ -94,7 +92,6 @@ namespace SnakeAndLaddersFinalProject.Pages
             _currentViewModel = null;
 
             viewModel.PodiumRequested -= OnPodiumRequested;
-            viewModel.NavigateToPodiumRequested -= OnNavigateToPodiumRequested;
 
             _logger.Info("GameBoardPage: disuscribed shopViewModelInstance events. " +
                 "calling to Dispose().");
@@ -153,41 +150,5 @@ namespace SnakeAndLaddersFinalProject.Pages
             }
         }
 
-        private void OnNavigateToPodiumRequested(int gameId, int winnerUserId)
-        {
-            try
-            {
-                _logger.InfoFormat("OnNavigateToPodiumRequested: _gameId={0}, winnerUserId={1}",
-                    gameId, winnerUserId);
-
-                GameBoardViewModel gameBoardViewModel = _currentViewModel;
-                string winnerName = gameBoardViewModel != null
-                    ? gameBoardViewModel.ResolveUserDisplayName(winnerUserId)
-                    : string.Format(Lang.PodiumDefaultPlayerNameFmt, winnerUserId);
-
-                ReadOnlyCollection<PodiumPlayerViewModel> podiumPlayers = gameBoardViewModel
-                    != null ? gameBoardViewModel.BuildPodiumPlayers(winnerUserId)
-                    : new ReadOnlyCollection<PodiumPlayerViewModel>(new PodiumPlayerViewModel[0]);
-
-                PodiumViewModel podiumViewModel = new PodiumViewModel();
-                podiumViewModel.Initialize(winnerUserId, winnerName, podiumPlayers);
-
-                DetachFromViewModel();
-                PodiumPage podiumPage = new PodiumPage(podiumViewModel);
-
-                if (NavigationService != null)
-                {
-                    NavigationService.Navigate(podiumPage);
-                    return;
-                }
-
-                BasicWindow window = Window.GetWindow(this) as BasicWindow;
-                window?.MainFrame?.Navigate(podiumPage);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Error navigating to podium page.", ex);
-            }
-        }
     }
 }

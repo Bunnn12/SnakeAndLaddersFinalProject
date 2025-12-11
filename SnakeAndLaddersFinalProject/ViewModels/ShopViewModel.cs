@@ -247,7 +247,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        private bool EnsureAuthenticated()
+        private static bool EnsureAuthenticated()
         {
             if (SessionContext.Current == null || !SessionContext.Current.IsAuthenticated)
             {

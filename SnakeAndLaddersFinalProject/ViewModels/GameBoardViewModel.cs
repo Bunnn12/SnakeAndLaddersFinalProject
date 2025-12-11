@@ -37,20 +37,14 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private const string DEFAULT_TURN_TIMER_TEXT = "00:30";
 
-        private const string DICE_ROLL_SPRITE_PATH =
-            "pack://application:,,,/Assets/Images/Dice/DiceSpriteSheet.png";
-
-        private const string DICE_FACE_BASE_PATH =
-            "pack://application:,,,/Assets/Images/Dice/";
+        private const string DICE_IMAGE_BASE_RELATIVE_PATH = "Assets/Images/Dice/";
+        private const string DICE_ROLL_SPRITE_RELATIVE_PATH = "DiceSpriteSheet.png";
 
         private const int SERVER_INACTIVITY_TIMEOUT_SECONDS = 45;
         private const int SERVER_INACTIVITY_CHECK_INTERVAL_SECONDS = 5;
 
         private readonly int _gameId;
         private readonly int _localUserId;
-
-        private readonly Dictionary<int, Point> _cellCentersByIndex;
-        private readonly Dictionary<int, BoardLinkDto> _linksByStartIndex;
 
         private readonly PlayerTokenManager _tokenManager;
         private readonly GameBoardAnimationService _animationService;
@@ -61,7 +55,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private readonly AsyncCommand _useItemFromSlot2Command;
         private readonly AsyncCommand _useItemFromSlot3Command;
 
-        private readonly GameplayEventsHandler _eventsHandler;
         private readonly RelayCommand<int> _selectTargetUserCommand;
         private readonly RelayCommand<int> _cancelItemUseCommand;
 
@@ -86,7 +79,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private IGameplayClient _gameplayClient;
 
-        private int _currentTurnUserId;
         private bool _isMyTurn;
 
         private string _turnTimerText = DEFAULT_TURN_TIMER_TEXT;
@@ -106,7 +98,6 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         private bool _hasGameFinished;
 
         public event Action<PodiumViewModel> PodiumRequested;
-        public event Action<int, int> NavigateToPodiumRequested;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public int Rows { get; }
@@ -120,7 +111,10 @@ namespace SnakeAndLaddersFinalProject.ViewModels
         public ObservableCollection<GameBoardConnectionViewModel> Connections { get; }
 
         public CornerPlayersViewModel CornerPlayers { get; }
-
+        private static string BuildPackUri(string relativePath)
+        {
+            return string.Format("pack://application:,,,/{0}", relativePath);
+        }
         public ObservableCollection<PlayerTokenViewModel> PlayerTokens
         {
             get { return _tokenManager.PlayerTokens; }
@@ -267,11 +261,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             }
         }
 
-        public GameBoardViewModel(
-            BoardDefinitionDto boardDefinition,
-            int gameId,
-            int localUserId,
-            string currentUserName)
+        public GameBoardViewModel(BoardDefinitionDto boardDefinition,int gameId,
+            int localUserId, string currentUserName)
         {
             ValidateConstructorArguments(boardDefinition, gameId, localUserId);
 
@@ -285,8 +276,8 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             Cells = boardBuildResult.Cells;
             Connections = boardBuildResult.Connections;
-            _cellCentersByIndex = boardBuildResult.CellCentersByIndex;
-            _linksByStartIndex = boardBuildResult.LinksByStartIndex;
+            var cellCentersByIndex = boardBuildResult.CellCentersByIndex;
+            var linksByStartIndex = boardBuildResult.LinksByStartIndex;
             _startCellIndex = boardBuildResult.StartCellIndex;
 
             Inventory = new InventoryViewModel();
@@ -297,17 +288,17 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
             _tokenManager = new PlayerTokenManager(
                 playerTokens,
-                _cellCentersByIndex);
+                cellCentersByIndex);
 
             _animationService = new GameBoardAnimationService(
                 _tokenManager,
-                _linksByStartIndex,
-                _cellCentersByIndex,
+                linksByStartIndex,
+                cellCentersByIndex,
                 MapServerIndexToVisual);
 
             _diceAnimator = new DiceSpriteAnimator(
-                DICE_ROLL_SPRITE_PATH,
-                DICE_FACE_BASE_PATH);
+                BuildPackUri(DICE_IMAGE_BASE_RELATIVE_PATH + DICE_ROLL_SPRITE_RELATIVE_PATH),
+                BuildPackUri(DICE_IMAGE_BASE_RELATIVE_PATH));
 
             _podiumBuilder = new PodiumBuilder(_logger);
 
@@ -441,7 +432,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 () => _diceRollManager.RollDiceForLocalPlayerAsync(),
                 () => _diceRollManager.CanRollDice());
 
-            _eventsHandler = new GameplayEventsHandler(
+            var eventsHandler = new GameplayEventsHandler(
                 _animationService,
                 _diceAnimator,
                 _rollDiceCommand,
@@ -450,7 +441,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 UpdateTurnFromState);
 
             _serverEventsRouter = new GameplayServerEventsRouter(
-                _eventsHandler,
+                eventsHandler,
                 _gameStateSynchronizer,
                 Inventory,
                 _logger,
@@ -762,20 +753,20 @@ namespace SnakeAndLaddersFinalProject.ViewModels
 
         private void UpdateTurnFromState(int currentTurnUserIdFromServer)
         {
-            _currentTurnUserId = currentTurnUserIdFromServer;
+            int currentTurnUserId = currentTurnUserIdFromServer;
 
-            bool isMyTurnNow = _currentTurnUserId == _localUserId;
+            bool isMyTurnNow = currentTurnUserId == _localUserId;
 
             _logger.InfoFormat(
                 "UpdateTurnFromState: _gameId={0}, _localUserId={1}, _currentTurnUserId={2}, _isMyTurn={3}",
                 _gameId,
                 _localUserId,
-                _currentTurnUserId,
+                currentTurnUserId,
                 isMyTurnNow);
 
             IsMyTurn = isMyTurnNow;
 
-            CornerPlayers.UpdateCurrentTurn(_currentTurnUserId);
+            CornerPlayers.UpdateCurrentTurn(currentTurnUserId);
         }
 
         private void ShowPodiumFromState(GetGameStateResponseDto stateResponse)
@@ -869,7 +860,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
             _serverInactivityGuard.MarkServerEventReceived();
         }
 
-        private void OnServerInactivityTimeoutDetected()
+        private static void OnServerInactivityTimeoutDetected()
         {
             ConnectionLostHandlerException.HandleConnectionLost();
         }
@@ -890,7 +881,7 @@ namespace SnakeAndLaddersFinalProject.ViewModels
                 });
         }
 
-        private bool HandleConnectionException(Exception ex, string logContext)
+        private static bool HandleConnectionException(Exception ex, string logContext)
         {
             if (!ConnectionLostHandlerException.IsConnectionException(ex))
             {
